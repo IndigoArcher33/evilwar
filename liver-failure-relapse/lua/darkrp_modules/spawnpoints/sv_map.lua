@@ -7,27 +7,11 @@ create_spawnpoints = function()
 				job = TEAM_PRIVATE
 			},
 			{
-				pos = Vector(-10104, 13626, 32),
+				pos = Vector(3, 1305, 1),
 				job = TEAM_PRIVATE
 			},
 			{
-				pos = Vector(-15602, 13375, 32),
-				job = TEAM_PRIVATE
-			},
-			{
-				pos = Vector(-12185, 12728, 31),
-				job = TEAM_PRIVATE
-			},
-			{
-				pos = Vector(-11905, 14180, 32),
-				job = TEAM_PRIVATE
-			},
-			{
-				pos = Vector(-10123, 14088, 47),
-				job = TEAM_PRIVATE
-			},
-			{
-				pos = Vector(-11755, 15068, 32),
+				pos = Vector(-1153, 898, 1),
 				job = TEAM_PRIVATE
 			},
 			{
@@ -35,7 +19,7 @@ create_spawnpoints = function()
 				job = TEAM_SANITAR
 			},
 			{
-				pos = Vector(-14845, 13353, 32),
+				pos = Vector(1283, 681, 1),
 				job = TEAM_KORPSMAN
 			},
 			{
