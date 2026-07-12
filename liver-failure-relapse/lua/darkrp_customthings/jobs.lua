@@ -162,8 +162,8 @@ do
 end
 TEAM_BONEHEAD = DarkRP.createJob("Bonehead", {
 	color = Color(150, 150, 150),
-	model = "models/splinks/thug2/skaters/phil.mdl",
-	description = "my big dirty azz.",
+	model = "models/player/zombie_fast.mdl",
+	description = "evil fucker.",
 	instant_respawn = true,
 	command = "bonehead",
 	salary = 1,
@@ -211,15 +211,15 @@ TEAM_BONEHEAD = DarkRP.createJob("Bonehead", {
 		}, false
 	end,
 	first_names = {
-		"Phil"
+		"Evil"
 	},
 	last_names = {
-		"Margera"
+		"Fucker"
 	},
 	no_needs = true,
 	hint = "You are a truly pissed off skeleton. Go get 'em!",
 	bar_names = {
-		health = "MARGERA POWER"
+		health = "EVIL FUCKER POWER"
 	},
 	bar_colors = {
 		health = Color(200, 0, 0)
@@ -342,6 +342,12 @@ TEAM_PRIVATE = DarkRP.createJob("Private", {
 		"PVT.",
 		"Recruit"
 	},
+	last_names = {
+		"Parts",
+		"Smallwood",
+		"Neublud",
+		"Smallfry"
+	},
 	special_name = "Meatwad",
 	special_name_chance = 1000,
 	ShowSpare1 = open_player_menu,
@@ -354,7 +360,7 @@ TEAM_PRIVATE = DarkRP.createJob("Private", {
 			[1] = 0,
 			[2] = 0,
 			[3] = 0,
-			[4] = 1,
+			[4] = 0,
 			[5] = 0
 		}) do
 			set_bodygroup(ply, slot, val)
@@ -365,7 +371,7 @@ TEAM_PRIVATE = DarkRP.createJob("Private", {
 TEAM_SANITAR = DarkRP.createJob("Dragoon", {
 	color = Color(25, 170, 0),
 	model = "models/vel/evilwar/royalist.mdl",
-	description = "Liver Failure's white blood cells.\nNot necessarily protecting the red,\nbut preventing disease before they reach the vital organs.",
+	description = "The right hand of the Kommandant.\nRespected by his peers,\nfeared by his enemies.",
 	weapons = {
 		"evilrp_weapon/pacifier",
 		"simple_hl2_stunstick"
@@ -464,14 +470,14 @@ TEAM_SANITAR = DarkRP.createJob("Dragoon", {
 		return false
 	end
 })
-TEAM_DEALER = DarkRP.createJob("Dealer", {
+TEAM_DEALER = DarkRP.createJob("Quartermaster", {
 	color = Color(255, 140, 0),
 	model = {
 		"models/liver_failure/liverish/liverish.mdl",
 		"models/liver_failure/kidneystani/kidneystani.mdl",
 		"models/liver_failure/arrythmian/arrythmian.mdl"
 	},
-	description = "You have managed to keep most of your skin while making a living that can be considered mostly-honest.\n Good for you. Don't get caught selling illegal goods or buying stolen goods, however.",
+	description = "The left hand of the Kommandant.\nManage the goods and keep your men armed.",
 	weapons = { },
 	command = "dealer",
 	salary = 1,
@@ -576,14 +582,10 @@ TEAM_DEALER = DarkRP.createJob("Dealer", {
 		return false
 	end
 })
-TEAM_KORPSMAN = DarkRP.createJob("Korpsman", {
+TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", {
 	color = Color(79, 150, 150),
-	model = {
-		"models/liver_failure/liverish/liverish.mdl",
-		"models/liver_failure/kidneystani/kidneystani.mdl",
-		"models/liver_failure/arrythmian/arrythmian.mdl"
-	},
-	description = "You keep people alive in this terrible place.\nYou should be proud of yourself.",
+	model = "models/vel/evilwar/royalist.mdl",
+	description = "You keep people alive in this terrible place.\nFill the blood and empty the rust.",
 	weapons = {
 		"evilrp/medkit"
 	},
@@ -686,19 +688,10 @@ TEAM_KORPSMAN = DarkRP.createJob("Korpsman", {
 		for slot, val in pairs({
 			[0] = 0,
 			[1] = 0,
-			[2] = {
-				0,
-				0,
-				5,
-				0
-			},
-			[3] = 0,
-			[4] = 0,
-			[5] = 0,
-			[6] = 0,
-			[7] = 2,
-			[8] = 0,
-			[9] = 2
+			[2] = 2,
+			[3] = 3,
+			[4] = 1,
+			[5] = 0
 		}) do
 			set_bodygroup(ply, slot, val)
 		end
@@ -778,16 +771,12 @@ TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", {
 		end
 		ply:AddOddity(oddities[math.random(#oddities)])
 		for slot, val in pairs({
-			[0] = 0,
-			[1] = 3,
-			[2] = 21,
-			[3] = 16,
-			[4] = 0,
-			[5] = 0,
-			[6] = 8,
-			[7] = 0,
-			[8] = 0,
-			[9] = 2
+			[0] = 1,
+			[1] = 2,
+			[2] = 0,
+			[3] = 1,
+			[4] = 2,
+			[5] = 0
 		}) do
 			set_bodygroup(ply, slot, val)
 		end
