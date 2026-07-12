@@ -1,0 +1,109 @@
+meta = FindMetaTable"Player"
+
+GAMEMODE.pocket = {} unless GAMEMODE.pocket 
+net.Receive "EvilRP_Pocket", ->
+  GAMEMODE.pocket = net.ReadTable!
+  GAMEMODE\PMUpdateInventory!
+
+meta[k] = v for k, v in pairs{
+  getPocketItems: =>
+    return nil if @ ~= LocalPlayer!
+    return GAMEMODE.pocket
+  GetPocketItems: =>
+    return nil if @ ~= LocalPlayer!
+    return GAMEMODE.pocket
+}
+
+GAMEMODE.PMUpdateInventory = =>
+  return unless (ECP.pmenu and ECP.pmenu\IsValid! and ECP.pmenu.content_pane and ECP.pmenu.content_pane\IsValid!)
+  if ECP.pmenu.icons
+    for i in *ECP.pmenu.icons
+      if i.shadows
+        for s in *i.shadows
+          s[1]\Remove! if s[1]\IsValid!
+      i\Remove! if i\IsValid!
+      i.Label\Remove! if i.Label and i.Label\IsValid!
+
+  items = GAMEMODE.pocket
+  ct = CurTime!
+  angle = ct * 0.25 % (2 * math.pi)
+  offset = ((2 * math.pi) / #items)
+  ECP.pmenu.icons = {}
+  idx = 0
+  for k, v in pairs GAMEMODE.pocket
+    idx += 1
+    item = v
+    icon = vgui.Create "DModelPanel", ECP.pmenu.content_pane
+    with icon
+      \SetModel item.model
+      \SetCursor"blank"
+
+      \SetSize 64, 64
+
+      a, b = .Entity\GetModelBounds!
+      \SetFOV 10
+      import abs from math
+      \SetCamPos Vector(abs(a.x),abs(a.y),abs(a.z)) * 5
+      \SetLookAt (a + b) / 2
+        
+      offset_angle = angle + (offset * (idx - 1))
+      hx = math.cos(offset_angle) * 400
+      hy = math.sin(offset_angle) * 400
+      \SetPos (ECP.pmenu\GetWide! / 2.05) - hx, (ECP.pmenu\GetTall! / 2.2) - hy
+      \SetDrawOnTop true
+
+      .DoClick = =>
+        net.Start"EvilRP_spawnPocket"
+        net.WriteFloat k
+        net.WriteBool true
+        net.SendToServer!
+        GAMEMODE.pocket[k] = nil
+        ECP.pmenu\KILL!
+        
+      .DoRightClick = =>
+        net.Start"EvilRP_spawnPocket"
+        net.WriteFloat k
+        net.WriteBool false
+        net.SendToServer!
+        GAMEMODE.pocket[k] = nil
+
+        GAMEMODE\PMUpdateInventory!
+      .PaintOver = =>
+        draw.CustomCursor @, get_handframe!
+        if ECP.pmenu.content_pane.menu_hover
+          mh = ECP.pmenu.content_pane.menu_hover
+          col = HSVToColor((CurTime! * 38) % 360, 1, 1)
+          col.a = mh.alpha * 255
+          surface.SetTextColor col
+          x, y = @CursorPos!
+          y += 32
+          desp = lp\GetDespair! * 0.01
+          for t in *mh.text
+            if type(t) == "string"
+              txt = t
+              font = "Spleen_Label"
+              -- create scribe object
+              txt = "<rgb=1,1,30>#{txt}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+              txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+              txt_w = txt_obj\GetWide!
+              txt_h = txt_obj\GetTall!
+              -- draw scribe object
+              txt_obj\Draw x, y, 1, TEXT_ALIGN_CENTER
+              -- shift y 
+              y += txt_h
+            else
+              font = t.font or "Spleen_Label"
+              txt = t.text
+              -- create scribe object
+              txt = "<rgb=1,1,30>#{txt}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+              txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+              txt_w = txt_obj\GetWide!
+              txt_h = txt_obj\GetTall!
+              -- draw scribe object
+              txt_obj\Draw x, y, 1, TEXT_ALIGN_CENTER
+              -- shift y 
+              y += txt_h
+
+      .item = item
+
+    ECP.pmenu.icons[] = icon

@@ -1,0 +1,64 @@
+class TreeHurt extends SOUND
+  sound: ["physics/flesh/flesh_squishy_impact_hard#{i}.wav" for i=1,4]
+  pitch: {80, 115}
+
+class TreeBirth extends SOUND
+  sound: "placenta/bonehead_aggrod3.wav"
+  pitch: {80, 130}
+
+class TreeDeath extends SOUND
+  sound: "placenta/bonehead_aggrod2.wav"
+  pitch: {80, 130}
+
+class Tree extends ENTITY
+  Base: "base_anim"
+  Type: "anim"
+  Spawnable: true
+  AdminSpawnable: true
+
+  Pocketable: false
+    
+  LootTable:
+    * "wood/scrap"
+
+  SetupDataTables: =>
+    @NetworkVar "Int", "Integrity"
+
+  Initialize: =>
+    return if CLIENT
+    @SetModel"models/props_foliage/tree_deciduous_03a.mdl"
+    @SetMaterial"models/charple/charple3_sheet"
+    @PhysicsInit SOLID_VPHYSICS
+    @SetIntegrity 300
+    @PhysWake!
+    @EmitSound"TreeBirth"
+
+  OnTakeDamage: (dmg) =>
+    dtype = dmg\GetDamageType!
+    return unless (dtype == DMG_SLASH)
+    dmg_int = dmg\GetDamage!
+    inflictor = dmg\GetInflictor!
+    dmg_int *= inflictor.TreeBonus if inflictor.TreeBonus
+    pos = dmg\GetDamagePosition!
+    with edata = EffectData!
+      \SetOrigin pos
+      \SetScale 60
+      util.Effect "BloodImpact", edata
+        
+    @SetIntegrity @GetIntegrity! - dmg_int
+    @NextSound or= CurTime!
+    if CurTime! >= @NextSound
+      @NextSound = CurTime! + 0.1
+      @EmitSound"TreeHurt"
+    if (@GetIntegrity! <= 0) and not @Breaking
+      @Breaking = true
+      @EmitSound"TreeDeath"
+      for i=1,math.random(1,3)
+        cls = @LootTable[math.random 1, #@LootTable]
+        loot = ents.Create cls
+        with loot
+          \Spawn!
+          \Activate!
+          \SetPos pos
+      @Remove!
+ 

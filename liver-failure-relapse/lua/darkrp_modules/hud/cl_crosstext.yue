@@ -1,0 +1,118 @@
+global cross_prog = 0
+global cross_texts = {}
+cross_text_alpha = 0
+
+is_door = (ent) ->
+  switch ent\GetClass!
+    when "func_door", "func_door_rotating", "prop_door_rotating", "func_movelinear", "prop_dynamic"
+      return true
+    else
+      return false
+
+import sin, abs from math
+
+local portal
+local next_portal_check = CurTime!
+
+draw_cross_texts = ->
+  ply = LocalPlayer!
+  ct = CurTime!
+  get = ply\GetEyeTrace!
+  p = get.HitPos\ToScreen!
+  x = p.x
+  y = p.y
+  ent = get.Entity
+  unless IsValid(ent)
+    if ct >= next_portal_check
+      next_portal_check = CurTime! + .23
+      nearby = ents.FindInSphere(ply\GetPos!, 16)
+      local found
+      for ent in *nearby
+        if ent\GetClass!\find"portal/spawn"
+          found = ent
+          break
+      if found and IsValid(found)
+        portal = found
+      else
+        portal = nil
+  ent = portal if portal and IsValid(portal)
+  -- cross_texts = {}
+  -- THIS IF CONDITION IS AWFUL.
+  -- TODO: FIX THIS PLEASE
+  if ent and IsValid(ent) and ((is_door(ent) and ent\isKeysOwnable!) or ent\IsPlayer! or ent\GetClass! == "prop_ragdoll" or ent.Interesting) and ent\GetPos!\DistToSqr(ply\GetPos!) < (384^2)
+    cross_text_alpha = math.Clamp( cross_text_alpha + FrameTime!, 0, 0.7 )
+    cross_prog = Lerp 0.05, cross_prog, 1
+    if ent.HUDRender
+      cross_texts = ent\HUDRender!
+    else
+      cross_texts = ent\_HUDRender! -- this is for doors specifically
+  else
+    cross_text_alpha = math.Clamp( cross_text_alpha - FrameTime!, 0, 0.7 )
+    cross_prog = Lerp 0.05, cross_prog, 0
+  if (not ply\KeyDown IN_WALK) and cross_texts and cross_text_alpha > 0.02
+    rgb = HSVToColor (ct * 13) % 360, 1, 1
+    y += (20 * cross_prog)
+    x += (12 * math.sin(ct))
+    idx = 0
+    desp = (ply\GetDespair! * 0.01)
+    for t in *cross_texts
+      idx += 1
+      if type(t) == "string"
+        txt = t
+        font = "Spleen_Label"
+        -- create scribe object
+        txt = "<rgb=1,1,30>#{txt}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+        txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+        txt_w = txt_obj\GetWide!
+        txt_h = txt_obj\GetTall!
+        -- draw scribe object
+        txt_obj\Draw x, y, cross_text_alpha, TEXT_ALIGN_CENTER
+        -- shift y 
+        y += (txt_h * cross_prog)
+      else
+        txt = t.text
+        font = t.font or "Spleen_Label"
+        -- create scribe object
+        txt = "<rgb=1,1,30>#{txt}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+        txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+        txt_w = txt_obj\GetWide!
+        txt_h = txt_obj\GetTall!
+        -- draw scribe object
+        txt_obj\Draw x, y, cross_text_alpha, TEXT_ALIGN_CENTER
+        -- shift y 
+        y += (txt_h * cross_prog)
+  elseif cross_text_alpha < 0.1
+    -- cross_texts = {}
+    cross_prog = 0
+  return
+
+hook.Add "HUDPaint", "evilrp_hud_crosstexts", draw_cross_texts
+
+racism = (who) ->
+  text = "Not like me."
+  text = "Brother in blood." if who\GetModel! == lp\GetModel!
+  text = "A pitiful mortal." if lp\Team! == TEAM_GHOST
+  return { :text, font: "Spleen_Label_Small" }
+  
+model_funcs = {
+  ["models/liver_failure/liverish/liverish.mdl"]: racism
+  ["models/liver_failure/kidneystani/kidneystani.mdl"]: racism
+  ["models/liver_failure/arrythmian/arrythmian.mdl"]: racism
+}
+  
+meta = FindMetaTable"Player"
+meta.HUDRender = =>
+  ct = {}
+  return if @Team! == TEAM_GHOST and lp\Team! ~= TEAM_GHOST and not lp\HasOddity(ODDITY_COTARDISM)
+  ct[] = @Name!
+  mdl = @GetModel!
+  jt = @getJobTable!
+  skip_model = false
+  local job_ct
+  if jt.crosstext
+    job_ct, skip_model = jt.crosstext @
+  unless skip_model
+    ct[] = model_funcs[mdl](@) if model_funcs[mdl]
+  ct[] = job_ct if job_ct
+  return ct
+      

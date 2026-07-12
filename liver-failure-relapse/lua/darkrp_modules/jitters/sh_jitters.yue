@@ -1,0 +1,16 @@
+hp_threshold = 30
+intensity_max = 5
+disabled = false
+
+fear_of_death = ->
+  return unless lp and IsValid(lp)
+  return if disabled
+  hp_curr = lp\Health!
+  if hp_curr <= hp_threshold
+    intensity = (hp_threshold - hp_curr) / hp_threshold * intensity_max
+    p = math.random(-intensity, intensity)
+    y = math.random(-intensity, intensity)
+    -- r = math.random(-intensity, intensity)
+    ang = Angle(p, y, 0)
+    lp\SetEyeAngles(lp\EyeAngles! + ang)
+hook.Add("Think", "evilrp_fear_of_death", fear_of_death)

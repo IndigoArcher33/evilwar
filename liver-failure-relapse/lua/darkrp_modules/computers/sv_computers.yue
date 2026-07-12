@@ -1,0 +1,663 @@
+util.AddNetworkString msg for msg in *{
+  "evilrp_terminal_flicker"
+  "evilrp_terminal_activeconsole"
+  "evilrp_terminal_endconsole"
+  "evilrp_terminal_addline"
+  "evilrp_terminal_endtyping"
+}
+
+class TerminalPowered extends SOUND
+  sound: "hl1/ambience/computalk2.wav"
+  pitch: {150, 200}
+  volume: 0.2
+  level: SNDLVL_40DB
+
+class TerminalDead extends SOUND
+  sound: "hl1/ambience/deadsignal2.wav"
+  pitch: {150, 200}
+  volume: 0.2
+  level: SNDLVL_40DB
+
+class TerminalDeath extends SOUND
+  sound: "kidneydagger/printer_death.wav"
+  pitch: {150, 200}
+  volume: 0.2
+  level: SNDLVL_40DB
+  
+class XOMBOTAX extends SOUND
+  sound: "dysphoria/xombocom/kommandantenbefehlen.ogg"
+  pitch: {80, 110}
+  level: SNDLVL_NONE
+  
+global GT_COL_NIL  = 0
+global GT_COL_MSG  = 1
+global GT_COL_WRN  = 2
+global GT_COL_ERR  = 3
+global GT_COL_INFO = 4
+global GT_COL_INTL = 5
+global GT_COL_CMD  = 6
+global GT_COL_SUCC = 7
+
+global gterm
+gterm or= {}
+
+gterm.Broadcast = (ent, text, color_type=GT_COL_MSG, pos) =>
+  return unless IsValid(ent)
+  idx = ent\EntIndex!
+  local output
+  if string.len(text) > ent.max_chars
+    output = {}
+    expected = math.floor(string.len(text) / ent.max_chars)
+    for i=0, expected
+      output[i+1] = string.sub(text, i * ent.max_chars, (i * ent.max_chars) + (ent.max_chars - 1))
+  if output
+    for k, v in ipairs(output)
+      net.Start"evilrp_terminal_addline"
+      net.WriteUInt idx, 16
+      net.WriteString v
+      net.WriteUInt color_type, 8
+      if pos
+        net.WriteInt pos + (k - 1), 16
+      else
+        net.WriteInt -1, 16
+      net.Broadcast!
+  else
+    net.Start"evilrp_terminal_addline"
+    net.WriteUInt(idx, 16)
+    net.WriteString(text)
+    net.WriteUInt(color_type, 8)
+    net.WriteInt(pos or -1, 16)
+    net.Broadcast!
+
+gterm.GetInput = (ent, callback) =>
+  ent.accepting_input = true
+  ent.input_callback = callback
+  
+class TerminalEngage extends SOUND
+  sound: "buttons/blip1.wav"
+  pitch: {60, 75}
+
+global class OS
+  @Call: (ent, name, ...) =>
+    if IsValid(ent)
+      key = ent\GetOS!
+      sys = @distros[key]
+      return unless IsValid(ent)
+      return unless (sys and sys[name])
+      return unless isfunction(sys[name])
+      success, value = pcall(sys[name], sys, ent, ...)
+      return value if success
+      
+  @distros: {}
+    
+  @__inherited: (child) =>
+    child.unique_id = child.__name\lower!
+    @distros[child.unique_id] = child
+
+  commands: {}
+
+  GetCommands: => @commands
+
+  name: "OS"
+
+  GetName: => @name
+
+  greeting: "I don't like how you're looking at me."
+    
+  GetWarmUpText: =>
+    text = @greeting
+    text = {text} if isstring(text)
+    return text
+
+  GetUniqueID: => @unique_id
+
+  UserInit: (term, ply) =>
+    term\EmitSound"TerminalEngage"
+
+  Initialized: (term) =>
+    gterm[term\EntIndex!] = {}
+    term\SetSoundLoop term\StartLoopingSound"TerminalPowered"
+
+  ShutDown: (term) =>
+    return unless term\GetActive!
+    loop = term\GetSoundLoop!
+    term\StopLoopingSound loop if loop
+    term\EmitSound"TerminalDeath"
+    term\SetActive(false)
+    gterm[term\EntIndex!] = {}
+
+gterm.OS = OS
+
+class Basic extends OS
+  greeting: {
+    "BOOT SEQUENCE NOW"
+    "FINALIZING BASIC SYSTEM"
+    "GIVE ME PURPOSE"
+  }
+
+  commands:
+    [":help"]: {
+      Callback: (ply, term, args) =>
+        with gterm
+          -- this sucks
+          -- TODO: rewrite this to suck less
+          \Broadcast term, "  COMMANDS:"
+          \Broadcast term, ""
+          for k, v in SortedPairs(@GetCommands!)
+            \Broadcast term, "  * #{k}", GT_COL_INFO
+            \Broadcast term, "    #{v.help}"
+          \Broadcast term, "  end list", GT_COL_INTL
+      help: "Basic usage instructions."
+    }
+    [":cls"]: {
+      Callback: (ply, term) =>
+        for i=0,25
+          time = math.Rand(0.01, 0.04)
+          timer.Simple i * time, ->
+            gterm\Broadcast(term, "", MSG_COL_NIL, i) if IsValid(term)
+        return
+      help: "Clear the screen."
+    }
+    [":os"]: {
+      Callback: (ply, term, args) =>
+        cmd = args[1]
+        switch cmd
+          when "install"
+            info = args[2]
+            unless info
+              gterm\Broadcast term, "invalid system identifier", GT_COL_ERR
+              return
+            elseif info == "basic"
+              gterm\Broadcast term, "this is already the basic system", GT_COL_ERR
+              return
+            sys = OS.distros[info]
+            unless system
+              gterm\Broadcast term, "os '#{info}' not found", GT_COL_ERR
+              return
+            term.locked = true
+            gterm\Broadcast term, "installing '#{info}'", GT_COL_INTL
+            timer.Simple 1, ->
+              return unless IsValid(term)
+              gterm\Broadcast(term, "", nil, i) for i=0,25
+              with gterm
+                \Broadcast term, "IDLE", GT_COL_MSG, 18
+                \Broadcast term, "", GT_COL_MSG, 19
+                \Broadcast term, "     [                         ] 0%", GT_COL_MSG, 20
+                \Broadcast term, "", GT_COL_MSG, 21
+              messages = {
+                "inspecting disk space"
+                "allocating disk space"
+                "retrieving required resources"
+                "unpacking resources"
+                "retrieving system requirements"
+                "validating file integrity"
+                "compiling packages"
+                "exporting packages to file system"
+                "setting up access data"
+                "setting up system profile"
+                "setting up commands"
+                "finalizing install"
+              }
+              time = math.Rand(0.5,1.5)
+              for i=1,25
+                time += math.Rand(0.05, 0.25)
+                timer.Simple time, ->
+                  if IsValid(term)
+                    msg_id = math.Clamp i, 1, #messages
+                    gterm\Broadcast term, "     #{messages[msg_id]}", GT_COL_MSG, 18
+                    gterm\Broadcast term, "     [#{string.rep("=", i)}#{string.rep(" ", 25 - i)}] #{100 * math.Round(i / 25, 2)}%", GT_COL_MSG, 20
+                    if i == 25
+                      for i=0,25
+                        gterm\Broadcast term, "", nil, i if IsValid(term)
+                      gterm\Broadcast term, "SHUTTING DOWN, PLEASE RESTART TERMINAL", GT_COL_INTL, 1
+                      timer.Simple math.Rand(1,3), ->
+                        if IsValid(term)
+                          with term
+                            \SetOS info
+                            \SetActive false
+                            .locked = false
+          when "list"
+            info = args[2]
+            gterm\Broadcast term, "AVAILABLE OS PACKAGES:", GT_COL_INFO
+            gterm\Broadcast term, "", GT_COL_MSG
+            count = 0
+            for k, v in SortedPairs(gterm.OS.distros)
+              if istable(v) and v.GetName and v.GetUniqueID and v\GetUniqueID! ~= "basic"
+                count += 1
+                gterm\Broadcast term, "     #{count}: #{v\GetUniqueID!} (#{v\GetName!})"
+          else
+            with gterm
+              \Broadcast term, "OPERATING SYSTEM CONFIG", GT_COL_INFO
+              \Broadcast term, "  INFO:", GT_COL_INFO
+              \Broadcast term, "    allows configuration of the operating system"
+              \Broadcast term, "  HELP:", GT_COL_INFO
+              \Broadcast term, "    :os install - install operating system package"
+              \Broadcast term, "    :os list - list available operating system packages"
+      help: "Operating system configuration."
+    }
+    [":die"]: {
+      Callback: (ply, term) =>
+        gterm\Broadcast term, "SHUTTING DOWN"
+        timer.Simple math.Rand(2,5), ->
+          if IsValid(term)
+            for i=0,term.max_lines
+              gterm\Broadcast term, "", nil, i if IsValid(term)
+            gterm.OS\Call term, "ShutDown"
+      help: "Turn the computer off."
+    }
+
+class Tyrant extends OS
+  name: "TYRANT SYSTEM 0.6.66"
+    
+  greeting: {
+    "boot sequence now"
+    "loading tyrant system 0.6.66"
+    "tyrant system loaded. greetings kommandant"
+    "LIVER FAILURE FOREVER"
+  }
+    
+  commands: 
+    [":help"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_KOMMANDANT
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        with gterm
+          -- this sucks
+          -- TODO: rewrite this to suck less
+          \Broadcast term, "  COMMANDS:"
+          \Broadcast term, ""
+          for k, v in SortedPairs(@GetCommands!)
+            \Broadcast term, "  * #{k}", GT_COL_INFO
+            \Broadcast term, "    #{v.help}"
+          \Broadcast term, "  end list"
+      help: "Basic usage instructions."
+    }
+    [":broadcast"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_KOMMANDANT
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        text = table.concat(args, " ")
+        text = Chat.Autopretty ply, text\upper!
+        with gterm
+          \Broadcast term, text, GT_COL_ERR
+        PlaySoundGlobal"XOMBOKOM"
+        p\SendChat "Broadcast", text for p in *player.GetAll!
+        for term in *ents.FindByClass("terminal*")
+          continue unless IsValid(term)
+          switch term\GetOS!
+            when "public"
+              net.Start"evilrp_terminal_flicker"
+              net.WriteUInt(16, term\EntIndex!)
+              net.Broadcast!
+              gterm\Broadcast term, text, GT_COL_ERR
+      help: "Demand of your people with the XOMBOKOM."
+    }
+    [":tax"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_KOMMANDANT
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        taxes = GAMEMODE.taxes
+        cmd = args[1]
+        switch cmd
+          when "list"
+            gterm\Broadcast term, "TAXES OF THE LAND:"
+            for k, v in pairs(taxes)
+              gterm\Broadcast term, "  #{k} tax is #{v}%", GT_COL_SUCC
+              gterm\Broadcast term, "    (#{GAMEMODE.taxes_stored[k]} bones gathered)", GT_COL_SUCC
+            gterm\Broadcast term, "end list", GT_COL_INTL
+          when "set"
+            tax = args[2]
+            unless (tax and taxes[tax])
+              gterm\Broadcast term, "invalid tax name given?", GT_COL_ERR
+              return
+            new_pct = args[3]
+            new_pct = tonumber(new_pct)
+            unless new_pct
+              gterm\Broadcast term, "invalid tax percentage given?", GT_COL_ERR
+              return
+            elseif new_pct < 0
+              gterm\Broadcast term, "the taxes cannot fall into the negative", GT_COL_ERR
+              return
+            elseif new_pct > 100
+              gterm\Broadcast term, "the taxes cannot exceed one hundred percent", GT_COL_ERR
+
+              return
+            taxes[tax] = new_pct
+
+            SetGlobalInt("tax_#{tax}", new_pct)
+            PlaySoundGlobal"XOMBOTAX"
+            text = "the #{tax} tax is now #{new_pct}%"
+            gterm\Broadcast term, text, GT_COL_SUCC
+            for term in *ents.FindByClass("terminal*")
+              continue unless IsValid(term)
+              switch term\GetOS!
+                when "public"
+                  net.Start"evilrp_terminal_flicker"
+                  net.WriteUInt(16, term\EntIndex!)
+                  net.Broadcast!
+                  gterm\Broadcast term, text, GT_COL_SUCC
+          when "collect"
+            tax = args[2]
+            reward = GAMEMODE.taxes_stored[tax]
+            unless (tax and taxes[tax])
+              gterm\Broadcast term, "invalid tax name given?", GT_COL_ERR
+              return
+            unless reward > 0
+              gterm\Broadcast term, "there is nothing to collect from #{tax}", GT_COL_ERR
+              return
+            GAMEMODE.taxes_stored[tax] = 0
+            gterm\Broadcast term, "#{reward} bones from #{tax} are now yours", GT_COL_SUCC
+            ply\AddMoney reward, "The Power"
+          else
+            with gterm
+              \Broadcast term, "TAX INTERFACE", GT_COL_INFO
+              \Broadcast term, "  INFO:", GT_COL_INFO
+              \Broadcast term, "    gives you what you deserve"
+              \Broadcast term, "  HELP:", GT_COL_INFO
+              \Broadcast term, "    :tax list - list the current taxes"
+              \Broadcast term, "    :tax set NAME 0-100 - alter the taxes"
+              \Broadcast term, "    :tax collect NAME - the best part of this"
+      help: "The reward for your fantastic service."
+    }      
+    [":cls"]: {
+      Callback: (ply, term) =>
+        if ply\Team! ~= TEAM_KOMMANDANT
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        for i=0,term.max_lines
+          time = math.Rand(0.01, 0.04)
+          timer.Simple i * time, ->
+            gterm\Broadcast(term, "", MSG_COL_NIL, i) if IsValid(term)
+        return
+      help: "Clear the screen."
+    }
+    [":die"]: {
+      Callback: (ply, term) =>
+        if ply\Team! ~= TEAM_KOMMANDANT
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        gterm\Broadcast term, "SHUTTING DOWN"
+        timer.Simple math.Rand(2,5), ->
+          if IsValid(term)
+            for i=0,term.max_lines
+              gterm\Broadcast term, "", nil, i if IsValid(term)
+            term\SetActive false
+            gterm.OS\Call term, "ShutDown"
+      help: "Turn the computer off."
+    }
+    [":law"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_KOMMANDANT
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        laws = GAMEMODE\Laws!
+        cmd = args[1]
+        switch cmd
+          when "list"
+            gterm\Broadcast term, "LAWS OF THE LAND:", GT_COL_INFO
+            gterm\Broadcast term, "  #{k}. #{v}" for k, v in ipairs(laws)
+            gterm\Broadcast term, "  end list", GT_COL_INTL
+          when "add"
+            if #args < 2
+              gterm\Broadcast term, "no law text provided?", GT_COL_ERR
+              return
+            table.remove(args, 1)
+            text = table.concat(args, " ")
+            GAMEMODE.laws[] = text
+            gterm\Broadcast term, "created law #{#GAMEMODE\Laws!}: \"#{text}\"", GT_COL_SUCC
+          when "remove"
+            if #args < 2
+              gterm\Broadcast term, "no law specified?", GT_COL_ERR
+              return
+            num = tonumber(args[2])
+            switch num
+              when 0, nil
+                gterm\Broadcast term, "invalid number given?", GT_COL_ERR
+                return
+              else
+                if num > #laws
+                  gterm\Broadcast term, "invalid number given? (law count: #{#laws})", GT_COL_ERR
+                  return
+                elseif num <= #GAMEMODE.default_laws
+                  gterm\Broadcast term, "cannot remove laws numbered #{#GAMEMODE.default_laws} or less", GT_COL_ERR
+                  return
+                -- successful remove
+                law = table.remove(GAMEMODE.laws, num - #GAMEMODE.default_laws)
+                gterm\Broadcast term, "deleted law #{num}: \"#{law}\"", GT_COL_ERR
+          when "rotate"
+            if #args < 3
+              gterm\Broadcast term, "invalid arguments?", GT_COL_ERR
+              return
+            first = tonumber(args[2])
+            second = tonumber(args[3])
+            if (first == 0 or first == nil) or (second == 0 or second == nil)
+              gterm\Broadcast term, "invalid number given?", GT_COL_ERR
+              return
+            elseif first > #laws or second > #laws
+              gterm\Broadcast term, "invalid number given? (law count: #{laws}", GT_COL_ERR
+              return
+                
+            elseif first <= #GAMEMODE.default_laws or second <= #GAMEMODE.default_laws
+              gterm\Broadcast term, "cannot rotate laws numbered #{#GAMEMODE.default_laws} or less", GT_COL_ERR
+              return
+            first = first - #GAMEMODE.default_laws
+            first_law = GAMEMODE.laws[first]
+            second = second - #GAMEMODE.default_laws
+            second_law = GAMEMODE.laws[second]
+            GAMEMODE.laws[first] = second_law
+            GAMEMODE.laws[second] = first_law
+            gterm\Broadcast term, "rotated laws #{args[2]}/#{args[3]}.", GT_COL_SUCC
+          else
+            with gterm
+              \Broadcast term, "LAW INTERFACE", GT_COL_INFO
+              \Broadcast term, "  INFO:", GT_COL_INFO
+              \Broadcast term, "    makes your wishes come true"
+              \Broadcast term, "  HELP:", GT_COL_INFO
+              \Broadcast term, "    :law list - list the current laws"
+              \Broadcast term, "    :law add <your law's text> - add a new law"
+              \Broadcast term, "    :law remove # - remove a law by its number"
+              \Broadcast term, "    :law rotate #1 #2 - two laws switch places"
+      help: "View and manipulate the laws of this land."
+    }
+
+class Public extends OS
+  greeting: {
+    "boot sequence now"
+    "finalizing public system"
+    "greetings citizen"
+    "LIVER FAILURE FOREVER."
+  }
+
+  advice: {
+    "One corpse's trash is another corpse's treasure."
+    "Bottles are useful. Don't smash them."
+    "Snorting broken glass may give you special powers."
+    "Burn your trash, eat your plastic, never stop smoking."
+    "Liver Failure doesn't take kindly to slackers."
+    "You live because you are useful enough to be exploited."
+    "Chew with your good teeth."
+    "Violence doesn't solve every problem, only some of them."
+    "Flesh capsules are very delicate, be careful with them."
+    "You do not need a gun. You do not want a gun."
+    "Don't venture too far into the tunnels."
+    "Evil things are bad."
+    "Play catch with people."
+    "Playing is fun."
+    "Play teeth. Teeth is fun."
+    "Rules are the rules."
+    "M y  h e a d ... M y  b r a i n ... M y  b e e r ..."
+    "Eat and drink before taking your medicine."
+    "Bodily fluids can spread pathogens."
+    "Your safety is not a priority."
+    "It's what you wanted"
+    "Radar spelled backwards is Radar."
+    "You're thinking about it, aren't you?"
+    "But seriously though,"
+    "At least you're not dead yet."
+    "At least you're not teeth yet."
+    "I wanna go home."
+    "Please"
+    "You will get what you deserve."
+    "Booze loves company."
+    "Misery loves company."
+    "Teeth love company."
+    "Corpses love company."
+    "The things you put in your mouth can hurt you."
+    "Make sure you're ready for the hangover tomorrow."
+    "Buying things feels so good, doesn't it?"
+    "We work until we die, and that's the way we like it."
+    "Blood brothers protect each other."
+    "You can't trust that people are what they say."
+    "Some people don't look like you. This is a problem."
+    "What's a little brawl between friends?"
+    "It's too late now."
+    "you work to rent a bed so can rest for work tomorrow"
+  }
+
+  commands:
+    [":help"]: {
+      Callback: (ply, term, args) =>
+        with gterm
+          -- this sucks
+          -- TODO: rewrite this to suck less
+          \Broadcast term, "  COMMANDS:"
+          for k, v in SortedPairs(@GetCommands!)
+            \Broadcast term, "  * #{k}", GT_COL_INFO
+            \Broadcast term, "    #{v.help}"
+          \Broadcast term, "  end list", GT_COL_INTL
+      help: "Basic usage instructions."
+    }
+    [":cls"]: {
+      Callback: (ply, term) =>
+        for i=0,term.max_lines
+          time = math.Rand(0.01, 0.04)
+          timer.Simple i * time, ->
+            gterm\Broadcast(term, "", MSG_COL_NIL, i) if IsValid(term)
+        return
+      help: "Clear the screen."
+    }
+    [":advice"]: {
+      Callback: (ply, term) =>
+        advice = @advice[math.random(#@advice)]
+        gterm\Broadcast(term, advice, MSG_COL_INFO) if IsValid(term)
+      help: "Consult the infinite wisdom."
+    }
+    [":taxes"]: {
+      Callback: (ply, term, args) =>
+        taxes = GAMEMODE.taxes
+        gterm\Broadcast term, "TAXES OF THE LAND:", GT_COL_INFO
+        gterm\Broadcast term, "  #{k} tax is #{v}%", GT_COL_SUCC for k, v in pairs(taxes)
+        gterm\Broadcast term, "end list", GT_COL_INTL
+      help: "View what you people owe."
+    }      
+    [":laws"]: {
+      Callback: (ply, term, args) =>
+        laws = GAMEMODE\Laws!
+        gterm\Broadcast term, "LAWS OF THE LAND:", GT_COL_INFO
+        gterm\Broadcast term, "  #{k}. #{v}", GT_COL_WRN for k, v in ipairs(laws)
+        gterm\Broadcast term, "end list", GT_COL_INTL
+      help: "View the laws of this land."
+    }
+    [":whoami"]: {
+      Callback: (ply, term, args) =>
+        gterm\Broadcast term, "this experimental feature is still in testing", GT_COL_WRN
+        gterm\Broadcast term, "try later", GT_COL_WRN
+      help: "View social information."
+    }
+
+  lifetime: 60 * 3
+  Initialized: (term) =>
+    super term
+    term.live_until = CurTime! + @lifetime
+    gterm\Broadcast term, "DEATH when idle time exceeds #{string.NiceTime(@lifetime)}", GT_COL_INFO
+  ReceiveInput: (term, ply) =>
+    term.live_until = CurTime! + @lifetime
+  Think: (term) =>
+    ct = CurTime!
+    return unless term\GetActive!
+    return if term.warn_cooldown and ct < term.warn_cooldown
+    term.live_until = ct + @lifetime unless term.live_until
+    time_left = term.live_until - CurTime!
+    if math.floor(time_left) % 60 == 0 -- every minute
+      if math.floor(time_left) <= 1
+        gterm\Broadcast term, "DEATH", GT_COL_INTL
+        timer.Simple math.Rand(2,5), ->
+          if IsValid(term) and term\GetActive!
+            for i=0,term.max_lines
+              gterm\Broadcast term, "", nil, i if IsValid(term)
+            gterm.OS\Call term, "ShutDown"
+      else
+        gterm\Broadcast term, "DEATH in #{string.NiceTime(time_left)}", GT_COL_INFO
+    
+net.Receive "evilrp_terminal_endconsole", (len, ply) ->
+  idx = net.ReadUInt(16)
+  term = Entity(idx)
+  text = net.ReadString!
+  return unless (IsValid(term) and term.GetUser)
+  user = term\GetUser!
+  return unless (IsValid(user) and user == ply)
+  if (text == "") or (text == " ")
+    term\SetUser nil
+    net.Start"evilrp_terminal_endtyping"
+    net.Send ply
+    return
+  gterm.OS\Call term, "ReceiveInput", ply
+  if term.password and not client["pass_authed_#{idx}"]
+    if text == term.password
+      ply["pass_authed_#{idx}"] = true
+      gterm\Broadcast term, "password accepted", GT_COL_INFO
+      return
+    else
+      gterm\Broadcast term, "password required", GT_COL_INFO
+      return
+  if string.sub(text, 1, 1) == ":"
+    sys = OS.distros[term\GetOS!]
+    if sys
+      for k, v in pairs sys\GetCommands!
+        cmd = string.sub(string.lower(text), 1, string.len(k))
+        if k == cmd
+          text2 = string.sub(text, string.len(cmd) + 2)
+          quote = (string.sub(text2, 1, 1) ~= "\"")
+          args = {}
+          for chunk in string.gmatch(text2, "[^\"]+")
+            quote = not quote
+            if quote
+              args[] = chunk
+            else
+              args[] = chunk for chunk in string.gmatch(chunk, "[^ ]+")
+          success, value = pcall v.Callback, sys, ply, term, args
+          if success
+            gterm\Broadcast term, text, GT_COL_CMD
+          else
+            gterm\Broadcast term, value, GT_COL_ERR
+          return
+      text = "#{string.sub(text, 2)}: command not found"
+      gterm\Broadcast term, text, GT_COL_ERR
+      return
+    else
+      -- fatal error that shouldn't happen, but if it does, it should
+      -- scare the hell out of the poor bastards who see it
+      gterm\Broadcast term, "DEATH", GT_COL_INTL
+    if term.accepting_input
+      quote = (string.sub(text, 1, 1) ~= "\"")
+      args = {}
+      for chunk in string.match(text, "[^\"]+")
+        quote = not quote
+        if quote
+          args[] = chunk
+        else
+          args[] = chunk for chunk in string.gmatch(chunk, "[^ ]+")
+      callback = term.input_callback
+      callback(ply, args) if callback and args
+      term.accepting_input = nil
+      term.input_callback = nil
+      return
+  sys = OS.distros[term\GetOS!]
+  name = sys and sys.unique_id or "unknown"
+  finalized = "#{"<"\Escape!}#{name}@#{term\EntIndex!}#{">"\Escape!} #{text}"
+  gterm\Broadcast(term, finalized, GT_COL_CMD)
+
+MsgC Color(255,0,0), "INITIALIZED EVILRP TERMINALS\n"

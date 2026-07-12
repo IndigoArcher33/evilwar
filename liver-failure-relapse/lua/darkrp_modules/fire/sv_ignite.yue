@@ -1,0 +1,13 @@
+import max, min, random from math
+
+damage_igniting = (ent, dmg) ->
+  ct = CurTime!
+  if (dmg\GetDamageType() == DMG_BURN and not ent\IsOnFire() and ent\GetClass() ~= "prop_dynamic" and math.random(1, 100) < 35 and not ent.NoBurn and not (ent\IsPlayer() and ent\Team() == TEAM_GHOST))
+    ent\Ignite(math.random(5, 15), 48)
+  return
+hook.Add "EntityTakeDamage", "evilrp_ignite", damage_igniting
+
+death_extinguish = (ply) ->
+  ply\Extinguish()
+  return
+hook.Add "DoPlayerDeath", "evilrp_death_extinguish", death_extinguish

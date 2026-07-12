@@ -1,0 +1,10 @@
+GAMEMODE.Deaths = -> GetGlobalInt"DEATH"
+
+death = (ply) ->
+  deaths = GAMEMODE.Deaths! + 1
+  SetGlobalInt "DEATH", deaths
+  bodies = "BODIES"
+  bodies = "BODY" if deaths == 1
+  RunConsoleCommand "hostname", "#{string.english_number(deaths)\upper!} DEAD #{bodies} TODAY"
+
+hook.Add "DoPlayerDeath", "evilrp_death", death

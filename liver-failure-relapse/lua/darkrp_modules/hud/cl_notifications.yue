@@ -1,0 +1,38 @@
+GAMEMODE.notifications or= {}
+
+GAMEMODE.AddNotification = (text, col) =>
+  if text\find"\n"
+    expl = text\Explode"\n"
+    @AddNotification(expl[i], col) for i=1, #expl
+    return
+  n = 0
+  for m in *@notifications
+    for v in *@notifications
+      n = v[3] + 1 if v[3] == n
+  surface.PlaySound"ui/buttonrollover.wav"
+  @notifications[] = { text, CurTime!, n }
+
+font_notifications = "Spleen_Label"
+
+draw_notifications = ->
+  import notifications from GAMEMODE
+  for k, v in pairs(notifications)
+    [txt, t, n] = v
+    ct = CurTime!
+    if ct - t > 10
+      table.remove notifications, k
+      continue
+    desp = lp\GetDespair! * 0.01
+    txt_obj = scribe.Parse "<stutter><wiggle=#{10 * desp},#{10 * desp}><f=#{font_notifications}><wave=#{4 * desp},#{3.66 * desp},2>#{txt}", nil
+    w, h = txt_obj\GetSize!
+    x = ScrW! - 22 - w
+    y = ScrH! - 180 - (n * h)
+    a = 1
+    elapsed = ct - t
+    if elapsed < 0.5
+      a = elapsed / 0.5
+    elseif elapsed > 3
+      a = math.max(0, 1 - (ct - t - 3) / 2)
+    txt_obj\Draw(x, y, a)
+
+hook.Add "HUDPaint", "evilrp_notifications", draw_notifications

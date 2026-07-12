@@ -1,0 +1,150 @@
+#+title: EvilRP Changelog
+#+author: Sotla
+
+:setup:
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../death.css" />
+#+HTML_HEAD: <meta content="https://death.town/~corpse" property="og:url" />
+#+HTML_HEAD: <meta content="https://death.town/~corpse/images/sotla.png" property="og:image" />
+#+HTML_HEAD: <meta content="#FF0000" data-react-helmet="true" name="theme-color" />
+#+OPTIONS: author:nil date:nil timestamp:nil num:nil toc:nil
+:end:
+* <2025-04-05 Fri>
+** Touching... feeling... holding...
+- The inventory system has been overhauled, and is now nearly
+  identical to IN3's inventory. Just press F3!
+  - The crazy part is that we did it by repurposing the DarkRP pocket
+    instead of making a whole new inventory from scratch. This little
+    shortcut added a few years back to all of our lives.
+- As this inventory piggybacks off the DarkRP pocket, pressing ~KEY_E~
+  on an item in-world causes it to be used instead of picked up.
+* <2025-04-04 Sat>
+** It stares back
+- Added a new death +screen+ screamer.
+** Nightmare Vision
+- Added goggles/gasmask filters.
+  - Applied these filters to Sanitar and Kommandant.
+    - ... and some color fuckery, for good measure.
+  - In the future, this will be tied to items rather than fates.
+** I can hear them chew...!
+- Added action text for eating foods.
+** The bones are still soft
+- Added live babies, for when you want your meal to suffer.
+- More nutritious than abortions, for those of rich blood.
+* <2025-04-02 Sat>
+** The middle man
+- Replaced sawblades with spawn portals, which turn ghosts into living
+  fates when they touch them.
+* <2025-04-01 Tue>
+** Let me out!
+- Added Corpse-Cam, to watch your cadaver after death.
+- You must wait for your corpse to rot before respawning.
+- Players now respawn as ghosts instead of their current fate.
+* <2025-03-27 Thu>
+** Rise from your grave!
+- You can now meet your mortal fate by cutting yourself on sawblades
+  throughout the map, much like the old game. This is a temporary
+  solution and will be succeeded by the use of computer terminals.
+- Added third-person view to ghosts.
+- Ghosts no longer suffer from fall damage.
+** Only darkness for you
+Say goodbye to your flashlights.
+** No free bones
+Salaries have been disabled, so you have to work for a living.
+** Mmm... Lunch...
+- Added slop skulls. Eating it sates your emptiness. Satisfactory.
+- Added abortions. Eating it sates your emptiness, wets your thirst,
+  and refills your blood.
+- Added rib bones, for those desperate enough to break their teeth
+  cracking them open.
+- Added paper, the first "vegan" food. Remember to wash it down.
+* <2025-03-26 Wed>
+** Goodbye, scum
+Miscreants and Kingpin are removed from the game, because they are
+more-or-less just DarkRP gangsters.
+
+When antagonism starts to be focused on, they will probably come back.
+** Oh boy!
+Map =rp_genova_redux_v1= was given spots on the map for boulders to
+spawn and will probably see actual use in-game.
+
+At the time of writing this, there are plans to consult with a mapper
+for EvilRP-specific matters, but this is not currently happening.
+** My lovely immersion
+To compensate for entire removal of voice chat, sounds that play
+whenever you send a message according to your specific player class
+have been re-implemented and works pretty much exactly like the old
+game.
+
+The sounds used for this are the same as from +the old country+
+Industrial Nightmare 3. When players least expect it, the sounds will
+be changed to something unfamiliar to them.
+** Scrub 'til it sparkles
+=weapon_physcannon= and =gmod_camera= weapons were removed from default
+weapons. Eventually =keys= and =pocket= will go too -- =weapon_physgun= and
+=gmod_tool=, if they cannot be functionally replaced, will be reskinned
+into the Telegland/Hexengland as in Nightmare 3.
+** Straying from the path
+Against all warnings plastered all over DarkRP, we have made the
+regrettable decision to alter its base files somewhat.
+
+So far, we've used this to achieve the following:
+- Loss of official support for DarkRP related matters.
+
+  Oops.
+- Global notifications when somebody's job changes were removed.
+
+  Of course, whenever somebody goes Kommandant or something, everyone
+  will know.
+- Auto-refresh works thanks to disabling Simplerr.
+
+  Simplerr is a debug assistant for DarkRP. I am confident enough in
+  my ability to read gLua errors that I feel I do not need it, and the
+  loss of auto-refresh is a terrible problem to have -- worse than no debugger.
+** G-g-g-ghosts...
+Ghosts now exist. They are the default class one has when they first
+join the server. Like in +the old country+ Nightmare 3, they see reduced
+colors (except red), hear differently, cannot be seen by the living,
+do not collide with most things, _and can fly_.
+
+* <2025-03-25 Tue>
+** The bitch that is metabolism
+Victims of EvilRP now experience hunger. It accumulates at the same
+rate that it used to in +the old country+ Industrial Nightmare 3, and is
+called =emptiness= just the same.
+* <2025-03-22 Sat>
+** Uh oh
+Walking and running speed was reduced to more closely match the
+original Nightmare 3.
+** Jumpscares
+I forgot to mention with the disabling of voice chat that jumpscares
+were re-implemented.
+** Lootables
+Objects you can use to dispense random junk items have been
+implemented in EvilRP; we just now need to give them junk items to
+actually drop. Probably it will start with food and scrap metal
+materials.
+** Rifle changes
+The Livermann was renamed to the Enforcer.
+The Enforcer and Subjugator were given their original sounds again.
+The Enforcer reloads two rounds per load instead of one, now.
+* <2025-03-21 Fri>
+** RIP JFK
+Killing someone with a shot to the head is now a mindblowing act.
+
+In classic Nightmare 3, the head would simply be shrunk until no
+longer visible to give the illusion of the head disappearing.
+
+In EvilRP, the head is changed to a bodygroup which takes the
+appearance of an actual severed head stump.
+
+Blood gushing from the neck's stump will be implemented later after
+more important things.
+** L.R.D.
+The Medic's medkit is now named the =L.R.D.= and makes a different noise
+more like the one from the classic Nightmare 3. It does not have the
+same functionality as the Korpsman's Lovebox yet, but it will.
+** The truth
++Hobos+ Unfortunate people now say weird, unhinged things when
+right-clicking with the Bugbait.
+** I HAVE NO MOUTH AND I MUST SCREAM
+Voice chat is now gone from EvilRP. Probably forever. Wee!

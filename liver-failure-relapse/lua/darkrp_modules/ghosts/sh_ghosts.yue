@@ -1,0 +1,63 @@
+class Startled extends SOUND
+  sound: ["vo/npc/male01/startle0#{i}.wav" for i=1,2]
+  
+enable_custom_collisions = (ply) ->
+  ply\SetCustomCollisionCheck true
+  return
+
+hook.Add "PlayerInitialSpawn", "evilrp_custom_player_collisions", enable_custom_collisions
+
+ghost_collision = (e_one, e_two) ->
+  return false if e_one\IsPlayer! and e_one\Team! == TEAM_GHOST
+  return false if e_two\IsPlayer! and e_two\Team! == TEAM_GHOST
+  return
+
+hook.Add "ShouldCollide", "evilrp_ghost_collision", ghost_collision
+
+set_ghost_fx = (ply) ->
+  switch ply\Team!
+    when TEAM_GHOST
+      ply\SetRenderFX 16
+      ply\SetMaterial "effects/tp_eyefx/tpeye"
+      ply\SetDSP 4
+    else
+      ply\SetRenderFX 0
+      ply\SetMaterial nil
+      ply\SetDSP 0
+  return
+
+hook.Add "PlayerLoadout", "evilrp_ghost_fx", set_ghost_fx
+
+ghost_flying = (ply, move) ->
+  sprinting = ply\KeyDown IN_SPEED
+  jumping = ply\KeyDown IN_JUMP
+
+  return unless (ply\Alive! and (ply\Team! == TEAM_GHOST) and sprinting and jumping)
+  speed = 384
+  move\SetVelocity ply\GetAimVector! * speed
+
+  return
+
+hook.Add "Move", "evilrp_ghost_flying", ghost_flying
+
+ghost_spawn_effect = (ply, prev_team, t) ->
+  if prev_team == TEAM_GHOST
+    pos = ply\GetPos!
+    ed = EffectData!
+    with ed
+      \SetOrigin pos
+      \SetEntity ply
+      \SetScale 5
+    util.Effect "LFR_PlayerSpawnEffect", ed
+    -- ply\EmitSound "ambient/fire/gascan_ignite1.wav", 75, math.random(80,110)
+  return
+  
+hook.Add "OnPlayerChangedTeam", "evilrp_ghost_spawn_effect", ghost_spawn_effect
+
+ghost_dont_footstep = (ply) ->
+  team = ply\Team!
+  if team == TEAM_GHOST
+    return true
+  return
+
+hook.Add "PlayerFootstep", "evilrp_ghost_footstep", ghost_dont_footstep

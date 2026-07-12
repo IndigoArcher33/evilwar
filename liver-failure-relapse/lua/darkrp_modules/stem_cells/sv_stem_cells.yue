@@ -1,0 +1,29 @@
+hook.Add "Initialize", "evilrp_setup_table_stem_cells", ->
+  unless sql.TableExists( "evilrp_stem_cells" )
+    sql.Query( "CREATE TABLE evilrp_stem_cells( SteamID TEXT, Amount INTEGER )" )
+
+hook.Add "PlayerInitialSpawn", "evilrp_setup_stem_cells", (ply) ->
+  stem_cells_check = sql.Query( "SELECT SteamID, Amount FROM evilrp_stem_cells WHERE SteamID = '" .. ply\SteamID64! .. "'" )
+  unless stem_cells_check
+    sql.Query( "INSERT INTO evilrp_stem_cells( SteamID, Amount ) VALUES( '" .. ply\SteamID64! .. "', 0 )" )
+  stem_cells = sql.Query( "SELECT SteamID, Amount FROM evilrp_stem_cells WHERE SteamID = '" .. ply\SteamID64! .. "'" )[1]
+  stem_cells = stem_cells.Amount if stem_cells
+  ply\SetNWFloat( "evilrp_stem_cells", tonumber(stem_cells or 0) )
+
+lose_stem_cells_on_death = (ply, attacker, dmg) ->
+  return if ply\Team! == TEAM_GHOST
+  amount = -1
+  if ply.death_by_neglect
+    amount -= 1
+    ply.death_by_neglect = nil
+  old_amt = ply\GetStemCells!
+  ply\AddStemCells(amount)
+  if old_amt ~= ply\GetStemCells! -- stem cells WERE lost on death if true
+    timer.Simple( 1, ->
+      return unless ply and ply\IsValid! and ply\IsPlayer!
+      rag = ply\Ragdoll!
+      return unless (rag and IsValid(rag))
+      rag\SetNWInt("sanitar_cells", math.abs(amount))
+    )
+
+hook.Add "DoPlayerDeath", "evilrp_lose_stem_cells_on_death", lose_stem_cells_on_death

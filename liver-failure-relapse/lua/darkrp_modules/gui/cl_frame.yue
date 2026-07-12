@@ -1,0 +1,77 @@
+PANEL = {}
+DEFINE_BASECLASS"EditablePanel"
+
+AccessorFunc PANEL, "ToggleKey", "ToggleKey"
+AccessorFunc PANEL, "Draggable", "Draggable"
+
+PANEL[k] = v for k, v in pairs{
+  Init: => @SetSkin"EvilRP"
+
+  Close: => @OnClose!
+
+  OnClose: => @Remove!
+
+  SetTopBar: (title) =>
+    if @m_bTopBar
+      @Title\SetText title
+      return
+    @m_bTopBar = true
+    padding = @GetDockPadding!
+    @SetTall @GetTall! + 24
+    @DockPadding padding, padding + 24, padding, padding
+    if @m_bCloseOnPause
+      with @ButtonClose = @Add"DButton"
+        \SetSize 24, 24
+        \SetFont"marlett"
+        \SetText"r"
+        \PerformLayout!
+        .Paint = ->
+        .DoClick = (pnl) -> @Close!
+    with @Title = @Add"DLabel"
+      \SetFont"Spleen_Label_Small"
+      \SetText title
+    @PerformLayout!
+
+  Think: =>
+    if @Dragging
+      mousex = math.Clamp gui.MouseX!, 1, ScrW! - 1
+      mousey = math.Clamp gui.Mousey!, 1, ScrH! - 1
+      x = math.Clamp mousex - @Dragging[1], 0, ScrW! - @GetWide!
+      y = math.Clamp mousey - @Dragging[2], 0, ScrH! - @GetTall!
+      @SetPos x, y
+
+  SetSize: (w, h) =>
+    h += 24 if @bDrawTopbar
+    BaseClass.SetSize @, w, h
+
+  OnKeyCodePressed: (key) =>
+    if @ToggleKey and input.LookupKeyBinding(key) == @ToggleKey
+      @Remove!
+
+  OnMousePressed: =>
+    x, y = @ScreenToLocal(input.GetCursorPos!)
+    if @Draggable and math.InRange(x, 0, @GetWide!) and math.InRange(y, 0, 24)
+      @Dragging = {x, y}
+      @MouseCapture true
+
+  OnMouseReleased: =>
+    @Dragging = nil
+    @MouseCapture false
+
+  PerformLayout: =>
+    @ButtonClose\SetPos(@GetWide! - 24, 0) if IsValid(@ButtonClose)
+    if IsValid @Title
+      @Title\SetPos 6, 0
+      @Title\SetSize @GetWide! - 24, 25
+
+  PaintFullScreen: (x, y, w, h) =>
+
+  Paint: (w, h) =>
+    was = DisableClipping(true)
+    x, y = @LocalToScreen 0, 0
+    @PaintFullScreen x * -1, y * -1, ScrW!, ScrH!
+    DisableClipping was
+    derma.SkinHook "Paint", "Frame", @, w, h
+}
+
+derma.DefineControl "EvilRP_Frame", "", PANEL, "EditablePanel"

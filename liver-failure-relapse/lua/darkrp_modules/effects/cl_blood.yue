@@ -1,0 +1,82 @@
+-- ported from zombie survival
+
+util.PrecacheSound path for path in *{
+  "physics/flesh/flesh_bloody_impact_hard1.wav"
+  "physics/flesh/flesh_squishy_impact_hard1.wav"
+  "physics/flesh/flesh_squishy_impact_hard2.wav"
+  "physics/flesh/flesh_squishy_impact_hard3.wav"
+  "physics/flesh/flesh_squishy_impact_hard4.wav"
+}
+
+collide_callback_small = (particle, hitpos, hitnormal) ->
+  return if particle\GetDieTime! == 0
+  particle\SetDieTime 0
+  if math.random(3) == 3
+    sound.Play "physics/flesh/flesh_bloody_impact_hard1.wav",
+      hitpos,
+      50,
+      math.Rand(95,105)
+    util.Decal "Impact.Flesh", hitpos + hitnormal, hitpos - hitnormal
+
+collide_callback = (oldparticle, hitpos, hitnormal) ->
+  return if oldparticle\GetDieTime! == 0
+  oldparticle\SetDieTime 0
+  pos = hitpos + hitnormal
+  if math.random(3) == 3
+    sound.Play "physics/flesh/flesh_squishy_impact_hard#{math.random(4)}.wav",
+      hitpos,
+      50,
+      math.Rand(95,105)
+    util.Decal "Blood", pos, hitpos - hitnormal
+    num = math.random(-4,4)
+    return if num < 1
+    nhitnormal = hitnormal * 90
+    emitter = ParticleEmitter pos
+    for i=1, num
+      particle = emitter\Add "effects/base", pos
+      with particle
+        \SetLighting true
+        \SetVelocity VectorRand!\GetNormalized! * math.Rand(75,150) + nhitnormal
+        \SetDieTime 3
+        \SetStartAlpha 255
+        \SetEndAlpha 255
+        \SetStartSize math.Rand(1.5,2.5)
+        \SetEndSize 1.5
+        \SetRoll math.Rand(-25,25)
+        \SetRollDelta math.Rand(-25,25)
+        \SetAirResistance 5
+        \SetGravity Vector(0,0,-600)
+        \SetCollide true
+        \SetColor 255, 0, 0
+        \SetCollideCallback collide_callback_small
+    emitter\Finish!
+
+class Bloodstream extends FX
+  Init: (data) =>
+    pos = data\GetOrigin! + Vector(0,0,10)
+    dir = data\GetNormal!
+    force = data\GetScale!
+    emitter = ParticleEmitter(pos)
+    for i=1, data\GetMagnitude!
+      heading = (VectorRand!\GetNormalized! * 3 + dir) / 4
+      particle = emitter\Add "effects/blood2", pos + heading
+      with particle
+        \SetVelocity force * math.Rand(0.8,1) * heading
+        \SetDieTime math.Rand(3,6)
+        \SetStartAlpha 200
+        \SetEndAlpha 200
+        \SetStartSize math.Rand(3,5)
+        \SetEndSize 3
+        \SetRoll math.Rand(0,360)
+        \SetRollDelta math.Rand(-20,20)
+        \SetAirResistance 5
+        \SetGravity Vector(0,0,-600)
+        \SetCollide true
+        \SetLighting true
+        \SetColor 255, 0, 0
+        \SetCollideCallback collide_callback
+    emitter\Finish!
+
+  Think: => false
+
+  Render: =>

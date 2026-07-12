@@ -1,0 +1,135 @@
+if CLIENT
+  net.Receive "evilrp_heart_attack", ->
+    GAMEMODE\Jumpscare!
+    lp\Notify"<col=255,0,0>MY HEART STOPPED"
+  net.Receive "evilrp_starvation", ->
+    GAMEMODE\Frighten!
+    lp\Notify"<col=255,0,0>THE HUNGER IS TOO MUCH"
+  net.Receive "evilrp_dehydration", ->
+    GAMEMODE\Frighten!
+    lp\Notify"<col=255,0,0>SO DRY... TOO DRY. UH OH"
+else
+  util.AddNetworkString"evilrp_heart_attack"
+  util.AddNetworkString"evilrp_dehydration"
+  util.AddNetworkString"evilrp_starvation"
+
+meta = FindMetaTable"Player"
+meta[k] = v for k, v in pairs{
+  -- hunger
+  AddHunger: (amt) =>
+    jt = @getJobTable!
+    return if jt.no_needs
+    h = @GetHunger!
+    h = math.Clamp(h + amt, 0, 100)
+    @SetHunger h
+    if h >= 100 and not @death_by_neglect
+      @death_by_neglect = true
+      net.Start"evilrp_starvation"
+      net.Send @
+      timer.Simple 3, ->
+        @Kill!
+        @SetHunger 60
+    else
+      max = @GetMaxHealth!
+      hp_add = 2
+      hp_add *= 2 if @Team! == TEAM_KORPSMAN
+      @SetHealth math.min(max, @Health! + hp_add)
+  SetHunger: (amt) =>
+    if SERVER
+      sql.Query"UPDATE evilrp_needs SET Hunger = '#{amt}' WHERE SteamID = '#{@SteamID64!}'"
+      @SetNWFloat "evilrp_needs_hunger", amt
+  GetHunger: =>
+    if SERVER
+      return tonumber sql.Query"SELECT Hunger FROM evilrp_needs WHERE SteamID = '#{@SteamID64!}'"[1].Hunger
+    else
+      return @GetNWFloat "evilrp_needs_hunger", 0
+  -- thirst
+  AddThirst: (amt) =>
+    jt = @getJobTable!
+    return if jt.no_needs
+    t = @GetThirst!
+    t = math.Clamp(t + amt, 0, 100)
+    @SetThirst t
+    if t >= 100 and not @death_by_neglect
+      net.Start"evilrp_dehydration"
+      net.Send @
+      @death_by_neglect = true
+      timer.Simple 3, ->
+        @death_by_neglect = true
+        @Kill!
+        @SetThirst 60
+    else
+      max = @GetMaxHealth!
+      hp_add = 2
+      hp_add *= 2 if @Team! == TEAM_KORPSMAN
+      @SetHealth math.min(max, @Health! + hp_add)
+  SetThirst: (amt) =>
+    if SERVER
+      sql.Query"UPDATE evilrp_needs SET Thirst = '#{amt}' WHERE SteamID = '#{@SteamID64!}'"
+      @SetNWFloat "evilrp_needs_thirst", amt
+  GetThirst: =>
+    if SERVER
+      return tonumber sql.Query"SELECT Thirst FROM evilrp_needs WHERE SteamID = '#{@SteamID64!}'"[1].Thirst
+    else
+      return @GetNWFloat "evilrp_needs_thirst", 0
+  -- despair
+  AddDespair: (amt) =>
+    jt = @getJobTable!
+    return if jt.no_needs
+    d = @GetDespair!
+    d = math.Clamp(d + amt, 0, 100)
+    @SetDespair d
+    if d >= 100 and not @death_by_neglect
+      net.Start"evilrp_heart_attack"
+      net.Send @
+      @death_by_neglect = true
+      timer.Simple 3, ->
+        @Kill!
+        @SetDespair 60
+  SetDespair: (amt) =>
+    if SERVER
+      sql.Query"UPDATE evilrp_needs SET Despair = '#{amt}' WHERE SteamID = '#{@SteamID64!}'"
+      @SetNWFloat "evilrp_needs_despair", amt
+  GetDespair: =>
+    return 0 if @Team! == TEAM_GHOST
+    if SERVER
+      return tonumber sql.Query"SELECT Despair FROM evilrp_needs WHERE SteamID = '#{@SteamID64!}'"[1].Despair
+    else
+      return @GetNWFloat "evilrp_needs_despair", 0
+}
+
+is_moving = (ply) -> ply\GetVelocity!\Length2D! > 5
+
+need_intervals =
+  hunger: 45
+  thirst: 40
+  despair: 75
+  
+need_think_hunger = (ply) ->
+  ply.needs_ticks.hunger = CurTime! + need_intervals.hunger unless ply.needs_ticks.hunger
+  if CurTime! >= ply.needs_ticks.hunger and ply\Alive! and is_moving(ply)
+    ply\AddHunger 1
+    ply.needs_ticks.hunger = CurTime! + need_intervals.hunger
+
+need_think_thirst = (ply) ->
+  ply.needs_ticks.thirst = CurTime! + need_intervals.thirst unless ply.needs_ticks.thirst
+  if CurTime! >= ply.needs_ticks.thirst and ply\Alive! and is_moving(ply)
+    ply\AddThirst 1
+    ply.needs_ticks.thirst = CurTime! + need_intervals.thirst
+      
+need_think_despair = (ply) ->
+  ply.needs_ticks.despair = CurTime! + need_intervals.despair unless ply.needs_ticks.despair
+  if CurTime! >= ply.needs_ticks.despair and ply\Alive! and is_moving(ply) and ply\HasOddity(ODDITY_DEPRESSION)
+    amt = math.random(1,3)
+    ply\AddDespair amt
+    ply.needs_ticks.despair = CurTime! + need_intervals.despair
+      
+hook.Add "Think", "evilrp_needs", ->
+  if SERVER
+    for ply in *player.GetAll!
+      ply.needs_ticks = {} unless ply.needs_ticks
+      continue if ply\Team! == TEAM_GHOST
+      need_think_hunger ply
+      need_think_thirst ply
+      need_think_despair ply
+  return

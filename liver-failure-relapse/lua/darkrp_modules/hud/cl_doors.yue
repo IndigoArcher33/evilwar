@@ -1,0 +1,66 @@
+is_door = (ent) ->
+  switch ent\GetClass!
+    when "func_door", "func_door_rotating", "prop_door_rotating", "func_movelinear", "prop_dynamic"
+      return true
+    else
+      return false
+
+change_door_access = false
+        
+cross_text_doors = (ent) ->
+  blocked = ent\getKeysNonOwnable!
+  door_teams = ent\getKeysDoorTeams!
+  door_group = ent\getKeysDoorGroup!
+  player_owned = ent\isKeysOwned! or table.GetFirstValue(ent\getKeysCoOwners! or {}) ~= nil
+  owned = player_owned or door_group or door_teams
+    
+  door_info = {}
+
+  title = ent\getKeysTitle!
+  door_info[] = title if title
+
+  door_info[] = DarkRP.getPhrase"keys_owned_by" if owned
+
+  if player_owned
+    door_info[] = ent\getDoorOwner!\Nick! if ent\isKeysOwned!
+    for k in pairs(ent\getKeysCoOwners! or {})
+      ent = Player k
+      continue unless (IsValid(ent) and ent\IsPlayer!)
+      door_info[] = ent\Nick!
+
+    allowed_co_own = ent\getKeysAllowedToOwn!
+    if allowed_co_own and not fn.Null(allowed_co_own)
+      door_info[] = DarkRP.getPhrase"keys_other_allowed"
+
+      for k in pairs allowed_co_own
+        ent = Player k
+        continue unless (IsValid(ent) and ent\IsPlayer!)
+        door_info[] = ent\Nick!
+  elseif door_group
+    door_info[] = door_group
+  elseif door_teams
+    for k, v in pairs(door_teams)
+      continue unless (v and RPExtraTeams[k])
+      door_info[] = RPExtraTeams[k].name
+  elseif blocked and change_door_access
+    door_info[] = DarkRP.getPhrase"keys_allow_ownership"
+  elseif not blocked
+    door_info[] = DarkRP.getPhrase"keys_unowned"
+    door_info[] = DarkRP.getPhrase"keys_disallow_ownership" if change_door_access
+
+  if ent\IsVehicle!
+    driver = ent\GetDriver!
+    door_info[] = DarkRP.getPhrase("driver", driver\Nick!) if driver\IsPlayer!
+
+  return door_info
+
+hook.Add "HUDDrawDoorData", "evilrp_draw_doordata", cross_text_doors
+
+emeta = FindMetaTable"Entity"
+emeta._HUDRender = =>
+  if is_door(@) and @isKeysOwnable!
+    return cross_text_doors @
+  if @GetClass! == "prop_ragdoll"
+    return hud_render_ragdoll @
+  return {}
+        

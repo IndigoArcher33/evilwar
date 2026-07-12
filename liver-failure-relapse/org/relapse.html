@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Liver Failure Relapse</title>
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet" type="text/css" href="../death.css" />
+<meta content="https://death.town/~corpse" property="og:url" />
+<meta content="https://death.town/~corpse/images/sotla.png" property="og:image" />
+<meta content="#FF0000" data-react-helmet="true" name="theme-color" />
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Liver Failure Relapse</h1>
+
+<div id="outline-container-orgeccbc13" class="outline-2">
+<h2 id="orgeccbc13">WHAT THE FUCK?!</h2>
+<div class="outline-text-2" id="text-orgeccbc13">
+<p>
+<b>Liver Failure: Relapse</b> is a round-based surreal horror roleplaying
+game on Garry's Mod, set in the fascist city-state of <b>Liver Failure.</b>
+It has one server. This server is not always up, and its uptime
+schedule is not consistent, nor will it ever be.
+</p>
+</div>
+</div>
+<div id="outline-container-orgec006b8" class="outline-2">
+<h2 id="orgec006b8">DROWN ME IN IT</h2>
+<div class="outline-text-2" id="text-orgec006b8">
+<p>
+This is a <i>Roleplaying Game</i>, in that it is a <i>game</i> which centers
+<i>roleplay</i>; Most self-described "roleplay" servers on Garry's Mod do not
+do the term justice, either completely misunderstanding the point of
+roleplay in the first place, or just plain going about it poorly.
+As these crimes against the genre have become normalized, we must
+remind our players of what good roleplay is, and what is expected of
+them while they're playing the game.
+</p>
+
+<p>
+Think of roleplay as a grand improvized play, in which you are not
+just a witness, but an actor. Your task is to cooperate and clash with
+those around you to craft interesting stories and memorable events;
+Making this happen should always be your ultimate goal.
+</p>
+
+<p>
+All good collaborative storytelling relies on those who&#x2026;
+</p>
+<ul class="org-ul">
+<li>Put aside their desire to "win" in service of the story.
+<ul class="org-ul">
+<li>Remember that success is not the point of the game - the story is,
+and a boring story full of winners is a loss for everyone.</li>
+</ul></li>
+<li>Portray an interesting character and enrich the atmosphere through
+thematic behavior and dialogue.
+<ul class="org-ul">
+<li>Your character should have goals, you should strive to achieve
+things, but not at the expense of the larger experience. Ideally,
+your goals should involve other people, or at least have the
+potential to rope them in.</li>
+</ul></li>
+<li>Strive to create, participate in, and perpetuate conflict, world
+events, and spontaneous social phenomena.
+<ul class="org-ul">
+<li>While you can solve most conflicts by shooting a hole through the
+skull of whoever's bothering you, that's <b>fucking boring!</b> Violence
+may be a solution to most problems, but it is almost always more
+fun to drag out conflicts and build them up to a dramatic
+conclusion, rather than an effective but anticlimactic one.</li>
+</ul></li>
+<li>Don't let their technical knowledge get in the way of their
+character's ignorance about the world and their fate.</li>
+</ul>
+
+<p>
+The cornerstone of all good roleplay is <i>immersion</i>, plain and simple.
+Good roleplay is just not possible unless everyone is committed to
+creating and reinforcing the mood and setting. Upholding the
+atmosphere is the bare minimum we expect from our victims.
+</p>
+</div>
+<div id="outline-container-orgb6fc86d" class="outline-3">
+<h3 id="orgb6fc86d">CRIMES AGAINST REALITY</h3>
+<div class="outline-text-3" id="text-orgb6fc86d">
+<p>
+Mistakes happen to everyone, nobody is expecting constant perfection
+from you; Slip-ups only become a problem when they become a pattern.
+The most common infraction against this is the use of "game speak",
+the slow decay of sentence structure and word variety, ultimately
+concluding with some jerk running up to a Korpsman and saying "Heal."
+after which he is hopefully stabbed to death with scalpels. That's not
+even mentioning those who parrot memes and references in-character.
+It does not take much effort to avoid these two things, and in the
+latter case, you are not nearly as funny as you think you are.
+</p>
+
+<p>
+As roleplay is partially a writing exercise, servicable grammar and
+spelling is also expected of you. Again, nobody expects perfection of
+you, but for the sake of everyone, please capitalize your I's, use
+a question mark when you ask a question, capitalize proper nouns, and
+use commas. It's a minor gesture, but it goes a long way.
+</p>
+
+<p>
+Note that this does not mean you need to type out huge <i>me's about
+smoking your bistre-colored peanut butter-flavored cigar. As this is a
+/roleplaying game</i>, we give you the mechanics you need to act out your
+actions in-game instead of making you write inane prose describing the
+most basic actions at length.
+</p>
+
+<p>
+Those primarily concerned with making the most money, getting the best
+items, or fragging the most jerks are rarely ever valuable to the
+wider experience, and are often detrimental to it. For whatever
+reason, these creatures are much more interested in abusing the game's
+mechanics to get a bigger high score than in using them for their
+intended purpose: to create stories.
+</p>
+
+<p>
+They have totally missed the point of the experience, and in doing so,
+have deprived themselves (and likely others) of the most fun and
+memorable parts of the game. We can't let these people win.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgde17474" class="outline-2">
+<h2 id="orgde17474">THE STORY OF EVERYTHING</h2>
+<div class="outline-text-2" id="text-orgde17474">
+<p>
+The Lord of All Things, who has slumbered since before time, and whose
+dreams comprise all realities, woke up and fell into a seizure.
+</p>
+
+<p>
+This brief storm of brainwaves before eternal dark, as God's dying
+memories of uncountable lives flash before his eyes, is the Nightmare.
+To its victims, it is simply all that has been, and ever will be.
+</p>
+
+<p>
+The Nightmare is, to put it lightly, a harsh place. Its perilous
+circumstances make it a struggle to survive almost anywhere, and
+that's without accounting for creatures that need to eat you to
+survive, and people who want to eat you for fun.
+</p>
+
+<p>
+The first corpses to climb from the ground would learn, through
+millennia of trial and error, that solitary survival is impossible;
+Thus, people organized themselves into herds and hives, granting them
+strength in numbers and safety through predator satiation.
+</p>
+
+<p>
+However, these societies were limited in their scope and lifespan, as
+leaders came and went with death or term limits, and civilization came
+in waves of brief wealth, brief chaos, and then slow rebuilding.
+</p>
+
+<p>
+Life could continue like this for eons, but the cyclical and
+inevitable waste of such great effort and time to things as petty as
+famines and votes was ultimately not pleasing to the Cosmic Eye.
+</p>
+</div>
+<div id="outline-container-org54cc852" class="outline-3">
+<h3 id="org54cc852">IT'S LOOKING AT ME!</h3>
+<div class="outline-text-3" id="text-org54cc852">
+<p>
+That eye-looking thing in the sky is <b>Sotla</b>, the only being which may
+be called "a God" whose existence has ever been irrefutably proven.
+</p>
+
+<p>
+Sotla does not care about you, It just wants to be entertained.
+For the most part, It just watches. Sometimes, if circumstances
+demand, or if It believes the results would be interesting, It may
+intervene in the world of mortals.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc6d77fb" class="outline-3">
+<h3 id="orgc6d77fb">THE CHOSEN ONES</h3>
+<div class="outline-text-3" id="text-orgc6d77fb">
+<p>
+To lead the corpses that roamed the world, Sotla birthed children from
+the dust of the stars. Being cosmic post-humans, these <b>Sotlians</b> have
+no taste for food, water, or sleep; All that is needed for a Sotlian's
+existence is the presence of starblood in His veins and the integrity
+of His brain. Such a leader often lives centuries, even millennia,
+each year of continued existence further decaying his mind until He
+kills Himself, or makes the kind of mistakes that get Him killed.
+</p>
+
+<p>
+While not all Sotlians are remembered in these days, the longest-lived
+and most impactful are well known to all.
+</p>
+
+<dl class="org-dl">
+<dt><b>The Kommander</b></dt><dd>A legendary figure of ancient history, about whom little is known.
+After decades spent in squalor under His cruel hand, His people led
+an apocalyptic revolution, now known as the War of the Sorceror.</dd>
+<dt><b>The Twins</b></dt><dd>Set loose upon the world in tandem, they would go on to
+become the most long-lived Sotlians yet known. Though their true
+ages are lost, they both agree that they have been rivals for nearly
+900 years - one of the only things they actually <i>can</i> agree on.  This
+rivalry was put aside during the short-lived <b>Pact of Power</b>, which
+the Kommandant broke by (unsuccessfully) invading Kidneystan.
+<dl class="org-dl">
+<dt><b>The Kommandant</b></dt><dd>Dictator of Liver Failure and Supreme of the Sanitar Squad.
+Seeking the growth and security of Liver Failure at all costs, His
+ambitions are only mildly tempered by his sycophantic advisors and
+fear of His people storming the gates of the Kommbunker.</dd>
+<dt><b>The Kommissar</b></dt><dd>Absolute ruler of Kidneystan, feared and respected by His people.
+Somehow even more paranoid than the Kommandant, His secret police
+were given the impossible task of ensuring He knows <span class="underline">everything</span>
+that happens in His land. Despite the ongoing collapse of most of
+Kidneystan's state apparatus, He still finds ways to mock the
+incompetence of His twin and the failures of Liverish socialism.</dd>
+</dl></dd>
+<dt><b>The President</b></dt><dd>Though He has only lived for slightly over a century, His mission to
+conquer all that remains via Kapitalism has been wildly successful.
+Taking a remarkably hands-off approach to governance, He delegates
+most state power to be enforced by Korporations, only stepping in to
+manage the production of currency and settle interkorp disputes.</dd>
+</dl>
+</div>
+</div>
+</div>
+<div id="outline-container-org93f2b0f" class="outline-2">
+<h2 id="org93f2b0f">WHERE IS THIS?!</h2>
+<div class="outline-text-2" id="text-org93f2b0f">
+</div>
+<div id="outline-container-orgfeb2ea2" class="outline-3">
+<h3 id="orgfeb2ea2">HOME</h3>
+<div class="outline-text-3" id="text-orgfeb2ea2">
+<p>
+Liver Failure is considered to be the strongest remaining industrial
+society, and to its people, it is the final bastion of civilization.
+Both the economic power it wields and the pressure exerted upon it by
+the outside world continue to grow exponentially as reality dies and
+the death and decay of other nations continues unabated.
+</p>
+
+<p>
+Once an exclusively socialist state, Liver Failure has been dutifully
+led by its Kommandant since He took power over the Hepatic Wetlands in
+a popular coup some nine hundred years ago. Though it ostensibly sits
+upon a marsh (long home to all manner of witches and swamp beasts), it
+has never had a consistent or predictable weather pattern in all its
+history. The Kommandant says this is the sky waging war against Liver
+Failure due to the smog made by its industry, and urges all Livermen
+to fight the good fight by burning trash and smoking cigarettes.
+</p>
+
+<p>
+Its innumerable working class find fulfillment in unending labor,
+toiling until Death finds them, however it may. These Livermen are the
+red blood cells of a great beast that only grows stronger the more
+they sacrifice for it. On the other hand, the Sanitar Squad serves as
+the white blood cells; Not necessarily protectin. the red, but
+eliminating pathological threats before they reach the vital organs.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfcb6a89" class="outline-3">
+<h3 id="orgfcb6a89">THE LOOMING</h3>
+<div class="outline-text-3" id="text-orgfcb6a89">
+<p>
+In Arrhythmia, the state which lies west across the slimy sea, money
+is everything; Death, love, hatred, and sufferin. are all bought and
+sold, and political kapital is measured in greed. Born in the
+scorching ruins of the merchant princedoms of the Cardiac States,
+Arrhythmia exploded in wealth by selling off the jewels of its
+forefathers and the mechanisms of its governance.to the highest
+bidder, turning itself into a game for the richest of players.
+</p>
+
+<p>
+When its owners aren't busy manipulating the bone exchange or
+organizing false-flag massacres to ascribe to their domestic enemies,
+they're spreading the virus of <b>Kapitalism</b> to the rest of the world.
+This syndrome has even swept the streets of Liver Failure, bringing
+with it ideas of "entrepreneurship" and "economic competition".
+Soon enough, the people's heads were filled with ridiculous dreams
+like so-called "future contracts" and even <i>currency made of paper</i>.
+</p>
+</div>
+</div>
+<div id="outline-container-org1eae0d0" class="outline-3">
+<h3 id="org1eae0d0">THE <b>OTHER</b></h3>
+<div class="outline-text-3" id="text-org1eae0d0">
+<p>
+Though the die seemed cast against Liver Failure in the global economy
+with the rise of Kapitalism, the Kommunist republic of Kidneystan to
+the northeast was much worse off. While it had a prosperous beginning,
+being by-far the superior industrial power and having far less
+volatile politics than Liver Failure, this era would not last long.
+</p>
+
+<p>
+Even before the rise of Kapitalism, Kidneystan had not been at its
+peak for a long time. Having only won <b>The War</b> by razing their own
+capitol, Renalgrad, and retreating into the Permafrost to wage a
+guerilla campaign. Knowing they would be safe from looters and
+Kapitalist invaders, they simply used the same strategy again;
+Virtually all residents and infrastructure were moved into the coldest
+depths of the vast nation, and relations were ceased with all foreign
+people, except a few nomadic tribes of scrappers and game-hunters.
+</p>
+</div>
+</div>
+<div id="outline-container-org6f571de" class="outline-3">
+<h3 id="org6f571de">THE DAMNED</h3>
+<div class="outline-text-3" id="text-org6f571de">
+<p>
+After the Sorceror won his revolution, the land was laid bare.  It
+seemed that nothing but death surrounded these newly free people, and
+so they named themselves <b>Death Town</b>. Sick of tyranny and besieged by
+bandits, beasts, and hellish weather, hierarchy and wealth just seemed
+like an inefficient use of resources compared to anarchic cooperation.
+</p>
+
+<p>
+To connect his people across time and space, the Sorceror created the
+first computers, and embedded his source code into their very
+being. With the rise of computer literacy, the people of Death Town
+were able to store information for decades longer than on paper, send
+instant messages across the Nightmare, and witness the fabric of
+reality; The early and widespread adoption of the digital arts is
+widely thought to be the reason Death Town survived as long as it did.
+</p>
+
+<p>
+During the Pact of Power, the Kommandant and Kommissar agreed that
+Death Town as a technological power and functional leaderless society
+was an existential threat, and must be destroyed. A joint invasion was
+led, Death Town was razed, and the Sorceror was cast into the Devil's
+Dust. Still, the idea of Death Town is not dead; Many copycats and
+splinter groups dot the wasteland, and it is said the Sorceror still
+wanders the sands, but not as the mortal man he used to be.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge0ef1d2" class="outline-2">
+<h2 id="orge0ef1d2">WHO ARE YOU PEOPLE?!</h2>
+<div class="outline-text-2" id="text-orge0ef1d2">
+</div>
+<div id="outline-container-orgacdc707" class="outline-3">
+<h3 id="orgacdc707">Proletariat</h3>
+<div class="outline-text-3" id="text-orgacdc707">
+<p>
+Common workers with <del>mostly</del> common needs, the vast majority of Liver
+Failure's population. They come from every walk of life and from all
+corners of the dying world to live "comfortably" before they die
+a quick, relatively painless death from an industrial accident.
+</p>
+
+<p>
+Many proletariat lack education, making big words a challenge. As a
+result, they often called themselves and their brethren <b>proles</b>, now a
+widely used term.
+</p>
+
+<p>
+The lack of academic drivel such as "maths" and "reading and writing"
+taking up space in their brains leaves room for them to absorb
+practical know-how from their brothers, whether by emulating their
+methods or trying to avoid dying the same way they did. As such, even
+average proles could probably diagnose and replace a faucet's plumbing
+with their eyes closed, if they had to.
+</p>
+</div>
+</div>
+<div id="outline-container-org255f3aa" class="outline-3">
+<h3 id="org255f3aa">Sanitar Squad</h3>
+<div class="outline-text-3" id="text-org255f3aa">
+<p>
+Endlessly loyal drones to the Kommandant's every whim, varying in
+firepower, training, and intelligence. These goons take the place of
+law enforcement, janitors, and morticians all at once - with mixed
+success.
+</p>
+
+<p>
+A Sanitar does whatever a red-trimmed officer cap tells him to do;
+This list of duties often includes (and isn't limited to) breaking
+strikes, carrying out a census, or publicly executing the unwanted.
+</p>
+
+<p>
+When they aren't actively being puppeted, their duties include&#x2026;
+</p>
+<ol class="org-ol">
+<li>Protecting the life of the Kommandant <b>at all costs</b>.</li>
+<li>Cleansing Liver Failure of that which brings pestilence, such as
+street grime, litter, and corpses - both dead and living.</li>
+<li>Quarantining the sick (and thus, potentially contagious) of body,
+mind, and spirit.</li>
+<li>Amputating criminals from society by death or imprisonment.</li>
+<li>Watching every square foot of Liver Failure that they possibly can,
+in search of all that which offends the Kommandant.</li>
+</ol>
+
+<p>
+While Sanitars are permitted to (and make a pastime of) brutalizing
+anyone not explicitly under their protection, they would be unwise to
+inflict serious injury/death on those they watch over; That is, unless
+under an ordered execution, to protect the lives of themselves and
+other registered citizens, or to neutralize threats to the Kommandant.
+</p>
+
+<p>
+The death of any of Liver Failure's organs and nerves may lead to
+serious consequences - the kind of consequences that make those who
+murder worthy of the death penalty themselves.
+</p>
+</div>
+</div>
+<div id="outline-container-org05d9716" class="outline-3">
+<h3 id="org05d9716">Dealer</h3>
+<div class="outline-text-3" id="text-org05d9716">
+<p>
+Storekeepers, salesmen, merchants of all kinds. They'll traffick
+nearly anything through the walls to Liver Failure - as long as it
+doesn't scream too loud - and find some way to sell it to you.
+The perpetuation of their parasitic life-cycle depends on their
+ability to extort their victims for every bone they'll cough up, and
+addict them to everything they can possibly get hooked on.
+</p>
+
+<p>
+Their kind is poorly understood, but the consensus among the denizens
+of Liver Failure is that they have no soul (they rented out the space
+where they kept it), their hearts are as black as coal, and they'd
+sell everyone they know into slavery if they could. They're right.
+</p>
+
+<p>
+Their greed couldn't be satisfied just by peddling luxuries and
+oddities from foreign lands; With the limited adoption of Kapitalism,
+the Kommandant decided that distribution of the city's stock of goods
+would be delegated to Dealers, who could then resell the products of
+the workers' labor back to them. If the Atmospheric Filtration Complex
+weren't a public utility in the hands of the Kommandant, they might
+even try to sell you the air, too.
+</p>
+
+<p>
+That being said, they <b>can</b> sell you your own time through the unholy
+bargaining of your soul known as "employment", with your signature.
+If they're kind, you might even earn more money than you did as a
+button-pusher; At the very least, a workplace injury isn't as likely.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf247523" class="outline-3">
+<h3 id="orgf247523">Korpsman</h3>
+<div class="outline-text-3" id="text-orgf247523">
+<p>
+Overworked and underfunded, Korpsmen spend their lives tending to the
+wounds, wear, and malfunctions of the biological industrial assets
+more often known as 'people'.
+</p>
+
+<p>
+Korpsmen are the living descendents of an ancient order of shamans and
+corpsefixers, whose traditions may go back thousands of years. While
+they pledged fealty to the Kommandant during the Night of Long Pipes,
+the importance of their work to Liver Failure's continued survival
+gives them incredible leverage over His government. Despite how much
+the Kommandant wishes He could fully subsume the Korpsmen into the SS,
+he is <i>usually</i> unwilling to put the health of the city on the line and
+try to wait out a surgeons' strike.
+</p>
+
+<p>
+Though Liver Failure technically guarantees healthcare to all
+registered citizens, the quasi-separation of the Korpsmen from
+Liverish state apparatus means that they are free to charge whatever
+fee they please; Despite this, medical attention is still often
+provided at no cost - whether out of the kindness of their own hearts
+or for the greater good of Liver Failure.
+</p>
+
+<p>
+Also, if you're going to pronounce the 'P' in Korpsman, don't do it
+around them
+</p>
+</div>
+</div>
+<div id="outline-container-orgb6d322e" class="outline-3">
+<h3 id="orgb6d322e">Kommandant</h3>
+</div>
+</div>
+<div id="outline-container-orga526c4e" class="outline-2">
+<h2 id="orga526c4e">YOU'LL REGRET EVERYTHING!</h2>
+<div class="outline-text-2" id="text-orga526c4e">
+<p>
+Here's a few tips to get you through the migraines.
+</p>
+
+<ol class="org-ol">
+<li>Do not offend the Kommandant.</li>
+<li><b>DO NOT</b> question the Kommandant.</li>
+<li>You are nothing, and you deserve nothing.</li>
+<li>The SS protects the City, not you.</li>
+<li>Don't try to use your voice.</li>
+<li>Work is life, life is work.</li>
+<li>Eating metal is bad for you.</li>
+<li>We hear your pain, and we're laughing.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org291e35e" class="outline-2">
+<h2 id="org291e35e">Oh God, not again!</h2>
+<div class="outline-text-2" id="text-org291e35e">
+<p>
+In the time since the initial EvilRP test on March 10th, our goals
+have shifted from "let's make DarkRP actually good, just for funnies."
+to "let's remake the old game, with our new wisdom and technology."
+</p>
+
+<p>
+Thus, after much heated debate and violent exchanges, we have chosen
+to rename this project to <b>Liver Failure Relapse</b>.
+</p>
+</div>
+<div id="outline-container-org1568e1c" class="outline-3">
+<h3 id="org1568e1c">But what IS it?</h3>
+<div class="outline-text-3" id="text-org1568e1c">
+<p>
+<b>Liver Failure Relapse</b> is not an exact replica of IN3, and that is on
+purpose; Not only have our methods evolved, but our ideas as well.
+Don't assume things will stay the same, it will bring only heartbreak.
+</p>
+</div>
+</div>
+<div id="outline-container-org67cef51" class="outline-3">
+<h3 id="org67cef51">You crushed my dreams!</h3>
+<div class="outline-text-3" id="text-org67cef51">
+<p>
+Rest assured that <b>SKELETON</b> has not been abandoned. We still have lots
+of big ideas we want to put into action that can't fit into the
+paradigm of Liver Failure's gameplay, or the limits of DarkRP schema.
+</p>
+
+<p>
+In fact, our code slaves were coerced at gunpoint to ensure they
+concentrate on features which we can port to SKELETON in the future.
+</p>
+
+<p>
+Really, we just got sick of making games without victims to toy with.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

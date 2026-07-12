@@ -1,0 +1,300 @@
+global DSTAGE_FRESH = 1
+global DSTAGE_EARLY = 2
+global DSTAGE_BLACK = 3
+global DSTAGE_BONES = 4
+
+pmeta = FindMetaTable"Player"
+
+racism = (who) ->
+  text = "Not like me."
+  text = "Brother in blood." if who\GetModel! == lp\GetModel!
+  return { :text, font: "Spleen_Label_Small" }
+
+-- yes this is lazy, i'll do better with it later.
+-- TODO: actually organize this better instead of using a global!!
+global hud_render_ragdoll = =>
+  return if (not lp\Alive!) and @ == lp\Ragdoll!
+  ct = {}
+  name = @GetNWString"body_name"
+  if name
+    ct[] = { text: name }
+  decomp = @GetNWInt("decomp_stage", DSTAGE_FRESH)
+  if @GetNWBool("corpse", false) == true
+    ct[] = { text: "Living no longer.", font: "Spleen_Label_Small" }
+  switch decomp
+    when DSTAGE_FRESH
+      ct[] = racism(@)
+    when DSTAGE_EARLY
+      ct[] = { text: "<wiggle=1>Decomposition has begun."
+        font: "Spleen_Label_Small" }
+    when DSTAGE_BLACK
+      ct[] = { text: "<wiggle=1>Consumed by rot..."
+        font: "Spleen_Label_Small" }
+    when DSTAGE_BONES
+      ct[] = { text: "<wiggle=1>Nothing remains of this one."
+        font: "Spleen_Label_Small" }
+
+  if @GetNWBool("headless", false) == true
+    ct[] = { text: "What happened to its head?", font: "Spleen_Label_Small" }
+  if @GetNWBool("molested", false) == true
+    ct[] = { text: "Someone did something terrible with it.", font: "Spleen_Label_Small" }
+  return ct
+
+-- Below functions are for applying to ragdolls.
+get_player_color = =>
+  ply = @GetNWEntity"player"
+  return Vector(1, 1, 1) unless ply and IsValid( ply )
+  return ply\GetPlayerColor!
+
+refresh_body = =>
+  ply = @GetNWEntity"player"
+  if ply and IsValid(ply)
+    @SetBodygroup i, ply\GetBodygroup(i) for i=1,20
+  else
+    @SetBodygroup i, 0 for i=1,20
+
+gibs = { "models/gibs/humans/mgib_01.mdl"
+  "models/gibs/humans/mgib_02.mdl"
+  "models/gibs/humans/mgib_03.mdl"
+  "models/gibs/humans/mgib_04.mdl"
+  "models/gibs/humans/mgib_05.mdl"
+  "models/gibs/humans/mgib_06.mdl"
+  "models/gibs/humans/mgib_07.mdl" }
+
+pmeta[k] = v for k, v in pairs{
+  GetBodyEntity: =>
+    return @ unless @Ragdoll
+    rag = @Ragdoll!
+    return rag if rag and IsValid(rag) and not (rag\GetNWBool"corpse" and @Alive!)
+    return @
+  GetHeadPos: =>
+    head = @LookupBone"ValveBiped.Bip01_Head1"
+    if head
+      return @GetBonePosition head
+    else
+      return @EyePos!
+  Ragdoll: => @GetNWEntity"ragdoll"
+  MakeRagdollClone: (force) =>
+    rag = @Ragdoll!
+    rag\Remove! if rag and IsValid(rag)
+    vel = @GetVelocity! + (@GetAimVector! * 128)
+    rag = ents.Create"prop_ragdoll"
+    with rag
+      \SetPos @GetPos!
+      \SetAngles @GetAngles!
+      \SetModel @GetModel!
+      \SetSkin @GetSkin!
+      \SetBodygroup i, @GetBodygroup(i) for i=1,20
+      \Spawn!
+      \Activate!
+      \SetCollisionGroup COLLISION_GROUP_WEAPON
+      .GetPlayerColor = get_player_color
+      \SetNWEntity "player", @
+      \SetNWString "body_name", @Name!
+      rag.Submitted = =>
+        ply = @GetNWEntity"player"
+        if ply and IsValid(ply) and not ply\Alive!
+          ply\changeTeam TEAM_GHOST
+          ply\Spawn!
+        @EmitSound"Submit_Flesh"
+        pos = @GetPos!
+        for i=1, #gibs
+          gib = ents.Create"gib"
+          with gib
+            \SetModel gibs[i]
+            \SetPos pos
+            \SetCollisionGroup COLLISION_GROUP_NONE
+            \SetMoveType MOVETYPE_VPHYSICS
+            \Spawn!
+          SafeRemoveEntityDelayed gib, math.random(5, 10)
+      rag.Precursor =
+        biomass: math.random 4, 7
+      rag.GetManager = =>
+        return unless SERVER and AR_Manager
+        controller = AR_Manager.ActiveRagdolls[@]
+        return controller
+      hidx = \LookupBone"ValveBiped.Bip01_Head1"
+      for i=1, \GetPhysicsObjectCount!
+        phys_obj = \GetPhysicsObjectNum i
+        bidx = \TranslatePhysBoneToBone i
+        pos, ang = @GetBonePosition bidx
+        if IsValid phys_obj
+          phys_obj\SetPos pos
+          phys_obj\SetAngles ang
+          if force
+            if bidx == hidx
+              phys_obj\ApplyForceCenter force * 1.5
+            else
+              phys_obj\ApplyForceCenter force
+          else
+            if bidx == hidx
+              phys_obj\SetVelocity vel * 1.5
+            else
+              phys_obj\SetVelocity vel
+    @SetNWEntity "ragdoll", rag
+    netstream.Broadcast("RagdollAppearanceAltered", rag)
+    return rag
+  SnapFromRagdollClone: =>
+    rag = @Ragdoll!
+    if rag and IsValid(rag)
+      @SetPos(rag\GetPos!)
+      rag\Remove!
+  DeathRagdoll: (dmg) =>
+    force = dmg\GetDamageForce!
+    force = force / 20 if dmg\IsDamageType(DMG_BULLET + DMG_CLUB + DMG_CRUSH)
+    rag = @MakeRagdollClone force
+    if rag and IsValid(rag)
+      with rag
+        \SetNWBool "corpse", true
+        \SetNWInt "decomp_start", CurTime!
+        \SetNWInt "decomp_finish", CurTime! + 120
+        \SetNWInt "decomp_stage", 1
+      jt = @getJobTable!
+      jt.HandleRagdoll? rag, @
+    if @LastHitGroup! == HITGROUP_HEAD
+      bidx = @LookupBone"ValveBiped.Bip01_Head1"
+      if bidx
+        GAMEMODE\ExplodeHead rag, bidx
+}
+
+if CLIENT
+  ragdoll_created = (ent) ->
+    return unless ent\GetClass! == "prop_ragdoll"
+    timer.Create("attempt_appearance_#{ent\EntIndex!}", 0.005, 16, ->
+      ply = ent\GetNWEntity("player")
+      if ply and IsValid(ply)
+        part.Copy(ply, ent)
+        timer.Remove("attempt_appearance_#{ent\EntIndex!}"))
+  hook.Add("OnEntityCreated", "evilrp_ragdoll_created", ragdoll_created)
+  netstream.Hook("RagdollAppearanceAltered", (rag, payload) ->
+    return unless (rag and IsValid(rag))
+    part.Add(rag, "appearance", payload))
+
+GAMEMODE[k] = v for k, v in pairs{
+  ExplodeHead: (rag, bidx) =>
+    if (rag\GetClass! == "prop_ragdoll") and (not rag\GetNWBool"headless")
+      with rag
+        \SetNWBool "headless", true
+        \SetNWBool "alive", false
+        if string.find rag\GetModel!, "models/liver_failure"
+          \SetBodygroup 0, 3
+          for slot in *{8, 7, 6, 5, 4, 3}
+            \SetBodygroup slot, 0
+        else
+          \ManipulateBoneScale bidx, Vector(0,0,0)
+
+      timer.Simple (FrameTime! * 3), ->
+        if IsValid rag
+          rag\EmitSound "placenta/head_explodie_0#{math.random 1,4}.ogg", 100, 100, 1
+          rag\EmitSound "physics/flesh/flesh_squishy_impact_hard#{math.random 1,4}.wav", 100, 100, 1
+
+      util.Blood rag\GetBonePosition(bidx), math.random(12,16), Vector(0,0, 1 + math.random(2)), 128
+
+      for i=1,6 do
+        gib = ents.Create"gib"
+        with gib
+          \SetModel"models/mosi/fnv/props/gore/gorehead0#{i}.mdl"
+          \SetPos rag\GetBonePosition bidx
+          \SetCollisionGroup COLLISION_GROUP_WEAPON
+          \SetMoveType MOVETYPE_VPHYSICS
+          \Spawn!
+
+        phys = gib\GetPhysicsObject!
+        if IsValid(phys)
+          phys\SetVelocity Vector(math.Rand(-1,1), math.Rand(-1,1), math.Rand(-1,1)) * math.random(100,200)
+
+        SafeRemoveEntityDelayed gib, math.random(55, 65)
+
+}
+
+do_player_death = (ply, attacker, dmg) ->
+  rag = ply\DeathRagdoll dmg
+  wep = ply\GetActiveWeapon!
+  can_drop = hook.Call "canDropWeapon", @, ply, weapon
+  if (GAMEMODE.Config.dropweapondeath or ply.dropWeaponOnDeath) and wep\IsValid! and can_drop
+    ply\dropDRPWeapon wep
+  -- gibbing
+  if dmg\IsDamageType(DMG_BLAST) and dmg\GetDamage! > 30
+    timer.Simple 0.02, ->
+      rag = ply\Ragdoll!
+      pos = rag\GetPos!
+      vel = rag\GetVelocity!
+      where = rag\GetPos!
+      rag\Remove!
+      for i=1, #gibs
+        gib = ents.Create"gib"
+        with gib
+          \SetModel gibs[i]
+          \SetPos pos
+          \SetCollisionGroup COLLISION_GROUP_NONE
+          \SetMoveType MOVETYPE_VPHYSICS
+          \PhysicsInit SOLID_VPHYSICS
+          \Spawn!
+        phys = gib\GetPhysicsObject!
+        phys\SetVelocity vel if IsValid phys
+        SafeRemoveEntityDelayed gib, math.random(55, 65)
+      ply\changeTeam TEAM_GHOST
+      ply\Spawn!
+      ply\SetPos where
+  return
+hook.Add("DoPlayerDeath", "evilrp_ragdolls", do_player_death)
+
+class Skin_Corpse extends SOUND
+  sound: ["physics/flesh/flesh_bloody_impact_hard#{i}.wav" for i=1,3]
+
+entity_take_damage = (rag, dmg) ->
+  return unless rag\GetClass! == "prop_ragdoll"
+  return unless rag\GetNWBool"corpse"
+  ct = CurTime!
+  -- head explosions
+  bidx = rag\LookupBone"ValveBiped.Bip01_Head1"
+  dpos = dmg\GetDamagePosition!
+  fdir = dmg\GetDamageForce!
+  fdir = VectorRand! * 80 unless fdir
+  util.Blood dpos, (dmg\GetDamage! / 4), fdir, dmg\GetDamage! * 2
+  if bidx and (not rag\GetNWBool"headless") and dpos\DistToSqr(rag\GetBonePosition(bidx)) < 40
+    GAMEMODE\ExplodeHead rag, bidx if math.random(100) <= dmg\GetDamage!
+  -- harvesting
+  attacker = dmg\GetAttacker!
+  if IsValid(attacker) and attacker\IsPlayer!
+    decomp = rag\GetNWInt"decomp_stage"
+    wep = attacker\GetActiveWeapon!
+    if decomp == 1 and wep.SkinHarvest
+      amt = math.random(1,2)
+      for i=1, amt
+        rag\EmitSound"Skin_Corpse"
+        util.Effect "evilrp_blood", ed
+        skin = ents.Create"item/food/skin"
+        with skin
+          \SetPos dpos
+          \Spawn!
+          \Activate!
+      rag\SetNWInt "decomp_finish", ct
+  -- burning advances decomposition
+  if dmg\IsDamageType(DMG_BURN) and rag\GetNWInt"corpse" and math.random(1,5) == 3 and rag\GetNWInt"decomp_stage" < 3
+    rag\SetNWInt "decomp_finish", ct
+  return
+hook.Add("EntityTakeDamage", "evilrp_ragdolls", entity_take_damage)
+
+ghost_on_ragdoll_remove = (ent) ->
+  return unless SERVER
+  return if true -- THIS WHOLE HOOK IS DISABLED FOR THE MOMENT.
+  if ent\GetClass! == "prop_ragdoll"
+    ply = ent\GetNWEntity "player", NULL
+    return unless ply and IsValid(ply)
+    unless ply\Alive!
+      ply\changeTeam TEAM_GHOST
+      where = ent\GetPos! + Vector( 0, 0, 8 )
+      ply\SetPos where
+      ply\Spawn!
+      MsgC Color(200,0,0), "OOPS: #{ply}\n"
+  return
+hook.Add("EntityRemoved", "evilrp_ragdolls", ghost_on_ragdoll_remove)
+
+prevent_fallen_movement = (ply, mv) ->
+  rag = ply\Ragdoll!
+  if ply\Fallen! and (rag and IsValid(rag))
+    ply\SetNetworkOrigin(rag\GetNetworkOrigin!)
+    return true
+  return
+hook.Add("FinishMove", "evilrp_ragdolls", prevent_fallen_movement)

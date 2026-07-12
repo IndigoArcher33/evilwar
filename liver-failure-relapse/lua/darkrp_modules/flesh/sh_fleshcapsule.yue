@@ -1,0 +1,123 @@
+import random from math
+  
+class Submit_Flesh extends SOUND
+  sound: ["placenta/head_explodie_0#{i}.ogg" for i=1,4]
+  pitch: {80, 90}
+
+gibs = { "models/gibs/humans/mgib_01.mdl"
+  "models/gibs/humans/mgib_02.mdl"
+  "models/gibs/humans/mgib_03.mdl"
+  "models/gibs/humans/mgib_04.mdl"
+  "models/gibs/humans/mgib_05.mdl"
+  "models/gibs/humans/mgib_06.mdl"
+  "models/gibs/humans/mgib_07.mdl" }
+    
+class Fleshcapsule extends ENTITY
+  PrintName: "Flesh Capsule"
+  Description: "Filled with disgusting, recyclable biomass.\nYou could also process it into biofuel at a Refinery."
+  Interesting: true
+  
+  Base: "base_anim"
+  Type: "anim"
+  Spawnable: true
+  AdminSpawnable: true
+
+  Pocketable: false
+
+  Precursor:
+    biomass: (=> math.random(5,9))
+    
+  LootTable:
+   * "item/food/slopskull"
+   * "item/food/ribbone"
+
+  Refinement:
+    result: "fuel"
+    time: 5
+
+  SubmitSound: "Submit_Flesh"
+
+  Submitted: =>
+    pos = @GetPos!
+    util.Blood pos, 256, Vector!, 256
+    for i=1, #gibs
+      gib = ents.Create"gib"
+      with gib
+        \SetModel gibs[i]
+        \SetPos pos
+        -- \SetMoveType MOVETYPE_VPHYSICS
+        \Spawn!
+      SafeRemoveEntityDelayed gib, math.random(5, 10)
+
+  PhysicsCollide: (data, physobj) =>
+    if data.Speed >= 384
+      @can_burst_after = CurTime! unless @can_burst_after
+      if (not @Smashed) and (CurTime! > @can_burst_after)
+        @Smashed = true
+        @Submitted!
+        @EmitSound @SubmitSound
+        @Remove!
+        
+  SetupDataTables: =>
+    @NetworkVar "Int", 0, "Integrity"
+      
+  Initialize: =>
+    @MaxIntegrity = 200
+    return if CLIENT
+    mdls = {"models/gibs/antlion_gib_large_3.mdl"}
+    mdl = mdls[math.random(#mdls)]
+    @SetModel mdl
+    @PhysicsInit SOLID_VPHYSICS
+    @SetIntegrity @MaxIntegrity
+    @PhysWake!
+    @can_burst_after = CurTime! + 3
+        
+  OnTakeDamage: (dmg) =>
+    @TakePhysicsDamage dmg
+    dtype = dmg\GetDamageType!
+    dmg_int = dmg\GetDamage!
+    inflictor = dmg\GetInflictor!
+    dmg_int *= inflictor.MineBonus if inflictor.MineBonus
+    pos = dmg\GetDamagePosition!
+    with edata = EffectData!
+      \SetOrigin pos
+      \SetScale 1
+      \SetMagnitude 0.5
+      \SetRadius 2
+      util.Effect "BloodImpact", edata
+    @SetIntegrity @GetIntegrity! - dmg_int
+    @NextSound or= CurTime!
+    if CurTime! >= @NextSound
+      @NextSound = CurTime! + 0.1
+      @EmitSound "npc/headcrab/pain#{math.random 1,3}.wav"
+    if (@GetIntegrity! <= 0) and not @Breaking
+      @Breaking = true
+      @EmitSound "physics/flesh/flesh_bloody_break.wav"
+      with edata = EffectData!
+        \SetOrigin pos
+        \SetScale 1
+        \SetMagnitude 0.5
+        \SetRadius 2
+        util.Effect "Bloodstream", edata
+      for i=1,math.random(1,4)
+        cls = @LootTable[random 1, #@LootTable]
+        loot = ents.Create cls
+        with loot
+          \Spawn!
+          \Activate!
+          \SetPos pos
+      @Remove!
+        
+  Use: (ply) =>
+    return if @IsPlayerHolding!
+    ply\PickupObject @
+    ply\EmitSound "physics/body/body_medium_impact_soft#{math.random(1,3)}.wav", 75
+    @SetNWEntity "evilrp_submitter", ply
+      
+  HUDRender: =>
+    ct = {}
+    ct[] = @PrintName
+    if @Description
+      ct[] = ""
+      ct[] = { text: @Description, font: "Spleen_Label_Small" }
+    return ct

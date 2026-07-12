@@ -1,0 +1,24 @@
+create_autodealers = ->
+  EVIL_AUTODEALER_POSITIONS = {
+    ["test1"]:
+      * pos: Vector( 233, 1002, 253 )
+        ang: Angle(0, 0, 0)
+      * pos: Vector( 600, 353, 49 )
+        ang: Angle(0, -180, -0)
+      * pos: Vector( 1088, 505, 46 )
+        ang: Angle(0, 90, 0)
+  }
+  map = game.GetMap!
+  if EVIL_AUTODEALER_POSITIONS[map]
+    for v in *EVIL_AUTODEALER_POSITIONS[map]
+      sp = ents.Create"autodealer"
+      with sp
+        \SetPos v.pos
+        \SetAngles v.ang
+        \Spawn!
+        \Activate!
+        \GetPhysicsObject!\EnableMotion false
+  return
+
+hook.Add "InitPostEntity", "evilrp_create_autodealers", create_autodealers
+  

@@ -1,0 +1,168 @@
+class Hand_Break extends SOUND
+  sound: ["physics/body/body_medium_break#{i}.wav" for i=2,4]
+
+select_hands = (ply) ->
+  timer.Simple 0.1, ->
+    ply\SelectWeapon("evilrp_melee/hands") if ply\HasWeapon("evilrp_melee/hands")
+  return
+
+hook.Add "PlayerLoadout", "evilrp_select_hands", select_hands
+
+class Hands extends EvilRP_Melee
+  PrintName: "Hands"
+  Description: ""
+    
+  Slot: 0
+    
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model"models/weapons/c_arms.mdl"
+  WorldModel: ""
+
+  DrawWorldModel: =>
+
+  HoldType: "fist"
+  LowerHoldType: "normal"
+
+  DrawAnim: "fists_draw"
+  HolsterAnim: "fists_holster"
+
+  DoPickup: (ent) =>
+    return if ent\IsPlayerHolding!
+    phys_obj = ent\GetPhysicsObject!
+    return if phys_obj\GetMass! > 115
+    return unless phys_obj\IsMoveable!
+    @held_entity = ent
+    timer.Simple 0.2, ->
+      if (not IsValid(ent) or ent\IsPlayerHolding! or @held_entity ~= ent)
+        @held_entity = nil
+        return
+      @Owner\PickupObject ent
+      @Owner\EmitSound"physics/body/body_medium_impact_soft#{math.random(1,3)}.wav"
+      ent\SetNWEntity "evilrp_submitter", @Owner
+
+  AltFire: =>
+    return unless SERVER
+    return unless @GetLowered!
+    ply = @GetOwner!
+    hit, tr = @GetAttackTrace 80
+    local ent
+    if hit and tr.Entity and IsValid(tr.Entity)
+      ent = tr.Entity
+    if IsValid ent
+      if (not ent\IsPlayer! and not ent\IsNPC!) and not IsValid(@held_entity)
+        ent\PhysWake!
+        @DoPickup ent
+      elseif IsValid(@held_entity) and not @held_entity\IsPlayerHolding!
+        @held_entity = nil
+    
+  Primary: {
+    ChargeTime: 0.4
+
+    Light: {
+      Damage: 10
+      DamageType: DMG_CLUB
+
+      Range: 50
+      Delay: 0.3
+
+      Act: {ACT_VM_HITCENTER, ACT_VM_MISSCENTER}
+
+      Sound: {"npc/fast_zombie/claw_strike1.wav", "npc/vort/claw_swing1.wav"}
+    },
+
+    Heavy: {
+      Damage: 20
+      DamageType: DMG_CLUB
+
+      Range: 70
+      Delay: 1
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"npc/fast_zombie/claw_strike1.wav", "npc/vort/claw_swing1.wav"}
+    }
+  }
+
+  ChargeOffset: {
+    Pos: Vector 0, 0, -0
+    Ang: Angle 10, 0, 0
+  }
+
+  GenericAttack: (heavy) =>
+    hit, trace = super heavy
+    vm = @Owner\GetViewModel!
+    local anims
+    if heavy
+      anims =
+        * { "fists_uppercut", Angle(0,0,0) }
+    else
+      anims =
+        * { "fists_left", Angle(0,-10,0) }
+        * { "fists_right", Angle(0,10,0) }
+    anim = anims[math.random(1,#anims)]
+    vm\SendViewModelMatchingSequence vm\LookupSequence(anim[1])
+    if trace.Hit
+      switch trace.MatType
+        when MAT_FLESH, MAT_BLOODYFLESH, MAT_ALIENFLESH
+          -- do nothing
+        else
+          -- probably punching a wall or something
+          if SERVER
+            dmg = DamageInfo!
+            with dmg
+              \SetDamageType DMG_CLUB
+              \SetDamagePosition trace.HitPos
+              \SetAttacker @Owner
+              \SetInflictor @
+              \SetDamage 5
+            @Owner\TakeDamageInfo dmg
+          @Owner\EmitSound"Hand_Break"
+    return hit, trace
+
+
+class BoneclawsHit_Light extends SOUND
+  sound: ["placenta/bonehead_slice#{i}.wav" for i=1,2]
+  pitch: {100, 120}
+      
+class BoneclawsHit_Heavy extends SOUND
+  sound: ["placenta/bonehead_slice#{i}.wav" for i=1,2]
+  pitch: {60, 80}
+      
+class Boneclaws extends Hands
+  PrintName: "Bone Claws"
+  CanLower: => false
+  Primary: {
+    ChargeTime: 0.4
+
+    Light: {
+      Damage: 10
+      DamageType: DMG_CLUB
+
+      Range: 50
+      Delay: 0.3
+
+      Act: {ACT_VM_HITCENTER, ACT_VM_MISSCENTER}
+
+      Sound: {"BoneclawsHit_Light", "npc/vort/claw_swing1.wav"}
+    },
+
+    Heavy: {
+      Damage: 20
+      DamageType: DMG_CLUB
+
+      Range: 70
+      Delay: 1
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"BoneclawsHit_Heavy", "npc/vort/claw_swing1.wav"}
+    }
+  }
+  GenericAttack: (...) =>
+    super ...
+    @GetOwner!\DoAnimationEvent ACT_GMOD_GESTURE_RANGE_FRENZY
+

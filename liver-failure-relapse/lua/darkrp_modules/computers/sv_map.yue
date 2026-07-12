@@ -1,0 +1,30 @@
+create_computers = ->
+  EVIL_COMPUTER_POSITIONS = {
+    ["test1"]:
+      * pos: Vector( 486, 910, 261 )
+        ang: Angle( 1, 112, -0 )
+        cls: "terminal/xombokom"
+      * pos: Vector( 242, 225, 68 )
+        ang: Angle( 0, -0, 0 )
+        cls: "terminal/public"
+      * pos: Vector( 242, 352, 68 )
+        ang: Angle( 0, -0, 0 )
+        cls: "terminal/public"
+  }
+  map = game.GetMap!
+  for computer in *ents.FindByClass"terminal*"
+    computer\Remove!
+  if EVIL_COMPUTER_POSITIONS[map]
+    for v in *EVIL_COMPUTER_POSITIONS[map]
+      sp = ents.Create v.cls
+      with sp
+        \SetPos v.pos
+        \SetAngles v.ang
+        \Spawn!
+        \Activate!
+        \GetPhysicsObject!\EnableMotion false
+      MsgC Color(0, 200, 200),
+        "#{sp} created.\n"
+  return
+
+hook.Add "InitPostEntity", "evilrp_create_computers", create_computers

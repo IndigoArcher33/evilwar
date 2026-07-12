@@ -1,0 +1,16 @@
+reanimate_burning = (ent, dmg) ->
+  if (not ent\IsPlayer! and not ent\IsValid!)
+    return
+  if not ((dmg\GetDamageType! == 8 or ent\GetNWBool("burning")) and ent\IsPlayer!)
+    return
+  if not (ent\Health! < 10 and math.random(15, 50) == 50)
+    return
+  if (ent\Team! == TEAM_BONEHEAD)
+    return
+  ent\changeTeam(TEAM_BONEHEAD)
+  ent\SetHealth(100)
+  ent\Ignite(600, 48)
+  return
+
+hook.Add "EntityTakeDamage", "evilrp_burning_reanimate", reanimate_burning
+    

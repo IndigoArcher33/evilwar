@@ -1,0 +1,94 @@
+global TAB_LOOC  = 2^1
+global TAB_OOC   = 2^2
+global TAB_IC    = 2^3
+global TAB_ADMIN = 2^4
+global TAB_PM    = 2^5
+global TAB_RADIO = 2^6
+
+meta = FindMetaTable"Player"
+
+speech_gestures =
+  * "Gesture01"
+  * "Gesture05"
+  * "Gesture05NP"
+  * "Gesture06"
+  * "Gesture06NP"
+  * "Gesture07"
+  * "Gesture13"
+  * "E_g_shrug"
+  * "G_medurgent_mid"
+  * "G_righthandroll"
+  * "G_righthandheavy"
+  * "g_palm_out_l"
+  * "g_palm_out_high_l"
+
+speech_gestures_weapon =
+  * "g_rifle_lhand"
+  * "g_rifle_lhand_low"
+  * "bg_accentup"
+  * "bg_up_l"
+  * "bg_up_r"
+  * "g_palm_out_high_l"
+  * "g_palm_up_high_l"
+
+nonweapon_holdtypes =
+  * "camera"
+  * "duel"
+  * "knife"
+  * "melee"
+  * "melee2"
+  * "physgun"
+  * "slam"
+  * "normal"
+  * "grenade"
+  * "fist"
+
+nonweapon_holdtypes_array = {}
+nonweapon_holdtypes_array[ht] = true for ht in *nonweapon_holdtypes
+
+speech_gesture_chance = 50 --%
+speech_gesture_cooldown = 5
+
+meta[k] = v for k, v in pairs{
+  SpeechGesture: =>
+    ct = CurTime!
+    @next_speech_gesture or= ct
+    return unless math.random(1,100) <= speech_gesture_chance
+    return unless ct >= @next_speech_gesture
+    @next_speech_gesture = ct + speech_gesture_cooldown
+    wep = @GetActiveWeapon!
+    ht = "normal"
+    if wep and IsValid(wep)
+      ht = wep\GetHoldType!
+    anims = speech_gestures_weapon
+    anims = speech_gestures if nonweapon_holdtypes_array[ht]
+    gest = anims[math.random(1, #anims)]
+    @PlaySignal(gest, true)
+  PlaySpeechSound: (text, lvl=SNDLVL_65DB) =>
+    jt = @getJobTable!
+    local snd
+    if jt.speech_sounds
+      sounds = jt.speech_sounds
+      switch type(sounds)
+        when "string"
+          snd = sounds
+        when "table"
+          snd = sounds[math.random(1, #sounds)]
+        when "function"
+          snd = sounds @
+    @SpeechGesture!
+    @speech_sound = CreateSound @, snd
+    with @speech_sound
+      local pitch
+      if jt.speech_pitch
+        switch type(jt.speech_pitch)
+          when "table"
+            pitch = math.random jt.speech_pitch[1], jt.speech_pitch[2]
+          when "number"
+            pitch = jt.speech_pitch
+          else
+            pitch = math.random 85, 115
+      else
+        pitch = math.random 85, 115
+      \PlayEx 0.8, pitch
+}

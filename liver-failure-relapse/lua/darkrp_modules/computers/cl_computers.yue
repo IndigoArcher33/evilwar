@@ -1,0 +1,109 @@
+global gterm
+
+net.Receive "evilrp_terminal_addline", ->
+  idx = net.ReadUInt(16)
+  ent = Entity(idx)
+  return unless IsValid(ent)
+  ent\EmitSound"TerrorLine" if IsValid(ent)
+  text = net.ReadString!
+  color_type = net.ReadUInt(8)
+  pos = net.ReadInt(16)
+  gterm[idx] = {} unless gterm[idx]
+  line = {:text, color: color_type}
+  if (not pos) or (pos == -1)
+    gterm[idx][] = line
+  else
+    gterm[idx][pos] = line
+  table.remove(gterm[idx], 1) if #gterm[idx] > ent.max_lines 
+
+class TerrorLine extends SOUND
+  sound: "dysphoria/ui/interactor_scrolldown.ogg"
+  level: SNDLVL_20DB
+  pitch: {60, 85}
+    
+class TerrorType extends SOUND
+  sound: "buttons/lightswitch2.wav"
+  pitch: {60, 80}
+
+class TerrorTypeEnter extends SOUND
+  sound: "buttons/button9.wav"
+  pitch: {60, 80}
+
+class TerrorTypeExit extends SOUND
+  sound: "buttons/combine_button2.wav"
+  pitch: {110, 130}
+
+net.Receive "evilrp_terminal_flicker", ->
+  idx = net.ReadUInt(16)
+  ent = Entity(idx)
+  ent.flicker = 1
+  
+net.Receive "evilrp_terminal_activeconsole", ->
+  idx = net.ReadUInt(16)
+  ent = Entity(idx)
+  ply = LocalPlayer!
+  if IsValid(ent)
+    ply.gterm_entity = ent
+    with ply.gterm_textentry = vgui.Create"DTextEntry"
+      \SetSize 0, 0
+      \SetPos 0, 0
+      \MakePopup!
+      .KILL = =>
+        @Remove!
+        @OnClose?!
+        gui.HideGameUI!
+        net.Start"evilrp_terminal_endconsole"
+        net.WriteUInt(idx, 16)
+        net.WriteString("")
+        net.SendToServer!
+        if #@GetValue! > 1
+          -- ent\EmitSound"TerrorTypeEnter"
+        else
+          ent\EmitSound"TerrorTypeExit"
+        ent.flicker = 1
+        @ = nil
+        lp.gterm_entity = nil
+      .Think = =>
+        ct = CurTime!
+        @TryClose = ct + 0.2 unless @TryClose
+        if ct >= @TryClose
+          @KILL! if not lp\Alive!
+          @KILL! if input.IsKeyDown(KEY_ESCAPE)
+          @KILL! if input.IsKeyDown(KEY_F3)
+          gx = gui.MouseX!
+          gy = gui.MouseY!
+          sw = ScrW!
+          sh = ScrH!
+          @KILL! if gx < (sw * .2)
+          @KILL! if gy < (sh * .1)
+          @KILL! if gx > (sw * .8)
+          @KILL! if gy > (sh * .9)
+
+      .OnTextChanged = =>
+        offset = 0
+        text = @GetValue!
+        offset = @GetCaretPos! - (ent.max_chars - 3) if (string.len(text) > ent.max_chars)
+        ent.console_text = string.sub(text, offset)
+        ent\EmitSound"TerrorType"
+      .OnEnter = =>
+        net.Start"evilrp_terminal_endconsole"
+        net.WriteUInt(idx, 16)
+        net.WriteString("#{@GetValue!}")
+        net.SendToServer!
+        if #@GetValue! > 1
+          -- ent\EmitSound"TerrorTypeEnter"
+        else
+          ent\EmitSound"TerrorTypeExit"
+        ent.flicker = 1
+        @SetText""
+        @SetCaretPos(0)
+        ent.console_text = ""
+
+net.Receive "evilrp_terminal_endtyping", ->
+  ply = LocalPlayer!
+  return unless IsValid(ply.gterm_textentry)
+  ply.gterm_textentry\Remove!
+  ply.gterm_entity.console_text = "" if IsValid(ply.gterm_entity)
+  ply.gterm_entity = nil
+
+MsgC Color(255,0,0), "INITIALIZED EVILRP TERMINALS\n"

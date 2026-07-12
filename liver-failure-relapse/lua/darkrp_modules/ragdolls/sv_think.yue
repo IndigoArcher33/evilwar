@@ -1,0 +1,120 @@
+import max, min, random from math
+  
+gibs = { "models/gibs/humans/mgib_01.mdl"
+  "models/gibs/humans/mgib_02.mdl"
+  "models/gibs/humans/mgib_03.mdl"
+  "models/gibs/humans/mgib_04.mdl"
+  "models/gibs/humans/mgib_05.mdl"
+  "models/gibs/humans/mgib_06.mdl"
+  "models/gibs/humans/mgib_07.mdl" }
+
+corpse_submitted = =>
+  pos = @GetPos!
+  for i=1, #gibs
+    gib = ents.Create"gib"
+    with gib
+      \SetModel gibs[i]
+      \SetPos pos
+      \SetCollisionGroup COLLISION_GROUP_NONE
+      \SetMoveType MOVETYPE_VPHYSICS
+      \Spawn!
+    SafeRemoveEntityDelayed gib, math.random(5, 10)
+
+corpse_submitted_fleshy = =>
+  @EmitSound"Submit_Flesh"
+  corpse_submitted body
+     
+corpse_think = ->
+  ct = CurTime!
+  for corpse in *ents.FindByClass"prop_ragdoll"
+    continue unless corpse\GetNWBool"corpse"
+    ply = corpse\GetNWEntity"player"
+    if ply and IsValid(ply) and not ply\Alive!
+      ply\SetPos corpse\GetPos!
+      jt = ply\getJobTable!
+      if jt.instant_respawn
+        if ct >= (corpse\GetNWInt"decomp_start" + 15)
+          pos = corpse\GetPos! + Vector(0,0,10)
+          ply\changeTeam TEAM_GHOST
+          ply\Spawn!
+          ply\SetPos pos
+    if ct >= corpse\GetNWInt"decomp_finish"
+      od = corpse\GetNWInt"decomp_stage"
+      decomp = min(4, corpse\GetNWInt"decomp_stage" + 1)
+      corpse\SetNWInt "decomp_finish", math.huge
+      if decomp > od
+        new = ents.Create"prop_ragdoll"
+        new.HUDRender = hud_render_ragdoll -- forgive me for i have sinned
+        with new
+          \SetPos corpse\GetPos!
+          \SetAngles corpse\GetAngles!
+          .Precursor =
+            biomass: 5 - decomp
+        switch decomp
+          when DSTAGE_EARLY
+            new\SetModel"models/player/zombie_fast.mdl"
+            new.Submitted = corpse_submitted_fleshy
+            -- this is where code for zombies would go
+          when DSTAGE_BLACK
+            new\SetModel"models/player/charple.mdl"
+            new.Submitted = corpse_submitted_fleshy
+          when DSTAGE_BONES
+            new\SetModel"models/player/skeleton.mdl"
+            new.Submitted = corpse_submitted
+        if corpse\GetNWBool"headless"
+          bidx = new\LookupBone"ValveBiped.Bip01_Head1"
+          new\ManipulateBoneScale bidx, Vector(0,0,0)
+          new\SetNWBool "headless", true
+        new\SetNWString "body_name", corpse\GetNWString "body_name"
+        with new
+          \Spawn!
+          \Activate!
+          \SetCollisionGroup COLLISION_GROUP_WEAPON
+          \SetNWInt "decomp_start", ct
+          \SetNWInt "decomp_finish", ct + 120
+          \SetNWInt "decomp_stage", decomp
+          \SetNWBool "harvested", corpse\GetNWBool"harvested"
+          \SetNWBool "molested", corpse\GetNWBool"molested"
+          cells = math.abs(corpse\GetNWInt("sanitar_cells", 0) - 1)
+          cells = 0 if decomp == DSTAGE_BONES
+          \SetNWBool "sanitar_cells", cells
+          \SetNWBool "corpse", true
+          \SetNWBool "alive", false
+          \EmitSound"ambient/creatures/flies#{random(1,5)}.wav"
+
+        num = new\GetPhysicsObjectCount! - 1
+        ve = corpse\GetVelocity!
+        for i=0, num
+          bone = new\GetPhysicsObjectNum i
+          if IsValid(bone)
+            bp, ba = corpse\GetBonePosition new\TranslatePhysBoneToBone(i)
+            if bp and ba
+              bone\SetPos bp
+              bone\SetAngles ba
+        -- new\Fire"disablemotion"
+        -- new\Fire "enablemotion", "", 1
+        new\SetVelocity(ve)
+        new\Ignite(math.random(10,20)) if corpse\IsOnFire!
+        submitter = corpse\GetNWEntity"evilrp_submitter"
+        if submitter and submitter\IsValid! and corpse\IsPlayerHolding!
+          submitter\PickupObject(new)
+       
+        cply = corpse\GetNWEntity"player"
+        if cply
+          new\SetNWEntity "player", cply
+          if IsValid(cply) and cply\IsPlayer!
+            cply\SetNWEntity "ragdoll", new
+        if decomp == 2 and cply\IsValid! and (not cply\Alive!)
+          cply\Spawn!
+          cply\changeTeam TEAM_GHOST
+          cply\SetPos corpse\GetPos! + Vector(0,0,10)
+          cply\Freeze true
+          timer.Simple 0.1, ->
+            cply\PlaySignal ACT_HL2MP_ZOMBIE_SLUMP_RISE, true if IsValid(cply)
+          timer.Simple 3, -> cply\Freeze false if IsValid(cply)
+        corpse\Remove!
+  return
+
+hook.Add "Think", "evilrp_decomposition", corpse_think
+
+GAMEMODE.DoPlayerDeath = =>

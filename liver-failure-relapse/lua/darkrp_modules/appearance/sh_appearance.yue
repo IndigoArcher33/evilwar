@@ -1,0 +1,108 @@
+meta = FindMetaTable"Player"
+
+if SERVER
+  meta.BuildAppearance = =>
+    -- initialize `app' table for appearance
+    app = {}
+    -- populate `app' with default assumptions
+    app.head =
+      Model: "models/toxidroma/heads/burned.mdl"
+      Bonemerge: true
+    app.torso =
+      Model: "models/toxidroma/torso/citizen.mdl"
+      -- Materials: "models/in/clothes/worksuit_black"
+      Bonemerge: true
+    app.legs =
+      Model: "models/toxidroma/legs/citizen.mdl"
+      -- Materials: "models/in/clothes/worksuit_black"
+      Bonemerge: true
+    -- now let's inspect the job table for options
+    jt = @getJobTable!
+    name = @Name!
+    if jt.appearance_models
+      -- our job has options, let's use them
+      for slot, data in pairs(jt.appearance_models)
+        local mdl
+        local mats
+        -- do we have any complex data, or just a path string to a model?
+        if isstring(data)
+          -- it's just a string
+          mdl = data
+        elseif istable(data)
+          -- it's a table. is it complex data, or just a list of path strings?
+          if data.Model
+            -- complex data. `mdl' may be a string or list of strings.
+            mdl = data.Model
+            mats = data.Materials
+            -- let's check if materials are also a list or not.
+            -- TODO FINISH THIS
+            -- if istable(mats)
+            --   mats = data.Materials
+          else
+            -- list of strings.
+            mdl = data
+        -- first of all, is this a singular model possibility or a list of?
+        if isstring(mdl)
+          -- it's a single one, we don't need to do anything
+        elseif istable(mdl)
+          -- it's a table of choices. until we have equipment items in the game,
+          -- we will select our options based on our character's given name
+          idx = math.ceil(util.SharedRandom(name, 0, #mdl))
+          mdl = mdl[idx]
+        -- before we start applying stuff, let's see if our materials are
+        -- possibly random-selectable too
+        if istable(mats)
+          mats = table.Copy(mats)
+          -- well `mats' is a table, let's move on
+          for k, v in pairs(mats)
+            if istable(v)
+              -- one of the values in our pairs of materials is a table, let's pick from it
+              -- there's no reason it should ever be a non-sequential table, by the way
+              idx = math.ceil(util.SharedRandom(name, 0, #v))
+              mats[k] = v[idx]
+        -- we've got our pick. is this a slot that we're already handling?
+        if app[slot]
+          -- yes it is.
+          app[slot].Model = mdl
+          app[slot].Materials = mats
+        else
+          -- no it isn't; we'll now need a new component, like so
+          app[slot] =
+            Model: mdl
+            Materials: mats
+            Bonemerge: true
+        -- at last, either copy the last of the attributes or discard empties.
+        -- if `app[slot].Model' == nil, then the entire slot can be thrown out
+        if app[slot].Model
+          if istable(data)
+            app[slot][p] = data[p] for p in *{"Color", "Bodygroups"}
+        else
+          app[slot] = nil
+    -- we're finally done negotiating our job's stuff; now let's look at our equipment
+    for eq in *@GetAllEquipment!
+      if eq.EquipSlot and eq.Appearance
+        eq.Appearance.Bonemerge or= true
+        app[eq.EquipSlot] = eq.Appearance
+    return app
+  meta.UpdateAppearance = =>
+    netstream.Broadcast("PlayerAppearanceAltered", @, @BuildAppearance!)
+
+  update_appearance = (ply) ->
+    ply\UpdateAppearance!
+
+  hook.Add "OnPlayerChangedTeam", "evilrp_update_appearance", update_appearance
+
+if CLIENT
+  meta.ApplyAppearance = (appearance) =>
+    part.Add(@, "appearance", appearance)
+    unless @legs and IsValid(@legs)
+      @SpawnLegs!
+    if @legs and IsValid(@legs) -- should never be false, but can't be too safe
+      part.Add(@legs, "appearance", appearance)
+    rag = @Ragdoll!
+    if rag and IsValid(rag)
+      part.Add(rag, "appearance", appearance)
+    @last_appearance = appearance
+
+  netstream.Hook "PlayerAppearanceAltered", (who, payload) ->
+    who\ApplyAppearance(payload)

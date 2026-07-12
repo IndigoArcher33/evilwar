@@ -1,0 +1,263 @@
+import max from math
+blend_sets = {
+  HPPD:
+    src_blend: ->
+      lp = LocalPlayer!
+      blend = BLEND_DST_COLOR
+      terminal = lp.gterm_entity
+      if terminal and IsValid(terminal)
+        blend = BLEND_ONE_MINUS_SRC_ALPHA
+      return blend
+    dst_blend: ->
+      lp = LocalPlayer!
+      blend = BLEND_DST_ALPHA
+      terminal = lp.gterm_entity
+      if terminal and IsValid(terminal)
+        blend = BLEND_ONE
+      return blend
+    blend_fnc: BLENDFUNC_ADD
+    rate: ->
+      lp = LocalPlayer!
+      team = lp\Team!
+      if team == TEAM_GHOST
+        return 16
+      else
+        return 6
+    passes: ->
+      lp = LocalPlayer!
+      team = lp\Team!
+      if team == TEAM_GHOST
+        return 4
+      else
+        return 1 + math.floor(9 * (lp\GetDespair! * 0.01))
+    textures: {}
+}
+
+aberration = 1
+
+aberrations = {
+	{
+		r: 0,
+		g: 0,
+		b: 0,
+		col: 0,
+		con: 0,
+		bri: 0,
+	},
+	{
+		r: 0,
+		g: 0,
+		b: 0,
+		col: 0,
+		con: 3,
+		bri: -0.04,
+	},
+	{
+		r: 3,
+		g: 3,
+		b: 0,
+		col: 0,
+		con: 0,
+		bri: -0.03,
+	},
+	{
+		r: 0,
+		g: 0,
+		b: 0,
+		col: -4,
+		con: 0,
+		bri: -0.03,
+	},
+	{
+		r: 0,
+		g: 0,
+		b: 0,
+		col: 0,
+		con: 0,
+		bri: 0,
+	},
+}
+
+blend_overlay = (set, mul=1) ->
+    import OverrideAlphaWriteEnable, OverrideDepthEnable, OverrideBlend, SetMaterial, DrawScreenQuadEx from render
+    import floor, sin, cos from math
+    OverrideAlphaWriteEnable true, true
+    OverrideDepthEnable true, false
+    blendfunc = set.blend_fnc
+    blendfunc = blendfunc! if isfunction blendfunc
+    dst_blend = set.dst_blend
+    dst_blend = dst_blend! if isfunction dst_blend
+    src_blend = set.src_blend
+    src_blend = src_blend! if isfunction src_blend
+    OverrideBlend true, src_blend, dst_blend, blendfunc, BLEND_ONE, BLEND_ZERO, BLENDFUNC_ADD
+    passes = set.passes
+    passes = passes! if isfunction passes
+    rate = set.rate
+    rate = rate! if isfunction rate
+    for i = 1, passes
+      idx = (floor( (CurTime! * 1 + (passes/5) ) * rate ) % #set.textures) + 1
+      SetMaterial set.textures[idx]
+      x = ScrW! * -0.15 + ScrW! * 0.1 * sin( CurTime! * (i/10) * mul)
+      y = ScrH! * -0.15 + ScrH! * 0.1 * cos( CurTime! * (i/10) * mul)
+      DrawScreenQuadEx x, y, ScrW! * (1.5 + i/10), ScrH! * (1.5 + i/10)
+    OverrideBlend false
+    OverrideAlphaWriteEnable false
+    OverrideDepthEnable false
+next_aberration = CurTime()
+hook.Add "RenderScreenspaceEffects", "evilrp_screenspace", ->
+
+  import sin, abs from math
+  local tab
+  ct = CurTime!
+
+  lp = LocalPlayer!
+  jt = lp\getJobTable!
+  if jt and jt.RenderScreenspaceEffects
+    jt.RenderScreenspaceEffects lp
+  local tab
+  if jt and jt.ColorMod
+    tab = jt.ColorMod lp
+  else
+    ct = CurTime()
+    lp = LocalPlayer()
+    local ab
+    if (ct >= next_aberration)
+      if aberration > 1
+        aberration = 1
+        next_aberration = ct + math.random(60, 240)
+      else
+        aberration = math.random(2, #aberrations)
+        next_aberration = ct + math.random(1, 3)
+    ab = aberrations[ aberration ]
+    r = 1 + (1 * math.sin(ct * (0.75 + (1 * (1 - (lp\Health() / lp\GetMaxHealth()))))))
+    g = 1 + (1 * math.sin(ct))
+    b = 1 + (1 * math.sin(ct))
+    cmul = 2 + (0.5 * math.sin(ct * 0.5)) + (0.5 * math.sin(ct * 0.5)) - (1 - (lp\Health() / lp\GetMaxHealth()))
+    if MUTATORS[MUTATOR_CHROMOPHOBIA].active
+      r = g = b = cmul = 0
+    tab =
+      ["$pp_colour_addr"]: 0
+      ["$pp_colour_addg"]: 0
+      ["$pp_colour_addb"]: 0
+      ["$pp_colour_brightness"]: 0.06 + ab.bri
+      ["$pp_colour_contrast"]: 0.6 + ab.con + (0.2 * math.cos(ct * 0.8))
+      ["$pp_colour_colour"]: cmul + ab.col
+      ["$pp_colour_mulr"]: r + ab.r
+      ["$pp_colour_mulg"]: g + ab.g
+      ["$pp_colour_mulb"]: b + ab.b
+
+  blend_overlay blend_sets.HPPD
+  DrawColorModify tab
+
+  switch lp\Team!
+    when TEAM_GHOST
+      DrawMotionBlur 0.15, 0.7, 0.2 + math.abs(0.5 * math.sin(ct))
+
+  hp = lp\Health!
+  hpm = lp\GetMaxHealth!
+  if hp < (hpm / 2)
+    DrawMotionBlur 0.15 * (1 - (hp / hpm)), 0.8 * (1 - (hp / hpm)), 0.2
+
+  desp = lp\GetDespair!
+  DrawSharpen 1 * math.sin(ct * 0.5), 4 * math.random(0.8,1.2) * (desp / 100)
+
+  autostitcher = lp\GetNWEntity("evilrp_autostitcher", NULL)
+  if IsValid(autostitcher) and autostitcher\GetPatient! == lp
+    tab =
+      ["$pp_colour_addr"]: 0
+      ["$pp_colour_addg"]: 0
+      ["$pp_colour_addb"]: 0
+      ["$pp_colour_brightness"]: 0.06
+      ["$pp_colour_contrast"]: 2 + (0.2 * math.cos(ct * 0.8))
+      ["$pp_colour_colour"]: 7 + (-4 * (desp / 100)) + (1 * math.sin(ct))
+      ["$pp_colour_mulr"]: 0
+      ["$pp_colour_mulg"]: 0
+      ["$pp_colour_mulb"]: 0
+    DrawColorModify tab
+    DrawMotionBlur 0.1, 0.8, 0.05
+    DrawSharpen 1.2, 10 * math.cos(ct)
+
+  terminal = lp.gterm_entity
+  if terminal and IsValid(terminal)
+    tab =
+      ["$pp_colour_addr"]: 0
+      ["$pp_colour_addg"]: 0
+      ["$pp_colour_addb"]: 0
+      ["$pp_colour_brightness"]: -0.06
+      ["$pp_colour_contrast"]: 2 + (0.2 * math.cos(ct * 0.8))
+      ["$pp_colour_colour"]: 7 + (-4 * (desp / 100)) + (1 * math.sin(ct))
+      ["$pp_colour_mulr"]: 0
+      ["$pp_colour_mulg"]: 0
+      ["$pp_colour_mulb"]: 0
+    DrawColorModify tab
+    -- DrawMotionBlur 0.1, 0.4 * (desp / 100), 0.05
+    -- DrawSharpen 1.2, (10 * math.cos(ct)) * (desp / 100)
+
+-- I don't know why I have to do it like this, but weird shit happens if I don't.
+for i = 1, 8
+  mat = Material"dysphoria/blends/colornoise/a#{i}.png"
+  table.insert blend_sets.HPPD.textures, mat
+
+mat_death = Material"effects/water_warp01"
+death_screenspace = ->
+  lp = LocalPlayer!
+  return if lp\Alive!
+  rag = lp\Ragdoll!
+  return unless (rag and IsValid(rag) and rag\GetNWBool"corpse")
+  decomp_start = rag\GetNWInt"decomp_start"
+  decomp_finish = rag\GetNWInt"decomp_finish" - decomp_start
+  ct = CurTime!
+  cur = ct - decomp_start
+  ending = decomp_finish - decomp_start
+  mul = cur / ending
+  tab =
+    ["$pp_colour_addr"]: 0
+    ["$pp_colour_addg"]: 0
+    ["$pp_colour_addb"]: 0
+    ["$pp_colour_brightness"]: -0.02
+    ["$pp_colour_contrast"]: 2
+    ["$pp_colour_colour"]: math.sin(ct * 1.5) * (10 * (1 - (mul * 2)))
+    ["$pp_colour_mulr"]: 3 + (3 * math.sin(ct))
+    ["$pp_colour_mulg"]: 0
+    ["$pp_colour_mulb"]: 0
+  DrawColorModify tab
+  DrawMotionBlur 0.15, 0.8, 0.2
+  DrawSharpen 1 * math.sin(ct), 2 * math.random(0.8, 1.2)
+  DrawSobel math.abs(2.3 * (math.sin(ct)))
+  render.SetBlend mul
+  render.UpdateScreenEffectTexture!
+  with mat_death
+    \SetFloat "$envmap", 0
+    \SetFloat "$envmaptint", 0
+    \SetFloat "$refractamount", mul * 0.5
+    \SetInt "$ignorez", 1
+  render.SetMaterial mat_death
+  render.DrawScreenQuad!
+  return
+hook.Add "RenderScreenspaceEffects", "evilrp_screenspace_death", death_screenspace
+
+blur_material = Material"pp/blurscreen"
+blur_intensity = 0
+max_blur_intensity = 4
+fade_speed = 5
+
+net.Receive("evilrp_blur_on_damage", ->
+  blur_intensity = max_blur_intensity
+  hook.Add("RenderScreenspaceEffects", "evilrp_blur_on_damage", ->
+    if blur_intensity >= 0
+      x = 0
+      y = 0
+      w = ScrW!
+      h = ScrH!
+      surface.SetMaterial(blur_material)
+      surface.SetDrawColor(255, 255, 255, 255)
+      for i=1,3
+        blur_material\SetFloat("$blur", (i / 3) * blur_intensity)
+        blur_material\Recompute!
+        render.UpdateScreenEffectTexture!
+        surface.DrawTexturedRect(x, y, w, h)
+      blur_intensity = math.max(0, blur_intensity - (fade_speed * FrameTime!))
+    else
+      hook.Remove("RenderScreenspaceEffects", "evilrp_blur_on_damage")
+  )
+)

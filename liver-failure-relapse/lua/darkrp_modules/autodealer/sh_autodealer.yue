@@ -1,0 +1,303 @@
+pos = Vector( 13.5, -9, 19 )
+ang = Angle( 0, 90, 90 )
+noise = Material("effects/tvscreen_noise001a")
+page = 0
+  
+if CLIENT
+  net.Receive "evilrp_receive_stocks", ->
+    stocks = net.ReadTable!
+    GAMEMODE.Stocks = stocks
+elseif SERVER
+  util.AddNetworkString"evilrp_receive_stocks"
+  util.AddNetworkString"evilrp_purchase_stock"
+  util.AddNetworkString"evilrp_purchase_ammo"
+
+  net.Receive "evilrp_purchase_ammo", (len, ply) ->
+    mach = net.ReadEntity!
+    return unless (mach and IsValid(mach) and mach\GetKits! > 0)
+    wep = ply\GetActiveWeapon!
+    return unless IsValid(wep)
+    return unless string.find wep\GetClass!, "evilrp_weapon/"
+    mag_max = wep.Primary.ClipSize * 4
+    ammo = wep\Ammo1!
+    if ammo >= mag_max
+      ply\Notify"<c=200,0,0>You're full."
+      ply\EmitSound"buttons/weapon_cant_buy.wav"
+      return
+    ct = CurTime!
+    return if ct < mach\GetCantPurchaseUntil!
+    mach\SetCantPurchaseUntil ct + 3
+    avail = mach\GetKits!
+    cost = mach\GetAmmoCost!
+    taxed = math.floor(cost - mach.AmmoCost)
+    money = ply\getDarkRPVar"money"
+    return if not avail
+    return if avail < 1
+    if money < cost
+      net.Start"evilrp_machine_fail"
+      net.WriteString"You don't have enough money. Ha!"
+      net.Send ply
+      mach\EmitSound"Autodealer_Squeal_Bad"
+      mach\SetThanksText mach.HateTexts[math.random(1, #mach.HateTexts)]
+      ply\ConCommand"say /me grimaces."
+      ply\AddDespair 10
+      return
+    ply\ConCommand"say /me #{mach.UseText[math.random(1, #mach.UseText)]}"
+    mach\SetThanksText mach.ThanksTexts[math.random(1, #mach.ThanksTexts)]
+    mach\EmitSound"Autodealer_Squeal"
+    ply\AddMoney -cost, "Autocommerce"
+    GAMEMODE.taxes_stored.sales += taxed
+    mach\SetKits math.max 0, avail - 1
+    ply\EmitSound"buttons/weapon_confirm.wav"
+    amt = wep.Primary.ClipSize
+    if ((ammo + amt) > mag_max)
+      rem = ammo + amt
+      rem -= mag_max
+      amt -= rem
+    ply\GiveAmmo amt, wep.Primary.Ammo
+    
+  net.Receive "evilrp_purchase_stock", (len, ply) ->
+    ct = CurTime!
+    mach = net.ReadEntity!
+    item = net.ReadString!
+    return if ct < mach\GetCantPurchaseUntil!
+    mach\SetCantPurchaseUntil ct + 3
+    avail = GAMEMODE.Stocks[item]
+    weapon = false
+    etab = scripted_ents.Get(item)
+    unless etab
+      -- it must be a SWEP
+      etab = weapons.Get(item)
+      weapon = true
+    cost = etab.Price or 10
+    taxed = math.floor(cost * (GetGlobalInt("tax_sales") / 100))
+    money = ply\getDarkRPVar"money"
+    return if not avail
+    return if avail < 1
+    if money < cost
+      net.Start"evilrp_machine_fail"
+      net.WriteString"You don't have enough money. Ha!"
+      net.Send ply
+      mach\EmitSound"Autodealer_Squeal_Bad"
+      mach\SetThanksText mach.HateTexts[math.random(1, #mach.HateTexts)]
+      ply\ConCommand"say /me grimaces."
+      ply\AddDespair 10
+      return
+    ply\ConCommand"say /me #{mach.UseText[math.random(1, #mach.UseText)]}"
+    mach\SetThanksText mach.ThanksTexts[math.random(1, #mach.ThanksTexts)]
+    mach\EmitSound"Autodealer_Squeal"
+    ply\AddMoney -cost, "Autocommerce"
+    GAMEMODE.taxes_stored.sales += taxed
+    GAMEMODE.Stocks[item] -= 1
+    local product
+    if weapon
+      product = ents.Create"evilrp/spawned/weapon"
+      with product
+        \SetModel etab.WorldModel
+        \SetWeaponClass item
+    else
+      product = ents.Create item
+    ent_pos = mach\GetPos!
+    tr = util.TraceLine{
+      endpos: ent_pos + (mach\GetForward! * 32) + (mach\GetUp! * 16) + (mach\GetRight! * 8)
+      filter: ply
+      start: ply\EyePos!
+      mask: MASK_NPCWORLDSTATIC
+    }
+    product\Spawn!
+    product\Activate!
+    product\SetAngles Angle(90,90,90)
+    DarkRP.placeEntity product, tr, ply
+    net.Start"evilrp_receive_stocks"
+    net.WriteTable GAMEMODE.Stocks
+    net.Broadcast!
+
+class Autodealer_Squeal extends SOUND
+  sound: ["placenta/coinkeeper#{i}.wav" for i=1,4]
+  level: SNDLVL_70DB
+
+class Autodealer_Squeal_Bad extends Autodealer_Squeal
+  pitch: {80, 95}
+    
+if CLIENT
+  class Spleen_Autodealer extends FONT
+    font: "Spleen 6x12"
+    size: 14
+
+pressed = false
+    
+class Autodealer extends ENTITY
+  Base: "base_anim"
+  Type: "anim"
+  PrintName: "Autodealer"
+  Spawnable: true
+  AdminSpawnable: true
+  Interesting: true
+
+  Pocketable: false
+    
+  UseText:
+    * "purchases something."
+    * "exchanges money for goods and/or services."
+    * "wastes bones on a capitalist device."
+    * "buys something from a kapitalist kiosk."
+    * "purchases a product."
+    * "feeds money to a capitalist machine."
+    * "performs a monetary exchange."
+
+  SetupDataTables: =>
+    @NetworkVar "Float", "CantPurchaseUntil"
+    @NetworkVar "String", "ThanksText"
+    @NetworkVar "Int", "Kits"
+
+  ThanksTexts:
+    * "Thanks"
+    * "Buy more stuff"
+    * "I love you"
+    * "Keep spending"
+    * "More bones now"
+    * "Give more bones"
+    * "Stay obedient"
+    * "Again please"
+    * "Please buy stuff"
+    * "It feels good"
+    * "Buy another"
+
+  HateTexts:
+    * "I hope you die"
+    * "How dare you?"
+    * "You are nothing"
+    * "I hate you"
+    * "You're a bad person"
+    * "Don't touch me"
+    * "Kill yourself"
+    * "Get a job"
+    * "Deadbeat"
+    * "Get away from me"
+    * "Go away freak"
+
+  AmmoCost: 50
+  AmmoMax: 10
+    
+  Initialize: =>
+    return if CLIENT
+    @SetModel"models/props_combine/combine_smallmonitor001.mdl"
+    @PhysicsInit SOLID_VPHYSICS
+    @PhysWake!
+    @GetPhysicsObject!\EnableMotion false
+
+  GetAmmoCost: => math.ceil(@AmmoCost + (@AmmoCost * (GetGlobalInt("tax_sales") / 100)))
+      
+  Think: =>
+    if SERVER
+      ct = CurTime!
+      @next_regen = ct + 15 unless @next_regen
+      if ct >= @next_regen
+        @next_regen = ct + 15
+        kits = @GetKits!
+        if kits < @AmmoMax
+          kits += 1
+          @SetKits kits
+          @EmitSound"buttons/weapon_confirm.wav"
+      
+  Draw: =>
+    team = lp\Team!
+    @DrawModel!
+    dist_sqr = @GetPos!\DistToSqr(lp\GetPos!)
+    return unless dist_sqr < 128^2
+    @cache or= {}
+    return unless ui3d2d.startDraw(@LocalToWorld(pos), @LocalToWorldAngles(ang), .1, @)
+    surface.SetMaterial noise
+    surface.SetDrawColor 255, 255, 255, 255
+    surface.DrawTexturedRect 0, 0, 212, 150
+    desp = (lp\GetDespair! * 0.01)
+    font = "Spleen_Autodealer"
+    surface.SetFont font
+    _, txt_h = surface.GetTextSize "[!]"
+    y = 0
+    if GAMEMODE.Stocks
+      keys = table.GetKeys GAMEMODE.Stocks
+      pages = math.floor #keys / 3
+      page = math.min page, pages
+      -- draw available items
+      start = 1 + (page * 3)
+      for i=start, start+2
+        item = keys[i]
+        continue unless item
+        amount = GAMEMODE.Stocks[item]
+        etab = @cache[item]
+        unless etab
+          etab = scripted_ents.Get(item) or weapons.Get(item)
+          @cache[item] = etab
+        name = etab.PrintName
+        price = etab.Price or 10
+        taxed = math.floor(price * (GetGlobalInt("tax_sales") / 100))
+        price += taxed
+        cost = "#{price} bones"
+        if amount <= 0
+          cost = "OUT OF STOCK"
+        elseif CurTime! < @GetCantPurchaseUntil!
+          cost = @GetThanksText!
+        txt = "#{name}<col=0,200,0> <col=0,200,200>(x#{amount})\n<col=0,200,0>#{cost}"
+        txt_obj = scribe.Parse "<f=#{font}><ol=2>#{txt}"
+        txt_obj\Draw 24, y, 1, TEXT_ALIGN_LEFT
+        local txt_h = txt_obj\GetTall!
+        button_txt = "[ ]"
+        if ui3d2d.isHovering 0, y, 24, txt_h
+          if ui3d2d.isPressing! and team ~= TEAM_GHOST
+            button_txt = "[!]"
+            if not pressed and amount > 0
+              pressed = true
+              net.Start"evilrp_purchase_stock"
+              net.WriteEntity @
+              net.WriteString item
+              net.SendToServer!
+          else
+            button_txt = "[X]"
+        button_txt_obj = scribe.Parse "<f=#{font}>#{button_txt}"
+        button_txt_obj\Draw 0, y + 2, 1, TEXT_ALIGN_LEFT
+        y += txt_h
+      x = 0
+      -- draw next/prev page buttons
+      unless page < 1
+        button_txt = "[p]"
+        if ui3d2d.isHovering x, y, 24, txt_h
+          button_txt = "[P]"
+          if ui3d2d.isPressing! and team ~= TEAM_GHOST
+            if not pressed
+              pressed = true
+              page -= 1
+        button_txt_obj = scribe.Parse "<f=#{font}>#{button_txt}"
+        button_txt_obj\Draw x, y + 2, 1, TEXT_ALIGN_LEFT
+        txt_w = button_txt_obj\GetWide!
+        x += txt_w
+      unless page >= pages
+        button_txt = "[n]"
+        if ui3d2d.isHovering x, y, 24, txt_h
+          button_txt = "[N]"
+          if ui3d2d.isPressing! and team ~= TEAM_GHOST
+            if not pressed
+              pressed = true
+              page += 1
+        button_txt_obj = scribe.Parse "<f=#{font}>#{button_txt}"
+        button_txt_obj\Draw x, y + 2, 1, TEXT_ALIGN_LEFT
+      x = 0
+      -- draw ammo button
+      wep = lp\GetActiveWeapon!
+      if IsValid(wep) and string.find(wep\GetClass!, "evilrp_weapon/") -- it's a gun
+        button_txt = "[ammo:#{@GetKits!}/<c=0,200,0>$#{@GetAmmoCost!}</c>]"
+        txt_w = surface.GetTextSize button_txt
+        y += txt_h
+        if ui3d2d.isHovering x, y, txt_w, txt_h
+          button_txt = "[AMMO:#{@GetKits!}/<c=0,200,0>$#{@GetAmmoCost!}</c>]"
+          if ui3d2d.isPressing! and team ~= TEAM_GHOST
+            if not pressed
+              pressed = true              
+              net.Start"evilrp_purchase_ammo"
+              net.WriteEntity @
+              net.SendToServer!
+        button_txt_obj = scribe.Parse "<f=#{font}>#{button_txt}"
+        button_txt_obj\Draw x, y + 2, 1, TEXT_ALIGN_LEFT
+    pressed = false if pressed and not ui3d2d.isPressing!
+    ui3d2d.endDraw!
+    

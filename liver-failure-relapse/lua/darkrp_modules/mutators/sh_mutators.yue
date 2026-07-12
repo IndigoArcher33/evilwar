@@ -1,0 +1,9 @@
+class Chromophobia extends MUTATOR
+  name: "Chromophobia"
+  description: "Everyone is colorblind today."
+global MUTATOR_CHROMOPHOBIA = Chromophobia.index
+
+class EerieSilence extends MUTATOR
+  name: "Eerie Silence"
+  description: "Something's not there that should be...?"
+global MUTATOR_EERIESILENCE = EerieSilence.index

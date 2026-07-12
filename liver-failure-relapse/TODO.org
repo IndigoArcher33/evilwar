@@ -1,0 +1,136 @@
+#+title: Liver Failure and its slow, agonizing death
+#+author: Toxidroma
+#+category: gamedev
+
+
+* PROJ Variables [0/4] :upgrade:library:
+So many things need keeping track of and we've been doing it with Garry's Mod's
+default methods of doing this. I don't know why we did that for so long, but it
+ends here.
+
+** TODO ~EntityVar~
+#+transclude: [[file:~/dev/gmod/combinecontrol-tnb-master/gamemode/core/sh_entity_vars.lua]]
+** TODO ~CharacterVar~
+#+transclude: [[file:~/dev/gmod/combinecontrol-tnb-master/gamemode/core/sh_character_vars.lua]]
+** TODO ~PlayerVar~
+#+transclude: [[file:~/dev/gmod/combinecontrol-tnb-master/gamemode/core/sh_player_vars.lua]]
+** TODO ~GlobalVar~
+#+transclude: [[file:~/dev/gmod/combinecontrol-tnb-master/gamemode/core/sh_global_vars.lua]]
+* PROJ Symptoms [0/1] :medical:conditions:
+Also known as a 'status effect' or a 'buff'.
+** TODO [[file:lua/autorun/sh_symptom.yue][SYMPTOM]]
+** TODO extends SYMPTOM [0/15]
+I looked at the [[https://dwarffortresswiki.org/index.php/DF2014:Symptom][Dwarf Fortress wiki]] for this.
+*** [ ] Blisters
+#+begin_quote
+The bubbles on my flesh, they hurt and they fucking itch.
+To claw them away invites infection to make me its bitch.
+#+end_quote
+*** [ ] Bleeding
+#+begin_quote
+Oh. Oh God.
+#+end_quote
+*** [ ] Bruising
+*** [ ] Coughing
+*** [ ] Dizziness
+*** [ ] Drowsiness
+*** [ ] Feverish
+*** [ ] Nausea
+#+begin_quote
+OhhhHHhh no. Move away from the door, get out of my way oh *FUCK--*
+#+end_quote
+*** [ ] Hematemesis
+#+begin_quote
+That's a funny way of spelling puking out my own fucking blood.
+#+end_quote
+*** [ ] Pain
+*** [ ] Oozing
+*** [ ] Paralysis
+*** [ ] Numbness
+*** [ ] Swelling
+*** [ ] Necrosis
+** COMMENT First draft of ideas
+*** TODO class Consciousness [0/8]
+The reader shall note that the phrase =class Consciousness= appeared totally by
+coincidence, and that /Consciousness/ refers to a state of consciousness. None of
+this relates to Communism +yet+.
+**** [ ] Aware :mundane:bonus:
+#+begin_verse
+How am I doing? I'm doing.
+#+end_verse
+**** [ ] Sleep :recovery:bonus:
+Subject did not respond to requests for comment.
+**** [ ] Wakeful :attention:bonus:
+#+begin_verse
+I managed to rise from my place of slumber
+ without immediately screaming to return.
+#+end_verse
+**** [ ] Euphoria :emotional:bonus:
+#+begin_verse
+It's alright, it's alright, oooouuuugggghhhh...  but it's alright now, oooouuuugggghhhh...!!
+#+end_verse
+**** [ ] Tired :mundane:malus:
+#+begin_verse
+I'm tired. Really, that's all it is.
+#+end_verse
+**** [ ] Confusion :psychic:malus:
+#+begin_verse
+Shut the fuck up--*I said stop talking to me okay, FUCK*, let me concentrate.
+#+end_verse
+**** [ ] Dysphoria :emotional:malus:
+#+begin_verse
+Everything is not going to be okay.
+#+end_verse
+**** [ ] Hypnosis :attention:malus:
+#+begin_verse
+HE VE DA NE HE VA DI HO
+#+end_verse
+*** TODO class Respiratory [0/2]
+**** TODO Choking
+**** TODO Drowning
+*** TODO class Wound [0/2]
+**** TODO extends Wound [0/6]
+***** [ ] Puncture
+***** [ ] Laceration
+***** [ ] Contusion
+***** [ ] Bullet
+***** [ ] Burn
+***** [ ] Chemical Burn
+*** TODO class Crippled [0/6]
+The reader shall note that the usage of the term /crippled/ is indeed deliberate.
+
+I'm not even sure how many of these will be possible without having to make
+serious compromises, and of those, I'm not sure which will be worth keeping.
+**** [ ] Leg
+#+begin_quote
+Oh, wow. Stay right there, I need to bring get my jacket and my beer buddies.
+#+end_quote
+**** [ ] Arm
+#+begin_quote
+Hey, catch! ...Oh yes, I knew about it.
+#+end_quote
+**** [ ] Hip
+#+begin_quote
+No more sharing smokes; I don't want to be seen next to how you walk now.
+#+end_quote
+**** [ ] Hand
+#+begin_quote
+I don't give a fuck that it hurts. Push the box if you can't carry it.
+#+end_quote
+**** [ ] Neck
+#+begin_quote
+I see you've met the local strangler.
+#+end_quote
+**** [ ] Skull
+#+begin_quote
+You're still alive? Sotla must be /mad/ at you, you little fuck.
+#+end_quote
+* PROJ Her Heart :cosmic:fascism:hazard:
+That is, of course, the heart of Liver Failure.
+
+Nothing else would be referred to as /she/, excepting enemy nations.
+** TODO Liver Failure Forever! [0/4]
+*** [ ] She must feed :burial:
+*** [ ] She must not bleed :danger:
+*** [ ] She loves us sometimes :fortune:
+*** [ ] She hates us sometimes :misfortune:

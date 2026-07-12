@@ -1,0 +1,30 @@
+gph_callback = (ply, cmd, args, argstr) ->
+  if CLIENT
+    unless ply\IsAdmin!
+      MsgC Color(200, 0, 0), "You are too curious for your own good. This incident will be reported.\n" if CLIENT
+      return
+
+  p = ply\GetPos!
+  MsgN"Vector( #{math.ceil p.x}, #{math.ceil p.y}, #{math.ceil p.z} )\n"
+
+  with spawn = ClientsideModel "models/player/corpse1.mdl", RENDERGROUP_BOTH
+    \SetPos Vector( math.ceil(p.x), math.ceil(p.y), math.ceil(p.z) )
+    \SetRenderMode RENDERMODE_GLOW
+    \SetRenderFX 16
+
+concommand.Add "gph", gph_callback
+
+gp_callback = (ply, cmd, args, argstr) ->
+  if CLIENT
+    unless ply\IsAdmin!
+      MsgC Color(200, 0, 0), "You are too curious for your own good. This incident will be reported.\n" if CLIENT
+      return
+
+  ent = ply\GetEyeTrace!.Entity
+
+  p = ent\GetPos!
+  MsgN"Vector( #{math.ceil p.x}, #{math.ceil p.y}, #{math.ceil p.z} )"
+  a = ent\GetAngles!
+  MsgN"Angle( #{math.ceil a.p}, #{math.ceil a.y}, #{math.ceil a.r} )"
+
+concommand.Add "gp", gp_callback

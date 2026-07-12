@@ -1,0 +1,6 @@
+meta = FindMetaTable"Player"
+
+meta[k] = v for k, v in pairs{
+  -- Disable the default DarkRP salary behavior.
+  payDay: => return false
+}

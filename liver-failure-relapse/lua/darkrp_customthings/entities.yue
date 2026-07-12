@@ -1,0 +1,37 @@
+
+DarkRP.createEntity("Drug lab", {
+    ent: "drug_lab",
+    model: "models/props_lab/crematorcase.mdl",
+    price: 666,
+    max: 3,
+    cmd: "buydruglab",
+    allowed: {TEAM_GANG, TEAM_MOB}
+})
+
+DarkRP.createEntity("Money printer", {
+    ent: "money_printer",
+    model: "models/props_c17/consolebox01a.mdl",
+    price: 666,
+    max: 2,
+    cmd: "buymoneyprinter"
+})
+
+  
+DarkRP.createEntity("Tip Jar", {
+    ent: "darkrp_tip_jar",
+    model: "models/props_lab/jar01a.mdl",
+    price: 50,
+    max: 2,
+    cmd: "tipjar",
+    allowTools: true,
+})
+
+if not DarkRP.disabledDefaults["modules"]["hungermod"]
+    DarkRP.createEntity("Microwave", {
+        ent: "microwave",
+        model: "models/props/cs_office/microwave.mdl",
+        price: 400,
+        max: 1,
+        cmd: "buymicrowave",
+        allowed: TEAM_COOK
+    })

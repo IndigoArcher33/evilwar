@@ -1,0 +1,10 @@
+play_death_sound = (ply) ->
+  if (ply\IsPlayer! and ply\IsValid! and ply\Team ~= TEAM_GHOST)
+    jt = ply\getJobTable!
+    if jt.death_sounds
+      sounds = jt.death_sounds
+      snd = sounds[math.random(1, #sounds)]
+      ply\EmitSound snd, 80, math.random(95, 110)
+  return
+
+hook.Add "DoPlayerDeath", "evilrp_death_sound", play_death_sound

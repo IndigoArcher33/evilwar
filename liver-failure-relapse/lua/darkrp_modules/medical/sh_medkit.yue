@@ -1,0 +1,71 @@
+class Medkit extends WEAPON
+  @__weapon: "evilrp/medkit"
+  PrintName: "L.R.D."
+  Medkit: true
+  
+  UseHands: true
+    
+  Slot: 1
+  SlotPos: 2
+
+  Description: "I can make it feel better."
+    
+  ViewModel: Model"models/weapons/c_medkit.mdl"
+  WorldModel: Model"models/weapons/w_medkit.mdl"
+
+  HoldType: "slam"
+
+  Primary:
+    Delay: 0.2
+    Automatic: true
+
+  TranslateWeaponAnim: (act) => act
+  SendTranslatedWeaponAnim: (act) =>
+    act = @TranslateWeaponAnim act
+    return unless act
+    @SendWeaponAnim act
+
+  Deploy: =>
+    @SetHoldType @HoldType
+    @SendTranslatedWeaponAnim ACT_VM_DRAW
+    return true
+
+  PrimaryAttack: =>
+    @SetNextPrimaryFire CurTime! + @Primary.Delay
+    ply = @Owner
+    return unless IsValid(ply)
+    return if CLIENT
+    local found
+    last_dot = -1 -- the opposite of what you're looking at
+    ply\LagCompensation true
+    aim_vec = ply\GetAimVector!
+    shoot_pos = ply\GetShootPos!
+    for v in *player.GetAll!
+      continue if v == ply
+      max_health = v\GetMaxHealth! or 100
+      continue if v\Health! >= max_health
+      continue unless v\Alive!
+      target_shoot_pos = v\GetShootPos!
+      continue if (target_shoot_pos\DistToSqr(shoot_pos) > 7225)
+      dir = target_shoot_pos - shoot_pos
+      dir\Normalize!
+      dot = dir\Dot aim_vec
+      -- looking more in the direction of this player
+      if dot > last_dot
+        last_dot = dot
+        found = v
+    ply\LagCompensation false
+    if found
+      switch found\Team!
+        when TEAM_GHOST
+          return
+      nh = math.min( found\Health! + 2, found\GetMaxHealth! )
+      -- TODO: emergency calls
+      found\SetHealth nh
+      ply\SetHealth ply\Health! - 1
+      ply\EmitSound "ambient/creatures/teddy.wav", 150, (found\Health! / found\GetMaxHealth!) * 100
+      -- TODO: malpractice
+      ply\Kill! if ply\Health! <= 0 and ply\Alive!
+    -- TODO: unhaunting
+
+  SecondaryAttack: =>

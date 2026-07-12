@@ -1,0 +1,223 @@
+import random, min from math
+
+hallucinations = {
+  Material("placenta/postal1.png") 
+  Material("placenta/postal2.png") 
+  Material("placenta/postal3.png") 
+  Material("placenta/postal4.png") 
+  Material("placenta/postal5.png") 
+  Material("placenta/postal6.png") 
+  Material("placenta/postal7.png") 
+  Material("placenta/postal8.png") 
+  Material("placenta/postal9.png") 
+  Material("placenta/postal10.png") 
+  Material("placenta/postal11.png") 
+  Material("placenta/postal12.png") 
+  Material("placenta/postal13.png") 
+  Material("placenta/postal14.png") 
+  Material("placenta/postal15.png") 
+  Material("placenta/postal16.png") 
+  Material("placenta/postal17.png") 
+  Material("placenta/postal18.png") 
+  Material("placenta/postal19.png") 
+  Material("placenta/postal20.png") 
+  Material("placenta/postal21.png") 
+  Material("placenta/postal22.png") 
+  Material("placenta/postal23.png") 
+  Material("placenta/postal24.png") 
+  Material("placenta/postal25.png") 
+  Material("placenta/postal26.png") 
+  Material("placenta/postal27.png") 
+  Material("placenta/eyes.png") 
+  Material("placenta/eyes2.png") 
+  Material("placenta/sisters.png") 
+  Material("placenta/garalina.png") 
+  Material("placenta/hands.png") 
+  Material("placenta/claws.png") 
+  Material("placenta/girl.png") 
+  Material("placenta/shower.png") 
+  Material("placenta/sisters.png") 
+  Material("placenta/moviegoers.png") 
+  Material("placenta/mary.png") 
+  Material("placenta/watcher.png") 
+  Material("placenta/sink.png") 
+  Material("placenta/teeth.png") 
+  Material("placenta/mask.png") 
+  Material("placenta/hiding.png") 
+  Material("placenta/door.png") 
+  Material("placenta/comehome.png") 
+  Material("placenta/seer.png")
+  Material("placenta/bestfriend.png") 
+  Material("placenta/shadowpeople.png") 
+  Material("placenta/soulseeker.png") 
+  Material("placenta/furry.png")
+  Material("placenta/piercing.png")
+  Material("placenta/trauma.png")
+  Material("placenta/fear.png")
+  Material("placenta/joy.png")
+  Material("placenta/fallingaway.png")
+  Material("placenta/finaltrip.png")
+  Material("placenta/biter.png")
+}
+    
+scary_sounds = {
+  "ambient/creatures/town_child_scream1.wav"
+  "ambient/creatures/town_moan1.wav"
+  "ambient/creatures/town_muffled_cry1.wav"
+  "ambient/creatures/town_scared_breathing1.wav"
+  "ambient/creatures/town_scared_breathing2.wav"
+  "ambient/creatures/town_scared_sob1.wav"
+  "ambient/creatures/town_scared_sob2.wav"
+  "ambient/creatures/town_zombie_call1.wav"
+  "placenta/tormented.wav"
+  "placenta/frighten1.wav"
+  "placenta/frighten2.wav"
+  "placenta/frighten3.wav"
+  "placenta/frighten4.wav"
+  "placenta/comic1.ogg"
+  "placenta/comic2.ogg"
+  "placenta/comic3.ogg"
+  "placenta/comic4.ogg"
+}
+sotla = Material("placenta/sotla.png")
+GAMEMODE[k] = v for k, v in pairs{
+  Judgement: (snd) =>
+    @HallucinateStart = CurTime!
+    @Hallucination = sotla
+    @HallucinateAlpha = 2.5
+
+    lp = LocalPlayer!
+    util.ScreenShake lp\GetPos!, 25, 5, 3, 5000  
+    if snd
+      lp\EmitSound snd, 60, random(60, 80)
+    else
+      -- what the fuck? why did we write it this way
+      -- lp\EmitSound "placenta/jumpscare#{min(random(1,9), 8)}.wav", 60, random(60, 80)
+
+    timer.Simple 0.2, -> lp\SetDSP 28
+    timer.Simple 0.5, -> lp\SetDSP 0
+
+  
+  Jumpscare: (snd) =>
+    -- not sure what the below is for; probably obscure Material
+    -- related bugs like we had to deal with when writing HPPD
+    for v in *hallucinations
+      table.RemoveByValue(hallucinations, v) if type(v) == "number"
+
+    @HallucinateStart = CurTime!
+    @Hallucination = table.Random hallucinations
+    @HallucinateDouble = true
+    @HallucinateAlpha = 1.5
+
+    lp = LocalPlayer!
+      
+    if snd
+      lp\EmitSound snd, 60, random(60, 80)
+    else
+      -- what the fuck? why did we write it this way
+      lp\EmitSound "placenta/jumpscare#{min(random(1,7), 7)}.wav", 60, random(60, 80)
+
+    timer.Simple 0.2, -> lp\SetDSP 28
+    timer.Simple 0.5, -> lp\SetDSP 0
+
+  Frighten: (snd) =>
+    -- not sure what the below is for; probably obscure Material
+    -- related bugs like we had to deal with when writing HPPD
+    for v in *hallucinations
+      table.RemoveByValue(hallucinations, v) if type(v) == "number"
+
+    @HallucinateStart = CurTime!
+    @Hallucination = table.Random hallucinations
+    @HallucinateDouble = false
+    @HallucinateAlpha = 1
+
+    lp = LocalPlayer!
+      
+    if snd
+      lp\EmitSound snd, 60, random(60, 80)
+    else
+      snd = table.Random scary_sounds
+      lp\EmitSound snd, 60, random(60, 80)
+
+    timer.Simple 0.2, -> lp\SetDSP 28
+    timer.Simple 0.5, -> lp\SetDSP 0
+  DrawDamage: =>
+    lp = LocalPlayer!
+    if @FlashRedStart and lp\Alive!
+      t = CurTime! - @FlashRedStart
+      a = 0
+
+      if t < .1
+        a = .5
+      elseif t > .6
+        a = .5 - (t - .1)
+
+      if a > 0
+        surface.SetDrawColor 128, 0, 0, 255 * a
+        surface.DrawRect 0, 0, ScrW!, ScrH!
+
+    if @HallucinateStart
+      t = CurTime! - @HallucinateStart
+      a = 0
+      contrast = 0
+      blur = 0
+      cmod = 0
+      rmod = 0
+
+      if t < .1
+        a = 1
+        a = @HallucinateAlpha if @HallucinateAlpha
+      elseif t < 5
+        a = 1 - ((t - 0.1) / 2)
+        a = @HallucinateAlpha - ((t - 0.1) / 2) if @HallucinateAlpha
+
+      if a > 0
+        surface.SetMaterial @Hallucination
+        surface.SetDrawColor 255, 255, 255, 255 * a
+        surface.DrawTexturedRect 0, 0, ScrW!, ScrH!
+
+      if t < .1
+        contrast = 3
+      elseif t < 6
+        contrast = 3 - (t - 2)
+
+      if contrast > 0 and (@HallucinateAlpha > 1)
+        DrawSharpen contrast, contrast * 10
+
+      if t < .1
+        blur = 1
+      elseif t < 6
+        blur = 1 - (t - 2)
+
+      if blur > 0
+        DrawMotionBlur blur, .3, .01
+}
+
+net.Receive "evilrp_frighten", (len) -> GAMEMODE\Frighten!
+net.Receive "evilrp_jumpscare", (len) -> GAMEMODE\Jumpscare!
+net.Receive "evilrp_judgement", (len) -> GAMEMODE\Judgement!
+net.Receive "evilrp_flashred", (len) -> GAMEMODE.FlashRedStart = CurTime!
+
+hook.Add "HUDPaint", "evilrp_draw_damage", ->
+  GAMEMODE\DrawDamage!
+  return
+
+shut_up = {
+  "Shut up."
+  "Up yours."
+  "Be QUIET."
+  "Nobody wants to hear your voice."
+  "Voice chat is disabled forever."
+  "No."
+  "Shh."
+  "Silence."
+  "I have no mouth and I must scream."
+  "You are so... talk so much."
+  "Your voice is so <wiggle>fucking</wiggle> irritating."
+}
+
+hook.Add "PlayerStartVoice", "evilrp_no_voice_chat", ->
+  GAMEMODE\Frighten!
+  shut = shut_up[math.random(#shut_up)]
+  lp\SendChat "ERROR", shut
+  return true

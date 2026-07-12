@@ -1,0 +1,66 @@
+meta = FindMetaTable"Player"
+meta.AddMoney = (amt, src="From thin air") =>
+  @addMoney amt
+  amt_str = #{amt}
+  if amt > 0
+    amt_str = "<c=0,200,0>+" .. amt
+  else
+    amt_str = "<c=200,0,0>" .. amt
+  @Notify"#{src}: #{amt_str}"
+
+class GiveMoney extends SOUND
+  sound: "ambient/levels/labs/coinslot1.wav"
+
+if SERVER
+  netstream.Hook "BeginPaying", (ply) ->
+    paying = ply\GetNWBool"evilrp_paying"
+    unless (paying or ply.cant_pay)
+      ply\Notify"Scroll to the desired payment amount."
+      ply\Notify"Left click to pay or drop money."
+      ply\SetNWBool("evilrp_paying", true)
+  netstream.Hook "DropMoney", (ply, amount) ->
+    if not amount or amount <= 0
+      ply\Notify"Nevermind."
+      return
+    return unless ply\GetNWBool"evilrp_paying"
+    return if ply\Team! == TEAM_GHOST
+    return unless ply\Alive!
+    money = ply\getDarkRPVar"money"
+    return if amount > money
+    return if amount < 1
+    wep = ply\GetActiveWeapon!
+    ply\SetNWBool("evilrp_paying", false)
+    tr = GAMEMODE\GetHandTrace(ply, 80)
+    if tr.Entity and IsValid(tr.Entity) and tr.Entity\IsPlayer! and tr.Entity\Alive! and tr.Entity\Team! ~= TEAM_GHOST
+      oply = tr.Entity
+      ply\AddMoney(-amount, "Transaction")
+      oply\AddMoney(amount, "Payment")
+      ply\DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_GIVE)
+      oply\DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_PLACE)
+      ply\EmitSound"GiveMoney"
+      oply\SendChat "GENERIC", "<c=0,200,0>#{ply\Name!} gave you #{amount} bones."
+    else
+      ply\AddMoney(-amount, "Dropped")
+      ply\DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_DROP)
+      start = ply\EyePos!
+      trace = {
+        :start
+        endpos: start + ply\GetAimVector! * 85
+        filter: ply
+      }
+      tr = util.TraceLine(trace)
+      moneybag = DarkRP.createMoneyBag(tr.HitPos, amount)
+      DarkRP.placeEntity(moneybag, tr, ply)
+      DarkRP.log("#{ply\Nick!} (#{ply\SteamID!}) has dropped #{DarkRP.formatMoney(amount)}")
+    ply.cant_pay = true
+    timer.Simple(1, ->
+      return unless IsValid(ply)
+      ply.cant_pay = false)
+else
+  drop_or_give_money = (ply, bind, pressed) ->
+    bind = bind\lower!
+    return if not pressed
+    return unless ply\GetNWBool"evilrp_paying"
+    return if not bind\find"+attack"
+    netstream.Send "DropMoney", ply.payment_amount
+  hook.Add "PlayerBindPress", "evilrp_payment", drop_or_give_money

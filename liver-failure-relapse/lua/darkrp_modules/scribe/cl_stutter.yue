@@ -1,0 +1,34 @@
+gibberish = {
+  "#", "@", "&"
+  "%", "$", "/"
+  "<", ">", ";"
+}
+
+text_effects = {
+    upper: (char) -> string.upper(char)
+    -- gibberish: -> gibberish[math.random(#gibberish)]
+}
+  
+COMPONENT =
+    Name: {"stutter"}
+      
+    Initialize: =>
+      
+    Push: => @AddTextModifier!
+
+    Pop: => @RemoveTextModifier!
+
+    GetDespair: =>
+      lp = LocalPlayer!
+      return 0 if lp\Team! == TEAM_GHOST
+      return lp\GetDespair!
+
+    ModifyText: (part, text) =>
+      desp = @GetDespair!
+      str = string.Explode "", text
+      for index, char in ipairs(str)
+        if math.Maybe(1 + 5 * (desp / 23))
+          str[index] = table.Random(text_effects)(char)
+      return table.concat str
+        
+scribe.Register(COMPONENT)

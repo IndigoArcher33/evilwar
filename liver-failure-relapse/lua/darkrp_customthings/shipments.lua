@@ -1,0 +1,100 @@
+DarkRP.createShipment("Crowbar", {
+	model = "models/weapons/w_crowbar.mdl",
+	entity = "simple_hl2_crowbar",
+	price = 500,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Tools"
+})
+DarkRP.createShipment("Brain Paster", {
+	model = "models/weapons/w_brainpaster.mdl",
+	entity = "evil_brainpaster",
+	price = 2150,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Pistols"
+})
+DarkRP.createShipment("Pretty Boy", {
+	model = "models/weapons/w_prettyboy.mdl",
+	entity = "evil_prettyboy",
+	price = 1000,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Pistols"
+})
+DarkRP.createShipment("Pacifier", {
+	model = "models/weapons/w_pacifier.mdl",
+	entity = "evil_pacifier",
+	price = 1750,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Pistols"
+})
+DarkRP.createShipment("Coach", {
+	model = "models/weapons/w_coach.mdl",
+	entity = "evil_coach",
+	price = 2500,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Shotguns"
+})
+DarkRP.createShipment("Bodyguard", {
+	model = "models/weapons/w_bodyguard.mdl",
+	entity = "evil_bodyguard",
+	price = 2200,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Pistols"
+})
+DarkRP.createShipment("Enforcer", {
+	model = "models/weapons/w_livermann.mdl",
+	entity = "evil_enforcer",
+	price = 3200,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Rifles"
+})
+DarkRP.createShipment("Subjugator", {
+	model = "models/weapons/w_subjugator.mdl",
+	entity = "evil_subjugator",
+	price = 3750,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Rifles"
+})
+DarkRP.createShipment("Obrez", {
+	model = "models/weapons/w_obrez.mdl",
+	entity = "evil_obrez",
+	price = 1800,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Rifles"
+})
+return DarkRP.createShipment("Painkiller", {
+	model = "models/weapons/w_painkiller.mdl",
+	entity = "evil_painkiller",
+	price = 2700,
+	amount = 10,
+	allowed = {
+		TEAM_DEALER
+	},
+	category = "Pistols"
+})

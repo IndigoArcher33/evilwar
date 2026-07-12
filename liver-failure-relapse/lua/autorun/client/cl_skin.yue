@@ -1,0 +1,319 @@
+global evilrp_perform_layout = =>
+  if @btnClose and @btnClose\IsValid!
+    with @btnClose
+      \SetPos @GetWide! - 24, 0
+      \SetSize 24, 24
+      \SetFont"marlett"
+      \SetText"r"
+      \PerformLayout!
+  @btnMaxim\Remove! if @btnMaxim and @btnMaxim\IsValid!
+  @btnMinim\Remove! if @btnMinim and @btnMinim\IsValid!
+  if @lblTitle and @lblTitle\IsValid!
+    with @lblTitle
+      \SetPos 6, 0
+      \SetSize @GetWide! - 25, 24
+
+alpha = 230
+
+-- Majority of this is translated from derma code by TankNut.
+-- Thank you, TankNut.
+  
+SKIN =
+  PrintName: "EvilRP"
+  Author: "Sotla"
+  DermaVersion: 1
+
+SKIN.Colors =
+  Primary: HSVToColor(0,1,0.8)\Register"evilrp_primary"
+  Border: Color(20,20,20)\Register"evilrp_border"
+  TextEntry: Color(35,35,35)  
+  FillLight: Color(60,60,60)\Register"evilrp_fill_light"
+  FillMedium: Color(40,40,40)\Register"evilrp_fill"
+  FillDark: Color(30,30,30)\Register"evilrp_fill_dark"
+
+SKIN.Text =
+  Normal: Color(200,200,200)\Register"evilrp_normal"
+  Hover: Color(255,128,128)\Register"evilrp_hover"
+  Primary: SKIN.Colors.Primary
+  Disabled: Color(128,0,0)\Register"evilrp_disabled"
+  Highlight: Color(64,32,32)\Register"evilrp_highlight"
+  Bad: Color(255,0,0)\Register"evilrp_bad"
+  Dark: Color(128,128,128)\Register"evilrp_dark"
+    
+SKIN.GwenTexture = Material( "gwenskin/gmoddefault.png" )
+
+SKIN.Colours =
+  Button:
+    Disabled: SKIN.Text.Disabled
+    Down: SKIN.Text.Primary
+    Hover: SKIN.Text.Hover
+    Normal: SKIN.Text.Normal
+
+  Label:
+    Default: SKIN.Text.Normal
+    Bright: SKIN.Text.Hover
+    Dark: SKIN.Text.Dark
+    Highlight: SKIN.Colors.Primary
+
+  -- Properties:
+  --   Line_Normal: GWEN.TextureColor( 4 + 8 * 12, 508 )
+  --   Line_Selected: GWEN.TextureColor( 4 + 8 * 13, 508 )
+  --   Line_Hover: GWEN.TextureColor( 4 + 8 * 12, 500 )
+  --   Title: GWEN.TextureColor( 4 + 8 * 13, 500 )
+  --   Column_Normal: GWEN.TextureColor( 4 + 8 * 14, 508 )
+  --   Column_Selected: GWEN.TextureColor( 4 + 8 * 15, 508 )
+  --   Column_Hover: GWEN.TextureColor( 4 + 8 * 14, 500 )
+  --   Column_Disabled: Color( 240, 240, 240 )
+  --   Border: GWEN.TextureColor( 4 + 8 * 15, 500 )
+  --   Label_Normal: GWEN.TextureColor( 4 + 8 * 16, 508 )
+  --   Label_Selected: GWEN.TextureColor( 4 + 8 * 17, 508 )
+  --   Label_Hover: GWEN.TextureColor( 4 + 8 * 16, 500 )
+  --   Label_Disabled: GWEN.TextureColor( 4 + 8 * 16, 508 )
+
+  Window:
+    TitleActive: Color(0,200,0,204)\Register"evilrp_window_active"
+    TitleInactive: Color(64,64,64,102)\Register"evilrp_window_inactive"
+
+
+SKIN.DrawButton = (disabled, w, h) =>
+  surface.SetDrawColor disabled and @Colors.FillDark or @Colors.FillLight
+  surface.DrawRect 0, 0, w, h
+  col = @Colors.Border
+  surface.SetDrawColor col.r, col.g, col.b, 150
+  surface.DrawOutlinedRect 0, 0, w, h
+
+SKIN.SetButtonTextColor = (panel) =>
+  col = @Text.Normal
+  if panel\GetDisabled!
+    col = @Text.Disabled
+  elseif panel.IsDown and panel\IsDown!
+    col = @Text.Primary
+  elseif panel\IsHovered!
+    col = @Text.Hover
+  ct = CurTime!
+  col.r += math.abs(math.sin(ct) * 64)
+  col.g += math.cos(math.sin(ct) * 128)
+  col.b += math.abs(math.sin(ct) * 64)
+  col.r = math.min(col.r, 255)
+  col.g = math.min(col.g, 255)
+  col.b = math.min(col.b, 255)
+  surface.SetTextColor col
+
+import SetTextPos, SetFont, DrawText, SetDrawColor, DrawRect, DrawOutlinedRect from surface
+    
+-- actual skin hooks
+SKIN.PaintPanel = (panel, w, h) =>
+  return unless panel.m_bBackground
+  col = panel.m_bgColor or color_white
+  SetDrawColor col.r, col.g, col.b, col.a
+  DrawRect 0, 0, w, h
+
+SKIN.PaintListView = (panel, w, h) =>
+  return unless panel.m_bBackground
+  SetDrawColor @Colors.FillDark
+  DrawRect 0, 0, w, h
+  SetDrawColor ColorAlpha(@Colors.Border, 100)
+  DrawOutlinedRect 0, 0, w, h
+
+SKIN.PaintListViewColumn = (panel, w, h) =>
+  SetDrawColor @Colors.FillDark
+  DrawRect 0, 0, w, h
+  SetDrawColor ColorAlpha(@Colors.Border, 100)
+  DrawOutlinedRect 0, 0, w, h
+
+SKIN.PaintListViewLine = (panel, w, h) =>
+  if panel.Hovered
+    SetDrawColor @Colors.FillLight
+    DrawRect 0, 0, w, h
+  elseif panel.m_bAlt
+    SetDrawColor @Colors.FillMedium
+    Drawrect 0, 0, w, h
+  if panel\IsSelected!
+    col = @Colors.Primary
+    SetDrawColor col.r, col.g, col.b, 100
+    DrawRect 0, 0, w, h
+
+SKIN.PaintItemList = (panel, w, h) =>
+  SetDrawColor 0, 0, 0, 70
+  DrawRect 0, 0, w, h
+  SetDrawColor 0, 0, 0, 100
+  DrawOutlinedRect 0, 0, w, h
+
+SKIN.PaintFrame = (panel, w, h) =>
+  col = @Colors.FillDark
+  SetDrawColor col.r, col.g, col.b, 230
+  DrawRect 0, 0, w, h
+  SetDrawColor @Colors.Border
+  DrawOutlinedRect 0, 0, w, h
+  DrawRect 0, 0, w, 25 if panel.m_bTopBar
+
+SKIN.PaintChat = (panel, w, h) =>
+  col = @Colors.FillDark
+  SetDrawColor col.r, col.g, col.b, 230
+  DrawRect 0, 0, w, h
+  SetDrawColor @Colors.Border
+  DrawOutlinedRect 0, 0, w, h
+
+SKIN.PaintButton = (panel, w, h) =>
+  return unless panel.m_bBackground
+  bool = panel.GetDisabled and panel\GetDisabled! or false
+  -- TODO better way of doing things like this?
+  bool = panel[panel.SkinVar] if panel.SkinVar
+  bool = not bool if panel.SkinInverted
+  @DrawButton bool, w, h
+
+SKIN.PaintCheckBox = (panel, w, h) =>
+  @DrawButton panel\GetDisabled!, w, h
+  col = @Colors.Primary
+  alpha = 0
+  if panel.Depressed
+    alpha = 255
+  elseif panel\GetChecked!
+    alpha = panel\IsHovered! and 150 or 100
+  if alpha > 0
+    SetDrawColor col.r, col.g, col.b, alpha
+    DrawRect 3, 3, w - 6, h - 6
+
+SKIN.PaintTextEntry = (panel, w, h) =>
+  if panel.m_bBackground
+    SetDrawColor @Colors.TextEntry
+    DrawRect 0, 0, w, h
+    SetDrawColor @Colors.FillDark
+    DrawOutlinedRect 0, 0, w, h
+  -- hack on a hack, but this produces the most close appearance to
+  -- what it will actually look like if text was actually there
+  if panel.GetPlaceholderText and panel.GetPlaceholderColor
+    text = panel\GetPlaceholderText!
+    color = panel\GetPlaceholderColor!
+    ptext = panel\GetText!
+    if text and text\Trim! ~= "" and color and ((not ptext) or ptext == "")
+      text = text\sub(2) if text\StartWith"#"
+      text = language.GetPhrase text
+      panel\SetText text
+      panel\DrawTextEntryText @Text.Disabled, @Text.Disabled, @Text.Disabled
+      panel\SetText ptext
+      return
+    panel\DrawTextEntryText @Text.Normal, @Text.Highlight, @Text.Normal
+
+SKIN.PaintVScrollBar = (panel, w, h) =>
+  SetDrawColor @Colors.FillDark
+  DrawRect 0, 0, w, h
+
+SKIN.PaintScrollBarGrip = (panel, w, h) =>
+  @DrawButton panel\GetDisabled!, w, h
+
+SKIN.PaintButtonDown = (panel, w, h) =>
+  return unless panel.m_bBackground
+  @DrawButton panel\GetDisabled!, w, h
+  @SetButtonTextColor panel
+  SetFont"marlett"
+  tw, th = surface.GetTextSize"6"
+  SetTextPos math.ceil(w * 0.5 - tw * 0.5), math.ceil(h * 0.5 - th * 0.5)
+  DrawText"6"
+
+SKIN.PaintButtonUp = (panel, w, h) =>
+  return unless panel.m_bBackground
+  @DrawButton panel\GetDisabled!, w, h
+  @SetButtonTextColor panel
+  SetFont"marlett"
+  tw, th = surface.GetTextSize"5"
+  SetTextPos math.ceil(w * 0.5 - tw * 0.5), math.ceil(h * 0.5 - th * 0.5)
+  DrawText"5"
+
+SKIN.PaintButtonLeft = (panel, w, h) =>
+  return unless panel.m_bBackground
+  @DrawButton panel\GetDisabled!, w, h
+  @SetButtonTextColor panel
+  SetFont"marlett"
+  tw, th = surface.GetTextSize"3"
+  SetTextPos math.ceil(w * 0.5 - tw * 0.5), math.ceil(h * 0.5 - th * 0.5)
+  DrawText"3"
+
+SKIN.PaintButtonRight = (panel, w, h) =>
+  return unless panel.m_bBackground
+  @DrawButton panel\GetDisabled!, w, h
+  @SetButtonTextColor panel
+  SetFont"marlett"
+  tw, th = surface.GetTextSize"4"
+  SetTextPos math.ceil(w * 0.5 - tw * 0.5), math.ceil(h * 0.5 - th * 0.5)
+  DrawText"4"
+
+SKIN.PaintProgressBar = (panel, w, h) =>
+  SetDrawColor @Colors.FillDark
+  DrawRect 0, 0, w, h
+  width = w - 2
+  SetDrawColor @Colors.Primary
+  DrawRect 1, 1, width * math.Clamp(panel\GetProgress!, 0, 1), h - 2
+  draw.SimpleText panel\GetText!, "Spleen_Label_Small", w * 0.5, h * 0.5, @Text.Normal, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER
+
+SKIN.PaintHighlight = (x, y, w, h) =>
+  col = @Colors.Primary
+  SetDrawColor col.r, col.g, col.b, 25
+  DrawRect x, y, w, h
+  SetDrawColor col.r, col.g, col.b, 100
+  DrawOutlinedRect x, y, w, h
+
+SKIN.PaintItemHover = (x, y, w, h) =>
+  @PaintHighlight x, y, w, h
+
+SKIN.PaintMenu = (panel, w, h) =>
+  odd = true
+  for k, v in pairs panel\GetCanvas!\GetChildren!
+    x, y = panel\GetChildPosition v
+    child_width, child_height = v\GetSize!
+    if v\GetClassSize! == "Panel" -- Spacer
+      SetDrawColor @Colors.FillDark
+      DrawRect x, y, child_width, child_height
+      continue
+    if odd
+      surface.SetDrawColor 32, 32, 32, 255
+    else
+      surface.SetDrawColor 128, 32, 32, 255
+    DrawRect x, y, child_width, child_height
+    odd = not odd
+  SetDrawColor @Colors.FillDark
+  DrawOutlinedRect 0, 0, w, h, 1
+
+SKIN.PaintMenuOption = (panel, w, h) =>
+  if panel.m_bBackground and not panel\IsEnabled!
+    SetDrawColor @Colors.FillDark
+    DrawRect 0, 0, w, h
+  if panel.m_bBackground and (panel.Hovered or panel.Highlight)
+    @PaintHighlight 1, 1, w - 2, h - 2
+
+SKIN.PaintComboBox = (panel, w, h) =>
+  @PaintButton panel, w, h
+
+SKIN.PaintScoreboard = (panel, w, h) =>
+  SetDrawColor ColorAlpha(@Colors.FillDark, alpha)
+  DrawRect 0, 0, w, h
+  SetDrawColor @Colors.Border
+  DrawRect 0, 0, w, 50
+  DrawOutlinedRect 0, 0, w, h
+  draw.SimpleText "victims: #{#player.GetAll!}", "Spleen_Label", w * 0.5, 25, @Text.Normal, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER
+
+SKIN.PaintScoreboardEntry = (panel, w, h) =>
+  if panel.Alt
+    SetDrawColor ColorAlpha(@Colors.Border, 130)
+    DrawRect 0, 0, w, h
+  if panel.State == SCOREBOARD_HIDDEN
+    SetDrawColor ColorAlpha(@Colors.Primary, 10)
+    DrawRect 0, 0, w, h
+  ply = panel.Player
+  if lp\IsAdmin!
+    draw.SimpleText ply\Name!, "Spleen_Label_Small", h + 19, math.Round(h * 0.33), @Text.Normal, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER
+  draw.DrawText ply\Ping!, "Spleen_Label_Small", w - 20, 5, @Text.Normal, TEXT_ALIGN_RIGHT
+  if lp\IsAdmin!
+    draw.DrawText ply\SteamName!, "Spleen_Label_Small", w - 20, 40, @Text.Normal, TEXT_ALIGN_RIGHT
+  -- put badges here
+
+SKIN.PaintSliderKnob = (panel, w, h) =>
+  SetDrawColor panel\GetDisabled! and @Colors.FillDark or @Colors.FillLight
+  x = w * 0.2 + 1
+  width = w * 0.6
+  DrawRect x, 0, width, h
+  col = @Colors.Border
+  SetDrawColor col.r, col.g, col.b, 150
+  DrawOutlinedRect x, 0, width, h
+      
+derma.DefineSkin "EvilRP", "", SKIN

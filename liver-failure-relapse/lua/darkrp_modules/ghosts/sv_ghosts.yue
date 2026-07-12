@@ -1,0 +1,79 @@
+ghostpoints = {
+  ["rp_liverfailure_kidneydagger"]: {
+    Vector(4719, 1913, 337)
+    Vector(1930, 1890, 321)
+    Vector(3565, 1160, 321)
+    Vector(4629, 1171, 369)
+    Vector(4246, 2609, 241)
+    Vector(3817, 2267, 321)
+    Vector(3238, 2329, 250)
+    Vector(4666, 3370, 241)
+    Vector(743, 1922, 321)
+  }
+}
+  
+ghost_reload = (ply, key) ->
+  if ply\Team! == TEAM_GHOST
+    if key == IN_RELOAD
+      gp = ghostpoints[game.GetMap!]
+      if gp
+        ply\SetPos gp[math.random(1, #gp)]
+  
+hook.Add "KeyPress", "evilrp_ghost_reload", ghost_reload
+  
+ghosts_dont_fall_damage = (ply, speed) ->
+  team = ply\Team!
+  if team == TEAM_GHOST
+    return 0
+  return
+
+hook.Add "GetFallDamage", "evilrp_ghost_braces", ghosts_dont_fall_damage
+  
+only_respawn_ghosts = (ply) ->
+  return false unless ply\Team! == TEAM_GHOST
+hook.Add "PlayerDeathThink", "evilrp_disable_respawns", only_respawn_ghosts
+
+ghosts_dont_damage = (ent) ->
+  if ent\IsPlayer! and ent\IsValid!
+    team = ent\Team!
+    if team == TEAM_GHOST
+      return true
+  return
+    
+hook.Add "EntityTakeDamage", "evilrp_ghost_damage", ghosts_dont_damage
+
+ghosts_dont_spawn_props = (ply, mdl) ->
+  return false if ply\Team! == TEAM_GHOST
+  return
+
+hook.Add "PlayerSpawnProp", "evilrp_ghost_spawn", ghosts_dont_spawn_props
+
+msgs = {
+  "Spooks!"
+  "Oh no, the spirits!"
+  "My soul burns!"
+  "The horror!"
+  "Agh! A ghost!"
+}
+ghosts_frighten_cotards = (ply, mv) ->
+  return unless (ply\Alive! and ply\HasOddity(ODDITY_COTARDISM))
+  return if ply\GetMoveType! == MOVETYPE_NOCLIP
+  ply.next_ghost_frighten = CurTime! unless ply.next_ghost_frighten
+  return if CurTime! < ply.next_ghost_frighten
+  ply.next_ghost_frighten = CurTime! + 10
+  range = 256^2
+  scared = false
+  for oply in *player.GetAll!
+    continue unless (oply\Alive! and oply\Team! == TEAM_GHOST)
+    continue unless ply\GetPos!\DistToSqr(oply\GetPos!) <= range
+    scared = true
+    ply\AddDespair 5
+  if scared
+    ply\SendChat "GENERIC", "<c=200,0,0>#{msgs[math.random(#msgs)]}"
+    ply\EmitSound"Startled"
+    net.Start"evilrp_frighten"
+    net.Send ply
+
+      
+  
+hook.Add "PlayerTick", "evilrp_ghost_think", ghosts_frighten_cotards

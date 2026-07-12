@@ -1,0 +1,45 @@
+class Submit_Crate extends SOUND
+  sound: ["weapons/crowbar/crowbar_impact#{i}.wav" for i=1,2]
+
+class Crate extends ITEM
+  @__entity: "crate"
+  Spawnable: true
+
+  Pocketable: false
+
+  Category: "EvilWar: Precursor"
+
+  Sound: "npc/barnacle/neck_snap#{math.random(1, 2)}.wav"
+
+  SubmitSound: "Submit_Crate"
+
+  Submitted: =>
+    pos = @GetPos!
+    ed = EffectData!
+    with ed
+      \SetOrigin pos
+      \SetScale 1
+      \SetMagnitude 1
+      \SetRadius 3
+    util.Effect "Sparks", ed
+    
+  OnlyInventoryUse: false
+      
+
+class Fleshcrate extends Crate
+  Model: Model"models/props/de_prodigy/ammo_can_02.mdl"
+  Material: Material"models/gibs/humans/brain_gib"
+
+  PrintName: "Flesh Crate"
+  Description: "A crate held shut by decayed flesh.\nCan be opened in a Refinery."
+  UseText: {
+    "%s can't get it open."
+    "%s struggles to crack open the crate."
+    "%s looks like an idiot."
+  }
+
+  BiteDamage: 34
+    
+  Refinement:
+    result: "evilrp_weapon/obrez"
+    time: 6

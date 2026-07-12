@@ -1,0 +1,27 @@
+-- SWEP.CheckAmmo = =>
+--   if (@ShowAmmoCheck == false)
+--     @ShowAmmoCheck = true
+
+--     timer.Create "ShowAmmoCheck", 2, 1, ->
+--       @ShowAmmoCheck = false
+
+--   elseif (timer.Exists("ShowAmmoCheck"))
+--     timer.Remove("ShowAmmoCheck")
+      
+--     timer.Create "ShowAmmoCheck", 2, 1, ->
+--       @ShowAmmoCheck = false
+
+
+ammo_check_bind = (ply, bind, down) ->
+  lp = LocalPlayer!
+  lpw = LocalPlayer!\GetActiveWeapon!
+  if (down and string.find(bind, "+reload") and lp\KeyDown(IN_USE))
+    if (lpw and lpw\IsValid! and lpw ~= NULL)
+      if not (lpw.Firearm == true)
+        print("miaow")
+        return true
+      else
+        lpw\CheckAmmo!
+  return
+    
+hook.Add "PlayerBindPress", "evilrp_weapon_ammocheck", ammo_check_bind

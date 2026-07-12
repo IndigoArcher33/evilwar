@@ -1,0 +1,78 @@
+meta = FindMetaTable"Player"
+
+meta.HasDonation = (donation) =>
+  return false if @IsBot!
+  return true if @IsAdmin!
+  @donations or= {}
+  return table.HasValue( @donations, donation )
+
+meta.AddDonation = (donation, dont_save=false) =>
+  return unless SERVER
+  @donations[] = donation unless table.HasValue( @donations, donation )
+  @SaveDonations! unless dont_save
+
+meta.SaveDonations = =>
+  return unless SERVER
+  str = ""
+  str ..= "#{dono}|" for dono in *@donations
+  str = str\sub(1, -2)
+  sql.Query"UPDATE evilrp_donations SET Donations = '#{str}' WHERE SteamID = '#{@SteamID64!}'"
+
+if SERVER
+  netstream.Hook "ListMyDonations", (ply) ->
+    if #ply.donations <= 0
+      ply\SendChat("GENERIC", "<f=Spleen_Chat_Small>You don't appear to have any rewards given for donating.")
+    else
+      ply\SendChat("GENERIC", "<f=Spleen_Chat_Small>It looks like you've got the following:")
+      i = 0
+      for d in *ply.donations
+        i += 1
+        ply\SendChat("GENERIC", "<f=Spleen_Chat_Small>* <rgb=#{i*5},1,30>#{d}")
+    if ply\IsAdmin!
+      ply\SendChat("GENERIC", "<f=Spleen_Chat_Small>(As an 'administrator', you have every donation reward by default.)")    
+
+concommand.Add "donations", (-> netstream.Send"ListMyDonations"), nil, "List the donation rewards you have, if any."
+
+rainbow_config = {
+  speed: 1
+}
+if CLIENT
+  CreateClientConVar("lfr_rainbow_playermodel", 1, true, true, "Toggle whether Rainbow Knighthood is active for your lenses and such, if you have it.")
+  CreateClientConVar("lfr_rainbow_physicsgun", 1, true, true, "Toggle whether Rainbow Knighthood is active for your Telegland, if you have it.")
+  CreateClientConVar("lfr_rainbow_username", 1, true, true, "Toggle whether Rainbow Knighthood is active for your Steam name in OOC chat, if you have it.")
+
+rainbow_knighthood_think = ->
+  import speed from rainbow_config
+  for ply in *player.GetAll!
+    continue unless ply\HasDonation"rainbow"
+    rgb = HSVToColor (CurTime! * 38) % 360, 1, 1
+    local r
+    local g
+    local b
+    local enabled_playermodel
+    if SERVER
+      enabled_playermodel = ply\GetInfoNum("lfr_rainbow_playermodel", 1) == 1
+      enabled_playermodel_nw = ply\GetNWBool("lfr_rainbow_playermodel", true)
+      if enabled_playermodel ~= enabled_playermodel_nw
+        ply\SetNWBool("lfr_rainbow_playermodel", enabled_playermodel)
+    else
+      enabled_playermodel = ply\GetNWBool("lfr_rainbow_playermodel", true)
+    local enabled_physicsgun
+    if SERVER
+      enabled_physicsgun = ply\GetInfoNum("lfr_rainbow_physicsgun", 1) == 1
+      enabled_physicsgun_nw = ply\GetNWBool("lfr_rainbow_physicsgun", true)
+      if enabled_physicsgun ~= enabled_physicsgun_nw
+        ply\SetNWBool("lfr_rainbow_physicsgun", enabled_physicsgun)
+    else
+      enabled_physicsgun = ply\GetNWBool("lfr_rainbow_physicsgun", true)
+    if enabled_playermodel
+      r = rgb.r/255
+      g = rgb.g/255
+      b = rgb.b/255
+      ply\SetPlayerColor(Vector(r,g,b))
+    if enabled_physicsgun
+      r = rgb.r/255
+      g = rgb.g/255
+      b = rgb.b/255
+      ply\SetWeaponColor(Vector(r,g,b))
+hook.Add "Think", "evilrp_rainbow_donation", rainbow_knighthood_think

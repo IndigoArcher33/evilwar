@@ -1,0 +1,42 @@
+#+title: Our plans to plunder
+#+author: Toxidroma
+
+* PLEASE READ ME FIRST
+Maybe you're not a member of our team.  In that case, welcome!  You
+deserve an explanation of some things before you take this document's
+name and intentions too seriously.
+
+By /plunder/ we're referring to code that is already public, and open
+source/freely available for anyone to use and redistribute.
+
+If you believe we are using stolen code or otherwise infringing on the
+rights of any other programmer(s), please contact Mukhomorinka
+immediately with your claims.
+* Steam Workshop
+** [[https://steamcommunity.com/sharedfiles/filedetails/?id=285442216][Spillable drinks]]                                :Sakarias:infrastructure:
+It can possibly be used as a base for liquid containers, and spillable
+liquids in general, all throughout the game.
+
+Applications might be:
+- Water
+  Not just for drinking; you could pour it on other objects, like crops.
+- Blood
+  For collecting, drinking, transfusing, and more. Certainly at least
+  a few rituals out there require pouring blood onto something.
+- Fuel
+  For pouring into generators to refuel them, and onto evidence to
+  enable easily setting fire to it.
+- Soda
+** [[https://steamcommunity.com/sharedfiles/filedetails/?id=3462267984][pick up stick]]                                    :freefilesvirus:feature:
+#+begin_quote
+loose props laid on top of a prop youre grabbing, either with the
+physgun or your hands, will stick and stay stuck for as long as you
+hold on.
+#+end_quote
+If the description is to be believed, objects laying on other objects
+will remain stable-enough when the object platforming them is moved.
+** [[https://steamcommunity.com/sharedfiles/filedetails/?id=3144847212][Plugs & Sockets]]                            :freefilesvirus:infrastructure:
+** [[https://steamcommunity.com/sharedfiles/filedetails/?id=3153247644][freefilesvirus robots]]                      :freefilesvirus:infrastructure:
+** [[https://steamcommunity.com/sharedfiles/filedetails/?id=3459549733][gate stool]]                                       :freefilesvirus:toolgun:
+** [[https://steamcommunity.com/sharedfiles/filedetails/?id=3008720295][sneeze]]                                                  :lambups:feature:
+** [[https://steamcommunity.com/sharedfiles/filedetails/?id=2958458768][Source Hints]]                                  :lambups:infrastructure:ui:

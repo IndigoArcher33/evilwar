@@ -1,0 +1,9 @@
+global MUTATORS = {}
+global class MUTATOR  
+  @__inherited: (child) =>
+    MUTATORS[] = child
+    child.index = #MUTATORS
+
+  name: "Mutator"
+  desc: "A special condition that alters the game's global state."
+  active: false

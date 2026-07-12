@@ -1,0 +1,150 @@
+-- majority of this is based off of zombie survival's status things,
+-- which is very old code and therefore changes have been attempted to
+-- 'modernize' it
+
+meta = FindMetaTable"Player"
+meta[k] = v for k, v in pairs{
+  ClearStatuses: (silent, instant) =>
+    if instant
+      for ent in *ents.FindByClass"status/*"
+        ent\Remove! if not ent.NoRemoveOnDeath and ent\GetOwner! == @
+    else
+      for ent in *ents.FindByClass"status/*"
+        if not ent.NoRemoveOnDeath and ent\GetOwner! == @
+          ent.silent_remove = silent
+          ent\SetDie!
+  RemoveStatus: (status, silent, instant, exclude) =>
+    local removed
+    for ent in *ents.FindByClass"status/#{status}"
+      if ent\GetOwner! == @ and not (exclude and ent\GetClass! == "status/#{exclude}")
+        if instant
+          ent\Remove!
+        else
+          ent.silent_remove = silent
+          ent\SetDie!
+        removed = true
+    return removed
+  GetStatus: (status) =>
+    ent = @["status/#{status}"]
+    return ent if ent and IsValid(ent) and ent\GetOwner! == @
+  GiveStatus: (status, dietime) =>
+    cur = @GetStatus status
+    if cur
+      cur\SetDie dietime if dietime
+      cur\SetPlayer @, true
+      return cur
+    else
+      ent = ents.Create"status/#{status}"
+      if IsValid(ent)
+        ent\Spawn!
+        ent\SetDie dietime if dietime
+        ent\SetPlayer @
+        return ent
+}
+  
+global class STATUS extends ENTITY
+  Type: "anim"
+
+  OnInitialize: =>
+
+  PhysicsCollide: (data, physobj) =>
+
+  StartTouch: (ent) =>
+
+  Touch: (ent) =>
+
+  EndTouch: (ent) =>
+
+  AcceptInput: (name, activator, caller) =>
+
+  GetPlayer: (...) => @GetParent(...)
+
+  Initialize: =>
+    @DrawShadow false
+    if SERVER
+      @DieTime or= 0
+    if CLIENT
+      @SetRenderBounds Vector(-40,-40,-18), Vector(40,40,80)
+      owner = @GetOwner!
+      owner[@GetClass!] = @ if IsValid(owner)
+    @OnInitialize!
+
+  SetPlayer: (ply, exists) =>
+    if exists
+      @PlayerSet ply, exists
+    else
+      valid = ply and IsValid(ply)
+      @SetPos ply\GetPos! + Vector(0,0,16) if valid
+      @SetOwner ply
+      ply[@GetClass!] = @
+      @SetOwner ply -- i don't know why this is called twice
+      @SetParent ply
+      @PlayerSet ply if valid
+
+  PlayerSet: (ply, exists) =>
+
+  Think: =>
+    if SERVER
+      @Remove! if @DieTime <= CurTime!
+    if CLIENT
+      owner = @GetOwner!
+      @SetPos(owner\EyePos!) if IsValid(owner)
+
+  KeyValue: (key, value) =>
+    if key == "dietime"
+      @SetDie tonumber(value)
+      return true
+
+  PhysicsCollide: (data, physobj) =>
+
+  OnRemove: =>
+    if CLIENT
+      owner = @GetOwner!
+      owner[@GetClass!] = nil if IsValid(owner) and owner[@GetClass!] == @
+
+  SetDie: (time) =>
+    if time == 0 or not time
+      @DieTime = 0
+    elseif time == -1
+      @DieTime == 10
+    else
+      @DieTime = CurTime! + time
+
+  Draw: =>
+
+class Bleed extends STATUS
+  SetupDataTables: =>
+    @NetworkVar "Float", "Damage"
+
+  AddDamage: (damage) =>
+    @SetDamage @GetDamage! + damage
+
+  Think: =>
+    if SERVER
+      owner = @GetOwner!
+      if @GetDamage! <= 0 or not (owner\IsPlayer! and owner\Alive!)
+        @Remove!
+        return
+      @next_bleed_tick or= CurTime!
+      @next_stop_bleeding_tick or= CurTime!
+      if @next_bleed_tick <= CurTime!
+        dmg = math.min(@GetDamage!, math.random(1,3))
+        damager = @Damager if @Damager and IsValid(@Damager)
+        dmginfo = DamageInfo!
+        with dmginfo
+          \SetDamageType DMG_GENERIC
+          \SetDamagePosition @GetPos!
+          \SetAttacker damager if damager and IsValid(damager)
+          \SetInflictor @
+          \SetDamage dmg
+        owner.dont_scream = true
+        owner\TakeDamageInfo dmginfo
+        @AddDamage -dmg
+        dir = VectorRand!
+        dir\Normalize!
+        util.Blood owner\WorldSpaceCenter!, 6, dir, 64
+        @next_bleed_tick = CurTime! + 3
+      if @next_stop_bleeding_tick <= CurTime!
+        notmoving = (owner\GetVelocity!\Length! <= 32)
+        @AddDamage -2 if notmoving
+        @next_stop_bleeding_tick = CurTime! + 1

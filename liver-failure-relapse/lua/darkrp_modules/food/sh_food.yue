@@ -1,0 +1,499 @@
+class FoodRot extends SOUND
+  sound: ["weapons/bugbait/bugbait_squeeze#{i}.wav" for i=1,3]
+  level: SNDLVL_50dB
+
+class Food extends ITEM
+  SetupDataTables: =>
+    super!
+    @NetworkVar "Bool", "Rotten"
+
+  Model: Model"models/props_junk/garbage_plasticbottle002a.mdl"
+  Category: "EvilRP: Food"
+  Spawnable: true
+  Interesting: true
+
+  Sound: Sound"npc/barnacle/barnacle_crunch2.wav"
+
+  Hunger: 0 -- use negative numbers to satisfy a status
+  Thirst: 0
+  Despair: 0
+  HealthAdd: 0 -- temp until we get a new health system
+
+  RotTime: 0 -- 0 means never rot
+
+  Eat: (ply) =>
+    return if CLIENT
+    local amt
+    if @Hunger
+      amt = @Hunger
+      amt = amt! if isfunction(amt)
+      ply\AddHunger amt
+    if @Thirst
+      amt = @Thirst
+      amt = amt! if isfunction(amt)
+      ply\AddThirst amt
+    if @Despair
+      amt = @Despair
+      amt = amt! if isfunction(amt)
+      ply\AddDespair amt
+    if @HealthAdd
+      amt = @HealthAdd
+      amt = amt! if isfunction(amt)
+      if amt > 0
+        ply\SetHealth math.min( ply\Health! + amt, ply\GetMaxHealth! )
+      elseif amt < 0
+        ply\TakeDamage -amt
+        -- if @GetRotten!
+        --   ply\AddStatus STATUS_POISON, math.random(1,3)
+    @Trash! if not @PersistAfterEat
+
+  OnUseFinish: (ply) =>
+    super ply
+    @Eat ply
+
+  OnSpawned: =>
+    super!
+    @SetRotten false
+    @RotsIn = CurTime! + @RotTime if @RotTime > 0
+    return
+
+  Think: =>
+    super!
+    return if CLIENT
+    @Rot! if @RotsIn and (not @GetRotten!) and @RotsIn < CurTime!
+
+  Rot: =>
+    @SetRotten true
+    @SetColor Color(100, 0, 150)
+    @EmitSound "FoodRot"
+
+class SlopSkull extends Food
+  PrintName: "Slop Skull"
+  Model: Model"models/Gibs/HGIBS.mdl"
+  Hunger: -10
+  Description: "A bloody, festering human skull.\nThe brain is still largely intact."
+  RotTime: 120
+
+  UseText: {
+    "munches and crunches on a slop skull."
+    "slurps the brain matter out of a slop skull."
+    "digs around in a slop skull with their tongue."
+    "ravenously consumes a slop skull."
+    "gets pink sludge everywhere while eating a slop skull."
+    "scours a slop skull for brainmeat."
+    "cracks open a slop skull and slurps the brains out."
+  }
+
+  Precursor:
+    biomass: 1
+
+class Paper extends Food
+  PrintName: "Paper"
+  Model: Model"models/props_lab/papersheet001a.mdl"
+  Hunger: -7
+  Thirst: 10
+  Description: "A dirty scrap of used paper.\nThe writing is too faint to make out."
+
+  UseText: {
+    "chokes down a sheet of paper."
+    "tears up and eats a sheet of paper."
+    "chews the paper into a stiff pulp and swallows."
+    "struggles to swallow a dry sheet of paper."
+    "eats paper."
+    "crumples up some paper and struggles to chew it."
+    "munches on a piece of paper."
+  }
+
+class RibBone extends Food
+  PrintName: "Dry Rib"
+  Model: Model"models/Gibs/hgibs_rib.mdl"
+  Hunger: -8
+  HealthAdd: -7
+  RotTime: 240
+  Description: "A lone human rib.\nYou could chew the marrow out, but it'd probably hurt."
+
+  UseText: {
+    "breaks a tooth chewing on a rib bone."
+    "sucks marrow and bone shards from the rib."
+    "cuts up their throat eating a rib bone."
+    "bleeds from the mouth as they eat a rib bone."
+    "eats a bone, like a vulture."
+    "chokes on the broken points of a rib bone."
+  }
+
+  Precursor:
+    biomass: 1
+
+class Skin extends Food
+  PrintName: "Skin"
+  Description: "A greasy patch of some kind of hide.\nIt would probably taste nasty."
+  Model: Model"models/gibs/antlion_gib_small_2.mdl"
+  HealthAdd: => (math.random 10, 20)
+
+class Abortion extends Food
+  PrintName: "Abortion"
+  Model: Model"models/props_c17/doll01.mdl"
+  Hunger: -23
+  Thirst: -20
+  HealthAdd: 20
+  RotTime: 240
+  Description: "An artificial baby that never got the chance to be born.\nDelicious."
+
+  UseText: {
+    "eats a baby."
+    "rips apart an abortion and eats the pieces."
+    "bites the head off an abortion and swallows the rest."
+    "chews an abortion into pink paste."
+    "tears chunks off an abortion until it's all gone."
+    "eats an abortion, baby blood dribbling down their neck."
+    "eats an abortion legs-first."
+  }
+
+  Eat: (ply) =>
+    super ply
+    return if CLIENT
+    ply\AddStemCells(1)
+
+class LiveBaby extends Food
+  PrintName: "Live baby"
+  Model: Model"models/props_c17/doll01.mdl"
+  Hunger: -52
+  Thirst: -47
+  HealthAdd: 40
+  RotTime: 480
+  Description: "An artifical baby, born paralyzed below the eyes.\nIt will know nothing but fear and pain."
+
+  UseText: {
+    "eats a living infant."
+    "chews the head off a live baby and drinks its blood."
+    "eats a baby alive."
+    "eats a live baby and tastes its tears."
+    "rips apart a living baby and eats the pieces."
+    "tears open a live baby and feeds on its entrails."
+    "eats a live baby as it cries silently."
+  }
+
+class SoyLoaf extends Food
+  PrintName: "Soylent Loaf"
+  Model: Model"models/leakgibs/antlion_gib_small_3.mdl"
+  Hunger: -15
+  Thirst: 3
+  Despair: 5
+  Description: "A chewy loaf of dried Long Pig byproducts.\nLoathsome food, but it'll keep for a century."
+
+  Price: 20
+
+  UseText: {
+    "gnaws at a soylent loaf."
+    "chokes down a soylent loaf."
+    "struggles to eat a soylent loaf."
+    "chomps on a loaf of mummified meat."
+    "grinds their teeth on a soylent loaf."
+    "chews off a chunk from a soylent loaf."
+    "eats some soylent, like a good citizen should."
+  }
+
+class Boot extends Food
+  PrintName: "Boot"
+  Model: Model"models/props_junk/Shoe001a.mdl"
+  AddHealth: -4
+  Hunger: -5
+  Thirst: 40
+  Despair: 40
+  Description: "A dirty old boot, nearly fallen apart."
+
+  UseText: {
+    "chews on a nasty boot!"
+    "chokes on an old boot."
+    "gnaws a boot to shreds."
+    "shoves a boot in their mouth!"
+    "eats a rotten leather boot."
+    "devours a dirty old boot!"
+    "eats a boot."
+  }
+
+class MoldMelon extends Food
+  PrintName: "Mold Melon"
+  Model: Model"models/gibs/antlionegg01_chunk01c.mdl"
+  AddHealth: 5
+  Hunger: => (math.random -10, -18)
+  Description: "A pithy husk of fruit, fully colonized by white mold."
+
+  Price: 25
+
+  UseText: {
+    "eats a moldy melon."
+    "devours a moldy chunk of melon."
+    "munches on a mold melon."
+    "feasts on a fungus fruit."
+    "tears into some mold melon."
+    "crunches up a mold melon."
+    "chows down on a mold melon."
+  }
+
+class DrinkFluid extends SOUND
+  sound: ["npc/barnacle/barnacle_gulp#{i}.wav" for i=1,2]
+  level: SNDLVL_65DB
+
+class Drink extends Food
+  Sound: "DrinkFluid"
+
+class FearBeer extends Drink
+  PrintName: "Fear Beer"
+  Model: Model"models/props_junk/garbage_glassbottle001a.mdl"
+  Thirst: -12
+  Despair: -15
+  Description: "A bottle of foul off-yellow liquid.\n'BEER' is hand-written on the label."
+
+  Price: 60
+
+  TrashClass: "trash/bottle/fearbeer"
+
+  ImpactThreshold: 256
+
+  UseText: {
+    "chugs a fear beer."
+    "downs a bottle of piss beer."
+    "drinks a ratty bottle of brew."
+    "quaffs a beer and grimaces."
+    "takes a swig of fear beer and shivers."
+    "guzzles a fear beer."
+    "chokes down some piss beer."
+  }
+
+  Initialize: =>
+    super!
+    @PrecacheGibs! if SERVER
+
+  OnTakeDamage: (dmg) =>
+    super dmg
+    types = DMG_CLUB + DMG_SLASH + DMG_BULLET + DMG_CRUSH
+    @Shatter(dmg\GetDamageForce!) if dmg\GetDamage! > 10 and dmg\IsDamageType(types)
+    if attacker and IsValid(attacker) and attacker\IsPlayer!
+      if attacker\HasOddity(ODDITY_DELINQUENCY)
+        attacker\AddDespair(-math.random(2,4))
+
+  PhysicsCollide: (data) =>
+    super data
+    return if CLIENT
+    if data.Speed > @ImpactThreshold
+      if data.HitEntity and IsValid(data.HitEntity)
+        attacker = @GetNWEntity"evilrp_submitter"
+        with dmg = DamageInfo!
+          \SetDamage 25
+          \SetAttacker attacker if IsValid(attacker)
+          \SetInflictor @
+          \SetDamageType DMG_SLASH
+          \SetDamagePosition data.HitPos
+          data.HitEntity\TakeDamageInfo dmg
+      force = data.OurNewVelocity
+      @Shatter force
+
+  Shatter: (force) =>
+    return if @broken
+    @broken = true
+    pos = @GetPos!
+    for ply in *player.GetAll!
+      continue unless ply\HasOddity(ODDITY_DELINQUENCY)
+      if ply\CanSee(@) and ply\LookingInDirection(pos)
+        ply\AddDespair(-math.random(2,4))
+    with ed = EffectData!
+      \SetStart pos
+      \SetOrigin pos
+      \SetScale 8
+      util.Effect "GlassImpact", ed, true, true
+    @EmitSound"BottleSmash"
+    @GibBreakServer force
+    @Remove!
+
+class SmearBeer extends Drink
+  PrintName: "Smear Beer"
+  Model: Model"models/props_junk/garbage_glassbottle003a.mdl"
+  Thirst: -12
+  Despair: -35
+  Description: "A bottle of cloudy, greyish red booze.\nThe label is obscured with a smear of old blood."
+
+  Price: 95
+
+  TrashClass: "trash/bottle"
+
+  ImpactThreshold: 256
+
+  UseText: {
+    "chugs a smear beer."
+    "downs a bottle of red brew."
+    "drinks a cloudy bottle of beer."
+    "quaffs a smear beer and shivers."
+    "takes a swig of smear beer."
+    "guzzles a bloody beer."
+    "nurses a bottle of blood beer."
+  }
+
+  Initialize: =>
+    super!
+    @PrecacheGibs! if SERVER
+
+  OnTakeDamage: (dmg) =>
+    super dmg
+    types = DMG_CLUB + DMG_SLASH + DMG_BULLET + DMG_CRUSH
+    @Shatter(dmg\GetDamageForce!) if dmg\GetDamage! > 10 and dmg\IsDamageType(types)
+    if attacker and IsValid(attacker) and attacker\IsPlayer!
+      if attacker\HasOddity(ODDITY_DELINQUENCY)
+        attacker\AddDespair(-math.random(2,4))
+
+  PhysicsCollide: (data) =>
+    super data
+    return if CLIENT
+    if data.Speed > @ImpactThreshold
+      if data.HitEntity and IsValid(data.HitEntity)
+        attacker = @GetNWEntity"evilrp_submitter"
+        with dmg = DamageInfo!
+          \SetDamage 25
+          \SetAttacker attacker if IsValid(attacker)
+          \SetInflictor @
+          \SetDamageType DMG_SLASH
+          \SetDamagePosition data.HitPos
+          data.HitEntity\TakeDamageInfo dmg
+      force = data.OurNewVelocity
+      @Shatter force
+
+  Shatter: (force) =>
+    return if @broken
+    @broken = true
+    pos = @GetPos!
+    for ply in *player.GetAll!
+      continue unless ply\HasOddity(ODDITY_DELINQUENCY)
+      if ply\CanSee(@) and ply\LookingInDirection(pos)
+        ply\AddDespair(-math.random(2,4))
+    with ed = EffectData!
+      \SetStart pos
+      \SetOrigin pos
+      \SetScale 8
+      util.Effect "GlassImpact", ed, true, true
+    @EmitSound"BottleSmash"
+    @GibBreakServer force
+    @Remove!
+
+class Shake extends Drink
+  PrintName: "Soylent Shake"
+  Model: Model"models/props_junk/garbage_milkcarton001a.mdl"
+  Thirst: -40
+  Hunger: -40
+  Despair: 30
+  Description: "A jug full of partially blended human remains.\nIt's warm and chunky."
+
+  Price: 120
+
+  TrashClass: "trash/plastic/shake"
+
+  UseText: {
+    "chokes down a soylent shake."
+    "slurps up a soylent shake."
+    "swigs blended peoplemeat and shudders."
+    "struggles down a jug of human sludge."
+    "shoots back a bad protein shake."
+    "guzzles a meat smoothie."
+    "quaffs an entire soylent shake."
+  }
+
+class Twitchel extends Drink
+  PrintName: "Twitchel"
+  Model: Model"models/props_junk/garbage_plasticbottle003a.mdl"
+  Thirst: -44
+  Hunger: 6
+  Despair: 6
+  Description: "A bottle of refreshingly lukewarm, cloudy green drink."
+
+  Price: 80
+
+  TrashClass: "trash/plastic/twitchel"
+
+  UseText: {
+    "necks a bottle of twitchel."
+    "can't get enough of that green stuff."
+    "sucks down a bottle of twitchel."
+    "sips up their twitchel."
+    "pours twitchel down their throat."
+    "drinks a bottle of twitchel."
+    "slurps up a green drink."
+  }
+
+class TakeMeds extends SOUND
+  sound: ["npc/zombie/zombie_pain#{i}.wav" for i=1,3]
+
+class Medicine extends Food
+  Sound: "TakeMeds"
+
+class Pills extends Medicine
+  PrintName: "Pills"
+  Model: Model"models/props_lab/jar01b.mdl"
+  AddHealth: => (math.random -15, -30)
+  Hunger: => (math.random 30, 50)
+  Thirst: => (math.random 30, 60)
+  Despair: => (math.random -60, -100)
+  --Fluid: 90
+  Description: "A white plastic bottle, full of random pills."
+
+  Price: 125
+
+  TrashClass: "trash/plastic/pills"
+
+  UseText: {
+    "throws a mess of pills into eir mouth."
+    "consumes the whole contents of a pill bottle."
+    "devours handfuls of scary-looking pills."
+    "chokes down some strange pills."
+    "takes eir medicine, like a good citizen should."
+    "swallows a mouthful of pills."
+    "takes an excessive dose of colorful pills."
+    "tosses back an entire bottle of pills."
+    "throws back a bottle of mystery pills."
+  }
+
+class TimeGas extends Medicine
+  PrintName: "Time Gas"
+  Model: Model"models/props_wasteland/prison_sinkchunk001e.mdl"
+  Sound: ["npc/fast_zombie/idle#{i}" for i=2,3]
+  AddHealth: => (math.random 20, 40)
+  Hunger: => (math.random 10, 20)
+  Thirst: => (math.random 20, 30)
+  Despair: => (math.random 0, 10)
+  --Pox: => *3
+  Description: "An inhaler of time acceleration gas.\nSpeeds up healing, and dying."
+
+  Price: 100
+
+  TrashClass: "trash/inhaler"
+
+  UseText: {
+    "breathes in some time gas."
+    "huffs a healing gas."
+    "isn't yet tired of the time gas."
+    "inhales a big cloud of time gas."
+    "takes a deep breath of time gas."
+    "drags in a lungful of time gas."
+    "sniffs up a cloud of time gas."
+    "huffs time gas from the rusty inhaler."
+  }
+
+class Bleach extends Medicine
+  PrintName: "Chlorine"
+  Model: Model"models/props_junk/garbage_plasticbottle002a"
+  Sound: "DrinkFluid"
+  AddHealth: => (math.random 75, 99)
+  Hunger: 70
+  Thirst: 70
+  Despair: 70
+  --Pox: -100
+  Description: "A jug full of bleach."
+
+  Price: 100
+
+  TrashClass: "trash/plastic/bleach"
+
+  UseText: {
+    "drinks bleach."
+    "chugs an entire fucking jug of chlorine."
+    "unscrews a jug of bleach and pours it down the hatch."
+    "chokes down gulp after gulp of chlorine bleach."
+  }

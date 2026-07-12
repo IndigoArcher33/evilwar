@@ -1,0 +1,83 @@
+GAMEMODE.FindPlayer = (str) =>
+  return nil unless str
+  return nil if str == ""
+  plys = player.GetAll!
+  for i=1,#plys
+    ply = plys[i]
+    return ply if tonumber(str) == ply\UserID!
+    return ply if str == ply\SteamID!
+    lower_nick = ply\Nick!\lower!
+    lower_steam = ply\SteamName!\lower!
+    lower_str = str\lower!
+    return ply if string.find(lower_nick, lower_str, 1, true) ~= nil
+    return ply if string.find(lower_steam, lower_str, 1, true) ~= nil
+  return nil
+
+meta = FindMetaTable"Player"
+meta[k] = v for k, v in pairs {
+  CanSee: (pos) =>
+    filter = {@}
+    if isentity(pos)
+      filter[] = pos
+      pos = pos\EyePos!
+    tr = util.TraceLine{
+      start: @IsPlayer! and @EyePos! or @WorldSpaceCenter!
+      endpos: pos
+      :filter
+      mask: MASK_SOLID + CONTENTS_WINDOW + CONTENTS_GRATE
+    }
+    return tr.Fraction == 1
+      
+  CanHear: (pos) =>
+    filter = {@}
+    if isentity(pos)
+      filter[] = pos
+      pos = pos\EyePos!
+    tr = util.TraceLine{
+      start: @IsPlayer! and @EyePos! or @WorldSpaceCenter!
+      endpos: pos
+      :filter
+      mask: MASK_SOLID_BRUSHONLY
+    }
+    return tr.Fraction == 1
+
+  LookingAt: (ent) =>
+    if @CanSee ent
+      local tpos
+      if ent\IsPlayer!
+        tpos = ent\EyePos!
+      else
+        tpos = ent\GetPos!
+      return @LookingInDirection tpos
+
+  LookingInDirection: (pos, pct=0.95) =>
+    diff = pos - @GetShootPos!
+    match = @GetAimVector!\Dot(diff) / diff\Length!
+    return match >= pct
+
+  GetTraceFilter: =>
+    filter = {@}
+    return filter
+
+  GetViewOrigin: =>
+    local pos
+    local ang
+    ent = @GetBodyEntity!
+    return unless IsValid ent
+    head = ent\LookupBone"ValveBiped.Bip01_Head1"
+    if head
+      ent\SetupBones! if CLIENT
+      matrix = ent\GetBoneMatrix head
+      pos, ang = LocalToWorld Vector(5,-5,0), Angle(0,-90,-90), matrix\GetTranslation!, matrix\GetAngles!
+      ang = ent\EyeAngles! unless ent\IsRagdoll!
+      trace = util.TraceLine {
+        start: @EyePos!
+        endpos: pos
+        filter: @GetTraceFilter!
+        mins: Vector -3, -3, -3
+        maxs: Vector 3, 3, 3
+        collisiongroup: COLLISION_GROUP_PLAYER_MOVEMENT
+      }
+      pos = trace.HitPos
+    return pos, ang
+}

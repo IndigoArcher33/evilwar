@@ -1,0 +1,482 @@
+* LIST
+** To-Do
+The actual list of tasks and things that needs to be implemented.
+*** TODO [#1] Evil Factory
+A factory that lives deep in the sewers. Working it doesn't make any
+money, but it lets bad actors create guns, bombs, drugs, and traps
+that aren't normally accessible.
+
+The Horrible Machine is already in the game, but it's bugged. The
+locations for it and its corresponding generator are also bugged.
+Gotta make sure it doesn't give any money, and then load it up with
+recipes for horrible things.
+*** TODO [#2] Scavenging
+Garbage and low-grade food (like paper and boots) spawn randomly
+around the sewers. It's that simple.
+
+We should put a couple refineries around the sewers, to recycle trash
+for use in the Evil Factory. Not many, maybe closer to the entrances,
+but somewhat nearby.
+*** TODO [#3] ROT(?)
+**** TODO [#1] Metastabilizers
+**** TODO [#2] Tumors
+These increase the rate at which the ROT grows, until they are
+destroyed by damage or excised by a Korpsman's L.R.D.
+- Destroying a Tumor will immediately increase the ROT by a small
+  percentage, and spawn a cloud of poisonous gas.
+- Tumors can be fed biomass in exchange for bones, and a small chance
+  at some very good tools or consumables. Intact capsules give a
+  greater reward than biomass items.
+- Tumors also receive biomass when a Flesh Capsule pops nearby them.
+- They can be picked up without harm, and are durable enough to be
+  swung around to jack capsules from the hands of working proles.
+**** TODO [#3] Sabotage
+There should be cases where people may wish to foster the ROT in
+exchange for their own personal gains.
+- Tumor exchange, mentioned above.
+- Evil Factory increases ROT?
+*** TODO [#4] Ranching
+Bring back Amoebae. Add Amoebal Slime which can be turned into fuel at
+a great cost in rust to the refinery.
+*** TODO [#5] Zombies(?)
+** Personal Impact
+People should feel like their effort has an impact on the game world.
+*** Persistence
+*** Round Impact
+Antagonists should be directly affected by the work of the masses. It
+should be possible for a large group of people, working together, to
+essentially hijack the round and turn it in some other direction.
+*** Gained Conditions
+Depending on things that happen in the round, permanent conditions may
+be applied to the server until the round ends.
+** Illusion of Choice
+There should be a few different angles for players to take when
+using their fate's skills and abilities.
+*** Proles 
+- Petit Bourgeoise :: Proles can make things worth selling through
+  their own labor, such as by ranching moldstools, getting rare-drops
+  from amoebae, cooking foods in stoves, or using the Evil Factory.
+- Capsule Jacking :: There's some kind of tool or quirk that
+  encourages you to break the capsules of other proles, on purpose,
+  for your own benefit.
+  - Maybe tumors are durable, and can be picked up and waved around to
+    consume biomass. 
+*** Sanitars
+- Equipment Smuggling :: Sanitars can pass along or sell equipment
+  that they requisition from the Arms Terminal. A record of who
+  withdraws stock and what they withdraw is kept, to encourage
+  smugglers to maintain a modicum of secrecy. 
+*** Korpsmen
+- Pharmaceuticals :: Korpsmen can make and sell medicine and some
+  other minor goods. Parasites can be cooked or crafted into
+  useful things.
+
+* THINGS TO DO AT SOME POINT
+** TODO Agnosticize beam-shooting functions
+You know how machines can fire beams at people for being unauthorized
+personnel? That should probably be more generic.
+** TODO Add Fashion
+*** TODO Bareness
+We need to create an unclothed corpse model. Whether this means nudity
+or undergarments is up in the air.
+*** TODO Designs
+**** Symbols
+- Generic
+  - Skull & crossbones
+  - Biohazard
+  - Dragon's Eye
+  - Heart
+  - Star
+  - Ouroboros
+  - @ symbol
+- Religious
+  - Ankh
+  - Yin-Yang
+  - Hamsa
+  - Pentacle
+  - Church of Spiritual Technology logo
+  - Operating Thetan symbol
+  - Black moon of Lilith
+  - Leviathan Cross
+- Politics
+  - Swastika
+  - Hammer & sickle
+  - O1G
+  - Wildcat
+  - Anarchy 'A'
+  - Meandros
+  - RPP Six arrows
+  - Pirate Party black sail
+- The Others
+  - Bluetooth rune
+  - Emacs
+  - GNU
+  - Monas Hieroglyphica
+  - Crowbar Lambda
+*** TODO Mechanics
+** TODO DSP on voices
+** TODO Prototype Burial
+NOT CRITICAL BEFORE 4/19
+*** TODO Burial Basics
+- [ ] Figure out a way to check the material of the map geometry.
+  - (GMod Stranded)
+- [ ] Allow 'Burial' action to take place on soft materials.
+  - The exact type of material should be noted, for future fuckery.
+*** TODO Burying Stuff
+- [ ] Add the ability to bury items
+- [ ] Add a burial site indicator?
+  - [ ] Add a way to hide indicator, for stealth.
+- [ ] Add corpse burial(?)
+*** TODO Farming Appropriation
+- [ ] Buried items are marked as being buried, which can cause
+  mechanics to trigger.
+** TODO Write our own portals
+The ones we're using now are written in Lua. Gross.
+** TODO Add Vending Machines
+NOT CRITICAL BEFORE 4/19
+- Haunted vending machines are far more dangerous
+  - [ ] Haunted vending machines dispense sodas when touched.
+    - [ ] And when someone steps in front of them.
+  - [ ] Haunted sodas explode on impact with anything but the world.
+** TODO [25%] [1/4] Improve Combat
+NOT CRITICAL BEFORE 4/19
+- [ ] Add SKELETON movement(?)
+- [ ] Add stamina tied to hunger.
+- [X] Add wall-slamming/horizontal fall damage.
+- [ ] Players can get knocked over.
+** TODO Improve Building
+NOT CRITICAL BEFORE 4/19
+- [ ] Props 'fill-in' instead of immediately becoming corporeal.
+*** TODO Portal Placement 
+- [ ] Kommandant
+  Vector( -10868, 13022, 194 )
+- [ ] Sanitar
+  Vector( -11520, 13095, 34 )
+- [ ] Korpsman
+  Vector( -14845, 13353, 32 )
+- [ ] Proletariat
+  - Vector( -10104, 13626, 32 )
+  - Vector( -15602, 13375, 32 )
+  - Vector( -12185, 12728, 31 )
+  - Vector( -11905, 14180, 32 )
+  - Vector( -10123, 14088, 47 )
+  - Vector( -11755, 15068, 32 )
+*** TODO The Bonekeeper
+*** TODO Factory Locations
+** TODO Bandit
+A fate that thrives on antagonizing proles, necessitating that
+Sanitars pay closer attention to their well-being.
+*** Capjacking
+Bandits can destroy capsules by using some kind of tool or technique.
+This will give them a reward.
+* THINGS TO DO SOON
+** TODO Kidneystani don't panic from being on fire
+** TODO Eugenics
+** TODO [50%] [1/2] [#1] Mood & Atmosphere
+- [X] Action text
+- [ ] New Chatbox
+** TODO [66%] [4/6] [#2] Goodbye old world
+*** DONE My name
+People need their names set to their fate names and /rpname needs to
+be disabled - People cannot change their names.
+*** TODO [1/2] Notifications
+**** TODO New notification UI
+**** DONE Job notifications
+Job notifications need to be removed for non-admins. Gmod's
+notification system needs to be remade into something more
+nightmarish.
+*** DONE Weapon Notifications
+The "New weapons" notifications in the right side of the screen need
+to be removed.
+*** DONE Weapon Wheel
+Default weapon wheel needs to be replaced with something more
+nightmarish. It also currently goes over the blood/emptiness/stats
+which SUCKS!!!
+*** TODO Scoreboard
+Needs to be replaced with something more nightmarish.
+*** DONE F4 Menu
++Needs to be redesigned. Jobs & Ammo sections need to be gone and+
++replaced with in-game means ( i.e. Portals & Munitionizers ). New+
++panels for Laws and Buildings ( Like factory buildings/Printers )
++are kept in replacement for context menu cause that sucked.+
+
+All of the F4 menu's functionality has been substituted by various
+other means.
+** TODO [#3] Health
+*** TODO Korpsman Fate
+- Regens blood more quickly.
+- Spawns with L.R.D.
+- Can remove organs/parasites with knife.
+  - It can't distinguish between them, so you'd better be sure.
+*** TODO L.R.D. Rework
+Healing people should use the Korpsman's blood.
+*** DONE Autostitchers
+Rather than pressing ~KEY_E~ once to heal and twice to cure parasites,
+we can use a 3D2D screen to have multiple options.
+Expensive, and even more expensive when a Korpsman is online.
+*** TODO Illness / Parasites
+*** TODO Stamina
+Stamina determines how long you can sprint for, and how high you can
+jump. Thirst acts on it like POX, limiting your maximum stamina.
+** TODO [#4] Tyranny
+*** TODO Law Integration
+- [ ] Give the Kommandant a suitable means to edit the law if he doesn't
+have one already.
+- [ ] Give players means by which to view the laws.
+  - Could be in F4 menu, toggleable sidebox, public telescreens.
+- [ ] Add labor tax.
+- [ ] Add sales tax.
+- [ ] Add bonekeeping tax.
+- [ ] Add a way for taxes to be changed.
+*** DONE Add more items
+- More foods, more edible not-foods.
+  - [X] Add booze.
+- Types of metal and rocks.
+  - [X] Slag
+  - [X] S
+*** DONE Make items accessible
+- [X] Abortion
+  - Purchased from Keeper
+- [X] Paper
+  - Spawns randomly around the map, or something like that.
+- [X] Rib Bone
+  - Drops from bone capsules
+- [X] Slop Skull
+  - Rare drop from bone capsules
+**** TODO Add the Bonekeeper
+Playing dealer sucks, it'll be replaced with an NPC for now.
+- [X] Functions as an autodealer, selling stuff to the player.
+- [ ] Functions as an ATM, storing players' bones between lives.
+- [ ] Requires a convoluted process to operate, especially the shop.
+- [X] Give it dialogue.
+  - Suicidal enslaved computer, but polite and butleresque about it.
+** TODO [0%] [0/1] [#5] Information
+*** TODO [0%] [0/3] Integrate the Waiver
+SCHEDULED: <2025-08-09 Sat>
+- [ ] Set loading screen.
+- [ ] Make waiver text appear upon first-join.
+- [ ] Add accessible way to pull up waiver text when desired.
+*** TODO [80%] [4/5] Information Display
+SCHEDULED: <2025-08-08 Fri>
+- [X] Item name is displayed when looking at item.
+- [X] Item descs are displayed when looked at in inventory.
+- [X] Show info/icons of Fate portals.
+- [ ] Show spawn portals through walls.
+- [X] Show info about machines/NPCs.
+If possible, speech sounds, death sounds, etc. should be capable of
+having DSP effects applied to them so that some fates speak with
+reverb. This idea is inspired by the character "Golden Joe" from
+=[adult swim]='s series "12 oz. Mouse"
+** TODO [#6] Piss Update
+- [ ] ~fluid~ bar.
+- [ ] Add lizard.
+- [ ] Variable for adding/subtracting fluid.
+- [ ] Add the ability to piss yourself
+** TODO [#7] Expanding Needs
+- [ ] Dryness and emptiness rapidly deplete health instead of killing
+  you instantly.
+- [ ] Emptiness reduces speed and jump height, to a point.
+- [ ] Despair increases HPPD.
+- [ ] Dryness adds another kind of visual noise.
+** TODO [25%] [1/4] [#8] LIFE EXPECTANCY
+- [ ] Dying is harder. You can revive people on the brink of death, aka before they rot for the first time. It's not particularly hard, and doctors have it easier.
+- [X] Carrying corpses is much slower unless you have specialised equipment for it.
+- [ ] While incapacitated, you moan and breathe rather loudly, making it possible for people to find them and harder for would-be assassins to put you down. You can be gagged with a gag ( a contraband item ) to not make those noises, but it's not easy to get.
+- [ ] Even if your bones/items aren't *reset* when you die, you should
+  at least receive a penalty to them.
+  - You could drop/lose a percentage of your bones, or we could add a
+    bank+wallet system like Schedule I's.
+** TODO [#9] Wipe Mechanism
+- [ ] Starting equipment randomizes after wipe.
+*** TODO Army of the Dead
+THE NECROMANCER WILL INVADE FROM THE [N/S/E/W] IN 6 DAYS.
+LIVER FAILURE MUST PREPARE, OR IT WILL SURELY FALL.
+"The Necromancer is the ghost of the Sorceror, who battled Sotla's
+first progeny, founding Death Town and inventing computers in the
+process. After centuries roaming the Devil's Dust, he has returned to
+Liver Failure to get his revenge."
+- [ ] Create hostile skeleton/zombie NPCs.
+- [ ] Create the Necromancer potential.
+  - Not a damage-dealer.
+  - [ ] Immortal, somehow.
+    - A ghost, incorporeal and unkillable.
+    - Can reincarnate in dead bodies.
+  - [ ] Has a weapon that can summon undead where he looks.
+    - [ ] Has a long cooldown or requires a finite resource.
+  - [ ] Leather jacket and hunter hat, cool wasteland biker fag.
+- [ ] Create the Neophyte potential?
+  Husks of the Sorceror's dead biker buddies. Fight on his behalf.
+  - [ ] They're boneheads.
+  - [ ] Dressed similarly, dirty wasteland attire with hunter hats.
+- [ ] Implement wipe circumstances.
+  - [ ] When all NPCs and Neophytes are dead, Liver Failure wins.
+  - [ ] When the Kommandant is killed, the Sorceror wins.
+** TODO [66%] [2/3] Overlay
+SCHEDULED: <2025-08-08 Fri>
+- [X] Overlay for gas masks.
+- [X] Sanitars get a green colour overlay when their weaponry is
+  holstered, and red when it is unholsted. If possible, make it also
+  visible on their model.
+- [ ] Having high despair could apply a semi-transparent
+  static/shifting image overlay.
+** TODO [50%] [1/2] Sounds
+SCHEDULED: <2025-08-08 Fri>
+- [ ] It'd be nice if the Doom jumping sound was replaced by something.
+- [X] BecomeSounds added back when someone becomes a fate, instead of
+  the default darkRP click.
+** TODO [0%] [0/2] Ranks and Whitelists
+- [ ] Kommandant. Kommandant can only be played by those chosen by
+  Necromancers. It is also taken away at will.
+- +[X] Slavery. Only the Kommandant and Necromancers can ascend slaves,
+  no Foremen this time.+
+- [ ] Sanitar. Sanitars and Antagonists require a rank. This one could either be
+  bought, given with time or just given at will akin to tooltrust, but
+  can be taken away if the player is a shitter but is mostly to
+  prevent complete newbies from playing complex roles that have power
+  over others.
+** TODO Monetization
+*** TODO Rainbow Knighthood
+SCHEDULED: <2025-08-08 Fri>
+- Certain clothing items and accessories cycle in color.
+- Your piss is made of rainbows.
+- Your XOMBOKOM text is a rainbow gradient(?)
+*** TODO Curse Token
+- Afflicts another player with one of several random curses.
+*** TODO Black Cloud
+For the next week, the entirety of Liver Failure will be engulfed by
+a cloud of dusty, grimy, polluted air.
+- Everybody on the server is given a minor blanket debuff. They're
+  just a little worse at everything.
+- Smog makes it hard to see.
+*** TODO Strange Days
+For the next week, mutators are guaranteed.
+*** TODO Propagator
+You know him.
+*** TODO Unfortunate
+SCHEDULED: <2025-08-10 Sun>
+You're the scum of this city and nobody likes you.
+- Your despair increases twice as fast as normal.
+- You have a ball of bugbait you can throw at people, or huff to speak
+  in tongues.
+- You can't own doors.
+- All work pays you $1.
+- You spawn with an extra oddity.
+** TODO [[https://death.town/~corpse][death.town/~corpse]]
+
+Much of what appears on the website for Liver Failure Relapse is horribly
+outdated. It could do with some firmer establishment of worldbuilding.
+
+Quotes are intended as examples, not literal text for inserting into the
+viewable result.
+*** TODO Lore/World
+*** TODO Controls [0/2] [0%]
+**** TODO Keybinds [/] [%]
+**** TODO Commands
+- [ ] Chatbox
+  Commands here are written in the ingame chatbox. Some of them are prefixes, in
+  that they expect text to the right of them, others don't require additional
+  input, some might even be able to do both... it depends.
+  + [ ] IC [0/3] [0%] :: 'In-character' communications and whatnot.
+    * [ ] Speak :: No prefix.
+      Speak to those around you with an average volume.
+
+      Speech appears in a blu-ish color.
+    * [ ] Yell :: =/yell <words>=, =/y <words>=
+      Shout at the top of your lungs, so your lamentations reach further.
+
+      Shouting appears in red and it jitters. It also modifies your text input
+      by uppercasing every character possible, and replaces =.= with =!=.
+    * [ ] Whisper :: =/whisper <words>=, =/w <words>=
+      Quietly transmit your secrets to others.
+
+      Whispering appears in grey and in a smaller font.
+      Whispering will never transmit through walls like other forms of speech.
+
+      Unlike other speech commands, whispering will not produce an audible sound ingame.
+  + [ ] OOC [0/2] [0%] :: Out-of-character communications.
+    These necessarily entail thinking outside of the game's boundaries and
+    should not be used too frequently. They should _never_ be used to transmit
+    in-character information.
+    * [ ] Global :: =// <words>=, =/ooc <words>=
+      Send a message to everyone. Useful if you are confused about a game's
+      mechanic and can refer to it without shattering the atmosphere.
+
+    * [ ] Local :: =[[ <words>=, =.// <words>= =/looc <words>=
+      Send an out-of-character message to people around you.
+- [ ] Console
+  Commands here are written in the developer console, which is (near)
+  universally located on the =~= key.
+  + [ ] Commands [0/1]
+    These do something and/or print information.
+    * [ ] =donations= :: List what donation rewards you have.
+  + [ ] Settings [0/2]
+    These aren't so much commands, but configurations of your preferences.
+    * [ ] =lfr_rainbow_playermodel= :: Toggles playermodel color cycling.
+      Requires the ~rainbow~ donation reward.
+    * [ ] =lfr_rainbow_physicsgun= :: Toggles playermodel color cycling.
+      Requires the ~rainbow~ donation reward.
+*** TODO Roleplaying
+- [ ] The basics
+  #+begin_quote
+  It's a multi-user shared hallucination. Make believe like you're another
+  person and act like it.
+  #+end_quote
+- [ ] Mechanical emphasis
+  #+begin_quote
+  This is a computer roleplaying game, not a tabletop session nor chatroom. It
+  wastes much less time to simply blow someone's head off than it does to write
+  an emote describing it, not to mention that it's fun.
+  #+end_quote
+- [ ] Freedom, terrible freedom
+  #+begin_quote
+  Practically every roleplaying project on Garry's Mod, no matter how 'serious'
+  it is labeled, share a handful of 'rules' in common that damage both roleplay
+  _and_ gameplay. Maybe you've heard some related terms, like 'passive roleplay'
+  or 'RDM' ('random deathmatch'), to name a couple.
+
+  This is the one that doesn't require constant supervision in order to
+  facilitate interesting events.
+
+  Consider the following example: let's say you want to acquire a gun and go on
+  a killing spree.
+
+  - Elsewhere :: Despite there usually being playerclasses that appear to fill the
+    role(s) of law enforcement, such players only rarely respond to violent crimes
+    of this nature (if at all) because a player would most often be simply banned
+    for it. As a result, much gameplay is dead before it can happen.
+  - Liver Failure :: Kill as many as you can, if you can -- but someone else
+    will probably hit you by surprise first,
+  #+end_quote 
+*** TODO Letting go
+Acknowledgement and some advice regarding the game's intentions.
+#+begin_quote
+This game is deliberately made to constitute cruel and unusual punishment for
+infliction upon anyone who steps inside.
+
+Not only does it try to burden you wherever it can, it both encourages and
+coerces players to hurt each other. It could be you doing the hurting, or it
+could be you finding a spirit of cooperation in others and succeeding, even if
+only slightly, against the horrors up until you decide you want to be the
+horrors yourself.
+#+end_quote
+
+* THINGS DONE
+** DONE Port factories
+*** TODO Factory item selection?
+Maybe proles should be able to choose what products they're making in
+the machines, like it was originally.
+** DONE Finish needs
+- [X] Add thirst
+- [X] Add despair
+** DONE [100%] [3/3] Patching Holes
+Little things to add and bugs to fix.
+- [X] Door display text.
+- [X] Function for entities to return crosshair text.
+- [X] Pressing reload as ghost transports to spawn.
+** DONE Inventory
+- [X] A proper inventory UI is needed, with the ability to see what
+  items you have as well as their description and weight ( if we're
+  readding that. )
+- [X] Pocket can be reused for that but it's UI is both unatmospheric
+  and also doesn't work for some people ( like me ). A complete rework of it's
+  UI should do.

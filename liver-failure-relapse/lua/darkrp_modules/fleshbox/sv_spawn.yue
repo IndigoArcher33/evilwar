@@ -1,0 +1,26 @@
+global EVIL_NEXT_BOX = 0
+EVIL_BOX_DELAY = 30
+EVIL_BOX_MAX = 3
+global EVIL_BOX = {}
+EVIL_BOX_POSITIONS = {
+  ["test1"]: {
+    Vector( -1454, -2295, -829 )
+    Vector( -876, -2461, -754 )
+    Vector( -1165, -2813, -830 )
+  }
+}
+
+hook.Add "Think", "evilrp_box_spawner", ->
+  if CurTime! >= EVIL_NEXT_BOX
+    EVIL_NEXT_BOX = CurTime! + EVIL_BOX_DELAY + math.random(EVIL_BOX_DELAY)
+    boxes = ents.FindByClass"fleshbox"
+    if #boxes < EVIL_BOX_MAX
+      positions = EVIL_BOX_POSITIONS[game.GetMap!]
+      pos = positions[math.random(#positions)]
+      box = ents.Create"fleshbox"
+      with box
+        \SetPos pos
+        \Spawn!
+        \Activate!      
+        \GetPhysicsObject!\EnableMotion false
+  return

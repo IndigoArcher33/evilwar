@@ -1,0 +1,59 @@
+EVIL_LOOT_POSITIONS = {
+  ["rp_district_slums_v2"]:
+    * pos: Vector(5534, 4085, 186)
+      ang: Angle(0, -82, 0)
+      cls: "lootable/dumpster"
+    * pos: Vector(3971, 1367, 217)
+      ang: Angle(0, -6, 0)
+      cls: "lootable/dumpster"
+    * pos: Vector(2524, 2740, 218)
+      ang: Angle(0, -35, 0)
+      cls: "lootable/dumpster"
+    * pos: Vector(1980, 5123, -70)
+      ang: Angle(0, -163, 0)
+      cls: "lootable/dumpster"
+    * pos: Vector(4674, 4520, 175)
+      ang: Angle(0, -124, 0)
+      cls: "lootable/dumpster"
+    * pos: Vector(6499, 7699, 186)
+      ang: Angle(0, -19, 0)
+      cls: "lootable/dumpster"
+    * pos: Vector(6926, 806, 218)
+      ang: Angle(0, 93, 0)
+      cls: "lootable/dumpster"
+}
+
+EVIL_LOOT_REPLACEMENTS = {
+  ["rp_liverfailure_kidneydagger"]:
+    ["models/props_junk/trashdumpster01a.mdl"]: "lootable/dumpster"
+}
+
+create_loot = ->
+  map = game.GetMap!
+  for lootable in *ents.FindByClass"lootable/*"
+    lootable\Remove! unless lootable.leave_alone
+  if EVIL_LOOT_POSITIONS[map]
+    for v in *EVIL_LOOT_POSITIONS[map]
+      sp = ents.Create v.cls
+      with sp
+        \SetPos v.pos
+        \SetAngles v.ang
+        \Spawn!
+        \Activate!
+        \GetPhysicsObject!\EnableMotion false
+  if EVIL_LOOT_REPLACEMENTS[map]
+    for e in *ents.FindByClass"prop_dynamic"
+      replacement = EVIL_LOOT_REPLACEMENTS[map][e\GetModel!]
+      if replacement
+        sp = ents.Create replacement
+        with sp
+          \SetPos e\GetPos!
+          \SetAngles e\GetAngles!
+          e\Remove!
+          \Spawn!
+          \Activate!
+          \GetPhysicsObject!\EnableMotion false
+          .leave_alone = true
+  return
+    
+hook.Add "InitPostEntity", "evilrp_create_loot", create_loot

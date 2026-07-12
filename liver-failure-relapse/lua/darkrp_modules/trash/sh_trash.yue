@@ -1,0 +1,211 @@
+class Trash_Cardboard extends SOUND
+  sound: ["physics/cardboard/cardboard_box_break#{i}.wav" for i=1,3]
+
+class Trash_Metal extends SOUND
+  sound: ["physics/metal/metal_box_break#{i}.wav" for i=1,2]
+
+class Trash_Glass extends SOUND
+  sound: ["physics/glass/glass_largesheet_break#{i}.wav" for i=2,3]
+
+class Trash_Plastic extends SOUND
+  sound: ["physics/plastic/plastic_barrel_break#{i}.wav" for i=1,2]
+    
+class Trash extends ENTITY
+  Base: "base_anim"
+  Type: "anim"
+
+  Spawnable: true
+  AdminSpawnable: true
+
+  Category: "EvilRP: Trash"
+    
+  Interesting: true
+    
+  PrintName: "Trash"
+    
+  Description: "It no longer serves its intended purpose.\nIts corpse could be recycled at a Refinery."
+
+  OnTakeDamage: (dmg) =>
+    @TakePhysicsDamage dmg
+
+  PhysicsCollide: (data, physobj) =>
+    prop1 = util.GetSurfaceData(data.OurSurfaceProps)
+    prop2 = util.GetSurfaceData(data.TheirSurfaceProps)
+    if data.Speed >= 75 and ((@LastImpact or 0) + 0.1 < CurTime!)
+      @LastImpact = CurTime!
+      snd = switch type(@ImpactSound)
+        when "table"
+          @ImpactSound.hard
+        when "string"
+          @ImpactSound
+        when "nil"
+          prop1.impactHardSound
+      @EmitSound snd
+      -- @SetCollisionGroup COLLISION_GROUP_WEAPON if @SizeClass <= SIZE_SMALL
+    elseif data.Speed >= 25 and ((@LastImpact or 0) + 0.1 < CurTime!)
+      @LastImpact = CurTime!
+      snd = switch type(@ImpactSound)
+        when "table"
+          @ImpactSound.soft
+        when "string"
+          @ImpactSound
+        when "nil"
+          prop1.impactSoftSound
+      @EmitSound snd
+      -- @SetCollisionGroup COLLISION_GROUP_WEAPON if @SizeClass <= SIZE_SMALL
+  SubmitSound: "Trash_Cardboard"
+
+  Initialize: =>
+    @SetModel @Model
+    if SERVER
+      @PhysicsInit SOLID_VPHYSICS
+      @SetMoveType MOVETYPE_VPHYSICS
+      @SetSolid SOLID_VPHYSICS
+      @SetUseType SIMPLE_USE
+      @PhysWake!
+
+  Use: (ply) =>
+    if @IsPlayerHolding! and ply == @ply
+      ply\DropObject!
+    else
+      @ply = ply
+      ply\PickupObject(@)
+      @SetNWEntity("evilrp_submitter", ply)
+  
+  PMRender: (item) ->
+    ct = {}
+    wt = scripted_ents.Get item.class
+    ct[] = wt.PrintName
+    if wt.Description
+      ct[] = ""
+      ct[] = { text: wt.Description, font: "Spleen_Label_Small" }
+    return ct
+
+  HUDRender: =>
+    ct = {}
+    ct[] = @PrintName
+    if @Description
+      ct[] = ""
+      ct[] = { text: @Description, font: "Spleen_Label_Small" }
+    return ct
+
+  Interactions: (ply) =>
+    actions = {}
+    if (@Pocketable ~= false)
+      actions[] = { desc: "Pocket", func: (-> netstream.Send("PocketItem", @) ) }
+    return actions
+
+
+class Fuel extends Trash
+  PrintName: "Empty Jerrycan"
+    
+  Model: Model"models/props_junk/metalgascan.mdl"
+  SubmitSound: "Trash_Metal"
+  Refinement:
+    result: "metal/scrap"
+    time: 5
+    rust: 3
+
+class Inhaler extends Trash
+  PrintName: "Dead Inhaler"
+
+  Model: Model"models/props_wasteland/prison_sinkchunk001e.mdl"
+
+  SubmitSound: "Trash_Metal"
+
+  Refinement:
+    result: "metal/scrap"
+    time: 5
+    rust: 3
+
+class BottleSmash extends SOUND
+  sound: "placenta/weapons/bottle_break.wav"
+     
+class Bottle extends Trash
+  PrintName: "Empty Bottle"
+
+  Model: Model"models/props_junk/garbage_glassbottle003a.mdl"
+
+  Description: "Where's the booze?"
+
+  SubmitSound: "Trash_Glass"
+
+  Refinement:
+    time: 2
+    rust: 1
+
+  ImpactThreshold: 256
+  
+  Initialize: =>
+    super!
+    @PrecacheGibs! if SERVER
+
+  OnTakeDamage: (dmg) =>
+    super dmg
+    types = DMG_CLUB + DMG_SLASH + DMG_BULLET + DMG_CRUSH
+    attacker = dmg\GetAttacker!
+    @Shatter(dmg\GetDamageForce!, attacker) if dmg\GetDamage! > 10 and dmg\IsDamageType(types)
+    if attacker and IsValid(attacker) and attacker\IsPlayer!
+      if attacker\HasOddity(ODDITY_DELINQUENCY)
+        attacker\AddDespair(-math.random(2,4))
+
+  PhysicsCollide: (data) =>
+    super data
+    return if CLIENT
+    if data.Speed > @ImpactThreshold
+      if data.HitEntity and IsValid(data.HitEntity)
+        attacker = @GetNWEntity"evilrp_submitter"
+        with dmg = DamageInfo!
+          \SetDamage 25
+          \SetAttacker attacker if IsValid(attacker)
+          \SetInflictor @
+          \SetDamageType DMG_SLASH
+          \SetDamagePosition data.HitPos
+          data.HitEntity\TakeDamageInfo dmg
+      force = data.OurNewVelocity
+      @Shatter force
+
+  Shatter: (force, attacker=@GetNWEntity"evilrp_submitter") =>
+    return if @broken
+    @broken = true
+    pos = @GetPos!
+    for ply in *player.GetAll!
+      continue unless ply\HasOddity(ODDITY_DELINQUENCY)
+      if ply\CanSee(@) and ply\LookingInDirection(pos)
+        ply\AddDespair(-math.random(2,4))
+    with ed = EffectData!
+      \SetStart pos
+      \SetOrigin pos
+      \SetScale 8
+      util.Effect "GlassImpact", ed, true, true
+    @EmitSound"BottleSmash"
+    @GibBreakServer force if force
+    @Remove!
+      
+class FearBeer extends Bottle
+  Model: Model"models/props_junk/garbage_glassbottle001a.mdl"
+
+class Plastic extends Trash
+  PrintName: "Macroplastics"
+
+  Model: Model"models/props_junk/garbage_bag001a"
+
+  Description: "Plastic waste, dead to the world.\nRecycle in a refinery, or dispose of it properly in a nearby river."
+
+  SubmitSound: "Trash_Plastic"
+
+  Refinement:
+    time: 2
+    rust: 1
+
+class Twitchel extends Plastic
+  Model: Model"models/props_junk/garbage_plasticbottle003a.mdl"
+
+class Shake extends Plastic
+  Model: Model"models/props_junk/garbage_milkcarton001a.mdl"
+
+class Pills extends Plastic
+  Model: Model"models/props_lab/jar01b.mdl"
+
+class Bleach extends Plastic
+  Model: Model"models/props_junk/garbage_plasticbottle001a.mdl"

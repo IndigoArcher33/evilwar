@@ -1,0 +1,17 @@
+global Config = {}
+
+-- bit basic, but it's cleaner and lets us easily change stuff later
+  
+Config.Get = (key) ->
+  config = (GM or GAMEMODE).Config
+  return config[key]
+
+Config.Fallback = (key, value) ->
+  config = (GM or GAMEMODE).Config
+  config[key] = value if config[key] == nil
+
+game.GetMapOverride = ->
+  map = game.GetMap!
+  config = Config.Get"MapOverrides"
+  map = config[map] while config[map]
+  return map

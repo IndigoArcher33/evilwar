@@ -1,0 +1,63 @@
+cries_of_pain =
+  * "aahhhh"
+  * "it burns, it burns"
+  * "aaaaaa sotla save me please"
+  * "oh sotla it burns"
+  * "i'm melting! i'm peeling"
+  * "fire! my bones want out"
+  * "agh fuck fuck fuck fuck fuck!"
+  * "somebody do something"
+  * "agh! help"
+  * "call a korpsman"
+  * "sotla, why"
+  * "i'm roasting"
+  * "the burning, the burning"
+  * "i am on fire"
+  * "i am on fucking fire"
+  * "i'm -- uhh -- ow! ow ow ow"
+  * "i'm -- uhh -- ow! ow ow ow shit"
+  * "it burns"
+  * "fire, fire, fire"
+  * "it's too hot!"
+  * "no! my face is gonna melt"
+  * "i'm cooking alive"
+
+class BurningAgony extends SOUND
+  pitch: {130, 160}
+  sound: ["lfr/corpse/caught_fire#{i}.wav" for i=1,4]
+
+onfire_movement = (ply, dmg) ->
+  if not ply\GetNWBool("speedcheck") and ply\IsPlayer! and ply\Alive!
+    ply\SetNWFloat "runspeed", ply\GetRunSpeed!
+    ply\SetNWBool "speedcheck", true
+  if ply\IsOnFire() and ply\IsPlayer! and ply\Alive!
+    ply.dont_scream = true
+    ply\ConCommand("+forward")
+    ply\ConCommand("-back")
+    ply\ConCommand("+speed")
+    ply\SetRunSpeed(ply\GetNWFloat("runspeed") + 100)
+    unless ply\GetNWBool"burning"
+      ply\SetNWBool "burning", true
+    should_play = not (ply.burning_agony_sound and ply.burning_agony_sound\IsPlaying!)
+    if should_play
+      ply\ConCommand("say /y #{cries_of_pain[math.random(#cries_of_pain)]}")
+      with ply.burning_agony_sound = CreateSound(ply, "BurningAgony")
+        \Play!
+        \ChangePitch(math.random(100,130))
+  return
+
+hook.Add "EntityTakeDamage", "evilrp_onfire_movement", onfire_movement
+
+onfire_stopmovement = ->
+  for ply in *player.GetAll!
+    if ply\GetNWBool("burning") and not ply\IsOnFire!
+      ply\SetNWBool "burning", false
+      ply\ConCommand("-forward")
+      ply\ConCommand("-speed")
+      ply\ConCommand("-duck")
+      ply\SetRunSpeed(ply\GetNWFloat("runspeed"))
+      ply\SetNWBool "speedcheck", false
+      ply.burning_agony_sound?\Stop!
+  return
+
+hook.Add "Think", "evilrp_onfire_stopmovement", onfire_stopmovement

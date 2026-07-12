@@ -1,0 +1,95 @@
+PANEL = {
+  Init: =>
+    @Buffer = {}
+    @BufferSize = 0
+    @VBar = @Add"DVScrollBar"
+    @VBar\Dock RIGHT
+    @VBar.AddScroll = (pnl, delta) ->
+      old = pnl\GetScroll!
+      pnl\SetScroll old + delta * 18
+      return old ~= pnl\GetScroll!
+    @SetMouseInputEnabled false
+      
+  OnMouseWheeled: (delta) =>
+    @VBar\OnMouseWheeled(delta)
+
+  PerformLayout: (w) =>
+    @VBar\SetUp(@GetTall!, @BufferSize + 1) if @IsOpen
+    width = w - @VBar\GetWide! - 5
+    for _, buffer in pairs(@Buffer)
+      buffer.Scribe.MaxWidth = width
+
+  AddMessage: (message, console_message, tabs) =>
+    data = {
+      Message: message
+      Scribe: scribe.Parse("<stutter>#{message}", @GetWide! - @VBar\GetWide!)
+      ReceiveTime: CurTime!
+      Tabs: tabs
+    }
+    _G.ScribeCache = data.Scribe
+    if console_message
+      console = scribe.Parse console_message
+      console\PrintToConsole!
+      -- Log.WriteChatLog console\GetText!
+    else
+      data.Scribe\PrintToConsole!
+      -- Log.WriteChatLog data.Scribe\GetText!
+    @Buffer[] = data
+    do_scroll = @VBar\GetOffset! - @GetTall! + @BufferSize == -1
+    @BufferSize += data.Scribe\GetTall!
+    while @BufferSize > 2^15 - 1
+      line = table.remove @Buffer, 1
+      @BufferSize -= line.Scribe\GetTall!
+    if @IsOpen
+      @VBar\SetUp @GetTall!, @BufferSize + 1
+      @VBar\SetScroll math.huge if do_scroll
+
+  Hide: =>
+    @IsOpen = false
+    @VBar\Hide!
+    @SetMouseInputEnabled false
+
+  Show: =>
+    @IsOpen = true
+    @VBar\Show!
+    @VBar\SetUp @GetTall!, @BufferSize + 1
+    @VBar\SetScroll math.huge
+    @SetMouseInputEnabled true
+
+  Paint: (w, h) =>
+    open = @GetParent!.IsOpen
+    if open
+      color = Color(0,0,0,70)
+      surface.SetDrawColor color
+      surface.DrawRect 0, 0, w, h
+      surface.SetDrawColor 0, 0, 0, 100
+      surface.DrawOutlinedRect 0, 0, w, h
+    offset = (@IsOpen and @VBar\IsVisible!) and @VBar\GetOffset! - @GetTall! + 1 + @BufferSize or 0
+    y = h - 3 -- start point
+    for i=#@Buffer, 1, -1
+      data = @Buffer[i]
+      lifetime = CurTime! - data.ReceiveTime
+      alpha = 255
+      if not open
+        if lifetime >= 15
+          -- all other messages are assumed to be older
+          -- no need to iterate them
+          break
+        else
+          alpha = (15 - lifetime) * .2
+      if @GetParent!\CanSeeTab data.Tabs
+        -- bottom of the text
+        break if y + offset <= 0
+        y -= data.Scribe\GetTall!
+        -- top of the text
+        continue if y + offset >= h
+        data.Scribe\Draw 5,
+          y + offset,
+          alpha,
+          TEXT_ALIGN_LEFT,
+          TEXT_ALIGN_TOP
+    
+}
+
+derma.DefineControl "EvilRP_ChatScroll", "", PANEL, "Panel"
+  

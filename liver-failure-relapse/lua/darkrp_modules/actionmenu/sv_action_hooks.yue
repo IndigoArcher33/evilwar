@@ -1,0 +1,10 @@
+netstream.Hook "PocketItem", (ply, item) ->
+  return if item.Pocketable == false
+  can_pickup, message = hook.Call "canPocket", GAMEMODE, ply, item
+  unless can_pickup
+    ply\Notify(message) if message and SERVER
+    return
+  ply\PlaySignal ACT_GMOD_GESTURE_ITEM_GIVE, true
+  ply\EmitSound"Pocket_Item"
+  ply\addPocketItem(item)
+  

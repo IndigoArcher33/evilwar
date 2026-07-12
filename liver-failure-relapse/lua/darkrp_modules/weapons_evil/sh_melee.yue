@@ -1,0 +1,429 @@
+class Crowbar extends EvilRP_Melee
+  PrintName: "Crowbar"
+  Description: "Check out the teeth on this thing.\nThey're stronger than yours."
+    
+  Slot: 0
+
+  Price: 150
+    
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model("models/weapons/c_crowbar.mdl")
+  WorldModel: Model("models/weapons/w_crowbar.mdl")
+
+  HoldType: "melee"
+  LowerHoldType: "normal"
+    
+  Primary: {
+    ChargeTime: 0.4
+
+    Light: {
+      Damage: 24
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 0.4
+
+      Act: {ACT_VM_HITCENTER, ACT_VM_MISSCENTER}
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    },
+
+    Heavy: {
+      Damage: 40
+      DamageType: DMG_CLUB
+
+      Range: 100
+      Delay: 1
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    }
+  }
+
+  ChargeOffset: {
+    Pos: Vector -15, 0, -10
+    Ang: Angle -35, 0, 0
+  }
+
+class Knife extends EvilRP_Melee
+  PrintName: "Knife"
+  Description: "Key to the kingdom."
+    
+  Slot: 0
+
+  Price: 200
+
+  SkinHarvest: true
+    
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model("models/weapons/cstrike/c_knife_t.mdl")
+  WorldModel: Model("models/weapons/w_knife_t.mdl")
+
+  HoldType: "knife"
+  LowerHoldType: "normal"
+    
+  Primary: {
+    ChargeTime: 0.2
+
+    Light: {
+      Damage: 15
+      DamageType: DMG_SLASH
+
+      Range: 75
+      Delay: 0.2
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"weapons/knife/knife_hit1.wav", "weapons/knife/knife_slash1.wav"}
+    },
+
+    Heavy: {
+      Damage: 30,
+      DamageType: DMG_SLASH
+
+      Range: 75
+      Delay: 0.5
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"weapons/knife/knife_hit1.wav", "weapons/knife/knife_slash1.wav"}
+    }
+  }
+
+  ChargeOffset: {
+    Pos: Vector 0, 0, 0
+    Ang: Angle 0, -35, 0
+  }
+
+class Pan extends EvilRP_Melee
+  PrintName: "Pan"
+  Description: "They used to cook food in these.\nFeels like you put it to better use."
+    
+  Slot: 0
+
+  Price: 100
+    
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model("models/weapons/hl2meleepack/v_pan.mdl")
+  WorldModel: Model("models/weapons/hl2meleepack/w_pan.mdl")
+
+  HoldType: "melee"
+  LowerHoldType: "normal"
+    
+  Primary: {
+    ChargeTime: 0.4
+
+    Light: {
+      Damage: 20
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 0.4
+
+      Act: {ACT_VM_MISSCENTER, ACT_VM_MISSCENTER}
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    },
+
+    Heavy: {
+      Damage: 50,
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 1
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    }
+  }
+
+  ChargeOffset: {
+    Pos: Vector -15, 0, -10
+    Ang: Angle -35, 0, 0
+  }
+
+class Pickaxe extends EvilRP_Melee
+  PrintName: "Pickaxe"
+  Description: "Good against rocks. Also good against skulls."
+  MineBonus: 2
+  Slot: 0
+
+  Price: 320
+    
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model("models/weapons/hl2meleepack/v_pickaxe.mdl")
+  WorldModel: Model("models/weapons/hl2meleepack/w_pickaxe.mdl")
+
+  HoldType: "melee2"
+  LowerHoldType: "normal"
+    
+  Primary: {
+    ChargeTime: 1
+
+    Light: {
+      Damage: 45
+      DamageType: DMG_CLUB
+
+      Range: 80
+      Delay: 1.2
+
+      Act: {ACT_VM_MISSCENTER, ACT_VM_MISSCENTER}
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    },
+
+    Heavy: {
+      Damage: 75,
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 3
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    }
+  }
+
+  ChargeOffset: {
+    Pos: Vector -15, 0, -10
+    Ang: Angle -35, 0, 0
+  }
+
+class Pipe extends EvilRP_Melee
+  PrintName: "Pipe"
+  Description: "You're supposed to smoke it, not swing it about."
+    
+  Slot: 0
+
+  Price: 90
+    
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model("models/weapons/hl2meleepack/v_pipe.mdl")
+  WorldModel: Model("models/props_canal/mattpipe.mdl")
+
+  HoldType: "melee"
+  LowerHoldType: "normal"
+    
+  Primary: {
+    ChargeTime: 1
+
+    Light: {
+      Damage: 20
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 0.5
+
+      Act: {ACT_VM_MISSCENTER, ACT_VM_MISSCENTER}
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    },
+
+    Heavy: {
+      Damage: 40,
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 1.2
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    }
+  }
+
+  ChargeOffset: {
+    Pos: Vector -15, 0, -10
+    Ang: Angle -35, 0, 0
+  }
+
+class Pot extends EvilRP_Melee
+  PrintName: "Pot"
+  Description: "Sizzle and squirm."
+    
+  Slot: 0
+
+  Price: 70
+    
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model("models/weapons/hl2meleepack/v_pot.mdl")
+  WorldModel: Model("models/weapons/hl2meleepack/w_pot.mdl")
+
+  HoldType: "melee"
+  LowerHoldType: "normal"
+    
+  Primary: {
+    ChargeTime: 1
+
+    Light: {
+      Damage: 15
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 0.4
+
+      Act: {ACT_VM_MISSCENTER, ACT_VM_MISSCENTER}
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    },
+
+    Heavy: {
+      Damage: 30,
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 1
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    }
+  }
+
+  ChargeOffset: {
+    Pos: Vector -15, 0, -10
+    Ang: Angle -35, 0, 0
+  }
+
+class Shovel extends EvilRP_Melee
+  PrintName: "Shovel"
+  Description: "Kidneystani partisan used to dig holes in concrete walls with these."
+    
+  Slot: 0
+
+  Price: 400
+    
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model("models/weapons/hl2meleepack/v_shovel.mdl")
+  WorldModel: Model("models/weapons/hl2meleepack/w_shovel.mdl")
+
+  HoldType: "melee2"
+  LowerHoldType: "normal"
+    
+  Primary: {
+    ChargeTime: 1
+
+    Light: {
+      Damage: 45
+      DamageType: DMG_CLUB
+
+      Range: 120
+      Delay: 0.8
+
+      Act: {ACT_VM_MISSCENTER, ACT_VM_MISSCENTER}
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    },
+
+    Heavy: {
+      Damage: 60,
+      DamageType: DMG_CLUB
+
+      Range: 120
+      Delay: 1
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"Weapon_Crowbar.Melee_Hit", "Weapon_Crowbar.Single"}
+    }
+  }
+
+  ChargeOffset: {
+    Pos: Vector -15, 0, -10
+    Ang: Angle -35, 0, 0
+  }
+
+class AxeSwing extends SOUND
+  sound: "placenta/weapons/axe_swing.wav"
+class AxeHitBody extends SOUND
+  sound: "placenta/weapons/axe_hitbody.wav"
+class AxeHitWall extends SOUND
+  sound: "placenta/weapons/axe_hitwall.wav"
+class Axe extends EvilRP_Melee
+  PrintName: "Axe"
+  Description: "A corpse's best friend, maybe yours. Terror of trees."
+
+  TreeBonus: 2
+    
+  Slot: 0
+
+  Price: 400
+    
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model("models/weapons/hl2meleepack/v_axe.mdl")
+  WorldModel: Model("models/weapons/hl2meleepack/w_axe.mdl")
+
+  HoldType: "melee2"
+  LowerHoldType: "normal"
+    
+  Primary: {
+    ChargeTime: 1
+
+    Light: {
+      Damage: 45
+      DamageType: DMG_SLASH
+
+      Range: 120
+      Delay: 0.8
+
+      Act: {ACT_VM_MISSCENTER, ACT_VM_MISSCENTER}
+
+      Sound: {"AxeHitBody", "AxeSwing", "AxeHitWall"}
+    },
+
+    Heavy: {
+      Damage: 60,
+      DamageType: DMG_SLASH
+
+      Range: 120
+      Delay: 1
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"AxeHitBody", "AxeSwing", "AxeHitWall"}
+    }
+  }
+
+  ViewOffset: {
+    Pos: Vector -6, 0, 6
+  }
+    
+  ChargeOffset: {
+    Pos: Vector -15, 0, -10
+    Ang: Angle -35, 0, 0
+  }

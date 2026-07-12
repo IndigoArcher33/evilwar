@@ -1,0 +1,357 @@
+global gterm
+
+global GT_COL_NIL  = 0
+global GT_COL_MSG  = 1
+global GT_COL_WRN  = 2
+global GT_COL_ERR  = 3
+global GT_COL_INFO = 4
+global GT_COL_INTL = 5
+global GT_COL_CMD  = 6
+global GT_COL_SUCC = 7
+  
+r = math.random(0,255)
+g = math.random(0,255)
+b = math.random(0,255)
+
+font = "Spleen_TTY"
+
+random_chars = {
+  "*"
+  "%"
+  "#"
+  "!"
+  "&"
+  "a"
+  "b"
+  "c"
+  "d"
+  "e"
+  "f"
+  "g"
+  "h"
+  "i"
+  "j"
+  "k"
+  "l"
+  "m"
+  "n"
+  "o"
+  "p"
+  "q"
+  "r"
+  "s"
+  "t"
+  "u"
+  "v"
+  "w"
+  "x"
+  "y"
+  "z"
+}
+
+class TerminalBoot extends SOUND
+  sound: "placenta/crimevision/boot.ogg"
+  pitch: {110, 125}
+
+broken = Material("glass/reflectiveglass001")
+    
+class Terminal extends ENTITY
+  Type: "anim"
+  Base: "base_anim"
+    
+  PrintName: "Terminal"
+  Author: "Chessnut, Sotla"
+  Purpose: "Evil machine."
+
+  Spawnable: true
+  Category: "EvilRP: Devices"
+    
+  Pocketable: false
+
+  OnRemove: =>
+
+  SetupDataTables: =>
+    @NetworkVar "Bool", "Active"
+    @NetworkVar "Bool", "WarmingUp"
+    @NetworkVar "Bool", "Broken"
+    @NetworkVar "Entity", "User"
+    @NetworkVar "Int", "SoundLoop"
+
+  SetOS: (name) =>
+    @os = name
+
+  GetOS: => @os or "basic"
+
+  WarmUp: =>
+    @EmitSound"TerminalBoot"
+    @warm_up_text = gterm.OS\Call(@, "GetWarmUpText")
+    if @warm_up_text
+      time = math.random(1,3)
+      @SetWarmingUp true
+      for i=1, #@warm_up_text
+        timer.Simple i * (#@warm_up_text / time), ->
+          if IsValid(@)
+            gterm\Broadcast(@, @warm_up_text[i], GT_COL_INT)
+            if i == #@warm_up_text
+              timer.Simple math.Rand(1,3), ->
+                if IsValid(@)
+                  gterm\Broadcast(@, "")
+                  gterm\Broadcast(@, "TTY READY.")
+                  gterm\Broadcast(@, "TYPE :help TO LIST COMMANDS")
+                  gterm.OS\Call(@, "Initialized")
+                  @SetActive(true)
+                  @SetWarmingUp(false)
+    else
+      gterm\Broadcast(@, "TTY READY.")
+      gterm\Broadcast(@, "TYPE :help TO LIST COMMANDS")
+      gterm.OS\Call(@, "Initialized")
+      @SetActive(true)
+      @SetWarmingUp(false)
+
+  SpawnFunction: (ply, trace) =>
+    return false unless trace.Hit
+    ent = ents.Create @ClassName
+    with ent
+      \Initialize!
+      \SetPos trace.HitPos + Vector(0,0,32)
+      \Spawn!
+      \Activate!
+    return ent
+
+  Initialize: =>
+    if SERVER
+      @SetModel @Model
+      @SetMoveType MOVETYPE_VPHYSICS
+      @PhysicsInit SOLID_VPHYSICS
+      @SetSolid SOLID_VPHYSICS
+      @SetUseType SIMPLE_USE
+      @DrawShadow false
+      @SetActive false
+      @SetOS"basic"
+      @PhysWake!
+      phys_obj = @GetPhysicsObject!
+      phys_obj\EnableMotion(true) if IsValid(phys_obj)
+
+  Model: "models/props_lab/monitor01a.mdl"
+        
+  scrW: 905
+  scrH: 768
+  max_chars: 65
+  max_lines: 24
+  line_height: 28.7
+  trapping: false
+  console_text: ""
+  next_blink: 0
+  screensaver: Material("models/props_lab/warp_sheet")
+  noise: Material("models/props_lab/projector_noise")
+
+  GetScreenPos: =>
+    ang = @GetAngles!
+    offset = (ang\Up! * 11.8) + (ang\Forward! * 11.7) + (ang\Right! * 9.7)
+    return @GetPos! + offset
+
+  GetScreenAngles: =>
+    ang = @GetAngles!
+    with ang
+      \RotateAroundAxis \Forward!, 180
+      \RotateAroundAxis \Right!, 265.5
+      \RotateAroundAxis \Up!, 270
+    return ang
+
+  Draw: =>
+    @DrawModel!
+    dist_sqr = @GetPos!\DistToSqr(lp\GetPos!)
+    return unless dist_sqr < 128^2
+    if @GetWarmingUp! or @GetActive! and not @GetBroken!
+      cam.Start3D2D @GetScreenPos!, @GetScreenAngles!, 0.0215
+      render.PushFilterMin TEXFILTER.ANISOTROPIC
+      render.PushFilterMag TEXFILTER.ANISOTROPIC
+      rgb = HSVToColor (CurTime! * 38) % 360, 1, 1
+      flick = @flicker or 0
+      if @flicker
+        @flicker = Lerp(FrameTime! * 3, @flicker, 0)
+      flick = 1 if lp\HasOddity(ODDITY_ILLITERACY)
+      rgb.r = math.max(16, rgb.r * flick)
+      rgb.g = math.max(16, rgb.g * flick)
+      rgb.b = math.max(16, rgb.b * flick)
+      surface.SetDrawColor rgb.r, rgb.g, rgb.b, 255
+      surface.DrawRect 0, 0, @scrW, @scrH
+      desp = lp\GetDespair! * 0.01
+      lines = gterm[@EntIndex!] or {}
+      for i=1, @max_lines
+        if lines[i]
+          color = gterm\ColorFromIndex(lines[i].color)
+          text = lines[i].text or ""
+          if lp\HasOddity(ODDITY_ILLITERACY)
+            text = ""
+            color = gterm\ColorFromIndex(GT_COL_MSG)
+          -- create scribe object
+          r = color.r
+          g = color.g
+          b = color.b
+          text = "<c=#{r},#{g},#{b}>#{text}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+          txt_obj = scribe.Parse "<stutter><wiggle=#{20 * desp},#{20 * desp}><f=#{font}><wave=#{7 * desp},#{3.66 * desp},2>#{text}", nil
+          txt_obj\Draw 1, (@line_height * i) - @line_height, 1, TEXT_ALIGN_LEFT
+      y = (@max_lines + 1) * @line_height
+      surface.SetDrawColor 255, 255, 255, 15
+      surface.DrawRect 1, y, @scrW - 1, @line_height
+      user = @GetUser!
+      if IsValid(user)
+        if user ~= LocalPlayer!
+          @console_text = "#{user\Name!} is typing..."
+      else
+        @console_text = ""
+      -- create scribe object
+      txt = "<rgb=1,1,30>#{@console_text}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+      txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2>$ #{txt}", nil
+      txt_obj\Draw 1, y, 1, TEXT_ALIGN_LEFT
+      if @GetWarmingUp!
+        @flash_time = CurTime! + 1 unless @flash_time
+        fraction = math.Clamp((@flash_time - CurTime!) / 0.25, 0, 1)
+        surface.SetDrawColor(255, 0, 0, 255)
+        surface.DrawRect(0, 0, @scrW / 3, @scrH * fraction)
+        surface.SetDrawColor(0, 255, 0, 255)
+        surface.DrawRect(@scrW / 3, 0, @scrW / 3, @scrH * fraction)
+        surface.SetDrawColor(0, 0, 255, 255)
+        surface.DrawRect((@scrW * 2) / 3, 0, @scrW / 3, @scrH * fraction)
+        rainbow = HSVToColor((CurTime! * 666) % 360, 1, 1)
+        surface.SetDrawColor(rainbow.r, rainbow.g, rainbow.b, 255 * fraction)
+        surface.DrawRect(0, 0, @scrW, @scrH)
+        if fraction < 1 and fraction > 0.75
+          surface.SetDrawColor(math.random(100,255), math.random(100,255), math.random(100,255), 255)
+          surface.DrawRect(0, 0, @scrW, @scrH)
+        elseif fraction < 0.5
+          if @next_blink < CurTime!
+            r = math.random(0,255)
+            g = math.random(0,255)
+            b = math.random(0,255)
+            @next_blink = CurTime! + 0.25
+          draw.SimpleText("RES: #{@scrW}x#{@scrH}", font, @scrW - 2, 2, Color(255,255,255,255), 2, 0)
+      elseif @flash_time
+        @flash_time = nil
+      render.PopFilterMin!
+      render.PopFilterMag!
+      cam.End3D2D!
+    elseif @GetBroken!
+      cam.Start3D2D @GetScreenPos!, @GetScreenAngles!, 0.0215
+      render.PushFilterMin TEXFILTER.ANISOTROPIC
+      render.PushFilterMag TEXFILTER.ANISOTROPIC
+      surface.SetDrawColor(255,255,255,255)
+      surface.SetMaterial broken
+      surface.DrawTexturedRect 0, 0, @scrW, @scrH
+      render.PopFilterMin!
+      render.PopFilterMag!
+      cam.End3D2D!
+    else
+      cam.Start3D2D @GetScreenPos!, @GetScreenAngles!, 0.0215
+      surface.SetDrawColor(255,255,255,255)
+      surface.SetMaterial @screensaver
+      surface.DrawTexturedRect 0, 0, @scrW, @scrH
+      cam.End3D2D!
+    cam.Start3D2D @GetScreenPos!, @GetScreenAngles!, 0.0215
+    render.OverrideAlphaWriteEnable true, true
+    render.OverrideDepthEnable true, false
+    render.OverrideBlend true, BLEND_SRC_ALPHA, BLEND_DST_COLOR, BLENDFUNC_ADD
+    rgb = HSVToColor (CurTime! * 38) % 360, 1, 1
+    surface.SetDrawColor(rgb.r, rgb.g, rgb.b, 255)
+    if istable(@noise)
+      for n in *@noise
+        continue unless type(n) == "IMaterial"
+        surface.SetMaterial n
+        surface.DrawTexturedRect 0, 0, @scrW, @scrH
+    else
+      surface.SetMaterial @noise
+      surface.DrawTexturedRect 0, 0, @scrW, @scrH
+    render.OverrideBlend false
+    render.OverrideDepthEnable false
+    render.OverrideAlphaWriteEnable false
+    cam.End3D2D!
+
+  OnRemove: =>
+    if SERVER
+      ply["pass_authed_#{@EntIndex!}"] = nil for ply in *player.GetAll!
+      gterm.OS\Call @, "ShutDown", @
+    if CLIENT
+      gterm[@EntIndex!] = nil if CLIENT
+
+  Use: (activator, caller) =>
+    return if @locked
+    if @GetActive!
+      unless IsValid(@GetUser!)
+        @SetUser(activator)
+        net.Start"evilrp_terminal_activeconsole"
+        net.WriteUInt(@EntIndex!, 16)
+        net.Send(activator)
+        gterm.OS\Call @, "UserInit", activator
+    elseif not @GetWarmingUp!
+      @WarmUp!
+
+  Think: =>
+    return unless SERVER
+    user = @GetUser!
+    if IsValid(user)
+      dist = user\GetPos!\Distance(@GetPos!)
+      if (not @GetActive! and not @GetWarmingUp!) or dist > 96
+        net.Start"evilrp_terminal_endtyping"
+        net.Send user
+        @SetUser nil
+    gterm.OS\Call(@, "Think")
+
+  Interactions:
+    * { desc: "Huh?", func: (-> lp\SendChat("GENERIC",
+      "This is a command-based computer.<f=Spleen_Chat_Small>
+USE to begin typing. Most systems have a <c=0,200,0>:help</c> command.
+The ENTER key sends a written command.
+Pressing ENTER with no text input will free you from this terrible thing.
+Despair makes it much harder to read the screen, and illiteracy makes it impossible.")) }
+    
+
+class Public extends Terminal
+  Model: Model"models/props_wasteland/controlroom_monitor001b.mdl"
+
+  Initialize: =>
+    super!
+    @os = "public"
+
+  GetScreenPos: =>
+    ang = @GetAngles!
+    offset = (ang\Up! * 1) + (ang\Forward! * 16.2) + (ang\Right! * 10)
+    return @GetPos! + offset
+
+  GetScreenAngles: =>
+    ang = @GetAngles!
+    with ang
+      \RotateAroundAxis \Forward!, 180
+      \RotateAroundAxis \Right!, 282
+      \RotateAroundAxis \Up!, 270
+    return ang
+      
+  scrW: 960
+  scrH: 820
+  max_chars: 74
+  max_lines: 26
+  screensaver: Material("halflife/lab1_cmpm3000")
+  noise: Material("effects/tvscreen_noise003a")
+class Xombokom extends Terminal
+  Model: Model"models/props_lab/labmonitor002a.mdl"
+  GetScreenPos: =>
+    ang = @GetAngles!
+    offset = (ang\Up! * 5) + (ang\Forward! * 13) + (ang\Right! * 7.4)
+    return @GetPos! + offset
+  GetScreenAngles: =>
+    ang = @GetAngles!
+    with ang
+      \RotateAroundAxis \Forward!, 180
+      \RotateAroundAxis \Right!, 270
+      \RotateAroundAxis \Up!, 270
+    return ang
+  Initialize: =>
+    super!
+    @os = "tyrant"
+  
+  scrW: 680
+  scrH: 600
+  max_lines: 18
+  max_chars: 50
+  screensaver: Material("models/props_lab/warp_sheet")
+  noise: Material("models/spawn_effect2")

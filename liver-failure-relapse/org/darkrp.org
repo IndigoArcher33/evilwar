@@ -1,0 +1,122 @@
+#+title: The DarkRP Project
+
+* Important Notes
+- Player catalysts
+  We need a reason for people to join the game when nobody else is on.
+- Kommandant's Kommand
+  The leader of the city should be entirely able to decide what is legal and what isn't
+* TODO HL2 Melee Weapons
+* TODO [0/2] MINING UPDATE
+- [ ] Boulders spawn in the train pit.
+- [ ] Can be broken to extract metal and taken to the old Tool Factory
+  to earn money.
+* TODO [0/2] "FRIENDS" UPDATE
+- [ ] Add hunger and food
+  - [ ] Needs to actually be a concern
+  - [ ] Super shitty food spawns in certain parts of the map
+- [ ] Add animals and monsters
+  - [ ] Rats run around randomly until they find food, which they eat
+* TODO [0/4] MISC. ADDITIONS
+- [ ] Despair makes your colors go away.
+- [ ] Newfangled Chatbox
+- [ ] Talking sounds
+- [ ] Rename /broadcast to /xombokom or something
+* TODO LIVE EXPECTANCY
+- [ ] Dying is harder. You can revive people on the brink of death, aka before they rot for the first time. It's not particularly hard, and doctors have it easier.
+- [ ] Carrying corpses is much slower unless you have specialised equipment for it.
+- [ ] While incapacitated, you moan and breathe rather loudly, making it possible for people to find them and harder for would-be assassins to put you down. You can be gagged with a gag ( a contraband item ) to not make those noises, but it's not easy to get.
+* TODO TREES
+* TODO [0/2] TOOLS
+- [ ] Keypads
+- [ ] Building tools (Advanced Dupe, Stacker, Precision)
+* TODO [1/1] BUGS
+- [X] <2025-03-14 Fri> The HUD breaks on lower resolutions
+* Jobs
+Beacon & crowd system, elected/appointed jobs that voluntarily hire workers *at their own expense*.
+This creates a lumpenproletariat that needs money to live but can't be employed.
+*Beacons*
+- Kommandant
+  Rules the city. Appoints beacon jobs.
+- Kapitan
+  Oversees the Sanitar Squad. Can hire Sanitars.
+- Foreman
+  Oversees the factories. Can hire Workers.
+- Physician
+  The chief doctor of the city. Can hire Korpsmen.
+* Economy
+** The Shop Question
+Storefront owners are some of the most iconic jobs in DarkRP, and also the most *boring* to play, by far.
+We should figure out how to make Dealer interesting to play, or failing that, circumvent them altogether.
+* Restarting
+Ideally we have multiple ways of restarting the server, which the
+Kommandant can prompt after enough uptime.
+* Dreams
+** Antagonists
+- Zombie Virus / Necromancer
+- Brain Slug
+  - Slugmother controls their subjects
+- Netcultists
+- Psychobacteriophage
+  - Kill someone to transfer the phage to them
+- Cult of the Rot
+** Terminals
+- C-Mail
+  - Phishing
+** Quirks
+- Hypercarnism
+  - Eating plants makes you gain despair and lose health
+- Vegetarianism
+  - Plants are more nutritious to you
+  - Eating meat causes your despair to skyrocket
+- Greed
+  - Dropping money makes you gain despair
+  - Picking up money makes you lose despair
+- Hoplophobia
+  - Guns terrify you
+  - You can't use guns
+- Ergophobia
+  - Work depresses you
+- Zoophobia
+  - Animals scare you
+- Thanatophobia
+  - You can't stand to watch people die
+- Classism
+  - Poor people scare you
+  - Poverty food grosses you out
+  - (Unfortunates are excluded)
+- Republicanism
+  - The Kommandant scares you
+  - Whenever a server vote is occuring, you receive a buff
+  - (Sanitars are excluded)
+- Night terrors
+  - Sleeping torments you with loud noises and jumpscares
+  - Sleeping increases your despair
+- Empathy
+  - You hate hurting people
+- Blennophilia
+  - You like getting spit on
+  - Dirty fucking freak
+- Speech Impedimence
+** Needs
+- Hunger
+  - Affects movement speed
+  - +McRib jumpscare+
+  - "I HUNGER!"
+- Despair
+- Thirst
+  - Affects spit rate
+  - Affects piss color
+  - Visual interference (vignette?)
+** Misc
+*** Spitting
+- Disrespect
+- Moistening things
+- Infecting people with diseases(?)
+- Removing impurities from the body
+*** Player catalysts
+We need a reason for people to join the game when nobody else is on.
+*** Kommandant's law
+The leader of the city should be entirely able to decide what is legal
+and what isn't.
+*** Jumpscares
+  

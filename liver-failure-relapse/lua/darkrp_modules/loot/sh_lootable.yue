@@ -1,0 +1,264 @@
+import random from math
+ 
+if CLIENT
+  net.Receive "evilrp_loot_fail", ->
+    GAMEMODE\Frighten!
+    chat.AddNonParsedText(Color(200, 0, 0, 255), "There is nothing.")
+else
+  util.AddNetworkString"evilrp_loot_fail"
+
+class LootSound extends SOUND
+  sound: {
+    "physics/plastic/plastic_barrel_break1.wav"
+    "physics/plastic/plastic_barrel_break2.wav"
+    "physics/plastic/plastic_box_break1.wav"
+    "physics/plastic/plastic_box_break2.wav"
+    "physics/plaster/ceilingtile_break1.wav"
+    "physics/plaster/ceilingtile_break2.wav"
+    "physics/cardboard/cardboard_box_break1.wav"
+    "physics/cardboard/cardboard_box_break2.wav"
+    "physics/cardboard/cardboard_box_break3.wav"
+  }
+    
+class Lootable extends ENTITY_LONGUSE
+  @__entity: "lootable"
+
+  PrintName: "Lootable"
+
+  Spawnable: true
+  AdminSpawnable: true
+
+  Interesting: true
+
+  Category: "EvilRP: Lootables"
+    
+  UseText:
+    * "goes dumpster diving."
+    * "scrapes the trash."
+    * "digs for treasure."
+    * "sifts through the garbage."
+    * "looks for valuables."
+    * "scavenges, like a rat."
+    * "hunts for treasure."
+    * "makes a mess."
+    * "sticks both hands in the junk."
+
+  LootTable:
+    * "item/food/slopskull"
+    * "item/food/ribbone"
+    * "item/food/paper"
+
+  LootMax: 8
+
+  AccumulateInterval: 60
+
+  TimeToUse: 5
+
+  SetupDataTables: =>
+    super!
+    @NetworkVar "Int", "Remaining"
+    @NetworkVar "String", "LootName"
+
+  Initialize: =>
+    return if CLIENT
+    @SetModel @Model
+    @SetUseType SIMPLE_USE
+    @PhysicsInit SOLID_VPHYSICS
+    phys = @GetPhysicsObject!
+    phys\Wake! if phys and phys\IsValid!
+    @SetRemaining @LootMax
+
+  LootMessages:
+    success:
+      * "I found something."
+      * "Aha."
+      * "Nice."
+      * "This might be useful."
+      * "What have we here?"
+      * "Oh? ...oh!"
+      * "Hmm!"
+    failure:
+      * "Hmph."
+      * "That's not helpful."
+      * "Moving on..."
+      * "Oh? ...oh."
+      * "Mmm."
+      * "C'mon."
+      * "Hmm..."
+      * "Ew."
+      * "Filthy..."
+      * "Yuck."
+      * "Gra-a."
+    damage:
+      * "Ow!"
+      * "Ouch!"
+      * "Ow, dammit!"
+      * "Agh, shit!"
+      * "SHARP! Ow."
+      * "Ow, pointy!"
+      * "Eww, slimy!"
+      * "Uh oh, moving!"
+    refusal:
+      * "I don't feel like it."
+      * "I'm not digging through trash while I feel like trash."
+      * "I have better things to do."
+      * "I'm dealing with enough as it is."
+
+  OnUseStart: (ply) =>
+    desp = ply\GetDespair!
+    if desp > 80
+      msgs = @LootMessages.refusal
+      ply\Notify("<c=200,0,0>#{msgs[math.random(#msgs)]}")
+      net.Start"evilrp_frighten"
+      net.Send ply
+      return false
+
+  AttemptLoot: (ply) =>
+    return unless SERVER
+    tags = ""
+    local col
+    local msgs
+    roll = math.random(5)
+    roll += 1 if @GetRemaining! <= 0
+    noticed_empty = false
+    switch roll
+      when 1
+        col = "0,200,0" -- green
+        msgs = @LootMessages.success
+        @Loot ply
+      when 2, 3, 4
+        col = "200,200,0" -- yellow
+        msgs = @LootMessages.failure
+        sad = math.random(1,3)
+        sad *= 2 if ply\HasOddity(ODDITY_DEPRESSION)
+        ply\AddDespair(sad)
+        noticed_empty = true if (@GetRemaining! <= 0) and math.random(3) == 2
+      when 5, 6
+        col = "200,0,0" -- red
+        msgs = @LootMessages.damage
+        dmg = DamageInfo!
+        with dmg
+          \SetDamageType DMG_SLASH
+          \SetDamage math.random(5,10)
+          \SetAttacker ply
+          \SetInflictor @
+        @EmitSound"npc/headcrab/headbite.wav"
+        ply\TakeDamageInfo dmg
+        @SetUser NULL
+        @SetEndTime 0
+        @PartialUse = 0
+    ply\PlaySignal(ACT_GMOD_GESTURE_RANGE_FRENZY, true)
+    @EmitSound"LootSound"    
+    ply\Notify"#{tags}<c=#{col}>#{msgs[math.random(#msgs)]}"
+    if noticed_empty
+      ply\Notify"I don't think anything worth finding is in there."
+      @SetUser NULL
+      @SetEndTime 0
+      @PartialUse = 0
+
+  Loot: (ply) =>
+    return unless SERVER
+    start = ply\EyePos!
+    tr = util.TraceLine {
+      :start
+      endpos: start + ply\GetAimVector! * 85
+      filter: ply
+    }
+    cls = @LootTable[random 1, #@LootTable]
+    loot = ents.Create cls
+    with loot
+      loot\Spawn!
+      loot\Activate!
+    DarkRP.placeEntity loot, tr, ply
+    @SetRemaining(@GetRemaining! - 1)
+
+  PartialUses:
+    * prog: 20
+      func: (ply) => @AttemptLoot(ply)
+    * prog: 40
+      func: (ply) => @AttemptLoot(ply)
+    * prog: 60
+      func: (ply) => @AttemptLoot(ply)
+    * prog: 80
+      func: (ply) => @AttemptLoot(ply)
+    * prog: 100
+      func: (ply) => @AttemptLoot(ply)
+
+  Think: =>
+    super!
+    ct = CurTime!
+    @next_accumulate or= ct + @AccumulateInterval
+    if ct >= @next_accumulate
+      @next_accumulate = ct + @AccumulateInterval
+      remaining = @GetRemaining!
+      @SetRemaining(remaining + 1) if remaining < @LootMax and math.random(5) == 3
+
+  Draw: => @DrawModel!
+
+  HUDRender: =>
+    ct = {}
+    ct[] = @PrintName
+    if @Description
+      ct[] = ""
+      ct[] = { text: @Description, font: "Spleen_Label_Small" }
+      ct[] = { text: "There might be treasure inside.", font: "Spleen_Label_Small" }
+    return ct
+
+  Interactions:
+    * { desc: "Huh?", func: (-> lp\SendChat("GENERIC", "This is a source of mysterious, replenishing treasure.
+<f=Spleen_Chat_Small>Hold the USE key to search for goodies.
+It might hurt your hand, though.")) }
+
+class Dumpster extends Lootable
+  PrintName: "Dumpster"
+
+  Description: "It's metal, it's green, and it reeks."
+
+  Model: "models/props_junk/TrashDumpster01a.mdl"
+
+  LootTable:
+    * "item/food/slopskull"
+    * "item/food/slopskull"
+    * "item/food/slopskull"
+    * "item/food/slopskull"
+    * "item/food/slopskull"
+    * "item/food/slopskull"    
+    * "item/food/ribbone"
+    * "item/food/ribbone"
+    * "item/food/ribbone"
+    * "item/food/ribbone"    
+    * "item/food/paper"
+    * "item/food/paper"
+    * "item/food/paper"
+    * "item/food/paper"    
+    * "item/food/boot"
+    * "item/food/boot"
+    * "item/food/boot"
+    * "item/food/boot"
+    * "item/food/abortion"
+    * "item/food/abortion"
+    * "item/food/abortion"
+    * "item/food/abortion"
+    * "item/food/abortion"
+    * "item/food/drink/fearbeer"
+    * "item/food/drink/smearbeer"
+    * "trash/bottle"
+    * "trash/bottle"
+    * "trash/bottle"
+    * "trash/bottle/fearbeer"
+    * "trash/bottle/fearbeer"
+    * "trash/bottle/fearbeer"
+    * "trash/bottle/fearbeer"
+    * "trash/plastic/shake"
+    * "trash/plastic/shake"
+    * "trash/plastic/shake"
+    * "trash/plastic/shake"
+    * "trash/plastic/pills"
+    * "trash/plastic/pills"
+    * "trash/plastic/pills"
+    * "trash/plastic/bleach"
+    * "trash/plastic/bleach"
+    * "trash/plastic/bleach"
+    * "trash/inhaler"
+    * "trash/inhaler"
+    * "trash/inhaler"

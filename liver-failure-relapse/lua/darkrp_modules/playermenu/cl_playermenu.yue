@@ -1,0 +1,303 @@
+-- ECP: Evil Control Panel
+global ECP = {} unless ECP
+
+handframe = 1
+next_handframe = CurTime!
+hand_animation = false
+
+handframes = {
+  Material("placenta/cursor/hand1.png")
+  Material("placenta/cursor/hand2.png")
+  Material("placenta/cursor/hand3.png")
+  Material("placenta/cursor/hand2.png")
+}
+
+moused = false
+
+global get_handframe = ->
+  ct = CurTime!
+  if ct > next_handframe
+    unless hand_animation
+      if handframe > 1
+        next_handframe = ct + .2
+        handframe = math.min handframe + 1, #handframes
+        handframe = 1 if handframe >= #handframes
+    else
+      next_handframe = ct + .2
+      handframe = math.min handframe + 1, #handframes
+      handframe = 1 if handframe >= #handframes
+  return handframes[handframe]
+
+GAMEMODE.CreatePlayerMenu = =>
+  lp = LocalPlayer!
+  lp\EmitSound"placenta/ui/menu_open.wav"
+
+  ECP.pmenu = vgui.Create"DFrame"
+  sw = ScrW!
+  sh = ScrH!
+  with ECP.pmenu
+    \SetSize ScrW!, ScrH!
+    \Center!
+    \SetTitle""
+    .lblTitle\SetFont"Spleen_Label"
+    \MakePopup!
+    .PerformLayout = evilrp_perform_layout
+    \PerformLayout!
+    \ShowCloseButton false
+    \SetCursor"blank"
+
+  ECP.pmenu.OnClose = => lp\EmitSound"placenta/ui/menu_close.wav"
+
+  ECP.pmenu.content_pane = vgui.Create "DPanel", ECP.pmenu
+  with ECP.pmenu.content_pane
+    \SetPos 0, 0
+    \SetSize sw, sh
+    \SetCursor"blank"
+  ECP.pmenu.content_pane.Paint = =>
+    hf = get_handframe!
+    draw.CustomCursor @, hf
+  ECP.pmenu.content_pane.PaintOver = =>
+    moused = false
+    unless @menu_hover
+      @menu_hover = {
+        alpha: 0
+        text: ""
+      }
+    x, y = @CursorPos!
+    if ECP.pmenu.icons
+      for i in *ECP.pmenu.icons
+        if i\IsHovered!
+          moused = true
+          hand_animation = true
+          sent = scripted_ents.Get i.item.class
+          @menu_hover.text = sent.PMRender i.item
+          @menu_hover.alpha = Lerp 0.05, @menu_hover.alpha, 1
+          y += 32
+    desp = (lp\GetDespair! * 0.01)
+    for t in *@menu_hover.text
+      if type(t) == "string"
+        font = "Spleen_Label"
+        -- create scribe object
+        txt = "<rgb=1,1,30>#{t}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+        txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+        txt_w = txt_obj\GetWide!
+        txt_h = txt_obj\GetTall!
+        -- draw scribe object
+        txt_obj\Draw x, y, @menu_hover.alpha, TEXT_ALIGN_CENTER
+        -- shift y
+        y += (txt_h)
+      else
+        font = t.font or "Spleen_Label"
+        txt = t.text
+        -- create scribe object
+        txt = "<rgb=1,1,30>#{txt}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+        txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+        txt_w = txt_obj\GetWide!
+        txt_h = txt_obj\GetTall!
+        -- draw scribe object
+        txt_obj\Draw x, y, cross_text_alpha, TEXT_ALIGN_CENTER
+        -- shift y
+        y += txt_h
+        bg = Color(0,0,0,@menu_hover.alpha * 255)
+    if not moused and @menu_hover.alpha and @menu_hover.alpha > 0
+      @menu_hover.alpha = Lerp 0.05, @menu_hover.alpha, 0
+
+  ECP.pmenu.char_model = vgui.Create "DModelPanel", ECP.pmenu.content_pane
+  with ECP.pmenu.char_model
+    \SetModel lp\GetModel!
+    .EntReady = false
+    .DoClick = =>
+      punches = {
+        "npc/vort/foot_hit.wav"
+        "weapons/crossbow/hitbod1.wav"
+        "weapons/crossbow/hitbod2.wav"
+      }
+      surface.PlaySound punches[math.random(1, #punches)]
+      ct = CurTime!
+      @next_grunt or= ct
+      import hurt_sounds from lp\getJobTable!
+      return unless hurt_sounds and #hurt_sounds > 0
+      if ct >= @next_grunt
+        @next_grunt = ct + math.Rand(0.5, 2.0)
+        timer.Simple(FrameTime! * 3, ->
+          snd = hurt_sounds[math.random(1, #hurt_sounds)]
+          lp\EmitSound(snd, 80, math.random(95, 110)))
+      @FOV = 40
+    .DoRightClick = =>
+      equipment = lp\GetAllEquipment!
+      equip_dmenu = DermaMenu!
+      if (not equipment) or not (#equipment > 0)
+        equip_dmenu\AddOption("No removable equipment!")
+      else
+        for eq in *equipment
+          opt = equip_dmenu\AddOption("#{eq.PrintName}", ->
+            lp\ConCommand"dequip #{eq.EquipSlot}"
+            ECP.pmenu\KILL!)
+          opt\SetIcon("icon16/disconnect.png")
+      equip_dmenu\Open!
+    .PaintOver = => draw.CustomCursor @, get_handframe!
+    .Think = =>
+      @FOV = 35 unless @FOV
+      hand_animation = true if @IsHovered!
+      @SetColor Color(255, 255, 255, 255)
+      @FOV = Lerp(0.1, @FOV, 35)
+      @SetFOV @FOV
+    .PostDrawModel = (ent) =>
+      outfits = part.Get(ent)
+      if outfits
+        v\Draw! for k, v in pairs(outfits)
+    .Entity.GetPlayerColor = =>
+      lp = LocalPlayer!
+      return Vector(1,1,1) if (not lp) or (not lp\IsValid!)
+      rainbow = lp\GetInfoNum("lfr_rainbow_playermodel", 1) == 1
+      return lp\GetPlayerColor!
+
+    \SetColor Color(255, 255, 255, 0)
+    lp = LocalPlayer!
+    ent = .Entity
+    ent\SetSkin lp\GetSkin!
+    ent\SetBodygroup i, lp\GetBodygroup(i) for i=1,20
+    ent\SetSubMaterial i, lp\GetSubMaterial(i) for i=1,20
+
+    outfits = part.Get(lp)
+    appearance = outfits and outfits.appearance or nil
+    if appearance
+      part.Add(ent, "appearance", appearance.Data)
+
+    \SetSize 200, 500
+    \SetPos (ECP.pmenu\GetWide! / 2 - \GetWide! / 2), ECP.pmenu\GetTall! / 5
+    \SetFOV 25
+
+    \SetCamPos Vector(50, 0, 60)
+    \SetLookAt Vector(-80, 0, 10)
+    \SetCursor"blank"
+
+  ECP.pmenu.Paint = =>
+    ct = CurTime!
+    font = "Spleen_Label"
+    desp = (lp\GetDespair! * 0.01)
+    alpha = 0.5 + (math.abs(math.sin(ct)*0.5))
+    x = (@GetWide! / 2) + (30 * math.sin(ct))
+    y = @GetTall! * .125
+    surface.SetFont font
+    -- display life stats
+    name = lp\Name!
+    txt = "<rgb=1,10,60>#{name}"
+    -- create scribe object
+    txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+    txt_w = txt_obj\GetWide!
+    txt_h = txt_obj\GetTall!
+    -- draw scribe object
+    txt_obj\Draw x, y, alpha, TEXT_ALIGN_CENTER
+    -- display oddities
+    -- there's gotta be a better way to do this
+    list = lp\OddityList!
+    if #list > 0
+      x = (@GetWide! / 4)*3.25
+      y = (@GetTall! * .2) + (12 * math.cos(ct))
+      txt = "i have problems such as"
+      txt_obj = scribe.Parse "<stutter><rgb=0,10><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+      txt_obj\Draw x, y, alpha, TEXT_ALIGN_CENTER
+      txt_h = txt_obj\GetTall!
+      y += txt_h
+      idx = 0
+      for oddity in *list
+        idx += 1
+        txt = oddity.name
+        txt_obj = scribe.Parse "<stutter><rgb=0,#{15*idx}><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+        txt_obj\Draw x, y, alpha, TEXT_ALIGN_CENTER
+        txt_h = txt_obj\GetTall!
+        y += txt_h
+    -- display money
+    money = lp\getDarkRPVar"money"
+    txt = "i have #{money} Bones in my body"
+    -- create scribe object
+    txt_obj = scribe.Parse "<stutter><col=0,200,0><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+    txt_w = txt_obj\GetWide!
+    txt_h = txt_obj\GetTall!
+    -- draw scribe object
+    x = (@GetWide! / 2) + (30 * math.cos(ct))
+    y = @GetTall! * .725
+    txt_obj\Draw x, y, alpha, TEXT_ALIGN_CENTER
+    -- display stem cells
+    cells = lp\GetStemCells!
+    txt = "i have #{cells} Stem Cells in my brain"
+    -- create scribe object
+    txt_obj = scribe.Parse "<stutter><col=0,200,0><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+    txt_w = txt_obj\GetWide!
+    txt_h = txt_obj\GetTall!
+    -- draw scribe object
+    x = (@GetWide! / 2) + (30 * math.cos(ct))
+    y = @GetTall! * .75
+    txt_obj\Draw x, y, alpha, TEXT_ALIGN_CENTER
+    -- display teeth
+    teeth = lp\GetTeeth!
+    txt = "i have #{teeth} Teeth in my mouth"
+    -- create scribe object
+    txt_obj = scribe.Parse "<stutter><col=0,200,0><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+    txt_w = txt_obj\GetWide!
+    txt_h = txt_obj\GetTall!
+    -- draw scribe object
+    x = (@GetWide! / 2) + (30 * math.cos(ct))
+    y = @GetTall! * .75
+    txt_obj\Draw x, y, alpha, TEXT_ALIGN_CENTER
+
+
+  ECP.pmenu.KILL = =>
+    @Remove!
+    @OnClose!
+    @ = nil
+    gui.HideGameUI!
+
+  rotspeed = 0.25
+  rotating = true
+  rotime = 0
+
+  ECP.pmenu.Think = =>
+    rotime += FrameTime! unless moused
+    if @icons
+      angle = rotime * rotspeed % (2 * math.pi)
+      offset = ((2 * math.pi) / #table.GetKeys(@icons))
+      idx = 0
+      for k, v in pairs @icons
+        offset_angle = angle + (offset * (k - 1))
+        hx = math.cos(offset_angle) * (ScrW! * 0.2)
+        hy = math.sin(offset_angle) * (ScrH! * 0.35)
+        item = v.item
+        unless moused
+          v\SetPos (@GetWide! / 2.05) - hx, (@GetTall! / 2.15) - hy
+    ct = CurTime!
+    @TryClose = ct + 0.2 unless @TryClose
+    if ct >= @TryClose
+      @KILL! if not lp\Alive!
+      @KILL! if input.IsKeyDown(KEY_ESCAPE)
+      @KILL! if input.IsKeyDown(KEY_F3)
+      @KILL! if input.IsKeyDown(KEY_R)
+      gx = gui.MouseX!
+      gy = gui.MouseY!
+      sw = ScrW!
+      sh = ScrH!
+      @KILL! if gx < (sw * .2)
+      @KILL! if gy < (sh * .1)
+      @KILL! if gx > (sw * .8)
+      @KILL! if gy > (sh * .9)
+  @PMUpdateInventory!
+
+hook.Add "HUDPaint", "evilrp_blur_playermenu", ->
+  if ECP.pmenu and ECP.pmenu\IsValid!
+    draw.DrawBackgroundBlur 1
+  return
+
+GAMEMODE.CreateEquipmentMenu = =>
+  lp = LocalPlayer!
+  frame = vgui.Create"DFrame"
+  with frame
+    \SetSize 400, 200
+    \Center!
+    \SetTitle"Yeah, take 'em off"
+    \MakePopup!
+    \SetSkin"EvilRP"
+  for i=1,4
+    checkbox = vgui.Create "DCheckBox", frame
+    with checkbox
+      \SetPos 8, 16 + i*24

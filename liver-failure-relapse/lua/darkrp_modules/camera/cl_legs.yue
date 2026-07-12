@@ -1,0 +1,134 @@
+-- this was reinterpreted from flux-ce's cl_visiblelegs
+-- https://github.com/TeslaCloud/flux-ce
+
+return unless CLIENT
+
+hidden_bones =
+  * "ValveBiped.Bip01_Head1"
+  * "ValveBiped.Bip01_Neck1"
+  * "ValveBiped.Bip01_Spine4"
+  -- * "ValveBiped.Bip01_L_Clavicle"
+  -- * "ValveBiped.Bip01_L_Hand"
+  -- * "ValveBiped.Bip01_L_Forearm"
+  -- * "ValveBiped.Bip01_L_Upperarm"
+  -- * "ValveBiped.Bip01_L_Finger0"
+  -- * "ValveBiped.Bip01_L_Finger01"
+  -- * "ValveBiped.Bip01_L_Finger02"
+  -- * "ValveBiped.Bip01_L_Finger1"
+  -- * "ValveBiped.Bip01_L_Finger11"
+  -- * "ValveBiped.Bip01_L_Finger12"
+  -- * "ValveBiped.Bip01_L_Finger2"
+  -- * "ValveBiped.Bip01_L_Finger21"
+  -- * "ValveBiped.Bip01_L_Finger22"
+  -- * "ValveBiped.Bip01_L_Finger3"
+  -- * "ValveBiped.Bip01_L_Finger31"
+  -- * "ValveBiped.Bip01_L_Finger32"
+  -- * "ValveBiped.Bip01_L_Finger4"
+  -- * "ValveBiped.Bip01_L_Finger41"
+  -- * "ValveBiped.Bip01_L_Finger42"
+  -- * "ValveBiped.Bip01_R_Clavicle"
+  -- * "ValveBiped.Bip01_R_Hand"
+  -- * "ValveBiped.Bip01_R_Forearm"
+  -- * "ValveBiped.Bip01_R_Upperarm"
+  -- * "ValveBiped.Bip01_R_Finger0"
+  -- * "ValveBiped.Bip01_R_Finger01"
+  -- * "ValveBiped.Bip01_R_Finger02"
+  -- * "ValveBiped.Bip01_R_Finger1"
+  -- * "ValveBiped.Bip01_R_Finger11"
+  -- * "ValveBiped.Bip01_R_Finger12"
+  -- * "ValveBiped.Bip01_R_Finger2"
+  -- * "ValveBiped.Bip01_R_Finger21"
+  -- * "ValveBiped.Bip01_R_Finger22"
+  -- * "ValveBiped.Bip01_R_Finger3"
+  -- * "ValveBiped.Bip01_R_Finger31"
+  -- * "ValveBiped.Bip01_R_Finger32"
+  -- * "ValveBiped.Bip01_R_Finger4"
+  -- * "ValveBiped.Bip01_R_Finger41"
+  -- * "ValveBiped.Bip01_R_Finger42"
+
+-- for code refresh discrepancies
+lp.legs\Remove! if IsValid(lp) and lp.legs
+
+render_legs_in_screenspace = ->
+  return unless IsValid(lp)
+  return unless lp\Alive!
+  return if lp\ShouldDrawLocalPlayer!
+  angs = lp\EyeAngles!
+  -- don't draw the legs if we couldn't even see them
+  return if angs.p < 0
+  cam.Start3D(EyePos!, EyeAngles!)
+  lp\SpawnLegs! unless IsValid(lp.legs)
+
+  real_time = RealTime!
+  legs = lp.legs
+
+  angs.p = 0
+  angs.r = 0
+
+  rad_angle = math.rad(angs.y)
+  offset = -15
+  origin = lp\GetPos!
+
+  origin.x += math.cos(rad_angle) * offset
+  origin.y += math.sin(rad_angle) * offset
+
+  with legs
+    \SetPoseParameter("move_yaw", 360 * lp\GetPoseParameter("move_yaw") - 180)
+    \SetPoseParameter("move_x", lp\GetPoseParameter("move_x") * 2 - 1)
+    \SetPoseParameter("move_y", lp\GetPoseParameter("move_y") * 2 - 1)
+
+    \SetRenderMode(lp\GetRenderMode!)
+    \SetMaterial(lp\GetMaterial!)
+    \SetSequence(lp\GetSequence!) -- copy our sequence
+    layer = GESTURE_SLOT_CUSTOM -- make sure to copy our gesture too
+    \SetLayerSequence(layer, lp\GetLayerSequence(layer))
+    \SetLayerDuration(layer, lp\GetLayerDuration(layer))
+	\SetLayerPlaybackRate(layer, lp\GetLayerPlaybackRate(layer))
+	\SetLayerWeight(layer, lp\GetLayerWeight(layer))
+	\SetLayerCycle(layer, lp\GetLayerCycle(layer))
+    \SetColor(lp\GetColor!)
+    \FrameAdvance(real_time - (legs.last_draw or real_time))
+    \SetPlaybackRate(lp\GetPlaybackRate!)
+    \SetRenderOrigin(origin)
+    \SetRenderAngles(angs)
+    \DrawModel!
+
+    .last_draw = real_time
+  cam.End3D!
+
+hook.Add "RenderScreenspaceEffects", "evilrp_render_legs", render_legs_in_screenspace
+
+draw_leg_parts = ->
+  return unless IsValid(lp)
+  return unless lp\Alive!
+  return if lp\ShouldDrawLocalPlayer!
+  return unless part and part.Outfits
+  lp\SpawnLegs! unless IsValid(lp.legs)
+  for outfit, owner in pairs(part.Outfits)
+    if owner == lp.legs
+      outfit\Draw!
+
+hook.Add "PostDrawTranslucentRenderables", "evilrp_draw_leg_parts", draw_leg_parts
+
+offset = Vector(-50,-50,0)
+scale = Vector(1,1,1)
+
+meta = FindMetaTable"Player"
+meta.SpawnLegs = =>
+  @legs\Remove! if IsValid(@legs)
+  @legs = ClientsideModel(@GetModel!, RENDERGROUP_VIEWMODEL)
+  legs = @legs
+  if IsValid(legs)
+    for b in *hidden_bones
+      bone = legs\LookupBone(b)
+      if bone
+        legs\ManipulateBonePosition(bone, offset)
+        legs\ManipulateBoneScale(bone, scale)
+  legs\SetNoDraw(true)
+  legs\SetIK(true)
+  if @last_appearance
+    part.Add(@legs, "appearance", @last_appearance)
+
+remove_legs = ->
+  lp.legs\Remove! if lp.legs and IsValid(lp.legs)
+hook.Add "OnPlayerChangedTeam", "evilrp_remove_legs", remove_legs

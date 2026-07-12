@@ -1,0 +1,197 @@
+class Spleen_Label extends FONT
+  font: "Spleen 8x16"
+  size: 24
+
+class Spleen_Label_Small extends FONT
+  font: "Spleen 8x16"
+  size: 18
+
+class Spleen_Chat extends FONT
+  font: "Spleen 8x16"
+  size: 24
+
+class Spleen_Chat_Small extends FONT
+  font: "Spleen 8x16"
+  size: 16
+
+class Spleen_TTY extends FONT
+  font: "Spleen 8x16"
+  size: 28
+
+-- eventually, all of these will be `true'
+hide_these = {
+  DarkRP_HUD: false
+  DarkRP_EntityDisplay: false
+  DarkRP_LocalPlayerHUD: true
+  DarkRP_Hungermod: false
+  DarkRP_Agenda: false
+  DarkRP_LockdownHUD: false
+  DarkRP_ArrestedHUD: false
+  DarkRP_ChatReceivers: false
+  CHudCrosshair: true
+  CHudDamageIndicator: true
+  CHudHistoryResource: true
+  CHudAmmo: true
+  CHudSecondaryAmmo: true
+}
+
+hook.Add "HUDShouldDraw", "evilrp_hud_hide_default", (name) ->
+  return false if hide_these[name]
+
+GAMEMODE.HUDDrawPickupHistory = =>
+GAMEMODE.HUDPaint = =>
+
+toggle_hud = (ply, cmd, args) ->
+  cookie.Set("evilrp_hud", 1 - cookie.GetNumber("evilrp_hud", 1))
+concommand.Add("rp_togglehud", toggle_hud)
+
+import abs, cos, sin, min, max from math
+
+class HUDBar
+  new: (@color, @draw_target, @label) =>
+  draw_current: 0
+  calculate: =>
+    target = @draw_target!
+    return unless target
+    inc = 0.1
+    if abs( @draw_current - target ) > 5
+      inc = 1
+    if @draw_current > target
+      @draw_current -= inc
+    elseif @draw_current < target
+      @draw_current += inc
+    @draw_current = target if abs( @draw_current - target ) < 0.2
+    @draw_current = math.Clamp @draw_current, 0, 100
+  render: (x, y, w) =>
+    @calculate!
+    return if cookie.GetNumber("evilrp_hud", 1) == 0
+    font = "Spleen_Label"
+    if @draw_current > 0
+      ct = CurTime!
+      lp = LocalPlayer!
+      desp = (lp\GetDespair! * 0.01)
+      roundedness = abs(sin(ct) * 8 * desp)
+      draw.RoundedBox roundedness, x, y, w, 20, Color 30, 30, 30, 200
+      col = if MUTATORS[MUTATOR_CHROMOPHOBIA].active
+        Color 128, 128, 128
+      else
+        @color
+      col = col! if isfunction(col)
+      col.a = 128 + math.abs(127 * math.sin(ct))
+      draw.RoundedBox roundedness, x + 2, y + 2, ( w - 4 ) * ( @draw_current / 100 ), 18, col
+      txt = @label
+      txt = txt! if isfunction(txt)
+      txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+      txt_obj\Draw x + (w / 2), y - 2, .23 + math.abs(math.sin(ct * .5) * .38), TEXT_ALIGN_CENTER
+      return true
+    return false
+
+bars = {
+  health: HUDBar((->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_colors?.health or Color(168,0,0)), (=> LocalPlayer!\Health!), ->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_names?.health or "blood")
+  hunger: HUDBar((->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_colors?.hunger or Color(0,168,0)), (=>
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return if jt.no_needs
+    return lp\GetHunger! if lp\Alive!), ->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_names?.hunger or "emptiness")
+  thirst: HUDBar((->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_colors?.thirst or Color(0,168,168)), (=>
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return if jt.no_needs
+    return lp\GetThirst! if lp\Alive!), ->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_names?.thirst or "dryness")
+  despair: HUDBar((->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_colors?.despair or Color(168,168,168)), (=>
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return if jt.no_needs
+    return lp\GetDespair! if lp\Alive!), ->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_names?.despair or "sadness")
+  death: HUDBar(Color(128,128,128), (=>
+    rag = LocalPlayer!\Ragdoll!
+    return unless rag and IsValid(rag) and rag\GetNWBool"corpse"
+    cur = CurTime! - rag\GetNWInt"decomp_start"
+    ending = rag\GetNWInt"decomp_finish" - rag\GetNWInt"decomp_start"
+    return 100 - ((cur / ending) * 100)), "death")
+}
+
+draw_bars = ->
+  ply = LocalPlayer!
+  -- drifts
+  w = ScrW! * .5
+  [xd, yd] = [5 * sin(CurTime! * 0.666), 5 * sin(CurTime! * 0.333)]
+  [x, y] = [(ScrW! / 2) - (w / 2) + (2 * xd), 12 + yd]
+  switch ply\Team!
+    when TEAM_GHOST
+      -- render suffering here
+    else
+      if ply\Alive!
+        if ply\HasOddity(ODDITY_ANASOGONSIA)
+          desp = ply\GetDespair! * 0.01
+          ct = CurTime!
+          font = "Spleen_Label"
+          txt = "i don't know"
+          txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+          txt_obj\Draw x + (w / 2), y - 2, .23 + math.abs(math.sin(ct * .5) * .38), TEXT_ALIGN_CENTER
+        else
+          y += 24 if bars.health\render x, y, w
+          y += 24 if bars.hunger\render x, y, w
+          y += 24 if bars.thirst\render x, y, w
+          y += 24 if bars.despair\render x, y, w
+      else
+        bars.death\render x, y, w
+
+
+prog_width = 400
+prog_height = 40
+prog_spacing = 60
+prog_offset = 40
+
+col_bg = Color(64, 64, 64, 200)
+col_fg = Color(168, 0, 0)
+col_tx = color_white
+
+back = surface.GetFontHeight("Spleen_Label") * 1.25
+
+draw_prog = ->
+  sw = ScrW!
+  sh = ScrH!
+  w = prog_width * 0.5
+  for k, data in ipairs(progress.Active)
+    x = (sw * 0.5) - w
+    y = (sh * 0.5) + prog_offset + ((k - 1) * prog_spacing)
+    surface.SetDrawColor(col_bg)
+    surface.DrawRect(x, y, prog_width, prog_height)
+    surface.SetDrawColor(col_fg)
+    surface.DrawRect(x+1, y+1, (prog_width - 2) * data.Fraction, prog_height - 2)
+    desp = lp\GetDespair! * 0.01
+    ct = CurTime!
+    font = "Spleen_Label"
+    txt = data.Name or "Uhh..."
+    txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+    txt_obj\Draw sw * 0.5, y + prog_height - back, .23 + math.abs(math.sin(ct * .5) * .38), TEXT_ALIGN_CENTER
+
+hook.Add "HUDPaint", "evilrp_xhud", ->
+  draw_bars!
+  draw_prog!
+  return

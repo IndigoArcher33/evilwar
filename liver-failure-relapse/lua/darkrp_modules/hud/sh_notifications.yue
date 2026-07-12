@@ -1,0 +1,10 @@
+meta = FindMetaTable"Player"
+
+if CLIENT
+  netstream.Hook "SendNotification", (payload) ->
+    GAMEMODE\AddNotification(payload)
+  meta.Notify = (txt) =>
+    GAMEMODE\AddNotification(txt)
+if SERVER
+  meta.Notify = (txt) =>
+    netstream.Send @, "SendNotification", txt

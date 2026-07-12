@@ -1,0 +1,67 @@
+global class CHAT_CMD
+  @__inherited: (child) =>
+    Chat.list[child.name] = child
+    if child.commands
+      Chat.commands[name] = child for name in *child.commands
+    if child.aliases
+      Chat.aliases[alias] = child.commands[1] for alias in *child.aliases
+    -- if child.log_category
+    --   Log.AddType("chat_#{child.log_category}", (@, ...) ->
+    --     str, attr = @WriteLog ...
+    --      Log.WriteChatLog str
+    --     return str, attr)
+      
+  name: "unnamed command"
+  desc: "no description set"
+  typing: nil -- text to display when someone is typing this command
+  radio: false -- whether to use the radio animation when typing
+
+  commands: {}
+  aliases: {}
+
+  use_language: false
+  hearable: false -- whether entities can hear us
+  cast: false
+
+  range: nil
+  range_muffled: nil
+
+  tabs: nil
+  log_category: nil
+
+  sound: nil
+
+  OnReceive: (data) =>
+  GetTargets: (ply, data) =>
+    targets = {ply}
+    glob = true -- glob as in global, because we can't use `global'
+                -- as a var name in yuescript
+    if @range or @range_muffled
+      glob = false
+    targets = table.Add targets, Chat.GetTargets(ply\EyePos!, @range or 0, @range_muffled or 0, @hearable)
+    if @cast
+      glob = false
+      targets = table.Add targets, Chat.GetTargets(ply\GetEyeTrace!.HitPos, @range or 0, @range_muffled or 0, @hearable)
+    return glob and player.GetAll! or table.Unique(targets)
+        
+  Parse: (ply, lang, cmd, text) => true
+      
+  Handle: (ply, lang, cmd, text) =>
+    -- TODO: config option
+    text = string.Escape string.sub(text, 1, 500)
+    -- TODO: LANGUAGES
+    if @use_language
+      -- should only happen if they don't have a language at all
+      if false and not lang
+        ply\SendChat "ERROR", "You cannot speak."
+        return
+      elseif false and not hook.Run("CanSpeakLanguage", ply, lang)
+        ply\SendChat "ERROR", "You don't speak this language."
+        return
+    data = @Parse ply, lang, cmd, text
+    return if data == nil
+    data.__type = @name
+    -- Log.Write("chat_#{@log_category}", @, data, ply) if @log_category
+    netstream.Send @GetTargets(ply, data), "SendChat", data
+      
+  WriteLog: (data, ply) =>

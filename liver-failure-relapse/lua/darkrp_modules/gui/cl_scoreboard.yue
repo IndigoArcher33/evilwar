@@ -1,0 +1,154 @@
+-- Normal display on the scoreboard
+global SCOREBOARD_SHOW   = 0
+-- Red background on the scoreboard
+global SCOREBOARD_HIDDEN = 1
+-- Skip display on the scoreboard
+global SCOREBOARD_SKIP   = 2
+
+-- scoreboard entry
+PANEL = {}
+AccessorFunc PANEL, "Alt", "Alt"
+
+PANEL[k] = v for k, v in pairs{
+  Init: =>
+    @Icon = @Add"EvilRP_CharacterModel"
+    -- TODO: finish badges
+    with @Badge = @Add"DButton"
+      \Dock RIGHT
+      \SetText""
+      .Paint = ->
+      .DoClick = -> -- GUI.Open("BadgeList", @Player)
+    -- TODO: finish examine
+    -- TODO: scoreboard commands
+    with @Examine = @Add"DButton"
+      \Dock FILL
+      \SetText""
+      .Paint = ->
+      .DoClick = -> -- @Player\Examine!
+      .DoRightClick = ->
+        return unless lp\IsAdmin!
+        -- @OpenScoreboardCommands!
+          
+  SetPlayer: (ply) =>
+    @Player = ply
+    @Team = ply\Team!
+    with @Icon
+      \SetPlayer ply
+      .Zoom = 1
+      \SetBaseYaw 20
+        
+  IsInvalid: =>
+    return true unless IsValid(@Player)
+    return true if @Player\Team! ~= @Team
+    return true if @State == SCOREBOARD_SKIP
+    return false
+  -- OpenScoreboardCommands: =>
+  --   return if @IsInvalid!
+  --   menu_data = @Player\GetActionMenuData"Scoreboard"
+  --   return if table.Count(menu_data) == 0
+  --   with dmenu = util.BuildMenu(menu_data)
+  --     \SetSkin"EvilRP"
+  --     \Open gui.MousePos!
+    
+  Think: =>
+    -- @State = hook.Run("ShouldHidePlayer", @Player)
+    if @IsInvalid!
+      @Remove!
+      return
+        
+  PerformLayout: (w, h) =>
+    @Icon\SetPos 1, 1
+    @Icon\SetSize h - 2, h - 2
+    -- @Badge\SetWide math.max(100, #@Player\GetBadges! * 18 + 28)
+  Paint: (w, h) => derma.SkinHook("Paint", "ScoreboardEntry", @, w, h)
+}
+
+derma.DefineControl "EvilRP_ScoreboardEntry", "", PANEL, "Panel"
+
+-- scoreboard team
+PANEL = {}
+  
+AccessorFunc PANEL, "Team", "Team"
+
+color_bg = ColorAlpha(Color("evilrp_primary"), 10)
+color_txt = Color("evilrp_normal")
+  
+PANEL[k] = v for k, v in pairs{
+  Init: =>
+    @DockPadding 0, 50, 0, 0
+    @Players = {}
+    @Empty = false
+      
+  Think: =>
+    players = team.GetPlayers @Team
+    if (#players == 0 and not @Empty) or (#players > 0 and @Empty)
+      @InvalidateLayout!
+    table.sort players, (a, b) -> a\Name! < b\Name!
+    alt = true
+    for k, ply in ipairs(players)
+      -- continue if hook.Run("ShouldHidePlayer", ply) == SCOREBOARD_SKIP
+      panel = @Players[ply] or @AddPlayer(ply)
+      panel\SetAlt alt
+      panel\SetZPos(k) if panel\GetZPos! ~= k
+      alt = not alt
+        
+  AddPlayer: (ply) =>
+    panel = @Add"EvilRP_ScoreboardEntry"
+    with panel
+      \Dock TOP
+      \SetTall 60
+      \SetPlayer ply
+    @Players[ply] = panel
+    return panel
+
+  OnChildRemoved: (child) => @Players[child.Player] = nil
+
+  PerformLayout: (w, h) =>
+    @Empty = table.Count(@Players) == 0
+    if @Empty
+      @SetTall 0
+      return
+    h = 50
+    h += c\GetTall! for c in *@GetChildren!
+    @SetTall h
+
+  Paint: (w, h) =>
+    -- if Team.IsHidden(@Team)
+      -- surface.SetDrawColor(color_bg)
+      -- surface.DrawRect(0, 0, w, 50)
+    draw.SimpleText(team.GetName(@Team), "Spleen_Label", 10, 25, color_txt, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.SimpleText("#{#team.GetPlayers(@Team)}/#{player.GetCount!}", "Spleen_Label", w - 10, 25, color_txt, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+}
+
+derma.DefineControl "EvilRP_ScoreboardTeam", "", PANEL, "Panel"
+
+-- scoreboard
+PANEL = {}
+teams_internal = table.Lookup{
+  TEAM_CONNECTING
+  TEAM_UNASSIGNED
+  TEAM_SPECTATOR
+}
+
+PANEL[k] = v for k, v in pairs{
+  Init: =>
+    @SetSize 620, ScreenScale(200)
+    @DockPadding 0, 50, 0, 0
+    @MakePopup!
+    @Center!
+    @SetKeyboardInputEnabled false
+    @Players = @Add"DScrollPanel"
+    @Players\Dock FILL
+    for index, data in pairs(team.GetAllTeams!)
+      continue if teams_internal[index]
+      with header = @Players\Add"EvilRP_ScoreboardTeam"
+        header\SetTeam index
+        header\SetZPos index
+        \Dock TOP
+
+  Paint: (w, h) => derma.SkinHook("Paint", "Scoreboard", @, w, h)
+}
+
+derma.DefineControl "EvilRP_Scoreboard", "", PANEL, "EvilRP_Frame"
+
+GUI.Register "Scoreboard", (-> return vgui.Create("EvilRP_Scoreboard")), true

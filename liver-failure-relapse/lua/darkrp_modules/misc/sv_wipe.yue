@@ -1,0 +1,15 @@
+wipe = (ply, cmd, args) ->
+  return if ply\EntIndex! ~= 0 and not ply\IsSuperAdmin!
+  MsgC Color(200,0,0), "BEGINNING WIPE.\n"
+  starting_money = GAMEMODE.Config.startingmoney
+  sql.Query"UPDATE darkrp_player SET wallet = '#{starting_money}'"
+  MsgC Color(200,0,0), "ALL PLAYER WALLETS WERE SET TO $#{starting_money}.\n"
+  for need in *{"Hunger", "Thirst", "Despair"}
+    sql.Query"UPDATE evilrp_needs SET #{need} = '0'"
+  MsgC Color(200,0,0), "ALL PLAYER NEEDS WERE FULLY EMPTIED.\n"
+  -- we don't use PData for anything besides inventory persistence, so whatever
+  sql.Query"DELETE FROM playerpdata"
+  MsgC Color(200,0,0), "ALL PLAYER INVENTORIES WERE FULLY EMPTIED.\n"
+  p\SendChat "GENERIC", "<c=200,0,0>KISS YOUR PROGRESS GOODBYE." for p in *player.GetAll!
+  timer.Simple 6.66, -> RunConsoleCommand("changelevel", game.GetMap!)
+concommand.Add "rp_wipe", wipe

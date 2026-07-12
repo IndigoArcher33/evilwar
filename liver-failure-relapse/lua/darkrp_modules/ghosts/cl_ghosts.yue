@@ -1,0 +1,18 @@
+ghost_invisibility = (ply) ->
+  lp = LocalPlayer!
+  if (lp ~= ply) and (lp\Team! ~= TEAM_GHOST) and (ply\Team! == TEAM_GHOST)
+    return true unless lp\HasOddity(ODDITY_COTARDISM)
+  return
+
+hook.Add "PrePlayerDraw", "evilrp_ghost_invisibility", ghost_invisibility
+
+ghosts_cant_use = (ply, bind, down) ->
+  lp = LocalPlayer!
+  if (down and string.find(bind, "+use") and lp\Team! == TEAM_GHOST)
+    et = LocalPlayer!\GetEyeTrace!
+    if (et.Entity and (not et.Entity\GetClass!\find"portal/spawn"))
+      -- this is where the text for blocking it would go but i cant be asked right now
+      return true
+  return
+
+hook.Add "PlayerBindPress", "evilrp_ghost_cantuse", ghosts_cant_use

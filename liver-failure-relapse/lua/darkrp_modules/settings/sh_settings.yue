@@ -1,0 +1,13 @@
+global Settings = {}
+
+Settings.list = {}
+
+-- Settings.categories = table.Map(Config.Get"SettingCategories", (name) -> { :name })
+
+if CLIENT
+  Settings.cache or= {}
+  unless sql.TableExists"evilrp_settings"
+    sql.Query"CREATE TABLE evilrp_settings (key TEXT NOT NULL PRIMARY KEY, value TEXT NOT NULL)"
+
+meta = FindMetaTable"Player"
+-- logger = log.Create"settings"

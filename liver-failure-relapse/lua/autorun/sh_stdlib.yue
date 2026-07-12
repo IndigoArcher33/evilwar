@@ -1,0 +1,22 @@
+global include_realm
+include_realm = (file_name, realm) ->
+  error "No file name specified for including." unless file_name
+  unless realm
+    realm = "server" if file_name\find"sv_"
+    realm = "shared" if file_name\find"sh_"
+    realm = "client" if file_name\find"cl_"
+  switch realm
+    when "server"
+      if SERVER then return include file_name
+    when "shared"
+      if SERVER then AddCSLuaFile file_name
+      return include file_name
+    when "client"
+      if SERVER then AddCSLuaFile file_name
+      if CLIENT then return include file_name
+
+global include_dir
+include_dir = (dir, from_lua) ->
+  base_dir = GM.FolderName
+  files = file.Find("#{(from_lua and "" or base_dir)}#{dir}/*.lua", "LUA")
+  include_realm"#{dir}/#{v}" for v in *files

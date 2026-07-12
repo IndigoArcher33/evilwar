@@ -1,0 +1,89 @@
+-- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/lightning/sh_lightning.yue
+local smite_dmg_range = { -- 1
+	35, -- 1
+	100 -- 1
+} -- 1
+GAMEMODE.LightningStrike = function(self, origin, dest) -- 3
+	if SERVER then -- 4
+		local tr = util.TraceHull({ -- 6
+			start = origin, -- 6
+			endpos = dest -- 7
+		}) -- 5
+		local edata = EffectData() -- 9
+		local start = util.QuickTrace(tr.HitPos, (tr.HitNormal + Vector(0, 0, 2)):GetNormalized() * 9999, tr.Entity).HitPos -- 13
+		edata:SetStart(start) -- 14
+		edata:SetOrigin(tr.HitPos) -- 15
+		util.Effect("ffvlightningbolt", edata, true, true) -- 16
+		if tr.HitNonWorld and tr.Hit then -- 17
+			local victim = tr.Entity -- 18
+			local dmg = DamageInfo() -- 19
+			dmg:SetDamage(math.random(smite_dmg_range[1], smite_dmg_range[2])) -- 21
+			dmg:SetDamageType(DMG_SHOCK) -- 22
+			victim:TakeDamageInfo(dmg) -- 23
+			timer.Simple(1, function() -- 24
+				if not (victim and IsValid(victim) and victim:IsPlayer() and not victim:Alive()) then -- 25
+					return -- 25
+				end -- 25
+				local rag = victim:Ragdoll() -- 26
+				if not (rag and IsValid(rag)) then -- 27
+					return -- 27
+				end -- 27
+				return rag:Fire("StartRagdollBoogie") -- 28
+			end) -- 24
+		end -- 17
+		local world = Entity(0) -- 30
+		if tr.Hit then -- 31
+			if (not tr.Entity:IsPlayer()) or (not tr.Entity:Alive()) then -- 32
+				util.BlastDamage(world, world, tr.HitPos, 200, 80) -- 33
+			end -- 32
+		end -- 31
+		return edata -- 10
+ end -- 4
+end -- 3
+if SERVER then -- 35
+	util.AddNetworkString("evilrp_smite") -- 36
+	net.Receive("evilrp_smite", function(len, ply) -- 37
+		if not ply:IsAdmin() then -- 38
+			return -- 38
+		end -- 38
+		local victim = net.ReadEntity() -- 39
+		if not (victim and IsValid(victim)) then -- 40
+			return -- 40
+		end -- 40
+		local where = victim:EyePos() -- 41
+		return GAMEMODE:LightningStrike(where, where) -- 42
+	end) -- 37
+end -- 35
+local smite -- 44
+smite = function(ply, cmd, args) -- 44
+	if ply:EntIndex() ~= 0 and not ply:IsAdmin() then -- 45
+		return -- 45
+	end -- 45
+	if #args > 0 then -- 46
+		local victim = GAMEMODE:FindPlayer(args[1]) -- 47
+		if not (victim and IsValid(victim) and victim:IsPlayer() and victim:Alive()) then -- 48
+			MsgC(Color(200, 0, 0), "No living victim was found by that name.\n") -- 49
+			return -- 50
+		end -- 48
+		if SERVER then -- 51
+			local where = victim:EyePos() -- 52
+			GAMEMODE:LightningStrike(where, where) -- 53
+			return MsgC(Color(200, 200, 0), tostring(victim:Nick()) .. " was struck by lightning.\n") -- 54
+		else -- 56
+			net.Start("evilrp_smite") -- 56
+			net.WriteEntity(victim) -- 57
+			return net.SendToServer() -- 58
+		end -- 51
+	elseif (ply:EntIndex() ~= 0) then -- 59
+		local tr = GAMEMODE:GetHandTrace(ply, 4096) -- 60
+		local victim = tr.Entity -- 61
+		if not (victim and IsValid(victim)) then -- 62
+			ply:Notify("<c=200,0,0>I'm not targeting something worth the punishment.") -- 63
+			return -- 64
+		end -- 62
+		net.Start("evilrp_smite") -- 65
+		net.WriteEntity(victim) -- 66
+		return net.SendToServer() -- 67
+	end -- 46
+end -- 44
+return concommand.Add("smite", smite) -- 68

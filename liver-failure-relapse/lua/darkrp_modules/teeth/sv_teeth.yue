@@ -1,0 +1,29 @@
+hook.Add "Initialize", "evilrp_setup_table_teeth", ->
+  unless sql.TableExists( "evilrp_teeth" )
+    sql.Query( "CREATE TABLE evilrp_teeth( SteamID TEXT, Amount INTEGER )" )
+
+hook.Add "PlayerInitialSpawn", "evilrp_setup_teeth", (ply) ->
+  teeth_check = sql.Query( "SELECT SteamID, Amount FROM evilrp_teeth WHERE SteamID = '" .. ply\SteamID64! .. "'" )
+  unless teeth_check
+    sql.Query( "INSERT INTO evilrp_teeth( SteamID, Amount ) VALUES( '" .. ply\SteamID64! .. "', 0 )" )
+  teeth = sql.Query( "SELECT SteamID, Amount FROM evilrp_teeth WHERE SteamID = '" .. ply\SteamID64! .. "'" )[1]
+  teeth = teeth.Amount if teeth
+  ply\SetNWFloat( "evilrp_teeth", tonumber(teeth or 0) )
+
+lose_teeth_on_death = (ply, attacker, dmg) ->
+  return if ply\Team! == TEAM_GHOST
+  amount = -1
+  if ply.death_by_neglect
+    amount -= 1
+    ply.death_by_neglect = nil
+  old_amt = ply\GetTeeth!
+  ply\AddTeeth(amount)
+  if old_amt ~= ply\GetTeeth! -- teeth WERE lost on death if true
+    timer.Simple( 1, ->
+      return unless ply and ply\IsValid! and ply\IsPlayer!
+      rag = ply\Ragdoll!
+      return unless (rag and IsValid(rag))
+      rag\SetNWInt("sanitar_cells", math.abs(amount))
+    )
+
+hook.Add "DoPlayerDeath", "evilrp_lose_teeth_on_death", lose_teeth_on_death

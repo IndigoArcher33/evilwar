@@ -1,0 +1,2 @@
+-- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/appearance/sh_appearance.yue
+-- CURRENT DISABLED DUE TO MODEL CLIPPING

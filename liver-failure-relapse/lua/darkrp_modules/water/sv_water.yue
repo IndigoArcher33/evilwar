@@ -1,0 +1,27 @@
+meta = FindMetaTable"Player"
+
+meta[k] = v for k, v in pairs {
+  CheckWater: (distance) =>
+    start = @GetShootPos!
+    tr = util.TraceLine {
+      :start
+      endpos: start + (@GetAimVector! * distance)
+      mask: bit.bor MASK_WATER, MASK_SOLID
+      filter: @
+    }
+    return false unless tr.Hit
+    return false unless tr.MatType == MAT_SLOSH
+    return true
+}
+  
+gulp = Sound"npc/barnacle/barnacle_gulp2.wav"
+  
+drink_water = (ply, key) ->
+  switch key
+    when IN_USE
+      if ply\CheckWater 80
+        ply\DoAnimationEvent ACT_GMOD_GESTURE_ITEM_GIVE
+        ply\AddThirst -5
+        ply\EmitSound gulp
+
+hook.Add "KeyPress", "evilrp_drink_water", drink_water

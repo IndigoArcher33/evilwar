@@ -1,0 +1,127 @@
+create_spawnpoints = ->
+  EVIL_SPAWN_POSITIONS = {
+    ["test1"]:
+      * pos: Vector( 422, 275, 29 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -10104, 13626, 32 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -15602, 13375, 32 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -12185, 12728, 31 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -11905, 14180, 32 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -10123, 14088, 47 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -11755, 15068, 32 )
+        job: TEAM_PRIVATE
+      * pos: Vector( 412, -234, 199 )
+        job: TEAM_SANITAR
+      * pos: Vector( 1546, 621, 30 )
+        job: TEAM_KORPSMAN
+      * pos: Vector( 403, 981, 234 )
+        job: TEAM_KOMMANDANT
+    ["rp_slumtown"]:
+      * pos: Vector( 251, 47, 137 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -865, 193, 1 )
+        job: TEAM_PRIVATE
+      * pos: Vector( 541, -65, 1 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -138, 627, 1 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -807, 1577, 129 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -629, 774, 1 )
+        job: TEAM_PRIVATE
+      * pos: Vector( 551, 168, 137 )
+        job: TEAM_PRIVATE
+      * pos: Vector( 385, 423, 1 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -773, -417, 129 )
+        job: TEAM_SANITAR
+      * pos: Vector( -773, -446, 1 )
+        job: TEAM_SANITAR
+    ["rp_district_slums_v2"]:
+      * pos: Vector(3414, 1980, 193)
+        job: TEAM_PRIVATE
+      * pos: Vector(4923, 5067, 161)
+        job: TEAM_PRIVATE
+      * pos: Vector(8573, -1276, 177)
+        job: TEAM_PRIVATE
+      * pos: Vector(7629, 2628, 193)
+        job: TEAM_PRIVATE
+    ["rp_beta17"]:
+      * pos: Vector( -3172, -406, 17 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -92, -179, 1 )
+        job: TEAM_PRIVATE
+      * pos: Vector( -92, -273, 1 )
+        job: TEAM_PRIVATE
+    ["rp_central17_v4"]:
+      * pos: Vector( -1182, 859, -1064 )
+        job: TEAM_PRIVATE
+    ["rp_liverfailure_kidneydagger"]:
+      * pos: Vector(5724, 1175, 256)
+        job: TEAM_KOMMANDANT
+      * pos: Vector(3768, 4313, 100)
+        job: TEAM_PRIVATE
+      * pos: Vector(3555, 2199, 100)
+        job: TEAM_PRIVATE
+      * pos: Vector(-386, 1735, 100)
+        job: TEAM_PRIVATE
+      * pos: Vector(2182, 909, 40)
+        job: TEAM_PRIVATE
+      * pos: Vector(4398, 383, 100)
+        job: TEAM_PRIVATE
+      * pos: Vector(5818, 3053, 100)
+        job: TEAM_PRIVATE
+      * pos: Vector(295, -498, 100)
+        job: TEAM_PRIVATE
+      * pos: Vector(2918, 464, 360)
+        job: TEAM_PRIVATE
+      * pos: Vector(1100, -474, 100)
+        job: TEAM_PRIVATE
+      * pos: Vector(3442, 2813, 100)
+        job: TEAM_PRIVATE
+      * pos: Vector(5975, 2071, 65)
+        job: TEAM_PRIVATE
+      * pos: Vector(4353, 2742, 100)
+        job: TEAM_SANITAR
+      * pos: Vector(4851, 340, 100)
+        job: TEAM_SANITAR
+      * pos: Vector(4479, 1016, 105)
+        job: TEAM_SANITAR
+      * pos: Vector(4597, 1219, 369)
+        job: TEAM_SANITAR
+      * pos: Vector(2517, 1668, 321)
+        job: TEAM_SANITAR
+      * pos: Vector(-1302, 1944, -100)
+        job: TEAM_KORPSMAN
+      * pos: Vector(2848, 2097, 150)
+        job: TEAM_KORPSMAN
+      * pos: Vector(5568, 1969, 264)
+        job: TEAM_KORPSMAN
+  }
+  for portal in *ents.FindByClass"portal/spawn"
+    portal\Remove!
+  MsgC Color(200, 200, 0), "Preparing to create spawnpoints.\n"
+  map = game.GetMap!
+  if EVIL_SPAWN_POSITIONS[map]
+    for v in *EVIL_SPAWN_POSITIONS[map]
+      sp = ents.Create v.cls or "portal/spawn"
+      with sp
+        \SetPos v.pos
+        \SetFate v.job
+        \Spawn!
+        \Activate!
+        \GetPhysicsObject!\EnableMotion false
+      MsgC Color(0, 200, 0),
+        "#{sp} created for '",
+        Color(200, 200, 200),
+        RPExtraTeams[v.job].name,
+        Color(0, 200, 0),
+        "'.\n"
+  return
+    
+hook.Add "InitPostEntity", "evilrp_create_spawnpoints", create_spawnpoints

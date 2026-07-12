@@ -1,0 +1,17 @@
+justice = (ply, attacker, dmg) ->
+  return unless ply and IsValid(ply)
+  return unless ply\IsPlayer!
+  return unless ply\Wanted!
+  ply\Notify"<c=0,200,0>Despicable criminal #{ply\Name!} was slain. Good riddance!"
+  ply\MakeUnwanted!
+  return unless attacker and IsValid(attacker)
+  return unless attacker\IsPlayer!
+  return if attacker\Wanted!
+  return unless attacker\Team! == TEAM_SANITAR
+  return if attacker == ply
+  cells = ply\GetStemCells!
+  return unless cells > 0
+  ply\AddStemCells(-1)
+  ply\Notify"<c=200,0,0>The long tentacle of the law got you."
+
+hook.Add "DoPlayerDeath", "evilrp_justice", justice

@@ -1,0 +1,94 @@
+hook.Add "PlayerSpray", "evilrp_disable_sprays", -> true
+
+hook.Add "CanPlayerSuicide", "evilrp_suicide_prevention_hotline", -> false
+
+hook.Add "PlayerSwitchFlashlight", "evilrp_no_flashlight", -> false
+
+hook.Add "PlayerSetHandsModel", "evilrp_corpse_fingers", (ply, ent) ->
+  with ent
+    jobt = RPExtraTeams[ply\Team!]
+    fallback_mdl = "models/weapons/c_arms_citizen.mdl"
+    fallback_skin = 2 -- corpse hands
+    c_arms = (jobt and jobt.arms_model or fallback_mdl) or fallback_mdl
+    skin = (jobt and jobt.arms_skin or fallback_skin) or fallback_skin
+    bg = 0
+    \SetModel c_arms
+    \SetSkin skin
+    timer.Simple 1, ->
+      if string.find(ply\GetModel!, "models/liver_failure")
+        switch ply\GetBodygroup(9) -- hands bodygroup
+          when 1, 2 -- gloves
+            \SetBodygroup 1, 1
+          else
+            \SetBodygroup 1, 0
+  return true
+
+if SERVER
+  -- RunConsoleCommand "d_walldamage_scaledamage", "1"
+  -- RunConsoleCommand "d_walldamage_scalemultiplier", "3"
+  -- RunConsoleCommand "d_walldamage_canhappenonground", "1"
+  -- RunConsoleCommand "d_walldamage_velocityrequired", "300"
+  extinguish_things = ->
+    for portal in *ents.FindByClass"portal*"
+      portal\Extinguish! if portal\IsOnFire!
+    for ply in *player.GetAll!
+      ply\Extinguish! if ply\WaterLevel! > 0 and ply\IsOnFire!
+    return
+  hook.Add "Think", "evilrp_extinguish_things", extinguish_things
+
+GAMEMODE.GetHandTrace = (ply, len=50) =>
+  start = ply\EyePos!
+  trace = {
+    :start
+    endpos: start + ply\GetAimVector! * len
+    filter: ply
+  }
+  return util.TraceLine trace
+
+if CLIENT
+  hook.Add "ChatText", "evilrp_chat_suppress", -> true
+if SERVER
+  player_connect = (name, ip) ->
+    for a in *player.GetAdmins!
+      a\SendChat "NOTICE", "#{name} has connected."
+  hook.Add "PlayerConnect", "evilrp_connection", player_connect
+  player_disconnected = (ply) ->
+    for a in *player.GetAdmins!
+      a\SendChat "NOTICE", "#{ply\SteamName!} has disconnected."
+  hook.Add "PlayerDisconnected", "evilrp_connection", player_disconnected
+
+util.Blood = (pos, amount, dir, force, noprediction) ->
+  ed = EffectData!
+  with ed
+    \SetOrigin pos
+    \SetMagnitude amount
+    \SetNormal dir
+    \SetScale math.max(128,force)
+  util.Effect "Bloodstream", ed, nil, noprediction
+
+-- bot stuff
+hook.Add "StartCommand", "evilrp_bot_testers", (bot, cmd) ->
+  return unless bot\IsBot! and bot\Alive!
+  with cmd
+    \ClearMovement!
+    \ClearButtons!
+  return
+
+-- dropping weapons
+if SERVER
+  netstream.Hook "DropWeapon", (ply) ->
+    wep = ply\GetActiveWeapon!
+    if not wep\IsValid! or wep\GetModel! == ""
+      ply\Notify"<c=200,0,0>#{DarkRP.getPhrase"cannot_drop_weapon"}"
+      return
+    can_drop = hook.Call "canDropWeapon", GAMEMODE, ply, wep
+    if not can_drop
+      ply\Notify"<c=200,0,0>#{DarkRP.getPhrase"cannot_drop_weapon"}"
+      return
+    ply\DoAnimationEvent ACT_GMOD_GESTURE_ITEM_DROP
+    if IsValid(ply) and IsValid(wep) and ply\Alive! and wep\GetModel! ~= "" and not IsValid(ply\GetObserverTarget!)
+      ply\dropDRPWeapon wep
+
+-- i'm the lead developer, who are you to prevent me from ANYTHING, DarkRP?
+hook.Add "CanProperty", "evilrp_dev_supremacy", (ply, property, ent) ->
+  return true if ply\IsSuperAdmin!

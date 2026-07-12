@@ -1,0 +1,92 @@
+class Equip_Weapon extends SOUND
+  sound: ["dysphoria/weapons/wield_gun#{i}.ogg" for i=1,3]
+
+class SpawnedWeapon extends ITEM
+  @__entity: "evilrp/spawned/weapon"
+  PrintName: "Spawned Weapon"
+  Spawnable: false
+  IsSpawnedWeapon: true
+  Interesting: true
+
+  ImpactSound:
+    soft: "weapon.ImpactSoft"
+    hard: "weapon.ImpactHard"
+
+  SetupDataTables: =>
+    super!
+    @NetworkVar "String", "WeaponClass"
+
+  Draw: =>
+    ret = hook.Call "onDrawSpawnedWeapon", nil, @
+    return if ret ~= nil
+    @DrawModel!
+    -- rest of the code from original darkRP `spawned_weapon` beyond
+    -- this point concerned 'stacked' weapons, which evilRP lacks
+    -- therefore the code is also not present for it
+
+  PMRender: (item) ->
+    ct = {}
+    if item.wepcls
+      wt = weapons.Get item.wepcls
+      ct[] = wt.PrintName
+      if wt.Description
+        ct[] = ""
+      ct[] = { text: wt.Description, font: "Spleen_Label_Small" }
+      return ct
+
+  HUDRender: =>
+    ct = {}
+    wt = weapons.Get @GetWeaponClass!
+    ct[] = wt.PrintName
+    if wt.Description
+      ct[] = ""
+      ct[] = { text: wt.Description, font: "Spleen_Label_Small" }
+    return ct
+  
+  Sound: "Equip_Weapon"
+      
+  Initialize: =>
+    if SERVER
+      DarkRP.ValidatedPhysicsInit @, SOLID_VPHYSICS, "The issue lies with weapon \"#{@GetWeaponClass! or 'unknown'}\""
+      @SetMoveType MOVETYPE_VPHYSICS
+      @SetSolid SOLID_VPHYSICS
+      @PhysWake!
+
+  OnTakeDamage: (dmg) => @TakePhysicsDamage dmg
+
+  -- this one is written so weirdly. i don't understand why; almost
+  -- all of this is a straight, trimmed-down port of `spawned_weapon`
+  OnUseFinish: (ply) =>
+    super ply
+    cls = @GetWeaponClass!
+    return if ply\HasWeapon cls
+    wep = ply\Give cls, true
+    ply\SelectWeapon cls
+    @GivePlayerAmmo ply, wep, false
+    @Remove!
+
+  GivePlayerAmmo: (ply, weapon, had_weapon) =>
+    primary_ammo_type = weapon\GetPrimaryAmmoType!
+    secondary_ammo_type = weapon\GetSecondaryAmmoType!
+    clip1, clip2 = @clip1, @clip2
+    if had_weapon
+      if clip2 and clip2 > 0 and weapon\Clip2! ~= -1
+        weapon\SetClip2 weapon\Clip2! + clip2
+        clip2 = 0
+    else
+      if clip1 and clip1 ~= -1 and weapon\Clip1! ~= -1
+        weapon\SetClip1 clip1
+        clip1 = 0
+      if clip2 and clip2 ~= -1 and weapon\Clip2! ~= -1
+        weapon\SetClip2 clip2
+    if primary_ammo_type > 0
+      prim_ammo = ply\GetAmmoCount primary_ammo_type
+      prim_ammo += (@ammoadd or 0) + (clip1 or 0) -- gets rid of any ammo given during weapon pickup
+      ply\SetAmmo prim_ammo, primary_ammo_type
+    if secondary_ammo_type > 0
+      sec_ammo = ply\GetAmmoCount(secondary_ammo_type) + (clip2 or 0)
+      ply\SetAmmo sec_ammo, secondary_ammo_type
+        
+if SERVER 
+  block_types = {"Physgun1", "Spawning1", "Toolgun1"}
+  FPP.AddDefaultBlocked(block_types, "evilrp/spawned/weapon")

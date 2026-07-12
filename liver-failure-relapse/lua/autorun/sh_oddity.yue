@@ -1,0 +1,19 @@
+global ODDITIES = {}
+global class ODDITY
+  @__inherited: (child) =>
+    @index += 1
+    ODDITIES[2^@index] = child
+    child.index = 2^@index
+    @list[] = child.index
+
+  @index: 0
+  @list: {}
+
+  name: ""
+  desc: "An idiosyncracy that affects you."
+
+  GetDesc: (ply) => @desc
+
+  Inform: (ply) =>
+    ply\Notify"<c=128,128,128>\"#{@GetDesc ply}\""
+        

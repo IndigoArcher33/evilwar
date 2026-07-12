@@ -1,0 +1,98 @@
+global third_cur_pos
+global third_cur_ang
+global third_dest_pos
+global third_dest_ang
+global evil_fov
+
+should_do_third_person = ->
+  lp = LocalPlayer!
+  rag = lp\Ragdoll!
+  team = lp\Team!
+  return false if lp.gT_TextEntry and IsValid(lp.gT_TextEntry)
+  return true if rag and IsValid(rag) and (not lp\Alive!)
+  return true if team == TEAM_GHOST or team == TEAM_BONEHEAD
+  return true if cookie.GetNumber("evilrp_thirdperson", 0) == 1
+  return false
+
+toggle_third_person = (ply, cmd, args) ->
+  cookie.Set("evilrp_thirdperson", 1 - cookie.GetNumber("evilrp_thirdperson", 0))
+
+concommand.Add "rp_thirdperson", toggle_third_person
+
+bones =
+  * "ValveBiped.Bip01_Head1"
+  * "ValveBiped.Bip01_Neck1"
+
+calc_view = (ply, pos, angles, fov, znear, zfar) ->
+  evil_fov = fov unless evil_fov
+  -- terminal zoom
+  terminal = ply.gterm_entity
+  if terminal and IsValid(terminal)
+    fov -= 23
+  -- set fov changes
+  evil_fov = Lerp(FrameTime! * 3, evil_fov, fov)
+  fov = evil_fov
+  -- ragdoll stuff
+  body = ply\GetBodyEntity!
+  viewer = ply\GetViewEntity!
+  alive = ply\Alive!
+  cls = body\GetClass!
+  for bone in *bones
+    shrink, not_shrink = Vector(0,0,0), Vector(1,1,1)
+    val = shrink
+    if viewer ~= @
+      val = not_shrink
+    elseif cls == "prop_ragdoll" and not alive
+      val = not_shrink
+    elseif body == ply and alive
+      val = not_shrink
+    bone = body\LookupBone(bone)
+    body\ManipulateBoneScale(bone, val) if bone
+  return if viewer ~= ply
+  attach = body\GetAttachment(body\LookupAttachment"eyes")
+  if ply\Fallen!
+    pos, angles = attach.Pos, attach.Ang
+  -- third person stuff
+  if (not third_cur_pos)
+    third_cur_pos = ply\GetPos!
+    third_cur_ang = Angle!
+    third_dest_pos = ply\GetPos!
+    third_dest_ang = Angle!
+  if third_cur_pos
+    body = ply
+    rag = ply\Ragdoll!
+    if rag and IsValid(rag) and (not ply\Alive!)
+      body = rag
+      pos = body\GetPos!
+    target_pos = body\EyePos! + ply\GetAimVector! * -40
+    target_pos = target_pos + body\GetForward! * -10
+    target_pos = target_pos + body\GetRight! * 35
+    distance = 50
+    third_dest_ang = angles
+    third_dest_pos = target_pos - third_dest_ang\Forward! * distance
+    tr = util.TraceLine {
+      start: pos
+      endpos: third_dest_pos
+      filter: {ply, body}
+    }
+    third_dest_pos = pos + tr.Normal * (distance - 2) * tr.Fraction
+    third_cur_pos = LerpVector 0.08, third_cur_pos, third_dest_pos
+    third_cur_ang = LerpAngle 0.5, third_cur_ang, third_dest_ang
+    view =
+      origin: third_cur_pos
+      angles: third_cur_ang
+      :fov
+      drawviewer: true
+    if should_do_third_person!
+      -- we do all the calculations seen above whether we actually
+      -- return it or not, that way it's up to date when thirdperson
+      -- *is* toggled
+      return view
+  -- if we got here, nothing took over like third person
+  view =
+    origin: pos
+    :angles
+    :fov
+  return view
+
+hook.Add "CalcView", "evilrp_calcview", calc_view

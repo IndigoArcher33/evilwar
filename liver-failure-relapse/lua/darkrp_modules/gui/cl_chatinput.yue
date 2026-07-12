@@ -1,0 +1,91 @@
+PANEL = {
+  Init: =>
+    @SetFont"Spleen_Label_Small"
+    @SetUpdateOnType true
+    @MultiLine = false
+    @m_bLoseFocusOnClickAway = false
+    @History = {}
+    @HistoryIndex = 0
+
+  OnKeyCodeTyped: (code) =>
+    @OnKeyCode code
+    switch code
+      when KEY_ENTER
+        @OnEnter!
+        return true
+      when KEY_UP, KEY_DOWN
+        @CycleChatHistory code
+        return true
+
+  CycleChatHistory: (code) =>
+    return if code == KEY_UP and @HistoryIndex == 1
+    return if code == KEY_DOWN and @HistoryIndex == 0
+    if code == KEY_UP and @HistoryIndex == 0
+      @Backup = @GetText!
+    change = (code == KEY_DOWN) and 1 or -1
+    index = (@HistoryIndex + change) % (#@History + 1)
+    local text
+    if index == 0
+      text = @Backup
+      @Backup = nil
+    else
+      text = @History[index]
+    @SetText text
+    @SetCaretPos #text
+    @UpdateHeight text
+    @HistoryIndex = index
+
+  OnValueChange: (str) =>
+    @UpdateHeight str
+    _, cmd, args = Chat.Process lp, str
+    command = Chat.commands[cmd]
+    cmd = nil unless command and command.typing
+    cmd = nil if #args < 1
+    cmd = nil if args == "/"
+    if cmd ~= lp\Typing!
+      lp\SetTyping(cmd)
+      netstream.Send "Typing", cmd
+      
+  UpdateHeight: (str) =>
+    multi = true -- TODO make this a clientside setting
+    height = @GetTall!
+    if multi ~= @MultiLine
+      @SetMultiline multi
+      @MultiLine = multi
+    if not multi
+      @SetTall 20 if height ~= 20
+      return
+    font = @GetFont!
+    max_width = @GetWide! - 6
+    acc = 0
+    lines = 1
+    for _, code in utf8.codes(str)
+      char = utf8.char(code)
+      w = surface.GetFontSize font, char
+      if acc + w > max_width
+        lines += 1
+        acc = 0
+      acc += w
+    target_height = math.max lines * 20, 20
+    @SetTall target_height if height ~= target_height
+
+  OnEnter: =>
+    str = @GetText!
+    if #str == 0
+      GUI.Get"Chat"\Hide!
+      return
+    table.remove @History, 1 if #@History > 100
+    @History[] = str
+    Chat.Parse lp, str
+    Chat.Hide!
+
+  -- TODO: config option
+  AllowInput: (char) =>
+    if #@GetValue! > 500
+      surface.PlaySound"weapons/pistol/pistol_empty.wav"
+      return true
+    elseif char == input.LookupBinding"toggleconsole"
+      return true
+}
+
+derma.DefineControl "EvilRP_ChatInput", "", PANEL, "DTextEntry"

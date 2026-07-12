@@ -1,0 +1,246 @@
+global EQUIP_SLOTS =
+  * "torso"
+  * "mask"
+
+dequip = (ply, cmd, args) ->
+  unless #args > 0
+    if CLIENT
+      MsgC Color(200,0,0), "No argument specified.\n", Color(200,200,200), "Options follow:\n"
+      for slot in *EQUIP_SLOTS
+        MsgC Color(0,200,0), "#{slot}\n"
+      return
+  else
+    slot = args[1]
+    equipped = EQUIPMENT\GetEquipped(ply, slot)
+    unless IsValid(equipped)
+      if CLIENT
+        MsgC Color(200,0,0), "No equipment found in slot '", Color(200,200,200), slot, Color(200,0,0), "'.\n"
+      return
+    else
+      if CLIENT
+        net.Start"evilrp_dequip"
+        net.WriteString slot
+        net.SendToServer!
+
+concommand.Add "dequip", dequip
+
+if SERVER
+  util.AddNetworkString"evilrp_dequip"
+  net.Receive "evilrp_dequip", (len, ply) ->
+    slot = net.ReadString!
+    equipped = EQUIPMENT\GetEquipped(ply, slot)
+    return unless IsValid(equipped)
+    EQUIPMENT\Unequip equipped
+    start = ply\EyePos!
+    tr = util.TraceLine
+      :start
+      endpos: start + ply\GetAimVector! * 65
+      filter: ply
+    DarkRP.placeEntity equipped, tr, ply
+    equipped\PhysWake!
+
+global class EQUIPMENT extends ITEM
+  @__entity: "eq"
+
+  @GetEquipped: (ply, slot) =>
+    return ply\GetNWEntity("evilrp_equipped_#{slot}")
+
+  @Equip: (ply, ent) =>
+    return unless SERVER
+    return unless ent.EquipSlot
+    slot = ent.EquipSlot
+    return if IsValid(@GetEquipped ply, slot)
+    ply\SetNWEntity "evilrp_equipped_#{slot}", ent
+    ply\DeleteOnRemove ent
+    with ent
+      \SetParent ply
+      \SetNoDraw true
+      \SetCollisionGroup COLLISION_GROUP_IN_VEHICLE
+      \OnEquip ply
+      \SetPos Vector!
+
+  @Unequip: (ent) =>
+    return unless SERVER
+    return unless ent.EquipSlot
+    slot = ent.EquipSlot
+    ply = ent\GetParent!
+    return unless IsValid ply
+    ply\SetNWEntity "evilrp_equipped_#{slot}", NULL
+    ply\DontDeleteOnRemove ent
+    with ent
+      \SetParent nil
+      \SetNoDraw false
+      \SetCollisionGroup COLLISION_GROUP_WEAPON
+      \OnUnequip ply
+    table.Empty ent.StoreData
+
+  EquipSlot: "torso"
+
+  Sound:"placenta/ui/equip_clothes.wav"
+
+  CanEquip: (ply) => true
+
+  CanUnequip: (ply) => true
+
+  OnRemove: => EQUIPMENT\Unequip(@)
+
+  OnUseFinish: (ply) =>
+    return unless IsValid(ply) and ply\IsPlayer!
+    return unless @CanEquip(ply)
+    equipped = EQUIPMENT\GetEquipped ply, @EquipSlot
+    if IsValid(equipped)
+      return if equipped\GetClass! == @GetClass!
+      return unless equipped\CanUnequip(ply)
+      EQUIPMENT\Unequip equipped
+      with equipped
+        \SetPos @GetPos! + Vector(0,0,1)
+        \SetAngles @Getangles!
+        \PhysWake!
+    EQUIPMENT\Equip ply, @
+    @inventory_use = nil
+    super ply
+
+  OnEquip: (ply) =>
+    @StoreData = {}
+    ply\UpdateAppearance!
+    ply\SetupHands!
+    -- DO SPEEDMOD STUFF HERE
+    -- DO ADDITIONAL WEAPON STUFF HERE
+      -- TODO: maybe use this for equipping guns and stuff?
+
+  OnUnequip: (ply) =>
+    data = @StoreData
+    ply\UpdateAppearance!
+    -- DO SPEEDMOD STUFF HERE
+    -- DO ADDITIONAL WEAPON STUFF HERE
+
+  SetupModel: (ply) =>
+
+  RenderScreenspaceEffects: =>
+
+  HUDPaint: =>
+
+meta = FindMetaTable"Player"
+meta.GetAllEquipment = =>
+  equipment = {}
+  for slot in *EQUIP_SLOTS
+    equipped = EQUIPMENT\GetEquipped @, slot
+    if IsValid(equipped)
+      equipment[] = equipped
+  return equipment
+
+if CLIENT
+  equipment_screenspace = ->
+    lp = LocalPlayer!
+    for slot in *EQUIP_SLOTS
+      equipped = EQUIPMENT\GetEquipped lp, slot
+      continue unless IsValid(equipped)
+      equipped\RenderScreenspaceEffects!
+    return
+  hook.Add "RenderScreenspaceEffects", "evilrp_equipment", equipment_screenspace
+
+  equipment_hudpaint = ->
+    lp = LocalPlayer!
+    for slot in *EQUIP_SLOTS
+      equipped = EQUIPMENT\GetEquipped lp, slot
+      continue unless IsValid(equipped)
+      equipped\HUDPaint!
+    return
+  hook.Add "HUDPaintBackground", "evilrp_equipment", equipment_hudpaint
+else
+  death_equipment_loss = (ply, attacker, dmg) ->
+    for slot in *EQUIP_SLOTS
+      equipped = EQUIPMENT\GetEquipped ply, slot
+      continue unless IsValid(equipped)
+      EQUIPMENT\Unequip equipped
+    return
+
+  hook.Add "DoPlayerDeath", "evilrp_death_equipment", death_equipment_loss
+
+class Mask extends EQUIPMENT
+  EquipSlot: "mask"
+
+class GasMask extends Mask
+  Model: Model"models/betaroyale/gasmask.mdl"
+
+  OverlayMaterial: Material("placenta/respiratordmxmd")
+
+  RenderScreenspaceEffects: =>
+    import abs, cos, sin from math
+    ct = CurTime!
+    lp = LocalPlayer!
+    return unless lp\GetViewEntity! == lp
+    return if cookie.GetNumber("evilrp_thirdperson", 0) == 1
+    tab =
+      ["$pp_colour_addr"]: 0
+      ["$pp_colour_addg"]: 0
+      ["$pp_colour_addb"]: 0
+      ["$pp_colour_brightness"]: -0.01
+      ["$pp_colour_contrast"]: 3
+      ["$pp_colour_colour"]: 2
+      ["$pp_colour_mulr"]: 0
+      ["$pp_colour_mulg"]: 0
+      ["$pp_colour_mulb"]: 0
+    DrawColorModify tab
+
+  HUDPaint: =>
+    return unless lp\GetViewEntity! == lp
+    return if cookie.GetNumber("evilrp_thirdperson", 0) == 1
+    surface.SetMaterial @OverlayMaterial
+    surface.SetDrawColor 255, 255, 255
+    surface.DrawTexturedRect 0, 0, ScrW!, ScrH!
+
+class Worker extends GasMask
+  PrintName: "Industrial Gasmask"
+
+  Description: "Mask of the worker.\nNot everyone gets the privilege of clean air."
+
+  Appearance:
+    Model: "models/toxidroma/shrouds/gasmask1.mdl"
+
+  OverlayMaterial: Material("placenta/hardhatdmxmd")
+
+class Sanitar extends GasMask
+  PrintName: "Sanitar Shroud"
+
+  Description: "Mask of the Pigs.\nEquipped with Nightmarevision."
+
+  Appearance:
+    Model: "models/toxidroma/shrouds/gasmask3.mdl"
+
+  OverlayMaterial: Material("placenta/gasmaskdmxmd")
+
+  UseText: {
+    "slips on the gasmask."
+    "puts on his gasmask."
+    "puts on the oppressor's face."
+    "distances himself from those around him."
+    "struggles on the gasmask."
+  }
+
+  RenderScreenspaceEffects: =>
+    import abs, cos, sin from math
+    ct = CurTime!
+    lp = LocalPlayer!
+    return unless lp\GetViewEntity! == lp
+    tab =
+      ["$pp_colour_addr"]: 0
+      ["$pp_colour_addg"]: 0.013
+      ["$pp_colour_addb"]: 0
+      ["$pp_colour_brightness"]: -0.01
+      ["$pp_colour_contrast"]: 3
+      ["$pp_colour_colour"]: 2
+      ["$pp_colour_mulr"]: 0
+      ["$pp_colour_mulg"]: 23
+      ["$pp_colour_mulb"]: 0
+    DrawColorModify tab
+
+class Evil extends GasMask
+  PrintName: "Outlander's Mask"
+
+  Description: "This looks evil.\nIt's hard to tell if it'll actually help."
+
+  Appearance:
+    Model: "models/toxidroma/shrouds/gasmask3.mdl"
+
+  OverlayMaterial: Material("placenta/protectivedmxmd")

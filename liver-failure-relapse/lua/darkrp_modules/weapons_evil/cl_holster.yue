@@ -1,0 +1,20 @@
+local toggle_holster_pressed
+toggle_holster_think = =>
+  toggle_holster_pressed = false unless toggle_holster_pressed
+  if vgui.CursorVisible!
+    toggle_holster_pressed = false
+    return
+  if input.IsKeyDown(KEY_B) and not toggle_holster_pressed
+    lp = LocalPlayer!
+    return unless lp\Alive!
+    toggle_holster_pressed = true
+    wep = lp\GetActiveWeapon!
+    return if wep == NULL
+    return unless wep.SetLower
+    net.Start"evilrp_toggle_holster"
+    net.SendToServer!
+  elseif not input.IsKeyDown(KEY_B) and toggle_holster_pressed
+    toggle_holster_pressed = false
+  return
+
+hook.Add "Think", "evilrp_whip_it_out", toggle_holster_think

@@ -1,0 +1,36 @@
+import Rand, random from math
+  
+class LFR_PlayerSpawnEffect extends FX
+  Init: (data) =>
+    local pos, speed, ang, scale, ent
+    with data
+      pos = \GetOrigin!
+      speed = \GetStart!
+      ang = \GetNormal!
+      scale = \GetScale!
+      ent = \GetEntity!
+    minb, maxb = ent\GetModelBounds!
+    x1, x2 = minb[1], maxb[1]
+    y1, y2 = minb[2], maxb[2]
+    z1, z2 = minb[3], maxb[3]
+    pmat = "effects/splashwake3"
+
+    for i=1, 40
+      rand_pos = VectorRand x1, x2
+      pos = pos + rand_pos
+      particle = GAMEMODE.Emitter2D\Add pmat, pos
+      with particle
+        \SetVelocity (((ang * 15) * i) * 1) + Vector(random(-4,4), random(-4,4), random(-4,4))
+        \SetDieTime Rand 1,4
+        \SetEndAlpha 0
+        \SetStartSize 2 * scale
+        \SetEndSize random(2,4) * scale
+        \SetRoll Rand -10,10
+        \SetRollDelta Rand -2,2
+        cnum = Rand 50, 255
+        \SetColor cnum, cnum / 2, cnum / 2
+        \SetStartAlpha cnum
+        \SetGravity Vector(0, 0, random(75,200))
+        \SetAirResistance 300
+  Render: =>
+  Think: => false

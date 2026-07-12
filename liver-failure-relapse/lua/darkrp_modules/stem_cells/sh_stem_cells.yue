@@ -1,0 +1,28 @@
+meta = FindMetaTable"Player"
+meta[k] = v for k, v in pairs{
+  -- hunger
+  AddStemCells: (amt) =>
+    c = @GetStemCells!
+    c = math.Clamp(c + amt, 0, 666)
+    @SetStemCells c
+    cells = "cells"
+    cells = "cell" if math.abs(amt) == 1
+    local amt_str
+    if amt == 1
+      amt_str = "a"
+    else
+      amt_str = string.english_number(math.abs(amt))
+    if amt >= 0
+      @Notify"<c=0,200,0>Gained #{amt_str} stem #{cells}."
+    else
+      @Notify"<c=200,0,0>Lost #{amt_str} stem #{cells}."
+  SetStemCells: (amt) =>
+    if SERVER
+      sql.Query"UPDATE evilrp_stem_cells SET Amount = '#{amt}' WHERE SteamID = '#{@SteamID64!}'"
+      @SetNWFloat "evilrp_stem_cells", amt
+  GetStemCells: =>
+    if SERVER
+      return tonumber sql.Query"SELECT Amount FROM evilrp_stem_cells WHERE SteamID = '#{@SteamID64!}'"[1].Amount
+    else
+      return @GetNWFloat "evilrp_stem_cells", 0
+}      

@@ -1,0 +1,539 @@
+-- TODO: port Log from CC2
+global Chat = {} unless Chat
+Chat.list or= {}
+Chat.commands or= {}
+Chat.aliases or= {}
+Chat.console_commands or= {}
+
+meta = FindMetaTable"Player"
+emeta = FindMetaTable"Entity"
+
+meta.Typing = => @GetNWString("evilrp_typing", nil)
+meta.SetTyping = (str) => @SetNWString("evilrp_typing", str)
+
+Chat.Process = (ply, str) ->
+  for alias, command in pairs(Chat.aliases)
+    if string.Left(str, #alias) == alias
+      str = string.format("/%s %s", command, string.sub(str, #alias + 1))
+      break
+  lang, command, args = string.match(str, "^[/!](%w+)%.(%w+)%s*(.-)%s*$")
+  if true or not Language.Lookup[lang]
+    -- LANGUAGE STUFF GOES HERE
+    -- lang = ply\ActiveLanguage!
+    lang = nil
+    command, args = string.match(str, "^[/!](%w+)%s*(.-)%s*$")
+    unless command
+      command, args = "say", string.Trim(str)
+  else
+    lang = string.lower(lang)
+  return lang, string.lower(command), args
+
+Chat.GetTargets = (pos, range, range_muffled, with_entities) ->
+  range_max = math.max(range, range_muffled)
+  targets = {}
+  for _, ent in pairs(ents.FindInSphere(pos, range_max))
+    continue if not ent\IsPlayer! and (not with_entities or not ent.OnHear)
+    dist = ent\GetPos!\DistToSqr(pos)
+    if ent\CanHear(pos)
+      targets[] = ent if dist < range_max^2
+    elseif dist <= range_muffled
+      targets[] = ent if dist <= range_muffled^2
+  return targets
+
+Chat.Parse = (ply, str) ->
+  lang, cmd, args = Chat.Process(ply, str)
+  if CLIENT
+    if Chat.console_commands[cmd]
+      console.Parse lp, Chat.console_commands[cmd], args
+    else
+      netstream.Send "ParseChat", str
+  else
+    return if Chat.ThoughtPolice(ply, str)
+    command = Chat.commands[cmd]
+    if not command
+      ply\SendChat "ERROR", "Unknown command: #{cmd}"
+      return
+    command\Handle ply, lang, cmd, args
+
+Chat.Autopretty = (ply, text) ->
+  for k, v in pairs Chat.StupidMistakes
+    st_start, st_end = string.find(string.lower(text), " #{k} ")
+    if st_start
+      text = "#{string.sub(text, 1, st_start - 1)} #{v} #{string.sub text, st_end + 1}"
+    st_start_comma, st_end_comma = string.find(text, " #{k},")
+    if st_start_comma
+      text = "#{string.sub(text, 1, st_end_comma - 1)} #{v},#{string.sub(text, st_end_comma + 1)}"
+    st_beginning = string.sub(text, 1, string.len(k) + 1)
+    if st_beginning == ("#{k} ") or string.lower(text) == k
+      text = "#{v}#{string.sub(text, string.len(k) + 1)}"
+    st_ending = string.sub(text, string.len(text) - string.len(" #{k}") + 1)
+    if st_ending == (" #{k}")
+      text = string.sub(text, 1, string.len(text) - string.len(" #{k}")) .. " #{v}"
+  fix_illiterate = string.sub(text, 1, 1)
+  text = string.upper(fix_illiterate) .. string.sub(text, 2, string.len(text))
+  fix_illiterate_2 = string.sub(text, -1)
+  switch fix_illiterate_2
+    when ".", "!", "?", ":", ";", ","
+      -- do nothing
+    else
+      -- add a period, at least
+      text ..= "."
+  return text
+
+Chat.ThoughtPolice = (ply, text) ->
+  for bad in *Chat.BadWords
+    if string.find(text\lower!, bad)
+      net.Start"evilrp_jumpscare"
+      net.Send ply
+      ply\SendChat "ERROR", "'#{bad}'"
+      CRIMES.thought\CommittedBy(ply)
+      return true
+  return false
+
+if CLIENT
+  Chat.Create = ->
+    panel = GUI.Get"Chat"
+    if IsValid panel
+      buffer = panel\ExportBuffer!
+      GUI.Open"Chat"\ImportBuffer buffer
+    else
+      GUI.Open"Chat"
+
+  Chat.Bind = (bind, down) ->
+    if down and bind\find"messagemode"
+      Chat.Show!
+      return true
+
+  Chat.Show = -> GUI.Get"Chat"\Show!
+
+  Chat.Hide = ->
+    GUI.Get"Chat"\Hide!
+    if lp\Typing! ~= nil
+      lp\SetTyping nil
+      netstream.Send "Typing", nil
+
+  Chat.Receive = (name, data) ->
+    data = {text: data} if isstring data
+    command = Chat.list[name]
+    message, console_message = command\OnReceive data
+    if isstring message
+      -- put sounds for certain commands here
+      GUI.Get"Chat"\AddMessage message, console_message, command.tabs
+
+  netstream.Hook "SendChat", (payload) ->
+    Chat.Receive(payload.__type, payload)
+
+if SERVER
+  netstream.Hook "ParseChat", Chat.Parse
+
+  netstream.Hook "Typing", (ply, cmd) ->
+    if cmd and Chat.commands[cmd]
+      ply\SetTyping(cmd)
+    else
+      ply\SetTyping nil
+
+  Chat.Send = (name, data, targets) ->
+    data = {text: data} if isstring data
+    data.__type = name
+    targets = {targets} unless istable(targets)
+    netstream.Send targets, "SendChat", data
+
+  GM.PlayerSay = (ply, text, t) =>
+    Chat.Parse ply, text
+    return ""
+
+meta.SendChat = (name, data) =>
+  if CLIENT
+    assert @ == lp, "Attempt to SendChat to a non-local player"
+    Chat.Receive name, data
+  else
+    Chat.Send name, data, @
+
+Chat.StupidMistakes = {
+   ["i"]: "I"
+   ["u"]: "you"
+   ["r"]: "are"
+   ["dont"]: "don't"
+   ["cant"]: "can't"
+   ["wont"]: "won't"
+   ["doesnt"]: "doesn't"
+   ["didnt"]: "didn't"
+   ["youve"]: "you've"
+   ["i'll"]: "I'll"
+   ["itll"]: "it'll"
+   ["wouldnt"]: "wouldn't"
+   ["shouldnt"]: "shouldn't"
+   ["couldnt"]: "couldn't"
+   ["whos"]: "who's"
+   ["weve"]: "we've"
+   ["arent"]: "aren't"
+   ["ive"]: "I've"
+   ["i've"]: "I've"
+   ["hes"]: "he's"
+   ["shes"]: "she's"
+   ["her's"]: "hers"
+   ["whatre"]: "what're"
+   ["wheres"]: "where's"
+   ["youre"]: "you're"
+   ["theres"]: "there's"
+   ["theyre"]: "they're"
+   ["theyve"]: "they've"
+   ["im"]: "I'm"
+   ["i'm"]: "I'm"
+   ["youll"]: "you'll"
+   ["ol"]: "ol'"
+   ["k"]: "okay"
+   ["ok"]: "okay"
+   ["ye"]: "yeah"
+   ["yea"]: "yeah"
+   ["idk"]: "I don't know"
+   ["wtf"]: "what the fuck"
+   ["rn"]: "right now"
+   ["gtg"]: "gotta go"
+   ["brb"]: "be right back"
+   ["cmon"]: "c'mon"
+   ["lol"]: "heh"
+   ["lel"]: "*gag*"
+   ["kek"]: "hrk"
+   ["lmao"]: "haha"
+   ["lmfao"]: "HAHA"
+   ["rofl"]: "pfftaha"
+   ["roflmao"]: "PFFFTHAH"
+   ["nvm"]: "never mind"
+   ["aint"]: "ain't"
+   ["killin"]: "killin'" -- The amount of words this logic can be applied to is endless lol
+   ["yknow"]: "y'know"
+   ["n"]: "n'"
+   ["fuckin"]: "fuckin'"
+   ["eatin"]: "eatin'"
+   ["drinkin"]: "drinkin'"
+   ["huntin"]: "huntin'"
+   ["lookin"]: "lookin'"
+   ["searchin"]: "searchin'"
+   ["shittin"]: "shittin'"
+   ["jokin"]: "jokin'"
+   ["gettin"]: "gettin'"
+   ["lettin"]: "lettin'"
+   ["fightin"]: "fightin'"
+   ["gettin"]: "gettin'"
+   ["motherfuckin"]: "motherfuckin'"
+   ["ballin"]: "ballin'"
+   ["rockin"]: "rockin'"
+   ["bangin"]: "bangin'"
+   ["rollin"]: "rollin'"
+   ["movin"]: "movin'"
+   ["somethin"]: "somethin'"
+   ["doin"]: "doin'"
+   ["th"]: "th'"
+   ["tha"]: "tha'"
+   ["tho"]: "though"
+   ["frick"]: "fuck"
+   ["pls"]: "please"
+   ["plz"]: "please"
+   ["pwned"]: "ruined"
+   ["pwn"]: "ruin"
+   ["rekt"]: "ruined"
+   ["cuz"]: "because"
+   ["dw"]: "don't worry"
+   ["ty"]: "thank you"
+   ["np"]: "no problem"
+   ["omw"]: "on my way"
+   ["thx"]: "thanks"
+   ["gg"]: "gluh"
+   ["money"]: "bone"
+   ["would of"]: "would've"
+   ["should of"]: "should've"
+   ["could of"]: "could've"
+   ["alot"]: "a lot"
+   ["mb"]: "my bad"
+   ["turkey"]: "yurkey"
+   ["holy shit"]: "holy heart failure"
+   ["jesus christ"]: "Sotla eternal"
+   ["jesus fucking christ"]: "Sotla's fucking eye"
+   ["jesus"]: "Sotla"
+   ["mother of god"]: "mother of Sotla"
+   ["brother in christ"]: "brother in Sotla"
+   ["mfer"]: "friend of mine"
+}
+
+Chat.BadWords = { "nigger", "tranny", "nigga", "kike", "autism", "autistic", "autist", "trannies", "faggot", "fag", "fgt", "libtard", "retard", "gmyza", "poggers", "pogchamp", "prole gaming", "omegalol", "kekw", "trihard7", "ur mom", "ur mum", "bri-ish", "bri'ish", "nword", "rdm", "nlr", "failrp", "chad", "hoes mad", "yeet", "corpsed", "kek", "chungus", "pog", "fortnite", "skinwalk", "skinshift", "skin walk", "skin shift", "unbindall", "white walking", "weeb", "weeaboo", "amogus", "amog us", "pretty cringe", "that's cringe", "redpilled", "tradcath", "zoomer", "boomer", "doomer", "groyper", "bluepill", "redpill", "tradwife", "blackpill", "big chungus", "spongebob", "impostor among us", "imposter among us", "ligma", "trolled", "deez", "swag", "font", "bussin", "sussy", "bussy", "meme", "koom", "niglet", "stem cell meat", "make me butcher", "nlgger", "nlgga", "nlg", "bruh", "allah", "akbar", "alahu", "ackbar", "lifeweb", "cuck", "coom", "tryhard", "morbius", "morbin", "/advert", "skibidi", "rizz", "gyatt", "solta" }
+
+class extends CHAT_CMD
+  name: "GENERIC"
+  color: Color(200, 200, 200)
+  font: "Spleen_Label"
+  OnReceive: (data) => string.format("<font=%s><c=%s>%s", @font, @color, data.text)
+
+class extends CHAT_CMD
+  name: "NOTICE"
+  color: Color(229, 201, 98)
+  font: "Spleen_Chat"
+  OnReceive: (data) => string.format("<font=%s><c=%s>%s", @font, @color, data.text)
+
+class extends CHAT_CMD
+  name: "ERROR"
+  color: Color(200, 0, 0)
+  color_console: Color(255, 90, 90)
+  font: "Spleen_Chat"
+  OnReceive: (data) => "<font=#{@font}><c=#{@color}>ERROR: #{data.text}", "<c=#{@color_console}>ERROR: #{data.text}"
+
+global class CHAT_CMD_IC extends CHAT_CMD
+  tabs: TAB_IC
+  log_category: "ic"
+
+  Handle: (ply, lang, cmd, text) =>
+    unless ply\Alive!
+      ply\SendChat "ERROR", "You're DEAD."
+      return
+    super ply, lang, cmd, text
+
+class Action extends CHAT_CMD_IC
+  name: "Action"
+  desc: "Do something."
+  typing: "Performing..."
+
+  commands: {"me", "em"}
+  aliases: {":", "*"}
+
+  range: 400
+  range_muffled: 0
+
+  font: "Spleen_Chat"
+
+if CLIENT
+  Action.OnReceive = (data) =>
+    text = data.text
+    text = " #{text}" if not string.match(text, "^[,.']")
+    return "<font=#{@font}><c=#{data.color}>** #{data.name}#{text}"
+
+if SERVER
+  Action.Parse = (ply, lang, cmd, text) =>
+    return { name: ply\Name!, color: ply\getJobTable!.color, :text }
+
+class Say extends CHAT_CMD_IC
+  name: "Say"
+  desc: "Speak out to those around you."
+  typing: "Lying..."
+  tense: "said"
+
+  commands: {"say"}
+
+  use_language: true
+  hearable: true
+
+  range: 400
+  range_muffled: 150
+
+  font: "Spleen_Chat"
+
+  color: Color(91, 166, 221)
+  color_lang: Color(255, 167, 73)
+
+  Process: (ply, text) => Chat.Autopretty ply, text
+
+if CLIENT
+  Say.OnReceive = (data) => "<font=#{@font}><c=#{data.name_color}>#{data.name} <c=#{Color(255,255,255)}>#{@tense}, <c=#{@color}>\"#{data.text}\""
+  -- UNFINISHED LANGUAGE VERSION
+  -- Say.OnReceive = (data) =>
+
+  --   if data.form -- we don't understand them
+  --     return "<font=#{@font}><c=#{@color_lang}>#{data.name} #{data.form}."
+  --   else -- we do understand them
+  --     if data.lang == lp\NativeLanguage!
+  --       return "<font=#{@font}><c=#{@color}>#{data.name} #{@tense}, \"#{data.text}\""
+  --     else
+  --       return "<font=#{@font}><c=#{@color_lang}>#{data.name} said in #{Language.Get(data.lang).name}, \"#{data.text}\""
+if SERVER
+  Say.Parse = (ply, lang, cmd, text) =>
+    targets = @GetTargets ply
+    valid = {}
+    invalid = {}
+    for target in *targets
+      -- if target == ply or target\CanUnderstandLanguage(lang)
+      if target == ply or true
+        valid[] = target
+      else
+        invalid[] = target
+    -- TODO: LOG CHAT HERE
+    -- no reason to check for an empty table since we're always sending the valid version to ourselves
+    name_color = ply\getJobTable!.color
+    text = @Process ply, text
+    ply\PlaySpeechSound text, SNDLVL_65DB unless @silent
+    Chat.Send @name, {
+      name: ply\Name!
+      :name_color
+      :lang
+      :text
+    }, valid
+    -- TODO: SEND LANGUAGE TEXT TO INVALIDS
+
+class Yell extends Say
+  name: "Yell"
+  desc: "Yell something at the top of your lungs."
+  typing: "Yelling..."
+  tense: "shouted"
+
+  commands: {"yell", "y"}
+
+  range: 800
+  range_muffled: 400
+
+  color: Color(255, 50, 50)
+  color_lang: Color(255, 167, 73)
+
+  Process: (ply, text) =>
+    text = super ply, text
+    text = string.upper text
+    punc = string.sub(text, string.len(text))
+    switch punc
+      when "."
+        text = "#{string.sub(text, 1, -2)}!"
+      when "?"
+        text ..= "!"
+      else
+        text ..= "!"
+    return "<wiggle=2>#{text}</wiggle>"
+
+class Whisper extends Say
+  name: "Whisper"
+  desc: "Quietly transmit your secrets to your close ones."
+  typing: "Whispering..."
+  tense: "whispered"
+
+  silent: true
+
+  font: "Spleen_Chat_Small"
+
+  commands: {"whisper", "w"}
+
+  range: 150
+  range_muffled: 0
+
+  color: Color(151, 151, 151)
+  color_lang: Color(255, 167, 73)
+
+class Radio extends Say
+  name: "Radio"
+  desc: "Call your squad."
+  typing: "Chattering..."
+  tense: "called"
+
+  silent: true
+
+  font: "Spleen_Chat_Small"
+
+  commands: {"radio", "r"}
+
+  tabs: TAB_RADIO
+  log_category: "radio"
+
+  range: 1500
+  range_muffled: 0
+
+  color: Color(151, 151, 151)
+  color_lang: Color(255, 167, 73)
+
+if SERVER
+  Radio.Parse = (ply, lang, cmd, text) =>
+    my_category = ply\getJobTable!.category
+    valid = {}
+    for _, target in pairs(player.GetAll!)
+      continue unless target\getJobTable!.category == my_category
+      valid[] = target
+    -- TODO: LOG CHAT HERE
+    name_color = ply\getJobTable!.color
+    text = @Process ply, text
+    Chat.Send @name, {
+      name: ply\Name!
+      :name_color
+      :lang
+      :text
+    }, valid
+
+class XOMBOKOM extends SOUND
+  level: SNDLVL_NONE
+  sound: ["kidneydagger/broadcast#{i}.wav" for i=1,7]
+
+class Broadcast extends CHAT_CMD_IC
+  name: "Broadcast"
+  desc: "Make them all listen."
+  typing: "Decreeing..."
+
+  color: Color(200, 0, 0)
+
+  font: "Spleen_Chat"
+
+  Process: (ply, text) => Chat.Autopretty ply, text\upper!
+
+  Handle: (ply, lang, cmd, text) =>
+    unless ply\Team! == TEAM_KOMMANDANT
+      ply\Notify"<c=200,0,0>This power is NOT FOR YOU."
+      return
+    super ply, lang, cmd, text
+
+if CLIENT
+  Broadcast.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[XOMBOKOM] <wiggle>#{data.text}"
+if SERVER
+  Broadcast.Parse = (ply, lang, cmd, text) =>
+    text = @Process ply, text
+    ply\EmitSound"XOMBOKOM"
+    return { :text }
+  -- OOC.WriteLog = (data, ply) =>
+
+class OOC extends CHAT_CMD
+  name: "OOC"
+  desc: "Global out-of-character chat."
+  typing: "Typing..."
+
+  commands: {"ooc"}
+  aliases: {"//"}
+
+  tabs: TAB_OOC
+  log_category: "ooc"
+
+  color: Color(200, 0, 0)
+
+  font: "Spleen_Chat_Small"
+
+if CLIENT
+  OOC.OnReceive = (data) =>
+    local prefix
+    if data.rainbow_name
+      prefix = "<font=#{@font}><c=#{@color}>[OOC]</c> <rgb=1,13,30>#{data.name}</rgb>"
+    else
+      prefix = "<font=#{@font}><c=#{@color}>[OOC]</c> <c=#{data.color}>#{data.name}</c>"
+    return "#{prefix}: #{data.text}"
+if SERVER
+  -- TODO: OOC muting for specific players
+  -- TODO: OOC delay
+  OOC.Parse = (ply, lang, cmd, text) =>
+    sid = ply\SteamID!
+    r = util.SharedRandom(sid, 0, 255, 1)
+    g = util.SharedRandom(sid, 0, 255, 2)
+    b = util.SharedRandom(sid, 0, 255, 3)
+    color = Color(r,g,b)
+    rainbow_name = ply\HasDonation"rainbow" and (ply\GetInfoNum("lfr_rainbow_username", 1) == 1)
+    return { name: ply\SteamName!, :color, :text, :rainbow_name }
+  -- OOC.WriteLog = (data, ply) =>
+
+class LOOC extends CHAT_CMD
+  name: "Local OOC"
+  desc: "Local out-of-character chat."
+  typing: "Typing..."
+
+  commands: {"looc"}
+  aliases: {"[[", ".//"}
+
+  range: 400
+
+  tabs: TABS_LOOC
+  log_category: "ooc"
+
+  color: Color(138, 185, 209)
+
+  font: "Spleen_Chat_Small"
+
+if CLIENT
+  LOOC.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[OOC-LOCAL]</c> <c=#{data.color}>#{data.name}</c>: #{data.text}"
+if SERVER
+  LOOC.Parse = (ply, lang, cmd, text) => { name: ply\Name!, color: team.GetColor(ply\Team!), :text }

@@ -1,0 +1,81 @@
+class Pocket_Item extends SOUND
+  sound: ["physics/cardboard/cardboard_box_impact_hard#{i}.wav" for i=1,7]
+
+class Pocket extends WEAPON
+  PrintName: "Pocket"
+  @__weapon: "evilrp/pocket"
+
+  Slot: 1
+  SlotPos: 1
+  DrawAmmo: false
+  DrawCrosshair: true
+
+  Base: "weapon_cs_base2"
+
+  IconLetter: ""
+    
+  ViewModelFOV: 62
+  ViewModelFlip: false
+
+  WorldModel: ""
+
+  Spawnable: true
+  AdminOnly: true
+  Category: "EvilRP (Utility)"
+
+  Primary:
+    ClipSize: -1
+    DefaultClip: 0
+    Automatic: false
+    Ammo: ""
+
+  Secondary:
+    ClipSize: -1
+    DefaultClip: 0
+    Automatic: false
+    Ammo: ""
+
+  Initialize: => @SetHoldType"normal"
+  Deploy: => true
+    
+  DrawWorldModel: =>
+  PreDrawViewModel: (vm) => true
+
+  Holster: =>
+    return true unless SERVER
+    with @GetOwner!
+      \DrawViewModel true
+      \DrawWorldModel true
+    return true
+
+  PrimaryAttack: =>
+    @SetNextPrimaryFire CurTime! + 0.2
+    ply = @GetOwner!
+    return unless IsValid(ply)
+    ent = ply\GetEyeTrace!.Entity
+    return if ent.Pocketable == false
+    can_pickup, message = hook.Call "canPocket", GAMEMODE, ply, ent
+    unless can_pickup
+      DarkRP.notify ply, 1, 4, message if message and SERVER
+      return
+    if SERVER
+      ply\PlaySignal ACT_GMOD_GESTURE_ITEM_GIVE, true
+      ply\EmitSound"Pocket_Item"
+      ply\addPocketItem ent
+
+  SecondaryAttack: =>
+    return unless SERVER
+    ply = @GetOwner!
+    return unless IsValid(ply)
+    max_k = 0
+    for k in pairs(ply\GetPocketItems!)
+      continue if k < max_k
+      max_k = k
+    if max_k > 0
+      item = ply\dropPocketItem(max_k)
+      timer.Simple(0.0666, -> ply\PickupObject(item) if item\GetClass!\find"trash/*")
+
+  Reload: =>
+    if CLIENT
+      if not ECP.pmenu or not ECP.pmenu\IsValid!
+        GAMEMODE\CreatePlayerMenu!

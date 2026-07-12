@@ -1,0 +1,85 @@
+ODDITY.index = 0
+ODDITY.list = {}
+
+class Cotardism extends ODDITY
+  name: "Cotardism"
+  desc: "I see dead people, and I fear them."
+  GetDesc: (ply) =>
+    desc = super ply
+    if ply\Team! == TEAM_KORPSMAN
+      desc ..= "\n     <c=128,0,0>...but they will fear me <wiggle>more.</wiggle>"
+    return desc
+global ODDITY_COTARDISM = Cotardism.index
+
+class Necrophilia extends ODDITY
+  name: "Necrophilia"
+  desc: "I love the dead. The more rotten, the better."
+global ODDITY_NECROPHILIA = Necrophilia.index
+
+class Cannibalism extends ODDITY
+  name: "Cannibalism"
+  desc: "Only other corpses can sate my hunger. My only drinking buddies are dead bodies."
+global ODDITY_CANNIBALISM = Cannibalism.index
+
+class Depression extends ODDITY
+  name: "Depression"
+  desc: "It's hard being a corpse. It's hard, and nobody understands."
+global ODDITY_DEPRESSION = Depression.index
+
+-- class Empathy extends ODDITY
+--   name: "Empathy"
+--   desc: "My bleeding heart can't stand others' suffering."
+-- global ODDITY_EMPATHY = Empathy.index
+
+-- class Hoplophobia extends ODDITY
+--   name: "Hoplophobia"
+--   desc: "I can't stand this fucking rat race."
+-- global ODDITY_HOPLOPHOBIA = Hoplophobia.index
+
+class Anasogonsia extends ODDITY
+  name: "Anasogonsia"
+  desc: "I can't determine anything about myself."
+global ODDITY_ANASOGONSIA = Anasogonsia.index
+
+-- class Friendship extends ODDITY
+--   name: "Friendship"
+--   desc: "I have sentiment for some others of my kind."
+-- global ODDITY_FRIENDSHIP = Friendship.index
+  
+class Illiteracy extends ODDITY
+  name: "Illiteracy"
+  desc: "I have no ability to read or write. Whatever."
+global ODDITY_ILLITERACY = Illiteracy.index
+
+class Delinquency extends ODDITY
+  name: "Delinquency"
+  desc: "I love to cause trouble and break things."
+global ODDITY_DELINQUENCY = Delinquency.index
+
+class Clumsy extends ODDITY
+  name: "Clumsy"
+  desc: "I've got two left feet."
+global ODDITY_CLUMSY = Clumsy.index
+
+meta = FindMetaTable"Player"
+meta[k] = v for k, v in pairs{
+  Oddities: => @GetNWInt("evilrp_oddities", 0)
+  OddityList: =>
+    returns = {}
+    for k, v in pairs(ODDITIES)
+      returns[] = v if @HasOddity k
+    return returns
+  HasOddity: (oddity) => bit.Check(@Oddities!, oddity)
+  ClearOddities: => @SetNWInt("evilrp_oddities", 0)
+  AddOddity: (oddity) =>
+    return if @HasOddity(oddity)
+    odds = bit.Set(@Oddities!, oddity)
+    @SetNWInt("evilrp_oddities", odds)
+    timer.Simple( 1, -> ODDITIES[oddity]\Inform @ )
+    return odds
+  RemoveOddity: (oddity) =>
+    return unless @HasOddity(oddity)
+    odds = bit.Unset(@Oddities!, oddity)
+    @SetNWInt("evilrp_oddities", odds)
+    return odds
+}

@@ -1,0 +1,12 @@
+-- thanks to
+-- https://steamcommunity.com/sharedfiles/filedetails/?id=3390313093&searchtext=blur+damage
+
+util.AddNetworkString"evilrp_blur_on_damage"
+
+
+
+blur_on_damage = (victim, attacker, health_remaining, damage) ->
+  if victim\IsPlayer! and victim\Alive!
+    net.Start"evilrp_blur_on_damage"
+    net.Send(victim)
+hook.Add("PlayerHurt", "evilrp_blur_on_damage", blur_on_damage)

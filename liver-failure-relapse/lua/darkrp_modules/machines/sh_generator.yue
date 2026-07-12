@@ -1,0 +1,200 @@
+noise = Material"effects/tvscreen_noise001a"
+  
+class Generator extends ENTITY
+  Base: "base_anim"
+  Type: "anim"
+  PrintName: "Generator"
+  Spawnable: true
+  AdminSpawnable: true
+  Interesting: true
+
+  Pocketable: false
+    
+  SetupDataTables: =>
+    @NetworkVar "Float", "Fuel"
+    @NetworkVar "Float", "Rust"
+    @NetworkVar "Bool", "On"
+    @NetworkVar "Int", "SoundLoop"
+    @NetworkVar "String", "FactoryIdentifier"
+      
+  Initialize: =>
+    return if CLIENT
+    @SetUseType SIMPLE_USE
+    @SetModel"models/props_vehicles/generatortrailer01.mdl"
+    @PhysicsInit SOLID_VPHYSICS
+    @PhysWake!
+
+    @SetOn false
+    @SetFuel math.random 0, 30
+    @SetRust 0
+    @NextUse = 0
+    @Overload = false
+    @precursor_storage = {}
+
+  OnTakeDamage: (dmg) =>
+    attacker = dmg\GetAttacker!
+    if attacker and IsValid(attacker)
+      if attacker\IsPlayer!
+        switch attacker\Team!
+          when TEAM_SANITAR
+            rust = @GetRust!
+            @SetRust math.max(0, rust - (dmg\GetDamage! * .2))
+            reward = math.floor(math.abs(rust - @GetRust!) * 2.3)
+            if reward > 0
+              attacker\AddMoney reward, "The Cleansing"
+      
+  AddPrecursor: (p_type, amt) =>
+    unless @precursor_storage[p_type]
+      @precursor_storage[p_type] = amt
+    else
+      @precursor_storage[p_type] += amt
+    @precursor_storage[p_type] = math.Clamp( @precursor_storage[p_type], 0, 50 )
+    for machine in *ents.FindByClass"machine/*"
+      machine\RefreshPrecursor! if machine.GetGenerator! and machine\GetGenerator! == @
+
+  Think: =>
+    ct = CurTime!
+    if SERVER
+      @next_gen_think = ct unless @next_gen_think
+      fuel = @GetFuel!
+      rust = @GetRust!
+      running = @GetOn!
+      if (@next_gen_think <= ct) and (fuel > 0) and running
+        @SetFuel math.max(0, fuel - 1)
+        @SetRust math.min(100, rust + math.random(1,3))
+        @next_gen_think = ct + 60
+        -- here we're calling `@GetFuel!' again instead of using
+        -- `fuel', as the values were changed by `@SetFuel'
+        if @GetFuel! <= 0
+          @StopLoopingSound @GetSoundLoop!
+          @EmitSound"ambient/machines/spindown.wav"
+          @SetOn false
+    if CLIENT and @GetOn!
+      pos = @GetPos! + @GetUp! * 73 + @GetForward! * 9 + @GetRight!
+      ed = EffectData!
+      with ed
+        \SetOrigin pos
+        \SetScale 2
+        \SetNormal @GetForward!
+      util.Effect "LFR_GeneratorSmoke", ed
+
+  RefuelFailure: (fuel, ply, msg) =>
+    @SetRust math.min(100, @GetRust! + math.random(1,2))
+    @SetFuel math.min(100, @GetFuel! + math.floor(fuel.FuelAdd / 2))
+    fuel\Explode!
+    net.Start"evilrp_machine_fail"
+    net.WriteString msg
+    net.Send ply
+
+  Touch: (what) =>
+    if SERVER
+      return unless what.FuelAdd and (not what.Processed)
+      submitter = what\GetNWEntity "evilrp_submitter", NULL
+      return unless submitter\IsPlayer! and submitter\CanUseMachines!
+      rewarded = 10
+      rate = GAMEMODE.taxes.labor / 100
+      taxed = math.floor(rewarded * rate)
+      rewarded -= taxed
+      GAMEMODE.taxes_stored.labor += taxed if taxed > 0
+      rewarded = math.ceil(rewarded)
+      what.Processed = true
+      what\EmitSound"npc/barnacle/barnacle_gulp#{math.random(1,2)}.wav"
+      fuel = @GetFuel!
+      rust = @GetRust!
+      if @GetOn!
+        @RefuelFailure what, submitter, "Oops; this generator was still powered on."
+        return
+      elseif (rust >= 100)
+        @RefuelFailure what, submitter, "Oops; this generator is painfully rusted."
+        return
+      elseif (fuel + 9) >= 100
+        @RefuelFailure what, submitter, "Oops; this generator is at capacity already."
+        return
+      @SetFuel math.min(100, fuel + what.FuelAdd)
+      reward = what.FuelAdd
+      @EmitSound"ambient/machines/machine1_hit#{math.random(1,2)}.wav"
+      ed = EffectData!
+      with ed
+        \SetStart @GetPos!
+        \SetOrigin @GetPos!
+        \SetScale 2
+      util.Effect "StunstickImpact", ed, true, true
+      submitter\AddMoney reward, "The Operation"
+      what\Trash!
+
+  Use: (ply) =>
+    team = ply\Team!
+    -- ADD HAUNTING HERE
+    return if team == TEAM_GHOST
+    ct = CurTime!
+    return if @NextUse > ct
+    @NextUse = ct + 1
+    unless @GetOn!
+      fuel = @GetFuel!
+      if fuel <= 0
+        ply\Notify"<c=200,0,0>There's no fuel."
+        @StopLoopingSound @GetSoundLoop!
+        return
+      @EmitSound "vehicles/airboat/fan_motor_start1.wav", 75, math.random(90, 110)
+      timer.Simple 1, ->
+        @SetOn true
+        ply\Notify"It's on."
+        @SetSoundLoop @StartLoopingSound"ambient/machines/diesel_engine_idle1.wav"
+        @Overload = false
+    else
+      @SetOn false
+      @EmitSound "ambient/machines/spindown.wav", 75, math.random(90,110)
+      @StopLoopingSound @GetSoundLoop!
+      ply\Notify"It's off!"
+      @Overload = false
+
+  Draw: =>
+    @DrawModel!
+    @Render3D2D!
+
+  Render3D2D: =>
+    dist_sqr = @GetPos!\DistToSqr(lp\GetPos!)
+    return unless dist_sqr < 128^2
+    font = "Spleen_Label"
+    desp = lp\GetDespair! * 0.01
+    ct = CurTime!
+    pos = @GetPos! + (@GetUp! * 64) + (@GetForward! * -39) + (@GetRight! * 21.5)
+    ang = @GetAngles!
+    with ang
+      \RotateAroundAxis \Up!, -90
+      \RotateAroundAxis \Forward!, 90
+      \RotateAroundAxis \Right!, -90
+    -- 3D2D start: name
+    cam.Start3D2D pos, ang, 0.1
+    -- draw a rectangle, on which to draw the text atop
+    surface.SetMaterial noise
+    surface.SetDrawColor Color(255,255,255,255)
+    surface.DrawTexturedRect 30, 0, 152, 38
+    -- render the name
+    txt = "Generator"
+    txt_obj = scribe.Parse "<stutter><rgb=1,1,30><wiggle=#{8 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+    txt_obj\Draw 108, 6, 1, TEXT_ALIGN_CENTER
+    -- 3D2D end
+    cam.End3D2D!
+    -- 3D2D start: fuel%
+    pos = @GetPos! + (@GetUp! * 55) + (@GetForward! * -48) + (@GetRight! * 21.5)
+    cam.Start3D2D pos, ang, 0.1
+    fuel = @GetFuel!
+    txt = "#{fuel}% fuel"
+    if @GetOn! == true
+      txt = "WORKING"
+    elseif fuel < 0
+      txt = "EMPTY"
+    elseif fuel >= 100
+      txt = "FULL"
+    surface.SetDrawColor 0, 0, 0, 255
+    surface.DrawRect 0, 0, 190, 78
+    color = Color(200, 0, 0)
+    if @GetOn! == true
+      -- green at full, more yellow as it empties
+      color = Color( (fuel * -2) + 200, fuel * 2, 0 )
+    surface.SetDrawColor color
+    surface.DrawRect 0, 0, (fuel / 100) * 190, 78
+    txt_obj = scribe.Parse "<stutter><rgb=1,1,30><wiggle=#{8 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+    txt_obj\Draw 92.5, 24, 1, TEXT_ALIGN_CENTER
+    cam.End3D2D!

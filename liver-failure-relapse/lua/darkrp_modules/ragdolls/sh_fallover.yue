@@ -1,0 +1,47 @@
+-- artagdoll integration
+global AR_Manager
+
+meta = FindMetaTable"Player"
+
+meta[k] = v for k, v in pairs{
+  Fallen: => @GetNWBool("evilrp_fallen", false)
+  SetFallen: (fallen) => @SetNWBool("evilrp_fallen", fallen)
+  FallOver: (behavior="Falling") =>
+    @ExitVehicle!
+    @SetNoTarget(true)
+    @SetNoDraw(true)
+    @SelectWeapon("evilrp_melee/hands") if @HasWeapon("evilrp_melee/hands")
+    wep = @GetActiveWeapon!
+    @SetNotSolid(true)
+    @SetFallen(true)
+    if (wep ~= NULL)
+      if wep.SetLower
+        wep\SetNextPrimaryFire CurTime! + .6
+        wep\SetLower true
+      wep\SetNoDraw(true)
+      rag = @MakeRagdollClone!
+      -- artagdoll integration
+      timer.Simple(0.23, ->
+        if SERVER and AR_Manager
+          controller = AR_Manager.ActiveRagdolls[rag]
+          controller\ForceChangeBehavior(behavior)
+          controller\SetHealth(5))
+      return rag
+  Stand: =>
+    @SetNoTarget(false)
+    @SetNoDraw(false)
+    @SetNotSolid(false)
+    @SetFallen(false)
+    wep = @GetActiveWeapon!
+    if wep ~= NULL
+      wep\SetNoDraw(false)
+    @SnapFromRagdollClone!
+}
+
+bind_fall_over = (ply) ->
+  return unless SERVER
+  return unless IsFirstTimePredicted!
+  return if ply\Fallen!
+  ply\FallOver!
+
+Binds.Add("FallOver", "Fall Over", "Fall over.")

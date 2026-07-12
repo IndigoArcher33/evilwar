@@ -1,0 +1,31 @@
+GAMEMODE.Stocks = {} unless GAMEMODE.Stocks
+
+GAMEMODE.AddStock = (item) =>
+  etab = scripted_ents.Get(item) or weapons.Get(item)
+  -- if etab is still nil, item isn't an entity class?
+  return unless etab
+  if @Stocks[item]
+    @Stocks[item] += 1
+  else
+    @Stocks[item] = 1
+  name = etab.PrintName
+  for p in *player.GetAll!
+    continue unless p\Alive!
+    continue unless p\Team! == TEAM_DEALER
+    p\SendChat "NOTICE", "[+STOCK] #{name}: #{@Stocks[item]}"
+  net.Start"evilrp_receive_stocks"
+  net.WriteTable @Stocks
+  net.Broadcast!
+
+GAMEMODE.taxes or= {
+  labor: 50
+  sales: 50
+}
+
+SetGlobalInt("tax_labor", GAMEMODE.taxes.labor)
+SetGlobalInt("tax_sales", GAMEMODE.taxes.sales)
+
+GAMEMODE.taxes_stored or= {
+  labor: 0
+  sales: 0
+}

@@ -1,0 +1,726 @@
+class Bodyguard extends EvilRP_Weapon 
+  PrintName: "Bodyguard"
+  Description: "A simple revolver made for both enforcers and protectors alike. Ol' Reliable."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_bodyguard.mdl"
+  WorldModel: Model"models/weapons/w_bodyguard.mdl"
+    
+  HoldType: "revolver"
+  LowerHoldType: "normal"
+
+  Price: 1873
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "357"
+
+    ClipSize: 5
+    DefaultClip: 10
+
+    Damage: 55
+    Delay: 60 / 120
+
+    Range: 400
+    Accuracy: 12
+
+    RangeModifier: 0.78
+
+    Recoil: {
+      MinAng: Angle(5.2, -0.3, 0)
+      MaxAng: Angle(7.2, 0.3, 0)
+      Punch: 0.9
+      Ratio: 0.3
+    }
+        
+    Reload: {
+      Sound: "Weapon_357.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_canon.wav"
+    TracerName: "Tracer"
+  }
+
+class Brainpaster extends EvilRP_Weapon 
+  PrintName: "Brainpaster"
+  Description: "Arrhythmia's number one wall painter."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_brainpaster.mdl"
+  WorldModel: Model"models/weapons/w_brainpaster.mdl"
+    
+  HoldType: "revolver"
+  LowerHoldType: "normal"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "357"
+
+    ClipSize: 5
+    DefaultClip: 10
+
+    Damage: 40
+    Delay: 60 / 267
+
+    Range: 10/00
+    Accuracy: 12
+
+    RangeModifier: 0.8
+
+    Recoil: {
+      MinAng: Angle(5.8, -0.7, 0)
+      MaxAng: Angle(7.5, 0.7, 0)
+      Punch: 0.7
+      Ratio: 0.2
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_sniper.wav"
+    TracerName: "Tracer"
+  }
+
+class Coach extends EvilRP_Weapon 
+  PrintName: "Coach"
+  Description: "A dead simple double-barreled shotgun.\nThe wood is full of splinters."
+
+  Slot: 1
+    
+  Spawnable: true
+
+  Price: 2468
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_coach.mdl"
+  WorldModel: Model"models/weapons/w_coach.mdl"
+    
+  HoldType: "shotgun"
+  LowerHoldType: "passive"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "Buckshot"
+
+    ClipSize: 2
+    DefaultClip: 2
+
+    Damage: 17
+    Count: 14
+    Delay: 0.4
+
+    Range: 250
+    Accuracy: 24
+
+    RangeModifier: 0.7
+
+    Recoil: {
+      MinAng: Angle(17, -7, 0)
+      MaxAng: Angle(20, 7, 0)
+      Punch: 0.9
+      Ratio: 0.8
+    }
+        
+    Reload: {
+      Sound: "Weapon_Shotgun.Reload"
+    }
+      
+    Sound: "weapons/shotgun/shotgun_dbl_fire.wav"
+    TracerName: "Tracer"
+  }
+
+class Reload_Shell extends SOUND
+  sound: ["weapons/shotgun/shotgun_reload#{i}.wav" for i=1,3]
+
+class Candlewood_Fire extends SOUND
+  sound: "tekka/weapons/weapon_warhammer.wav"
+  chan: CHAN_WEAPON
+
+class Candlewood extends EvilRP_Weapon 
+  PrintName: "Candlewood"
+  Description: "An unwieldy pump-action shotgun.\nRust is eating it alive."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_candlewood.mdl"
+  WorldModel: Model"models/weapons/w_candlewood.mdl"
+    
+  HoldType: "shotgun"
+  LowerHoldType: "passive"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "Buckshot"
+
+    ClipSize: 4
+    DefaultClip: 8
+
+    Damage: 17
+    PumpAction: false -- confusingly this must be false, because the animations
+                      -- are from CS:S
+    Pump:
+      Delay: 0.4
+      Sound: "weapons/shotgun/shotgun_cock.wav"
+      FromEmpty: true
+      
+    Count: 7
+    Delay: -1
+
+    Range: 400
+    Accuracy: 12
+
+    RangeModifier: 0.7
+
+    Recoil: {
+      MinAng: Angle(10, -2, 0)
+      MaxAng: Angle(14, 2, 0)
+      Punch: 0.9
+      Ratio: 0.8
+    }
+        
+    Reload: {
+      Amount: 1
+      Sound: "Reload_Shell"
+      Shotgun: true
+    }
+      
+    Sound: "Candlewood_Fire"
+    TracerName: "Tracer"
+  }
+    
+class Enforcer extends EvilRP_Weapon 
+  PrintName: "Enforcer"
+  Description: "They used to hunt people with these."
+
+  Slot: 2
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_livermann.mdl"
+  WorldModel: Model"models/weapons/w_livermann.mdl"
+    
+  HoldType: "ar2"
+  LowerHoldType: "passive"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "AR2"
+
+    ClipSize: 6
+    DefaultClip: 12
+
+    Damage: 75
+    Delay: 1.25
+      
+    Range: 1300
+    Accuracy: 24
+
+    RangeModifier: 0.95
+
+    Recoil: {
+      MinAng: Angle(14.6, -2.7, 0)
+      MaxAng: Angle(17, 2.7, 0)
+      Punch: 0.9
+      Ratio: 0.2
+    }
+
+    Reload: {
+      Sound: "Weapon_SMG1.Reload"
+      Amount: 2
+      Shotgun: true
+      DontFinishPump: true
+    }
+      
+    Sound: "placenta/weapons/enforcer.wav"
+    TracerName: "Tracer"
+  }
+
+class Greaser extends EvilRP_Weapon 
+  PrintName: "Greaser"
+  Description: "A shitty, greasy submachine gun."
+
+  Slot: 3
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_greaser.mdl"
+  WorldModel: Model"models/weapons/w_greaser.mdl"
+    
+  HoldType: "pistol"
+  LowerHoldType: "normal"
+    
+  Firemode: 5
+  Primary: {
+    Ammo: "SMG1"
+
+    ClipSize: 16
+    DefaultClip: 32
+
+    Damage: 32
+    Delay: 60 / 340
+      
+    Range: 400
+    Accuracy: 12
+
+    RangeModifier: 0.75
+
+    Recoil: {
+      MinAng: Angle(3, -0.8, 0)
+      MaxAng: Angle(4, 0.8, 0)
+      Punch: 0.6
+      Ratio: 0.8
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_mg.wav"
+    TracerName: "Tracer"
+  }
+
+class Novoluger extends EvilRP_Weapon 
+  PrintName: "Novoluger"
+  Description: "A well-made, well-kept pistol. It's associated with the great."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_novoluger.mdl"
+  WorldModel: Model"models/weapons/w_novoluger.mdl"
+    
+  HoldType: "pistol"
+  LowerHoldType: "normal"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "Pistol"
+
+    ClipSize: 8
+    DefaultClip: 24
+
+    Damage: 40
+    Delay: 60 / 200
+
+    Range: 750
+    Accuracy: 12
+
+    RangeModifier: 0.85
+
+    Recoil: {
+      MinAng: Angle(5, -0.5, 0)
+      MaxAng: Angle(6.5, 0.5, 0)
+      Punch: 0.8
+      Ratio: 0.6
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_m92.wav"
+    TracerName: "Tracer"
+  }
+
+class Obrez extends EvilRP_Weapon 
+  PrintName: "Obrez"
+  Description: "A mutilated rifle, ruined and barely functional."
+
+  Slot: 2
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_obrez.mdl"
+  WorldModel: Model"models/weapons/w_obrez.mdl"
+    
+  HoldType: "ar2"
+  LowerHoldType: "passive"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "AR2"
+
+    ClipSize: 3
+    DefaultClip: 6
+
+    Damage: 65
+    Delay: 1.25
+      
+    Range: 300
+    Accuracy: 12
+
+    RangeModifier: 0.95
+
+    Recoil: {
+      MinAng: Angle(8, -6.2, 0)
+      MaxAng: Angle(16, 6.2, 0)
+      Punch: 0.95
+      Ratio: 0.2
+    }
+      
+    Reload: {
+      Sound: "Weapon_SMG1.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_western.wav"
+    TracerName: "Tracer"
+  }
+
+class Owler extends EvilRP_Weapon 
+  PrintName: "Owler"
+  Description: "They all hate you."
+
+  Slot: 2
+
+  Spawnable: true
+
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_owler.mdl"
+  WorldModel: Model"models/weapons/w_owler.mdl"
+
+  HoldType: "pistol"
+  LowerHoldType: "normal"
+
+  Firemode: -1
+  Primary: {
+    Ammo: "SMG1"
+
+    ClipSize: 20
+    DefaultClip: 40
+
+    Damage: 20
+    Delay: 60 / 1000
+
+    Range: 100
+    Accuracy: 12
+
+    RangeModifier: 0.55
+
+    Recoil: {
+      MinAng: Angle(2.3, -0.5, 0)
+      MaxAng: Angle(-1.3, 0.5, 0)
+      Punch: 0.6
+      Ratio: 0.8
+    }
+
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+
+    Sound: "tekka/weapons/weapon_mp40.wav"
+    TracerName: "Tracer"
+  }
+
+class Pacifier extends EvilRP_Weapon 
+  PrintName: "Pacifier"
+  Description: "The favourite pistol of the Sanitar Squad."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_pacifier.mdl"
+  WorldModel: Model"models/weapons/w_pacifier.mdl"
+    
+  HoldType: "pistol"
+  LowerHoldType: "normal"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "Pistol"
+
+    ClipSize: 15
+    DefaultClip: 30
+
+    Damage: 32
+    Delay: 60 / 400
+
+    Range: 750
+    Accuracy: 12
+
+    RangeModifier: 0.85
+
+    Recoil: {
+      MinAng: Angle(6.4, -0.3, 0)
+      MaxAng: Angle(8, 0.3, 0)
+      Punch: 0.8
+      Ratio: 0.6
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_m92.wav"
+    TracerName: "Tracer"
+
+    AltFire: =>
+      @Primary.Automatic = false
+      @SetFiremode (@GetFiremode! == 0) and 3 or 0
+      @EmitSound"Weapon_SMG1.Special1"
+  }
+
+class Painkiller extends EvilRP_Weapon 
+  PrintName: "Painkiller"
+  Description: "The dead feel no pain."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_painkiller.mdl"
+  WorldModel: Model"models/weapons/w_painkiller.mdl"
+    
+  HoldType: "pistol"
+  LowerHoldType: "normal"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "Pistol"
+
+    ClipSize: 5
+    DefaultClip: 10
+
+    Damage: 60
+    Delay: 60 / 360
+
+    Range: 1200
+    Accuracy: 12
+
+    RangeModifier: 0.90
+
+    Recoil: {
+      MinAng: Angle(8.2, -1.6, 0)
+      MaxAng: Angle(11.2, 1.6, 0)
+      Punch: 0.9
+      Ratio: 0.1
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_50cal.wav"
+    TracerName: "Tracer"
+
+  }
+
+class Prettyboy extends EvilRP_Weapon 
+  PrintName: "Pretty Boy"
+  Description: "It's named after its most common users."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_prettyboy.mdl"
+  WorldModel: Model"models/weapons/w_prettyboy.mdl"
+    
+  HoldType: "pistol"
+  LowerHoldType: "normal"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "Pistol"
+
+    ClipSize: 7
+    DefaultClip: 14
+
+    Damage: 30
+    Delay: 60 / 400
+
+    Range: 1000
+    Accuracy: 12
+
+    RangeModifier: 0.85
+
+    Recoil: {
+      MinAng: Angle(2, -0.1, 0)
+      MaxAng: Angle(4, 0.1, 0)
+      Punch: 0.6
+      Ratio: 0.8
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_pistolsmall.wav"
+    TracerName: "Tracer"
+
+  }
+
+class Subjugator extends EvilRP_Weapon 
+  PrintName: "Subjugator"
+  Description: "It'll subjugate the living and the dead."
+
+  Slot: 2
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_subjugator.mdl"
+  WorldModel: Model"models/weapons/w_subjugator.mdl"
+    
+  HoldType: "ar2"
+  LowerHoldType: "passive"
+    
+  Firemode: -1
+  Primary: {
+    Ammo: "AR2"
+
+    ClipSize: 8
+    DefaultClip: 16
+
+    Damage: 65
+    Delay: 1
+
+    Range: 1500
+    Accuracy: 12
+
+    RangeModifier: 0.99
+
+    Recoil: {
+      MinAng: Angle(10, -0.9, 0)
+      MaxAng: Angle(14, 0.9, 0)
+      Punch: 0.9
+      Ratio: 0.2
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_mossberg.wav"
+        TracerName: "Tracer"
+
+  }
+
+class Trooper extends EvilRP_Weapon 
+  PrintName: "Trooper"
+  Description: "A fully automatic instrument of death.\nRespect it, or else."
+
+  Slot: 2
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_trooper.mdl"
+  WorldModel: Model"models/weapons/w_trooper.mdl"
+    
+  HoldType: "ar2"
+  LowerHoldType: "passive"
+    
+  Firemode: -1
+  Primary: {
+    Ammo: "AR2"
+
+    ClipSize: 20
+    DefaultClip: 40
+
+    Damage: 65
+    Delay: 60 / 400
+
+    Range: 1300
+    Accuracy: 12
+
+    RangeModifier: 0.99
+
+    Recoil: {
+      MinAng: Angle(3.8, -0.9, 0)
+      MaxAng: Angle(4.8, 0.9, 0)
+      Punch: 0.8
+      Ratio: 0.5
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_thud.wav"
+    TracerName: "Tracer"
+
+  }
+
+class Mark extends EvilRP_Weapon
+  PrintName: "The Mark"
+  Description: "A rusty scrap pistol, rigged to fire one massive bullet."
+
+  Price: 1666
+    
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/weapons/c_mark.mdl"
+  WorldModel: Model"models/weapons/w_mark.mdl"
+    
+  HoldType: "pistol"
+  LowerHoldType: "passive"
+    
+  Firemode: 1
+  Primary: {
+    Ammo: "Pistol"
+
+    ClipSize: 1
+    DefaultClip: 1
+
+    Damage: 80
+    Delay: 60 / 120
+
+    Range: 200
+    Accuracy: 12
+
+    RangeModifier: 0.4
+
+    Recoil: {
+      MinAng: Angle(11, -3, 0)
+      MaxAng: Angle(15, 3, 0)
+      Punch: 0.95
+      Ratio: 0.3
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_smg3.wav"
+    TracerName: "Tracer"
+
+  }

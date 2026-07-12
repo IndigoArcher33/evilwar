@@ -1,0 +1,1056 @@
+import Register from weapons
+import lower, Left from string
+import TraceLine from util
+global class WEAPON
+  @__inherited: (child) =>
+    with getmetatable child
+      .__call = (where, ...) =>
+        local ent
+        if isvector where
+          ent = Create @__barcode
+          ent\SetPos where
+          ent\Spawn!
+        elseif isentity(where) and where\IsPlayer!
+          ent = where\Give @__barcode
+        ent.__class = ent.BaseClass
+        @.__init ent, ...
+        ent
+    fields = {k,v for k,v in pairs(child.__base) when Left(k, 2) != "__"}
+    fields.Base or= @__barcode
+    fields.Spawnable or= @Spawnable
+    fields.Category or= @Category
+    child.__barcode = "#{@__barcode and @__barcode .. '/' or ''}#{lower(rawget(child, '__weapon') or child.__name)}"
+    Register fields, child.__barcode
+    MsgC Color(0, 200, 0), "+WEAPON: #{child.__barcode}\n"
+  new: => @SetHoldType "normal"
+
+AMMO_NONE = 0
+AMMO_NORMAL = 1
+AMMO_NOMAG = 2
+AMMO_INTERNAL = 3
+
+DEFINE_BASECLASS"weapon_base"
+
+local index = {
+  ["pistol"]: ACT_HL2MP_IDLE_PISTOL
+  ["smg"]:  ACT_HL2MP_IDLE_SMG1
+  ["grenade"]: ACT_HL2MP_IDLE_GRENADE
+  ["ar2"]: ACT_HL2MP_IDLE_AR2
+  ["shotgun"]: ACT_HL2MP_IDLE_SHOTGUN
+  ["rpg"]: ACT_HL2MP_IDLE_RPG
+  ["physgun"]: ACT_HL2MP_IDLE_PHYSGUN
+  ["crossbow"]: ACT_HL2MP_IDLE_CROSSBOW
+  ["melee"]: ACT_HL2MP_IDLE_MELEE
+  ["slam"]: ACT_HL2MP_IDLE_SLAM
+  ["normal"]: ACT_HL2MP_IDLE
+  ["fist"]: ACT_HL2MP_IDLE_FIST
+  ["melee2"]: ACT_HL2MP_IDLE_MELEE2
+  ["passive"]: ACT_HL2MP_IDLE_PASSIVE
+  ["knife"]: ACT_HL2MP_IDLE_KNIFE
+  ["duel"]: ACT_HL2MP_IDLE_DUEL
+  ["camera"]: ACT_HL2MP_IDLE_CAMERA
+  ["magic"]: ACT_HL2MP_IDLE_MAGIC
+  ["revolver"]: ACT_HL2MP_IDLE_REVOLVER
+}
+
+local replacements = {
+  [ACT_HL2MP_IDLE_PISTOL]: ACT_HL2MP_IDLE_REVOLVER
+  [ACT_HL2MP_WALK_PISTOL]: ACT_HL2MP_WALK_REVOLVER
+  [ACT_HL2MP_RUN_PISTOL]: ACT_HL2MP_RUN_REVOLVER
+  [ACT_HL2MP_IDLE_SHOTGUN]: ACT_HL2MP_IDLE_AR2
+  [ACT_HL2MP_IDLE_CROUCH_SHOTGUN]: ACT_HL2MP_IDLE_CROUCH_AR2
+  [ACT_HL2MP_WALK_SHOTGUN]: ACT_HL2MP_WALK_AR2
+  [ACT_HL2MP_WALK_CROUCH_SHOTGUN]: ACT_HL2MP_WALK_CROUCH_AR2
+  [ACT_HL2MP_RUN_SHOTGUN]: ACT_HL2MP_RUN_AR2
+  [ACT_HL2MP_WALK_CROUCH_PASSIVE]: ACT_HL2MP_WALK_CROUCH
+  [ACT_HL2MP_IDLE_CROUCH_PASSIVE]: ACT_HL2MP_IDLE_CROUCH
+}
+
+ease_in = math.ease.InQuad
+ease_out = math.ease.OutQuad
+ease = math.ease.OutBack
+
+HL2_BOB_VERTICAL = 0.5
+HL2_BOB_LATERAL = HL2_BOB_VERTICAL * 2
+HL2_BOB = 0.5
+
+bob_time = 0
+last_bob_time = 0
+
+if SERVER
+  util.AddNetworkString"evilrp_toggle_holster"
+  toggle_holster = (len, ply) ->
+    return if ply\Team! == TEAM_GHOST
+    return unless ply\Alive!
+    return if ply\Fallen!
+    wep = ply\GetActiveWeapon!
+    return if wep == NULL
+    return unless wep.SetLower
+    wep\SetNextPrimaryFire CurTime! + .6
+    if wep\CanLower!
+      wep\SetLower not wep\GetLowered!
+    else
+      wep\SetLower false
+  net.Receive "evilrp_toggle_holster", toggle_holster
+  
+global class EvilRP_Weapon extends WEAPON
+  __weapon: "evil_weapon"
+  Base: "weapon_base"
+  Category: "EvilRP"
+    
+  m_WeaponDeploySpeed: 1
+
+  DrawWeaponInfoBox: false
+
+  ViewModelTargetFOV: 54
+  ViewModelFOV: 54
+
+  HoldType: "ar2"
+  LowerHoldType: "passive"
+
+  CustomHoldType: {}
+  CustomLowerHoldType: {}
+
+  Firearm: true
+  ShowAmmoCheck: false
+
+  Firemode: -1
+
+  Primary: {
+    Ammo: ""
+    Cost: 1
+  
+    ClipSize: -1
+    DefaultClip: 0
+  
+    PumpAction: false
+    PumpSound: ""
+  
+    Damage: 0
+    Count: 1
+  
+    Spread: Vector(0, 0, 0)
+  
+    Range: 1000
+    Accuracy: 12
+  
+    RangeModifier: 0.9
+  
+    Delay: 0.1
+  
+    BurstDelay: 0
+    BurstEndDelay: 0
+  
+    Recoil: {
+  	MinAng: angle_zero
+  	MaxAng: angle_zero
+  	Punch: 0
+  	Ratio: 0
+    }
+  
+    Reload: {
+  	Time: 0,
+  	Amount: math.huge
+  	Shotgun: false
+  	Sound: ""
+    }
+  
+    Sound: ""
+    TracerName: ""
+    TracerFrequency: 2
+  }
+
+  Secondary: {
+    Ammo: ""
+    ClipSize: -1
+    DefaultClip: 0
+    Automatic: false
+  }
+
+  ViewOffset: Vector!
+
+  GetAmmoType: =>
+    import Ammo, ClipSize from @Primary
+    if Ammo == "" and ClipSize == -1
+      return AMMO_NONE
+    elseif Ammo == ""
+      return AMMO_INTERNAL
+    elseif ClipSize == -1
+      return AMMO_NOMAG
+    else
+      return AMMO_NORMAL
+
+  ConsumeAmmo: =>
+    return if @AmmoType == AMMO_NONE
+    -- there used to be code for infinite ammo here; now there isn't
+    import Cost from @Primary
+    ply = @GetOwner!
+    if @AmmoType == AMMO_NOMAG
+      cost = math.min(Cost, ply\GetAmmoCount(@Primary.Ammo))
+      ply\RemoveAmmo cost, @Primary.Ammo
+    else
+      @TakePrimaryAmmo math.min(Cost, @Clip1!)
+
+  GetAmmo: =>
+    switch @AmmoType
+      when AMMO_NORMAL, AMMO_INTERNAL
+        return @Clip1!
+      when AMMO_NOMAG
+        return @GetOwner!\GetAmmoCount @Primary.Ammo
+    return 1
+
+  CheckAmmo: =>
+    if (@ShowAmmoCheck == false)
+      @ShowAmmoCheck = true
+
+      timer.Create "ShowAmmoCheck", 2, 1, ->
+        @ShowAmmoCheck = false
+
+    elseif (timer.Exists("ShowAmmoCheck"))
+      timer.Remove("ShowAmmoCheck")
+      
+      timer.Create "ShowAmmoCheck", 2, 1, ->
+        @ShowAmmoCheck = false
+
+  Initialize: =>
+    @SetFiremode @Firemode
+    @AmmoType = @GetAmmoType!
+
+  SetupDataTables: =>
+    @NetworkVar("Entity", "LastOwner")
+
+    @NetworkVar("Bool", "Lowered")
+    @NetworkVar("Bool", "NeedPump")
+    @NetworkVar("Bool", "FirstReload")
+    @NetworkVar("Bool", "AbortReload")
+
+    @NetworkVar("Int", "Firemode")
+    @NetworkVar("Int", "BurstFired")
+
+    @NetworkVar("Float", "LowerTime")
+    @NetworkVar("Float", "NextIdle")
+    @NetworkVar("Float", "FinishReload")
+
+    @NetworkVar("Float", "NextFire")
+    @NetworkVar("Float", "NextAltFire")
+
+  OwnerChanged: =>
+    old = @GetLastOwner!
+    old\SetFOV 0, 0.1, @ if IsValid(old) and old\IsPlayer!
+    ply = @GetOwner!
+    @SetHoldType @HoldType if IsValid(ply) and ply\IsNPC!
+    @SetLastOwner ply
+
+  Deploy: =>
+    @SetLowerTime 0
+    @SetLowered true
+    @SetHoldType @LowerHoldType
+    @SetNextIdle CurTime! + @SequenceDuration!
+    return true
+
+  Holster: =>
+    @SetFirstReload false
+    @SetAbortReload false
+    @SetFinishReload 0
+    ply = @GetOwner!
+    ply\SetFOV 0, 0.1, @ if IsValid(ply) and ply\IsPlayer!
+    return true
+
+  CanLower: =>
+    return false unless @IsReady!
+    return false if @IsReloading!
+    return true
+
+  SetLower: (lower) =>
+    if @GetLowered! ~= lower
+      @SetLowered lower
+      @SetLowerTime CurTime!
+      @SetHoldType lower and @LowerHoldType or @HoldType
+      vm = @Owner\GetViewModel!
+      if lower
+        if @HolsterAnim
+          vm\SendViewModelMatchingSequence vm\LookupSequence(@HolsterAnim)
+      else
+        if @DrawAnim
+          vm\SendViewModelMatchingSequence vm\LookupSequence(@DrawAnim)
+      @UpdateFOV 0.4
+    @Primary.Automatic = true
+    return true
+
+  PrimaryAttack: =>
+    ply = @GetOwner!
+    return if (@GetNextFire! > CurTime!) or (not @CanPrimaryFire!)
+    @PrimaryFire!
+
+  SecondaryAttack: => @TryAltFire!
+
+  HandleIdle: =>
+    idle = @GetNextIdle!
+    if idle > 0 and idle <= CurTime!
+      @SendTranslatedWeaponAnim ACT_VM_IDLE
+      @SetNextIdle 0
+
+  HandlePump: =>
+    if @GetNeedPump! and (not @IsReloading!) and ((@GetNextFire! <= CurTime!))
+      return if (not @Primary.PumpOnEmpty) and (@Clip1! == 0)
+      @SendTranslatedWeaponAnim ACT_SHOTGUN_PUMP
+      snd = @Primary.PumpSound
+      @EmitSound snd if snd ~= "" and IsFirstTimePredicted!
+      duration = @SequenceDuration!
+      @SetNextFire CurTime! + duration
+      @SetNextIdle CurTime! + duration
+      @SetNeedPump false
+      
+  HandleBurst: =>
+    if (@GetBurstFired! > 0) and (CurTime! > @GetNextFire! + engine.TickInterval!)
+      @SetBurstFired 0
+      @SetNextFire CurTime! + @GetDelay!
+
+  Think: =>
+    @HandleReload!
+    @HandleIdle!
+    @HandlePump!
+    @HandleBurst!
+    @HandleViewModel!
+
+  OnReloaded: => @SetWeaponHoldType(@GetHoldType!) if @GetHoldType! ~= ""
+    
+  OnRemove: =>
+    ply = @GetOwner!
+    ply\SetFOV 0, 0, @ if IsValid(ply) and ply\IsPlayer!
+
+  SetupMove: (ply, mv) =>
+    fraction = @GetLowerFraction!
+    return if fraction == 1
+    min = 200 -- this should be variable per-weapon later
+    min = math.min(min, ply\GetWalkSpeed! * ply\GetCrouchedWalkSpeed!) if ply\Crouching!
+    speed = math.Remap fraction, 0, 1, min, ply\GetRunSpeed!
+    mv\SetMaxSpeed speed
+    mv\SetMaxClientSpeed speed
+
+  OnRestore: =>
+    @SetFirstReload false
+    @SetAbortReload false
+    @SetBurstFired 0
+    @SetLowerTime 0
+    @SetNextIdle CurTime!
+    @SetFinishReload 0
+    @SetNextFire CurTime!
+    @SetNextAltFire CurTime!
+
+  TranslateWeaponAnim: (act) => act
+    
+  SendTranslatedWeaponAnim: (act) =>
+    act = @TranslateWeaponAnim act
+    return unless act
+    @SendWeaponAnim act
+
+  TranslateActivity: (act) =>
+    local translated
+    if @GetLowered! and (act == ACT_MP_RELOAD_STAND or ACT == ACT_MP_RELOAD_CROUCH) and index[@HoldType]
+      translated = index[@HoldType] + 6
+    custom = @GetLowered! and @CustomLowerHoldType or @CustomHoldType
+    return custom[act] if custom[act]
+    translated = BaseClass.TranslateActivity @, act if not translated
+    return replacements[translated] and replacements[translated] or translated
+
+  -- primary fire
+    
+  CanPrimaryFire: =>
+    return false if @HandleAutoRaise! or @HandleReloadAbort!
+    if @IsEmpty!
+      @EmitEmptySound! unless @IsReloading!
+      @SetNextFire CurTime! + 0.2
+      @ForceStopFire!
+      return false
+    return true
+      
+  PrimaryFire: =>
+    @UpdateAutomatic!
+    @ConsumeAmmo!
+    @FireWeapon!
+    delay = @GetDelay!
+    @ApplyRecoil!
+    pump_action = @ShouldPump!
+    @SetNeedPump true if pump_action
+    @SetNextIdle CurTime! + @SequenceDuration!
+    @SetNextFire CurTime! + delay
+
+  -- alt fire
+    
+  TryAltFire: =>
+    return if (@GetNextAltFire! > CurTime!) or (not @CanAltFire!)
+    @AltFire!
+
+  CanAltFire: => true
+
+  AltFire: =>
+
+  UpdateAutomatic: =>
+    firemode = @GetFiremode!
+    if firemode == 0
+      @Primary.Automatic = false
+    else
+      @Primary.Automatic = true
+
+    if firemode > 0
+      count = @GetBurstFired!
+      if count + 1 >= firemode
+        @ForceStopFire!
+        @SetBurstFired 0
+      else
+        @SetBurstFired count + 1
+
+  FireWeapon: =>
+    ply = @GetOwner!
+    @EmitFireSound!
+    @SendTranslatedWeaponAnim ACT_VM_PRIMARYATTACK
+    ply\SetAnimation PLAYER_ATTACK1
+    damage = @GetDamage!
+    bullet = {
+      Num: @Primary.Count
+      Src: ply\GetShootPos!
+      Dir: @GetShootDir!
+      Spread: @GetSpread!
+      TracerName: @Primary.TracerName
+      Tracer: @Primary.TracerName == "" and 0 or @Primary.TracerFrequency
+      Force: damage * 0.25
+      Damage: damage
+      Callback: (attacker, tr, dmginfo) ->
+        dmginfo\ScaleDamage @GetDamageFalloff(tr.StartPos\Distance(tr.HitPos))
+    }
+    @ModifyBulletTable bullet
+    ply\FireBullets bullet
+
+  ModifyBulletTable: (bullet) =>
+
+  ShouldPump: => @Primary.PumpAction
+  
+  GetDelay: =>
+    firemode = @GetFiremode!
+    -- basic support for burst fire
+    if firemode > 0
+      if (@GetBurstFired! == 0) and (@Primary.BurstEndDelay ~= 0)
+        return @Primary.BurstEndDelay
+      elseif @Primary.BurstDelay ~= 0
+        return @Primary.BurstDelay
+
+    delay = @Primary.Delay
+    delay = @SequenceDuration! if delay == -1
+    return delay
+
+  GetDamage: => @Primary.Damage
+    
+  GetDamageFalloff: (distance) =>
+    falloff = 1 -- this needs to be variable later
+    min_damage = 0.2 -- this also needs to be variable later
+    dist_mod = 1000 * falloff
+    return math.max(@Primary.RangeModifier ^ (distance / dist_mod), min_damage)
+      
+  GetRange: => @Primary.Range, @Primary.Accuracy
+    
+  GetSpread: (range, accuracy) =>
+    range2, accuracy2 = @GetRange!
+    range = range or range2
+    accuracy = accuracy or accuracy2
+
+    inches = accuracy / .75
+    yards = (range / .75) / 36
+    moa = (inches * 100) / yards
+
+    spread = math.rad moa / 60
+    return Vector(spread, spread, 0)
+
+  GetRecoilMultiplier: => math.tan(@GetFOV! * (math.pi / 360)) * @GetZoom!
+    
+  GetReloadTime: => return @Primary.Reload.Time > 0 and @Primary.Reload.Time or @SequenceDuration!
+    
+  GetZoom: =>
+    return 1 if @GetLowered!
+    return 1.25
+
+  IsReady: => CurTime! - @GetLowerTime! >= 0.4
+
+  GetLowerFraction: =>
+    frac = math.Clamp(math.Remap(CurTime! - @GetLowerTime!, 0, 0.4, 0, 1), 0, 1)
+    return ease_out frac if @GetLowered!
+    return ease_in 1 - frac
+
+  HasCameraControl: =>
+    ply = @GetOwner!
+    return true if CLIENT and not ply\ShouldDrawLocalPlayer!
+    return ply\GetViewEntity! == ply
+
+  GetOwnerDefaultFOV: => @GetOwner!\GetInfoNum("fov_desired", 75)
+    
+  GetTargetFOV: =>
+    zoom = @GetZoom!
+    return 0 if zoom == 1
+    return @GetOwnerDefaultFOV! / @GetZoom!
+      
+  UpdateFOV: (time) => @GetOwner!\SetFOV(@GetTargetFOV!, time, @)
+    
+  GetFOV: => @GetOwner!\GetFOV!
+    
+  GetViewModel: (index) => @GetOwner!\GetViewModel!
+
+  IsEmpty: =>
+    switch @AmmoType
+      when AMMO_NORMAL
+        return @Clip1! < @Primary.Cost
+      when AMMO_NOMAG
+        return @GetOwner!\GetAmmoCount(@Primary.Ammo) < @Primary.Cost
+      when AMMO_INTERNAL
+        return @Clip1! < @Primary.Cost
+    return false
+
+  GetShootDir: =>
+    ply = @GetOwner!
+    return ply\GetAimVector! if ply\IsNPC!
+    return (ply\GetAimVector!\Angle! + ply\GetViewPunchAngles!)\Forward!
+
+  HandleAutoRaise: =>
+    if (@GetLowered! or not @IsReady!) and not @IsReloading!
+      -- @SetLower false
+      return true
+    return false
+
+  IsAltFireHeld: =>
+    ply = @GetOwner!
+    return false if not IsValid(ply) or ply\IsNPC!
+    return ply\KeyDown(IN_USE) and ply\KeyDown(IN_ATTACK)
+
+  ForceStopFire: =>
+    ply = @GetOwner!
+    return if not IsValid(ply) or not ply\IsPlayer!
+    ply\ConCommand"-attack"
+
+  DoAR2Impact: (tr) =>
+    return if tr.HitSky
+    return if not game.SinglePlayer! and not IsFirstTimePredicted!
+    effect = EffectData!
+    effect\SetOrigin tr.HitPos + tr.HitNormal
+    effect\SetNormal tr.HitNormal
+    util.Effect "AR2Impact", effect
+
+  ApplyRecoil: (recoil) =>
+    ply = @GetOwner!
+    return unless ply\IsPlayer!
+    recoil = recoil or @Primary.Recoil
+    seed = ply\GetCurrentCommand!\CommandNumber!
+    mult = @GetRecoilMultiplier!
+    pitch = -util.SharedRandom("#{@EntIndex!}#{seed}1", recoil.MinAng.p, recoil.MaxAng.p) * mult
+    yaw = -util.SharedRandom("#{@EntIndex!}#{seed}2", recoil.MinAng.y, recoil.MaxAng.y) * mult
+    if game.SinglePlayer! or (CLIENT and IsFirstTimePredicted!)
+      ply\SetEyeAngles ply\EyeAngles! + Angle(pitch, yaw, 0) * recoil.Punch
+    ply\ViewPunch Angle(pitch, yaw, 0)
+
+  ApplyStaticRecoil: (ang, recoil) =>
+    ply = @GetOwner!
+    return unless ply\IsPlayer!
+    recoil = recoil or @Primary.Recoil
+    seed = ply\GetCurrentCommand!\CommandNumber!
+    mult = @GetRecoilMultiplier!
+    pitch = ang.p * mult
+    yaw = ang.y * mult
+    if game.SinglePlayer! or (CLIENT and IsFirstTimePredicted!)
+      ply\SetEyeAngles ply\EyeAngles! + Angle(pitch, yaw, 0) * recoil.Punch
+    ply\ViewPunch Angle(pitch, yaw, 0)
+
+  HandleReloadAbort: =>
+    if @IsReloading!
+      @SetAbortReload true if @Primary.Reload.Shotgun
+      return true
+    return false
+
+  IsReloading: => @GetFinishReload! ~= 0
+    
+  CanReload: =>
+    return false if @AmmoType ~= AMMO_NORMAL
+    return false if @GetNextFire! > CurTime!
+    return false if @IsReloading! or (@Clip1! >= @Primary.ClipSize)
+    return false if @GetOwner!\GetAmmoCount(@Primary.Ammo) <= 0
+    return true
+      
+  Reload: =>
+    return unless @CanReload!
+    @StartReload!
+      
+  StartReload: =>
+    reload = @Primary.Reload
+    @GetOwner!\SetAnimation PLAYER_RELOAD
+    if reload.Shotgun
+      @SendTranslatedWeaponAnim ACT_SHOTGUN_RELOAD_START
+      @SetFirstReload true
+    else
+      @SendTranslatedWeaponAnim ACT_VM_RELOAD
+      @EmitReloadSound!
+    duration = @GetReloadTime!
+    f = CurTime! + duration
+    @SetFinishReload f
+    @SetNextIdle f
+      
+  HandleReload: =>
+    reload = @GetFinishReload!
+    @FinishReload! if reload > 0 and reload <= CurTime!
+      
+  FinishReload: =>
+    primary = @Primary
+    reload = primary.Reload
+    ply = @GetOwner!
+    amount = math.min(primary.ClipSize - @Clip1!, reload.Amount)
+    first = @GetFirstReload!
+    if not first
+      acount = ply\GetAmmoCount(primary.Ammo)
+      @SetAbortReload(true)
+      amount = math.min(amount, acount)
+      ply\RemoveAmmo amount, primary.Ammo
+    if reload.Shotgun
+      @SetClip1 @Clip1! + amount unless first
+      pump = @Clip1! == amount
+      if @Clip1! >= primary.ClipSize or amount <= 0 or @GetAbortReload!
+        if pump and (not reload.DontFinishPump)
+          @SendTranslatedWeaponAnim primary.Reload.Act or ACT_SHOTGUN_RELOAD_FINISH
+          duration = @SequenceDuration!
+          d = CurTime! + duration
+          @SetNextFire d
+          @SetNextIdle d
+        @SetAbortReload false
+        @SetFinishReload 0
+      else
+        @SendTranslatedWeaponAnim ACT_VM_RELOAD
+        @SetFirstReload false if @GetFirstReload
+        @EmitSound reload.Sound if (reload.Sound ~= "") and IsFirstTimePredicted!
+        duration = @SequenceDuration!
+        d = CurTime! + duration
+        @SetNextFire d
+        @SetNextIdle d
+        @SetFinishReload CurTime! + duration
+    else
+      @SetClip1 @Clip1! + amount
+      @SetFinishReload 0
+    @Primary.Automatic = true
+
+  EmitEmptySound: => @EmitSound(")weapons/pistol/pistol_empty.wav", 75, 100, 0.7, CHAN_STATIC)
+    
+  EmitFireSound: =>
+    @EmitSound @Primary.Sound
+    if pump := @Primary.Pump
+      timer.Simple pump.Delay or 0.4, ->
+        if IsValid(@)
+          @EmitSound(pump.Sound)
+    
+  EmitReloadSound: =>
+    reload = @Primary.Reload
+    @EmitSound reload.Sound if reload.Sound ~= ""
+
+  TranslateFOV: (fov) =>
+    return fov if not IsValid(@GetOwner!)
+    desired = @GetOwnerDefaultFOV!
+    @ViewModelFOV = @ViewModelTargetFOV + (desired - fov) * 0.6
+    return fov
+      
+  HandleViewModel: =>
+    if CLIENT
+      @SwayScale = 1
+      @BobScale = 1
+        
+  CalcView: (ply, pos, ang, fov) =>
+    return unless @HasCameraControl!
+    return pos, ang - ply\GetViewPunchAngles! * @Primary.Recoil.Ratio, fov
+
+  GetBobScale: => 1
+  
+  GetSwayScale: => 2
+
+  AddViewmodelBob: (pos, ang) =>
+    ply = @GetOwner!
+    max_speed = ply\IsOnGround! and 160 or 500
+    scale = @GetBobScale!
+
+    speed = math.min(ply\GetVelocity!\Length2D!, ply\GetRunSpeed!)
+    offset = math.Remap speed, 0, max_speed, 0, 1
+    ct = CurTime!
+
+    bob_time += (ct - last_bob_time) * offset
+    last_bob_time = ct
+
+    cycle = bob_time - math.floor((bob_time / HL2_BOB_VERTICAL) * HL2_BOB_VERTICAL)
+    cycle /= HL2_BOB_VERTICAL
+
+    if cycle < HL2_BOB
+      cycle = math.pi * (cycle / HL2_BOB)
+    else
+      cycle = math.pi + math.pi * (cycle - HL2_BOB) / (1 - HL2_BOB)
+
+    vertical = speed * .005 * scale
+    vertical = math.Clamp(vertical * .3 + vertical * .7 * math.sin(cycle), -7, 4)
+
+    cycle = bob_time - math.floor((bob_time / HL2_BOB_LATERAL) * HL2_BOB_LATERAL)
+    cycle /= HL2_BOB_LATERAL
+
+    if cycle < HL2_BOB
+      cycle = math.pi * (cycle / HL2_BOB)
+    else
+      cycle = math.pi + math.pi * (cycle - HL2_BOB) / (1 - HL2_BOB)
+
+    lateral = speed * .005 * scale
+    lateral = math.Clamp(lateral * .3 + lateral * .7 * math.sin(cycle), -7, 4)
+
+    with pos
+      \Add ang\Forward! * vertical * .1
+      \Add ang\Right! * lateral * .8
+      \AddZ vertical * .1 * scale
+    with ang
+      \SubPitch vertical * .4
+      \SubYaw lateral * .3
+      \AddRoll vertical * .5    
+    
+  GetViewModelPosition: (pos, ang) =>
+    fraction = @GetLowerFraction!
+    offset = @ViewOffset
+    pos, ang = LocalToWorld(offset, Angle(fraction * 15, 0, 0), pos, ang)
+    ply = @GetOwner!
+    if IsValid(ply)
+      const = math.pi / 360
+      fov, vmfov = ply\GetFOV!, @ViewModelFOV
+      ratio = math.tan(math.min(fov, vmfov) * const) / math.tan(math.max(fov, vmfov) * const)
+      ang = ang + ply\GetViewPunchAngles! * ratio * @Primary.Recoil.Ratio
+    @AddViewmodelBob pos, ang
+    return pos, ang
+     
+  AdjustMouseSensitivity: =>
+    return 1 unless @HasCameraControl!
+    desired = @GetOwnerDefaultFOV!
+    fov = @GetFOV!
+    return fov / desired
+      
+  DrawWorldModelTranslucent: (flags) => @DrawWorldModel flags
+
+global class EvilRP_Melee extends WEAPON
+  @__weapon: "evilrp_melee"
+  Base: "weapon_base"
+  Category: "EvilRP"
+    
+  m_WeaponDeploySpeed: 1
+
+  DrawWeaponInfoBox: false
+
+  ViewModelFOV: 54
+
+  HoldType: "melee"
+  LowerHoldType: "normal"
+
+  Primary:
+    Ammo: ""
+    ClipSize: -1
+    DefaultClip: 0
+    Automatic: false
+
+    ChargeTime: 1
+    AutoSwing: true
+
+    Light:
+      Damage: 1
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 0.1
+
+      Act: ACT_VM_HITCENTER
+
+      Sound: ""
+
+    Heavy:
+      Damage: 1
+      DamageType: DMG_CLUB
+
+      Range: 75
+      Delay: 0.1
+
+      Act: ACT_VM_HITCENTER
+
+      Sound: ""
+
+  Secondary:
+    Ammo: ""
+    ClipSize: -1
+    DefaultClip: 0
+    Automatic: false
+
+  ChargeOffset:
+    Pos: Vector!
+    Ang: Angle!
+
+  SetupDataTables: =>
+    @NetworkVar("Bool", "Lowered")
+    @NetworkVar("Float", "LowerTime")
+    @NetworkVar("Float", "NextIdle")
+    @NetworkVar("Float", "ChargeTime")
+    @NetworkVar("Float", "NextAltFire")
+
+  Deploy: =>
+    @SetLowerTime 0
+    @SetLowered @CanLower!
+    @SetHoldType @LowerHoldType
+    @SendTranslatedWeaponAnim ACT_VM_DRAW
+    @SetNextIdle CurTime! + @SequenceDuration!
+    return true
+
+  Holster: =>
+    @SetChargeTime 0
+    return true
+
+  IsReady: => CurTime! - @GetLowerTime! >= 0.4
+  CanLower: => @IsReady! and @GetChargeTime! == 0
+  SetLower: (lower) =>
+    if @GetLowered! ~= lower
+      @SetLowered lower
+      @SetLowerTime CurTime!
+      @SetHoldType lower and @LowerHoldType or @HoldType
+      vm = @Owner\GetViewModel!
+      if lower
+        if @HolsterAnim
+          vm\SendViewModelMatchingSequence vm\LookupSequence(@HolsterAnim)
+      else
+        if @DrawAnim
+          vm\SendViewModelMatchingSequence vm\LookupSequence(@DrawAnim)
+    @Primary.Automatic = true
+    return true
+
+  PrimaryAttack: =>
+    return if @GetLowered!
+    ply = @GetOwner!
+    if @Primary.ChargeTime == 0
+      @Primary.Automatic = @Primary.AutoSwing
+      @LightAttack!
+      return
+    return if @GetChargeTime! ~= 0
+    @SetChargeTime CurTime!
+    @Primary.Automatic = false
+
+  SecondaryAttack: => @TryAltFire!
+
+  -- alt fire
+    
+  TryAltFire: =>
+    return if (@GetNextAltFire! > CurTime!) or (not @CanAltFire!)
+    @AltFire!
+
+  CanAltFire: => true
+
+  AltFire: =>
+      
+  HandleIdle: =>
+    idle = @GetNextIdle!
+    if idle > 0 and idle <= CurTime!
+      @SendTranslatedWeaponAnim ACT_VM_IDLE
+      @SetNextIdle 0
+
+  Think: =>
+    @HandleIdle!
+    unless @GetLowered!
+      @HandleCharge!
+
+  OnReloaded: => @SetWeaponHoldType @GetHoldType!
+
+  GetLowerFraction: =>
+    frac = math.Clamp(math.Remap(CurTime! - @GetLowerTime!, 0, 0.4, 0, 1), 0, 1)
+    if @GetLowered!
+      return ease_out frac
+    else
+      return ease_in 1 - frac
+
+  SetupMove: (ply, mv) =>
+    fraction = @GetLowerFraction!
+    return if fraction == 1
+    speed = math.Remap(fraction, 0, 1, ply\GetWalkSpeed!, ply\GetRunSpeed!)
+    mv\SetMaxClientSpeed speed if mv\GetForwardSpeed! <= 0
+
+  OnRestore: =>
+    @SetLowerTime 0
+    @SetNextIdle CurTime!
+    @SetNextAltFire CurTime!
+
+  TranslateWeaponAnim: (act) => act
+  SendTranslatedWeaponAnim: (act) =>
+    act = @TranslateWeaponAnim act
+    return unless act
+    @SendWeaponAnim act
+
+  GetDelay: (heavy, hit, trace) =>
+    tab = heavy and @Primary.Heavy or @Primary.Light
+    return hit and tab.Delay[1] or tab.Delay[2] if istable(tab.Delay)
+    return tab.Delay
+
+  GetAttackAct: (heavy, hit, trace) =>
+    tab = heavy and @Primary.Heavy or @Primary.Light
+    return hit and tab.Act[1] or tab.Act[2] if istable(tab.Act)
+    return tab.Act
+
+  PlayAttackSound: (heavy, hit, trace) =>
+    tab = heavy and @Primary.Heavy or @Primary.Light
+    snd = tab.Sound
+    if istable(snd)
+      if snd[3] and trace.HitWorld
+        snd = snd[3]
+      else
+        snd = hit and snd[1] or snd[2]
+    @EmitSound snd if snd ~= ""
+
+  GetDamage: (heavy, trace) =>
+    tab = heavy and @Primary.Heavy or @Primary.Light
+    return tab.Damage, tab.DamageType
+
+  HandleCharge: =>
+    return if game.SinglePlayer! and CLIENT
+    return if @GetLowered!
+    charge = @GetChargeTime!
+    if charge > 0 and not @GetOwner!\KeyDown(IN_ATTACK)
+      primary = @Primary
+      time = CurTime! - charge
+      return if time < engine.TickInterval!
+      if primary.ChargeTime > 0 and time > primary.ChargeTime
+        @HeavyAttack!
+      else
+        @LightAttack!
+      @SetChargeTime 0
+      @Primary.Automatic = @Primary.AutoSwing
+
+  RefineHullTrace: (trace, result) =>
+    distance = math.huge
+    endpos = result.StartPos + (result.HitPos - result.StartPos) * 2
+
+    trace.start = result.StartPos
+    trace.endpos = endpos
+
+    tr = result
+    temp = util.TraceLine trace
+    return temp if temp.Hit
+
+    for i=-1,1,2
+      for j=-1,1,2
+        for k=-1,1,2
+          vec = Vector( endpos.x + (16 * i), endpos.y + (16 * j), endpos.z + (16 * k) )
+          trace.endpos = vec
+          temp = util.TraceLine trace
+          if temp.Hit
+            dist = (tr.HitPos - tr.StartPos)\Length!
+            if dist < distance
+              tr = temp
+              distance = dist
+    return tr
+
+  -- "Basically a copy of CWeaponSDKMelee::Swing()'s trace code"
+  GetAttackTrace: (range) =>
+    ply = @GetOwner!
+    start = ply\GetShootPos!
+    forward = ply\GetAimVector!
+    endpos = start + forward * range
+    trace = {
+      :start
+      :endpos
+      mins: Vector -16, -16, -16
+      maxs: Vector 16, 16, 16
+      mask: MASK_SHOT_HULL
+      filter: ply
+      collisiongroup: COLLISION_GROUP_NONE
+    }
+    tr = util.TraceLine trace
+    return true, tr if tr.Hit
+    trace.endpos -= forward * 1.732 * 16
+    tr = util.TraceHull trace
+    if tr.Hit and IsValid(tr.Entity)
+      vec = (tr.Entity\GetPos! - start)\GetNormalized!
+      return false, tr if vec\Dot(forward) < math.rad(0.70721)
+      return true, @RefineHullTrace(table.Copy(trace), tr)
+    return false, tr
+
+  LightAttack: => @GenericAttack false
+  HeavyAttack: => @GenericAttack true
+  GenericAttack: (heavy) =>
+    tab = heavy and @Primary.Heavy or @Primary.Light
+    ply = @GetOwner!
+    ply\LagCompensation true
+    hit, trace = @GetAttackTrace tab.Range
+    ply\LagCompensation false
+    ply\SetAnimation PLAYER_ATTACK1
+    if hit and SERVER
+      dmg = DamageInfo!
+      damage, damage_type = @GetDamage heavy, trace
+      with dmg
+        \SetDamage damage
+        \SetDamageType damage_type
+        \SetInflictor @
+        \SetAttacker @GetOwner!
+        \SetDamagePosition trace.HitPos
+        \SetDamageForce trace.Normal * (tab.Damage * 300)
+      if bit.band(util.PointContents(trace.HitPos), CONTENTS_WATER) == 0
+        ed = EffectData!
+        with ed
+          \SetEntity trace.Entity
+          \SetOrigin trace.HitPos
+          \SetStart trace.StartPos
+          \SetSurfaceProp trace.SurfaceProps
+          \SetDamageType damage_type
+          \SetHitBox trace.HitBox
+        util.Effect "Impact", ed, false, true
+      trace.Entity\DispatchTraceAttack dmg, trace if IsValid(trace.Entity)
+    @WaterImpact trace.StartPos, trace.HitPos
+    @SendTranslatedWeaponAnim @GetAttackAct(heavy, hit)
+    @SetNextIdle CurTime! + @SequenceDuration!
+    @PlayAttackSound heavy, hit, trace
+    delay = @GetDelay heavy, hit
+    delay = @SequenceDuration! if delay == -1
+    @SetNextPrimaryFire CurTime! + delay
+    return hit, trace
+  WaterImpact: (start, endpos) =>
+    flags = bit.bor CONTENTS_WATER, CONTENTS_SLIME
+    return if bit.band(util.PointContents(start), flags) ~= 0
+    return if bit.band(util.PointContents(endpos), flags) == 0
+    tr = util.TraceLine {
+      :start
+      :endpos
+      mask: flags
+      filter: @GetOwner!
+      collisiongroup: COLLISION_GROUP_NONE
+    }
+    if tr.Hit
+      ed = EffectData!
+      with ed
+        \SetFlags bit.band(tr.Contents, CONTENTS_SLIME) == 0 and 0 or 1
+        \SetOrigin tr.HitPos
+        \SetNormal tr.HitNormal
+        \SetScale 8
+      util.Effect "watersplash", ed, false, true
+  GetViewModelPosition: (pos, ang) =>
+    fraction = @GetLowerFraction!
+    offset = @ViewOffset?.Pos or Vector!
+    pos, ang = LocalToWorld(offset, Angle(fraction * 15, 0, 0), pos, ang)
+    charge = @GetChargeTime!
+    if @Primary.ChargeTime > 0 and charge ~= 0
+      frac = ease(math.Clamp(math.Remap(CurTime! - charge, 0, @Primary.ChargeTime * 2, 0, 1), 0, 1))
+      charge_pos = LerpVector frac, vector_origin, @ChargeOffset.Pos
+      charge_ang = LerpAngle frac, angle_zero, @ChargeOffset.Ang
+      pos, ang = LocalToWorld charge_pos, charge_ang, pos, ang
+    return pos, ang
+        
+hook.Add "SetupMove", "evilrp_weapon_movement", (ply, mv) ->
+  weapon = ply\GetActiveWeapon!
+  return unless IsValid(weapon)
+  return unless string.find(weapon\GetClass!, "evilrp_")
+  return unless weapon.SetupMove
+  weapon\SetupMove ply, mv
+  return
+
+if CLIENT  
+  hook.Add "PostDrawTranslucentRenderables", "evilrp_weapon_render", (depth, skybox, skybox3d) ->
+    return if skybox
+    return if skybox3d
+    for ply in *player.GetAll!
+      continue if (not IsValid(ply) or ply\IsDormant! or ply\InVehicle!)
+      weapon = ply\GetActiveWeapon!
+      continue if (not IsValid(weapon) or weapon\IsDormant! or not string.find(weapon\GetClass!, "evilrp_"))
+      continue if not weapon.PostDrawTranslucentRenderables
+      weapon\PostDrawTranslucentRenderables!
+    return

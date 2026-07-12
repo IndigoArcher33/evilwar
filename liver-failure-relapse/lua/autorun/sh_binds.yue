@@ -1,0 +1,11 @@
+global Binds
+Binds = {
+  list: {}
+}
+
+global KEYMODE_HOLD   = 1
+global KEYMODE_TOGGLE = 2
+global KEYMODE_SMART  = 3
+
+Binds.Add = (index, name, default, callback, hint) ->
+  Binds.list[index] = { setting: default, :callback, :default }

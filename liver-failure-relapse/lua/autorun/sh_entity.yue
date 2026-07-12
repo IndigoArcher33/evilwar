@@ -1,0 +1,243 @@
+import Create from ents
+
+import Register from scripted_ents
+
+import lower, Left from string
+
+import TraceLine from util
+
+global class ENTITY
+  @registered: {}
+  @__inherited: (child) =>
+    with getmetatable child
+      .__call = (...) =>
+        ent = Create @__barcode
+        ent.__class = ent.BaseClass
+        @.__init ent, ...
+        ent
+    fields = {k,v for k,v in pairs(child.__base) when Left(k, 2) != "__"}
+    fields.Base or= @__barcode
+    fields.Spawnable or= @Spawnable
+    fields.Category or= @Category
+    cls_name = rawget(child, "__entity")
+    if cls_name
+      child.__barcode = lower cls_name
+    else
+      child.__barcode = "#{@__barcode and @__barcode .. "/" or ""}#{lower(cls_name or child.__name)}"
+    Register fields, child.__barcode
+    MsgC Color(0, 200, 0), "+ENTITY: #{child.__barcode}\n"
+    @registered[child.__barcode] = child
+  @create: (name, ...) =>
+    return unless @registered[name]
+    @registered[name] ...
+  new: (where) =>
+    if isvector where
+      @SetPos where
+    elseif isentity(where) and where\IsPlayer!
+      @SetPos where\GetEyeTrace!.HitPos
+    @Spawn!
+    @Activate!
+
+if CLIENT
+  net.Receive "evilrp_use_fail", ->
+    failtext = net.ReadString!
+    GAMEMODE\Frighten!
+    chat.AddNonParsedText(Color(200, 0, 0, 255), failtext)
+else
+  util.AddNetworkString"evilrp_use_fail"
+
+global class ENTITY_LONGUSE extends ENTITY
+  Base: "base_anim"
+  Type: "anim"
+
+  TimeToUse: 1
+  PartialUse: 1 -- used internally, should not be changed
+  PartialUses: {}
+
+  SetupDataTables: =>
+    @NetworkVar "Float", "EndTime"
+    @NetworkVar "Entity", "User"
+    @NetworkVar "Bool", "DrawKeyPrompt"
+    @NetworkVar "Bool", "DrawProgress"
+    if SERVER
+      @SetEndTime 0
+      @SetDrawKeyPrompt false
+      @SetDrawProgress true
+      @ProgPerTick = 1 / ( @TimeToUse * ( 1 / FrameTime! ) / 100 )
+
+  IsProgressUsable: => true
+
+  OnUseFinish: (ply) =>
+
+  OnUseStart: (ply) =>
+
+  OnUseCancel: (ply, end_time) =>
+
+  Use: (ply) =>
+    user = @GetUser!
+    return if IsValid(user) and user ~= ply
+    return if ply\KeyDownLast(IN_USE) and not IsValid(user)
+    @SetUser ply
+    unless ply\KeyDownLast IN_USE
+      @SetEndTime 0
+      started = @OnUseStart ply
+      @SetEndTime CurTime! + @TimeToUse unless started == false
+    et = @GetEndTime!
+    ct = CurTime!
+    if ct >= et and IsValid(user) and et ~= 0
+      @OnUseFinish user
+      @SetEndTime 0
+      @PartialUse = 0
+      @SetUser NULL
+
+  Think: =>
+    user = @GetUser!
+    et = @GetEndTime!
+    ct = CurTime!
+    if IsValid(user)
+      if ((user\GetUseEntity! ~= @) or (not user\KeyDown(IN_USE))) and et ~= 0
+        @SetUser NULL
+        end_time = @GetEndTime!
+        @SetEndTime 0
+        @PartialUse = 0
+        @OnUseCancel(user, end_time) if SERVER
+      if (@PartialUses[@PartialUse] ~= nil)
+        if (ct >= ( et - @TimeToUse ) + ( @PartialUses[@PartialUse].prog / 100 ) * @TimeToUse)
+          if et ~= 0
+            @PartialUses[@PartialUse].func @, user
+            @PartialUse += 1
+      elseif (#@PartialUses > 0)
+        switch @PartialUse
+          when 0
+            @PartialUse = 1
+          else
+            @SetUser NULL
+            @SetEndTime 0
+            @PartialUse = 0
+    @NextThink ct
+    return true
+
+global class ITEM extends ENTITY_LONGUSE
+  @__entity: "item"
+
+  Spawnable: true
+
+  Interesting: true
+
+  PMRender: (item) ->
+    ct = {}
+    wt = scripted_ents.Get item.class
+    ct[] = wt.PrintName
+    if wt.Description
+      ct[] = ""
+      ct[] = { text: wt.Description, font: "Spleen_Label_Small" }
+    return ct
+
+  HUDRender: =>
+    ct = {}
+    ct[] = @PrintName
+    if @Description
+      ct[] = ""
+      ct[] = { text: @Description, font: "Spleen_Label_Small" }
+    return ct
+
+  Initialize: =>
+    @SetModel @Model
+    if SERVER
+      @PhysicsInit SOLID_VPHYSICS
+      @SetMoveType MOVETYPE_VPHYSICS
+      @SetSolid SOLID_VPHYSICS
+      @PhysWake!
+
+  Trash: =>
+    cls = @TrashClass
+    pos = @GetPos!
+    ang = @GetAngles!
+    @Remove!
+    if cls
+      trash = ents.Create cls
+      with trash
+        \SetPos pos
+        \SetAngles ang
+        \Spawn!
+        \Activate!
+
+  OnUseFinish: (ply) =>
+    ply\EmitSound @Sound if @Sound
+    if @UseText
+      ply\ConCommand"say /me #{@UseText[math.random(1, #@UseText)]}"
+
+  OnUseStart: (ply) => -- @EmitSound"items/ammopickup.wav"
+
+  OnUseCancel: (ply, end_time) =>
+    -- @EmitSound"buttons/button10.wav"
+    time_left = end_time - CurTime!
+    if (@Pocketable ~= false) and time_left >= @TimeToUse * .9
+      can_pickup, message = hook.Call "canPocket", GAMEMODE, ply, @
+      unless can_pickup
+        ply\Notify(message) if message and SERVER
+        return
+      ply\DoAnimationEvent ACT_GMOD_GESTURE_ITEM_GIVE
+      if SERVER
+        ply\EmitSound"Pocket_Item"
+        ply\addPocketItem @
+
+  Model: Model"models/Gibs/HGIBS.mdl"
+  Spawnable: true
+
+  Sound: Sound"vo/k_lab/kl_fiddlesticks.wav"
+
+  OnlyInventoryUse: false
+
+  OnTakeDamage: (dmg) =>
+    @TakePhysicsDamage dmg
+
+  Use: (ply) =>
+    if @inventory_use
+      @OnUseFinish ply
+      @inventory_use = nil
+      return
+    if @OnlyInventoryUse
+      -- if we got to this point, then it's not being used from the
+      -- inventory
+      ply.next_use_warn = ct unless ply.next_use_warn
+      unless ply.next_use_warn > ct
+        ply.next_use_warn = ct + 2
+        failtext = "Put it in your pockets first!"
+        net.Start"evilrp_use_fail"
+        net.WriteString failtext
+        net.Send(ply)
+      return
+    super ply
+
+  PhysicsCollide: (data, physobj) =>
+    prop1 = util.GetSurfaceData(data.OurSurfaceProps)
+    prop2 = util.GetSurfaceData(data.TheirSurfaceProps)
+    if data.Speed >= 75 and ((@LastImpact or 0) + 0.1 < CurTime!)
+      @LastImpact = CurTime!
+      snd = switch type(@ImpactSound)
+        when "table"
+          @ImpactSound.hard
+        when "string"
+          @ImpactSound
+        when "nil"
+          prop1.impactHardSound
+      @EmitSound snd
+      -- @SetCollisionGroup COLLISION_GROUP_WEAPON if @SizeClass <= SIZE_SMALL
+    elseif data.Speed >= 25 and ((@LastImpact or 0) + 0.1 < CurTime!)
+      @LastImpact = CurTime!
+      snd = switch type(@ImpactSound)
+        when "table"
+          @ImpactSound.soft
+        when "string"
+          @ImpactSound
+        when "nil"
+          prop1.impactSoftSound
+      @EmitSound snd
+      -- @SetCollisionGroup COLLISION_GROUP_WEAPON if @SizeClass <= SIZE_SMALL
+
+  Interactions: (ply) =>
+    actions = {}
+    if (@Pocketable ~= false)
+      actions[] = { desc: "Pocket", func: (-> netstream.Send("PocketItem", @) ) }
+    return actions

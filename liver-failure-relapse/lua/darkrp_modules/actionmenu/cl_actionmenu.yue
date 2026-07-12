@@ -1,0 +1,154 @@
+-- this was made while looking at the action menu code for TacoScript Classic
+-- which is written in another language and uses many outdated facilities of Garry's Mod
+
+GAMEMODE.action_menu = {
+  on: false
+  target: nil
+  where: Vector(0,0,0)
+  options: {}
+
+  create_time: 0
+  choice_idx: -1
+
+  cursor: true
+
+  width: 0
+}
+
+get_intrinsic_actions = ->
+  actions = {}
+  wep = lp\GetActiveWeapon!
+  if wep\IsValid! and wep\GetModel! ~= ""
+    actions[] = { desc: "Drop #{wep.PrintName}", func: (-> netstream.Send"DropWeapon" ) }
+  actions[] = { desc: "Payment", func: (-> netstream.Send"BeginPaying" ) }
+  return actions
+
+render_action_menu = ->
+  menu = GAMEMODE.action_menu
+  return unless menu.on and menu.where
+  dist = lp\EyePos!\DistToSqr(menu.where)
+  unless dist <= 120^2
+    GAMEMODE\CloseActionMenu!
+    return
+  import target from menu
+  actions = {}
+  if target and IsValid(target) and target.Interactions
+    actions = target.Interactions
+    actions = actions(target, lp) if isfunction(actions)
+  if #actions <= 0
+    actions = get_intrinsic_actions!
+  menu.options = actions
+  surface.SetFont"Spleen_Label"
+  for o in *menu.options
+    width = surface.GetTextSize(o.desc)
+    menu.width = width + 10 if (width + 10) > menu.width
+  GAMEMODE\CloseActionMenu! if #menu.options == 0
+  
+  mx = ScrW!/2
+  my = ScrH!/2
+  ct = CurTime!
+
+  a = 255 * (1 - (dist / 120^2))
+
+  local orix
+  local oriy
+  local w
+  local h
+
+  import where from menu
+  vec = where\ToScreen!
+  orix = vec.x - (menu.width/2)
+  oriy = vec.y - 16
+
+  w = 150
+  h = 30 + (#menu.options * 30)
+
+  font = "Spleen_Label"
+
+  draw.RoundedBox( 4, orix, oriy, menu.width, h, Color( 60, 60, 60, math.Clamp(a,0,180) ) )
+  -- create scribe object
+  txt_obj = scribe.Parse "<f=#{font}><ol=2>Actions", menu.width
+  txt_h = txt_obj\GetTall!
+  txt_obj\Draw orix + (menu.width/2), vec.y - txt_h/2, a/255, TEXT_ALIGN_CENTER
+  -- draw.DrawText( "Actions", "Spleen_Label", orix + 5, oriy + 5, Color( 255, 255, 255, a ) )
+
+  chose = false
+
+  for n=1,#menu.options
+    o = menu.options[n]
+    import desc from o
+    curx = orix + 5
+    cury = oriy + 30 + ( 30 * ( n - 1 ) )
+    curw = 142
+    curh = 25
+
+    color = Color( 0, 0, 0, math.Clamp(a,0,180) )
+    -- check if the mouse is in within this option
+    if (my >= cury) and (my <= cury + curh)
+      if (mx >= curx) and (mx <= curx + curw)
+        color = Color( 0, 0, 150, math.Clamp(a,0,180) )
+        menu.choice_idx = n
+        chose = true
+    draw.RoundedBox( 4, curx, cury, menu.width - 10, curh, color )
+    draw.DrawText( desc, "Spleen_Label", orix + 6, oriy + 30 + ( 30 * ( n - 1 ) ), Color( 255, 255, 255, a ) )
+    
+  menu.choice_idx = -1 unless chose
+  menu.cursor = false
+  
+  if (my >= oriy) and (my <= oriy + h)
+    if (mx >= orix) and (mx <= orix + w)
+      -- draw.DrawText( "o", "Spleen_Label", mx, my - 15, Color( 255, 255, 255, 255 ), 1, 1 )
+      menu.cursor = true
+
+hook.Add "HUDPaint", "evilrp_action_menu", render_action_menu
+
+GAMEMODE.OpenActionMenu = (pos, ent) =>
+  menu = @action_menu
+  if menu.on and menu.cursor
+    return @CloseActionMenu!
+  menu.where = pos
+  surface.SetFont"Spleen_Label"
+  width = surface.GetTextSize("Actions")
+  menu.width = width + 10
+  alpha = 0
+  menu.on = true
+  menu.closing = false
+  if ent and IsValid(ent)
+    menu.target = ent
+  else
+    menu.target = nil
+
+GAMEMODE.CloseActionMenu = =>
+  menu = @action_menu
+  menu.closing = true
+  menu.on = false
+  menu.choice_idx = -1
+
+action_menu_usage = (ply, bind, pressed) ->
+  menu = GAMEMODE.action_menu
+  if menu.on and menu.cursor
+    import target from menu
+    actions = {}
+    if target and IsValid(target) and target.Interactions
+      actions = target.Interactions
+      actions = actions(target, lp) if isfunction(actions)
+    if #actions > 0
+      actions = {...actions, ...get_intrinsic_actions!}
+    else
+      actions = get_intrinsic_actions!
+    if bind\find"+attack" and menu.choice_idx > 0
+      actions[menu.choice_idx].func(ply)
+      GAMEMODE\CloseActionMenu!
+      return true
+  return
+
+hook.Add "PlayerBindPress", "evilrp_action_menu", action_menu_usage
+
+open_action_menu = (ply, bind, down) ->
+  -- if down and bind\find"+menu_context"
+    -- tr = GAMEMODE\GetHandTrace(ply, 80)
+    -- GAMEMODE\OpenActionMenu(tr.HitPos, tr.Entity)
+    -- return true
+  return
+
+hook.Add "PlayerBindPress", "evilrp_open_action_menu", open_action_menu

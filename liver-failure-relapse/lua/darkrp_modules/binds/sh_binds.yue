@@ -1,0 +1,101 @@
+global KEYMODE_HOLD
+global KEYMODE_TOGGLE
+global KEYMODE_SMART
+
+default_keysens = 0.4
+
+if CLIENT
+  CreateClientConVar("lfr_key_sensitivity", default_keysens, true, true, "The time window for double-tapping or short presses.")
+  CreateClientConVar("lfr_autowalk", 0, true, true, "Toggle whether double-tapping a movement key will keep moving you in that direction.")
+
+  hook.Remove("ScoreboardShow", "FAdmin_scoreboard")
+  hook.Remove("ScoreboardHide", "FAdmin_scoreboard")
+
+  hook.Add("ScoreboardShow", "evilrp_scoreboard", ->
+    GUI.Open"Scoreboard")
+  hook.Add("ScoreboardHide", "evilrp_scoreboard", ->
+    GUI.Close"Scoreboard")
+
+respect_binds = (ply, button) ->
+  for _, data in pairs(Binds.list)
+    if button == data.default -- should check .setting, when customizable
+      data.callback(ply)
+      return
+  numpad.Activate(ply, button) if SERVER
+hook.Add("PlayerButtonDown", "evilrp_implement_binds", respect_binds)
+
+if CLIENT
+  bind_press = (ply, bind, down) ->
+    return true if Chat.Bind(bind, down)
+    return true if Select.Bind(bind, down)
+  states = {}
+  init_mode = (mode) ->
+    return switch mode
+      when KEYMODE_HOLD
+        {}
+      when KEYMODE_TOGGLE
+        { toggle: false, last: false }
+      when KEYMODE_SMART
+        { toggle: false, start: 0, last: false }
+  update_keymode = (key, cmd, mode) ->
+    state = states[key]
+    if (not state) or state.mode ~= mode
+      states[key] = init_mode(mode)
+      state = states[key]
+      state.mode = mode
+    switch mode
+      when KEYMODE_HOLD
+        return
+      when KEYMODE_TOGGLE
+        down = cmd\KeyDown(key)
+        if not down and state.last
+          state.toggle = not state.toggle
+          state.last = down
+      when KEYMODE_SMART
+        down = cmd\KeyDown(key)
+        last = state.last
+        ct = CurTime!
+        -- pressed
+        if down and not last
+          state.start = ct
+          state.toggle = not state.toggle
+        -- released
+        if (not down and last) and (ct - state.start >= lp\GetInfoNum("lfr_key_sensitivity", default_keysens) or not system.HasFocus())
+          state.toggle = false
+        state.last = down
+    cmd\AddKey(key) if state.toggle
+
+  dir = Vector!
+  last = {0, 0, 0, 0}
+  movement_binds = (cmd) ->
+    update_keymode(IN_DUCK, cmd, KEYMODE_SMART)
+    update_keymode(IN_SPEED, cmd, KEYMODE_SMART)
+    update_keymode(IN_WALK, cmd, KEYMODE_SMART)
+    should_autowalk = lp\GetInfoNum("lfr_autowalk", 0) == 1
+    if should_autowalk
+      sens = lp\GetInfoNum("lfr_key_sensitivity", default_keysens)
+      ct = CurTime!
+      move = Vector(cmd\GetForwardMove!, cmd\GetSideMove!)
+      if cmd\CommandNumber! ~= 0
+        for k, v in ipairs({IN_MOVELEFT, IN_FORWARD, IN_MOVERIGHT, IN_BACK})
+          continue unless lp\KeyPressed(v)
+          axis = (k % 2) + 1
+          time_since = ct - last[k]
+          last_move = dir[axis]
+          if dir[axis] == 0 and time_since < sens
+            dir[axis] = move[axis]
+            last[k] = 0
+          else
+            dir[axis] = 0
+          if last_move == 0 and dir[axis] == 0
+            last[k] = ct
+      cmd\SetForwardMove(dir.x) if dir.x ~= 0
+      cmd\SetSideMove(dir.y) if dir.y ~= 0
+    return
+  hook.Add("CreateMove", "evilrp_movement_binds", movement_binds)
+
+  meta = FindMetaTable"Player"
+  meta.AutomovingForward = => dir.x > 0
+  meta.AutomovingBackward = => dir.x < 0
+  meta.AutomovingLeft = => dir.y < 0
+  meta.AutomovingRight = => dir.y > 0

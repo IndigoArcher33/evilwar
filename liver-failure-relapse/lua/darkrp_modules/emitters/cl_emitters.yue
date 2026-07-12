@@ -1,0 +1,16 @@
+GAMEMODE.CreateParticleEmitters = =>
+  ply = LocalPlayer!
+  pos = ply\GetPos!
+  unless @Emitter2D
+    @Emitter2D = ParticleEmitter pos
+  else
+    @Emitter2D\SetPos pos
+
+  unless @Emitter3D
+    @Emitter3D = ParticleEmitter pos, true
+  else
+    @Emitter3D\SetPos pos
+
+hook.Add "Think", "evilrp_emitter_think", ->
+  GAMEMODE\CreateParticleEmitters!
+  return

@@ -1,0 +1,178 @@
+cable = Material"cable/hydra"
+noise = Material"effects/tvscreen_noise001a"
+screen = Material"glass/glasswindow017a"
+
+global AMBIENCE_COOLDOWN
+  
+if SERVER
+  util.AddNetworkString"evilrp_autostitcher"
+if CLIENT
+  net.Receive "evilrp_autostitcher", (len) ->
+    print"FUCK"
+    AMBIENCE_COOLDOWN = CurTime!
+  
+class Autostitcher extends ENTITY
+  Base: "base_anim"
+  Type: "anim"
+
+  PrintName: "Autostitcher"
+  Interesting: true
+
+  MaxCharges: 3
+
+  SetupDataTables: =>
+    @NetworkVar "Int", "Charges"
+    @NetworkVar "Entity", "Patient"
+
+  Initialize: =>
+    return if CLIENT
+    @SetUseType SIMPLE_USE
+    @SetModel"models/props_combine/health_charger001.mdl"
+    @PhysicsInit SOLID_VPHYSICS
+    @PhysWake!
+    @SetCharges math.random(0,1)
+
+  Think: =>
+    return if CLIENT
+    -- disconnect people that can't see it
+    patient = @GetPatient!
+    if IsValid(patient)
+      if (not patient\CanSee(@)) or patient\Health! >= patient\GetMaxHealth!
+        patient\SendChat "NOTICE", "You feel better but not much."
+        patient\SetNWEntity("evilrp_autostitcher", nil)
+        @SetPatient nil
+        @EmitSound "npc/turret_floor/die.wav", 75, 70
+        ed = EffectData!
+        where = @GetPos! + (@GetForward! * 6) + (@GetRight! * 2.4)
+        with ed
+          \SetStart where
+          \SetOrigin where
+          \SetScale 2
+        util.Effect "StunstickImpact", ed, true, true
+        return
+      @next_beep = CurTime! + 5 unless @next_beep
+      if CurTime! >= @next_beep
+        @next_beep = CurTime! + 5
+        @EmitSound "items/medshot4.wav", 50, 50 + (50 * (patient\Health! / 100))
+        ed = EffectData!
+        where = @GetPos! + (@GetForward! * 6) + (@GetRight! * 2.4) + (@GetUp! * -1)
+        with ed
+          \SetStart where
+          \SetOrigin where
+          \SetScale 2
+        util.Effect "GunshipImpact", ed, true, true
+        nh = math.min(patient\Health! + 3, patient\GetMaxHealth!)
+        patient\SetHealth nh
+
+  CostFor: (ply) =>
+    cost = 100
+    cost /= 2 if ply\Team! == TEAM_KORPSMAN
+    return cost
+          
+  Use: (ply) =>
+    korpsman = ply\Team! == TEAM_KORPSMAN
+    wep = ply\GetActiveWeapon!
+    if korpsman
+      if wep and IsValid(wep) and wep.Medkit
+        if @GetCharges! >= @MaxCharges
+          @EmitSound"items/medshotno1.wav"
+          ply\Notify"<c=200,0,0>It can't hold any more charges."
+          net.Start"evilrp_frighten"
+          net.Send ply
+          return
+        patient = @GetPatient!
+        if IsValid(patient) and patient == ply
+          dmg = DamageInfo!
+          with dmg
+            \SetAttacker ply
+            \SetDamage 15
+            \SetInflictor @
+            \SetDamageType DMG_SLASH
+          ply\TakeDamageInfo dmg
+          ply\Notify"<c=200,0,0>Nice try, freak."
+          @EmitSound"items/medshotno1.wav"
+          net.Start"evilrp_frighten"
+          net.Send ply
+          return
+        -- if we got here, we can add a new charge
+        ply\EmitSound "items/gift_drop.wav", 75, math.random(70,90)
+        dmg = DamageInfo!
+        with dmg
+          \SetAttacker ply
+          \SetDamage 20
+          \SetInflictor @
+          \SetDamageType DMG_SLASH
+        ply\TakeDamageInfo dmg
+        @SetCharges @GetCharges! + 1
+        reward = math.random(15,30)       
+        ply\AddMoney reward, compassion
+        return
+    -- if we got here, we're gonna try healing
+    if @GetCharges! <= 0
+      -- no healing charges left
+      ply\Notify"<c=200,0,0>No healing charges remain."
+      net.Start"evilrp_frighten"
+      net.Send ply
+      @EmitSound"items/medshotno1.wav"
+      return
+    patient = @GetPatient!
+    cost = @CostFor ply
+    if ply\getDarkRPVar"money" < cost and not IsValid(@GetPatient!)
+      -- not enough money to use it
+      ply\Notify"<c=200,0,0>It sucks to be poor. A healing trip costs $#{cost}."
+      net.Start "evilrp_frighten"
+      net.Send ply
+      @EmitSound"items/medshotno1.wav"
+      return
+    if IsValid(patient) and patient ~= ply
+      -- someone else is already using it
+      ply\Notify"<c=200,0,0>Wait your turn."
+      net.Start "evilrp_frighten"
+      net.Send ply
+      @EmitSound"items/medshotno1.wav"
+      return
+    -- if we got here, the user has enough money, there's a charge,
+    -- and it's not being used by anyone else
+    @SetCharges @GetCharges! - 1
+    @SetPatient ply
+    ply\SetNWEntity "evilrp_autostitcher", @
+    ply\AddMoney -cost, "Masshiroi mezame"
+    @EmitSound"items/medshot4.wav"
+    net.Start"evilrp_autostitcher"
+    net.Send(ply)
+    net.Start"evilrp_music_start"
+    net.Send(ply)
+    
+  Draw: =>
+    @DrawModel!
+    patient = @GetPatient!
+    if patient and IsValid(patient)
+      render.SetMaterial cable
+      pos_start = patient\EyePos! + (patient\GetForward! * 2) + (patient\GetUp! * -16) + (@GetUp! * 1)
+      pos_end = @GetPos! + (@GetForward! * 6) + (@GetRight! * 2.4)
+      ct = CurTime!
+      render.DrawBeam pos_start,
+        pos_end,
+        2 + (1 * math.cos(ct)),
+        math.abs(12 * math.sin(ct * .3)),
+        math.abs(10 * math.cos(ct * .2)),
+        Color(255,255,255,255)
+
+  HUDRender: =>
+    ct = {}
+    patient = @GetPatient!
+    if lp == patient
+      ct[] = "Ohh YES!..."
+    else
+      ct[] = "Autostitcher"
+      ct[] = "Charges: #{@GetCharges!}/#{@MaxCharges}"
+      if lp\Team! == TEAM_KORPSMAN
+        ct[] = { text: "Use it with your L.R.D. equipped to recharge it.",
+          font: "Spleen_Label_Small" }
+      else
+        ct[] = { text: "This will heal you for the low price of $#{@CostFor(lp)}."
+          font: "Spleen_Label_Small" }
+        if @GetCharges! >= 0
+          ct[] = { text: "...or rather, it would heal you if it weren't EMPTY."
+            font: "Spleen_Label_Small" }
+    return ct

@@ -1,0 +1,5 @@
+meta = FindMetaTable"Player"
+meta[k] = v for k, v in pairs {
+  CanUseMachines: =>
+    return true
+}

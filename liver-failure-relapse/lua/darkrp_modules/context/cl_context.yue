@@ -1,0 +1,2 @@
+-- disable playermodel editor
+list.Set "DesktopWindows", "PlayerEditor", {}

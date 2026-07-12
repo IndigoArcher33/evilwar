@@ -1,0 +1,7 @@
+GAMEMODE.laws or= {}
+
+GAMEMODE.default_laws = {
+  "Liver Failure Forever."
+}
+
+GAMEMODE.Laws = => {...@default_laws, ...@laws}

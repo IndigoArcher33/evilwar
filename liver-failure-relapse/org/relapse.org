@@ -1,0 +1,438 @@
+
+#+title: Liver Failure Relapse
+#+author: Sotla
+
+:setup:
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="death.css" />
+# #+HTML_HEAD: <meta content="Liver Failure Relapse" property="og:title" />
+# #+HTML_HEAD: <meta content="" property="og:description" />
+#+HTML_HEAD: <meta content="https://death.town/~corpse" property="og:url" />
+#+HTML_HEAD: <meta content="https://death.town/~corpse/images/sotla.png" property="og:image" />
+#+HTML_HEAD: <meta content="#FF0000" data-react-helmet="true" name="theme-color" />
+#+OPTIONS: author:nil date:nil timestamp:nil num:nil toc:nil html-style:nil
+
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="src/bigblow_theme/css/htmlize.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="src/bigblow_theme/css/bigblow.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="src/bigblow_theme/css/hideshow.css"/>
+
+#+HTML_HEAD: <script type="text/javascript" src="src/bigblow_theme/js/jquery-1.11.0.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="src/bigblow_theme/js/jquery-ui-1.10.2.min.js"></script>
+
+#+HTML_HEAD: <script type="text/javascript" src="src/bigblow_theme/js/jquery.localscroll-min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="src/bigblow_theme/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="src/bigblow_theme/js/bigblow.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="src/bigblow_theme/js/hideshow.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="src/lib/js/jquery.stickytableheaders.min.js"></script>
+:end:
+
+* WHAT THE FUCK?!
+*Liver Failure: Relapse* is a round-based surreal horror roleplaying
+game on Garry's Mod, set in the fascist city-state of *Liver Failure.*
+It has one server. This server is not always up, and its uptime
+schedule is not consistent, nor will it ever be.
+** YOU ARE NOTHING
+Nobody is entitled to play the game, and you may be removed from it
+indefinitely for reasons as petty as "we don't like you". Don't bother
+screaming about admin abuse, we like it this way.
+
+This game is made for a certain kind of people, to be played in a
+certain kind of way that is otherwise rare. If you came here looking
+for a gladiator arena or skinnerbox to get trapped in, leave; Your
+tastes would be better served by games that aren't roleplay-focused.
+** Ugh, exposition!
+*Relapse* is based on *Industrial Nightmare 3: Liver Failure*, which we
+made some years ago; At some point, the codebase became so esoteric
+and congested that attempting to work on it caused suicidal ideation,
+and then the game was abandoned. However, people still liked playing
+it, and we still liked running it, so we're doing it again.
+
+*Relapse* is not a remake of its predecessor, but a /reimagining/. It is
+being built from the ground up, and nothing is guaranteed (or even
+likely) to be the same as it was before. Don't ask if things from the
+original game will be in this one, we usually don't know yet.
+** You crushed my dreams!
+If you were following our progress before, and are wondering what the
+deal is with the cool shit we were making before, rest assured that
+it is not abandoned. *Relapse* is an auxiliary project we started on a
+whim, because we were tired of not having live victims to toy with.
+
+We still have a lot of big ideas we want to put into action, that
+can't fit into the paradigm of DarkRP or Liver Failure's gameplay.
+In fact, our code slaves were coerced at gunpoint to ensure they
+concentrate on features which we can later port to the *SKELETON*.
+* DROWN ME IN IT
+This is a /Roleplaying Game/, in that it is a /game/ which centers
+/roleplay/; Most self-described "roleplay" servers on Garry's Mod do not
+do the term justice, either completely misunderstanding the point of
+roleplay in the first place, or just plain going about it poorly.
+As these crimes against the genre have become normalized, we must
+remind our players of what good roleplay is, and what is expected of
+them while they're playing the game.
+
+Think of roleplay as a grand improvized play, in which you are not
+just a witness, but an actor. Your task is to cooperate and clash with
+those around you to craft interesting stories and memorable events;
+Making this happen should always be your ultimate goal.
+
+All good collaborative storytelling relies on those who...
+- Put aside their desire to "win" in service of the story.
+  - Remember that success is not the point of the game - the story is,
+    and a boring story full of winners is a loss for everyone.
+- Portray an interesting character and enrich the atmosphere through
+  thematic behavior and dialogue.
+  - Your character should have goals, you should strive to achieve
+    things, but not at the expense of the larger experience. Ideally,
+    your goals should involve other people, or at least have the
+    potential to rope them in.
+- Strive to create, participate in, and perpetuate conflict, world
+  events, and spontaneous social phenomena.
+  - While you can solve most conflicts by shooting a hole through the
+    skull of whoever's bothering you, that's *fucking boring!* Violence
+    may be a solution to most problems, but it is almost always more
+    fun to drag out conflicts and build them up to a dramatic
+    conclusion, rather than an effective but anticlimactic one.
+- Don't let their technical knowledge get in the way of their
+  character's ignorance about the world and their fate.
+
+The cornerstone of all good roleplay is /immersion/, plain and simple.
+Good roleplay is just not possible unless everyone is committed to
+creating and reinforcing the mood and setting. Upholding the
+atmosphere is the bare minimum we expect from our victims.
+** CRIMES AGAINST REALITY
+Mistakes happen to everyone, nobody is expecting constant perfection
+from you; Slip-ups only become a problem when they become a pattern.
+The most common infraction against this is the use of "game speak",
+the slow decay of sentence structure and word variety, ultimately
+concluding with some jerk running up to a Korpsman and saying "Heal."
+after which he is hopefully stabbed to death with scalpels. That's not
+even mentioning those who parrot memes and references in-character.
+It does not take much effort to avoid these two things, and in the
+latter case, you are not nearly as funny as you think you are.
+
+As roleplay is partially a writing exercise, servicable grammar and
+spelling is also expected of you. Again, nobody expects perfection of
+you, but for the sake of everyone, please capitalize your I's, use
+a question mark when you ask a question, capitalize proper nouns, and
+use commas. It's a minor gesture, but it goes a long way.
+
+Note that this does not mean you need to type out huge /me's about
+smoking your bistre-colored peanut butter-flavored cigar. As this is a
+_roleplaying game_, we give you the mechanics you need to act out your
+actions in-game instead of making you write inane prose describing the
+most basic actions at length.
+
+Those primarily concerned with making the most money, getting the best
+items, or fragging the most jerks are rarely ever valuable to the
+wider experience, and are often detrimental to it. For whatever
+reason, these creatures are much more interested in abusing the game's
+mechanics to get a bigger high score than in using them for their
+intended purpose: to create stories.
+
+They have totally missed the point of the experience, and in doing so,
+have deprived themselves (and likely others) of the most fun and
+memorable parts of the game. We can't let these people win.
+* THE STORY OF EVERYTHING
+The Lord of All Things, who has slumbered since before time, and whose
+dreams comprise all realities, woke up and fell into a seizure.
+
+This brief storm of brainwaves before eternal dark, as God's dying
+memories of uncountable lives flash before his eyes, is the Nightmare.
+To its victims, it is simply all that has been, and ever will be.
+
+The Nightmare is, to put it lightly, a harsh place. Its perilous
+circumstances make it a struggle to survive almost anywhere, and
+that's without accounting for creatures that need to eat you to
+survive, and people who want to eat you for fun.
+
+The first corpses to climb from the ground would learn, through
+millennia of trial and error, that solitary survival is impossible;
+Thus, people organized themselves into herds and hives, granting them
+strength in numbers and safety through predator satiation.
+
+However, these societies were limited in their scope and lifespan, as
+leaders came and went with death or term limits, and civilization came
+in waves of brief wealth, brief chaos, and then slow rebuilding.
+
+Life could continue like this for eons, but the cyclical and
+inevitable waste of such great effort and time to things as petty as
+famines and votes was ultimately not pleasing to the Cosmic Eye.
+** IT'S LOOKING AT ME!
+That eye-looking thing in the sky is *Sotla*, the only being which may
+be called "a God" whose existence has ever been irrefutably proven.
+
+Sotla does not care about you, It just wants to be entertained.
+For the most part, It just watches. Sometimes, if circumstances
+demand, or if It believes the results would be interesting, It may
+intervene in the world of mortals.
+** THE CHOSEN ONES
+To lead the corpses that roamed the world, Sotla birthed children from
+the dust of the stars. Being cosmic post-humans, these *Sotlians* have
+no taste for food, water, or sleep; All that is needed for a Sotlian's
+existence is the presence of starblood in His veins and the integrity
+of His brain. Such a leader often lives centuries, even millennia,
+each year of continued existence further decaying his mind until He
+kills Himself, or makes the kind of mistakes that get Him killed.
+
+While not all Sotlians are remembered in these days, the longest-lived
+and most impactful are well known to all.
+*** *The Kommander*
+A legendary figure of ancient history, about whom little is known.
+After decades spent in squalor under His cruel hand, His people led an
+apocalyptic revolution, now known as the War of the Sorceror.
+*** *The Twins*
+Set loose upon the world in tandem, they would go on to become the
+most long-lived Sotlians yet known. Though their true ages are lost,
+they both agree that they have been rivals for nearly 900 years - one
+of the only things they actually /can/ agree on.  This rivalry was put
+aside during the short-lived *Pact of Power*, which the Kommandant broke
+by (unsuccessfully) invading Kidneystan.
+**** *The Kommandant*
+Dictator of Liver Failure and Supreme of the Sanitar Squad.  Seeking
+the growth and security of Liver Failure at all costs, His ambitions
+are only mildly tempered by his sycophantic advisors and fear of His
+people storming the gates of the Kommbunker.
+**** *The Kommissar*
+Absolute ruler of Kidneystan, feared and respected by His people.
+Somehow even more paranoid than the Kommandant, His secret police were
+given the impossible task of ensuring He knows _everything_ that happens
+in His land. Despite the ongoing collapse of most of Kidneystan's
+state apparatus, He still finds ways to mock the incompetence of His
+twin and the failures of Liverish socialism.
+*** *The President*
+Though He has only lived for slightly over a century, His mission to
+conquer all that remains via Kapitalism has been wildly successful.
+Taking a remarkably hands-off approach to governance, He delegates
+most state power to be enforced by Korporations, only stepping in to
+manage the production of currency and settle interkorp disputes.
+* WHERE IS THIS?!
+** HOME
+Liver Failure is considered to be the strongest remaining industrial
+society, and to its people, it is the final bastion of civilization.
+Both the economic power it wields and the pressure exerted upon it by
+the outside world continue to grow exponentially as reality dies and
+the death and decay of other nations continues unabated.
+
+Once an exclusively socialist state, Liver Failure has been dutifully
+led by its Kommandant since He took power over the Hepatic Wetlands in
+a popular coup some nine hundred years ago. Though it ostensibly sits
+upon a marsh (long home to all manner of witches and swamp beasts), it
+has never had a consistent or predictable weather pattern in all its
+history. The Kommandant says this is the sky waging war against Liver
+Failure due to the smog made by its industry, and urges all Livermen
+to fight the good fight by burning trash and smoking cigarettes.
+
+Its innumerable working class find fulfillment in unending labor,
+toiling until Death finds them, however it may. These Livermen are the
+red blood cells of a great beast that only grows stronger the more
+they sacrifice for it. On the other hand, the Sanitar Squad serves as
+the white blood cells; Not necessarily protectin. the red, but
+eliminating pathological threats before they reach the vital organs.
+** THE LOOMING
+In Arrhythmia, the state which lies west across the slimy sea, money
+is everything; Death, love, hatred, and sufferin. are all bought and
+sold, and political kapital is measured in greed. Born in the
+scorching ruins of the merchant princedoms of the Cardiac States,
+Arrhythmia exploded in wealth by selling off the jewels of its
+forefathers and the mechanisms of its governance.to the highest
+bidder, turning itself into a game for the richest of players.
+
+When its owners aren't busy manipulating the bone exchange or
+organizing false-flag massacres to ascribe to their domestic enemies,
+they're spreading the virus of *Kapitalism* to the rest of the world.
+This syndrome has even swept the streets of Liver Failure, bringing
+with it ideas of "entrepreneurship" and "economic competition".
+Soon enough, the people's heads were filled with ridiculous dreams
+like so-called "future contracts" and even /currency made of paper/.
+
+** THE *OTHER*
+Though the die seemed cast against Liver Failure in the global economy
+with the rise of Kapitalism, the Kommunist republic of Kidneystan to
+the northeast was much worse off. While it had a prosperous beginning,
+being by-far the superior industrial power and having far less
+volatile politics than Liver Failure, this era would not last long.
+
+Even before the rise of Kapitalism, Kidneystan had not been at its
+peak for a long time. Having only won *The War* by razing their own
+capitol, Renalgrad, and retreating into the Permafrost to wage a
+guerilla campaign. Knowing they would be safe from looters and
+Kapitalist invaders, they simply used the same strategy again;
+Virtually all residents and infrastructure were moved into the coldest
+depths of the vast nation, and relations were ceased with all foreign
+people, except a few nomadic tribes of scrappers and game-hunters.
+
+** THE DAMNED
+After the Sorceror won his revolution, the land was laid bare.  It
+seemed that nothing but death surrounded these newly free people, and
+so they named themselves *Death Town*. Sick of tyranny and besieged by
+bandits, beasts, and hellish weather, hierarchy and wealth just seemed
+like an inefficient use of resources compared to anarchic cooperation.
+
+To connect his people across time and space, the Sorceror created the
+first computers, and embedded his source code into their very
+being. With the rise of computer literacy, the people of Death Town
+were able to store information for decades longer than on paper, send
+instant messages across the Nightmare, and witness the fabric of
+reality; The early and widespread adoption of the digital arts is
+widely thought to be the reason Death Town survived as long as it did.
+
+During the Pact of Power, the Kommandant and Kommissar agreed that
+Death Town as a technological power and functional leaderless society
+was an existential threat, and must be destroyed. A joint invasion was
+led, Death Town was razed, and the Sorceror was cast into the Devil's
+Dust. Still, the idea of Death Town is not dead; Many copycats and
+splinter groups dot the wasteland, and it is said the Sorceror still
+wanders the sands, but not as the mortal man he used to be.
+* WHAT THE FUCK IS THAT?!
+** Creatures
+*** Corpses
+Corpses are not made from reproduction like most other
+animals. Rather, they are spontaneously created from the ground, and
+rise from the soil fully-formed with a basic understanding of how to
+use their bodies. Such 'emergences' have occurred for longer than
+anyone can remember, and in every corner of the Nightmare--no matter
+how barren. Corpses take on the characteristics of the dirt they arose
+from, forming a spectrum of 'races' with varying looks and traits.
+
+Compared to the horrors they share a biosphere with, corpses are
+exceptionally fragile and lacking in defenses. However, they possess
+far greater intelligence than the vast majority of Nightmare biota.
+They are a rare example of self-aware creatures, able to resist
+instinct to reason and describe the reality they suffer from. Most
+importantly, their advanced brains let them organize into complex
+social groups, plan for future possibilities, and create tools to
+make up for how useless and vulnerable they are.
+*** Babies
+These endoparasitic organisms are speculated to be closely related to
+corpses, due to similarities in body plan, but there is no concrete
+proof of such a theory. They grow inside of whatever hosts are unlucky
+enough to concieve them, and eventually claw their way out of the body
+in a gruesome event known as 'birth'.
+
+Infant reproduction is not very well understood, in part because of
+how totally they have been domesticated as a food source by corpses,
+who grow babies inside larger animals, meat vats, or comatose bodies.
+Domesticated populations rely on people to artificially cross their
+genes and proliferate the species, and a wild population of babies has
+not been reported in centuries.
+
+As food, they are usually aborted before reaching their full state of
+growth and being "born". If they aren't aborted, they are paralyzed
+before birth, to ease the difficulty of extraction and transportation.
+* WHO ARE YOU PEOPLE?!
+** Proletariat
+Common workers with +mostly+ common needs, the vast majority of Liver
+Failure's population. They come from every walk of life and from all
+corners of the dying world to live "comfortably" before they die
+a quick, relatively painless death from an industrial accident.
+
+Many proletariat lack education, making big words a challenge. As a
+result, they often called themselves and their brethren *proles*, now a
+widely used term.
+
+The lack of academic drivel such as "maths" and "reading and writing"
+taking up space in their brains leaves room for them to absorb
+practical know-how from their brothers, whether by emulating their
+methods or trying to avoid dying the same way they did. As such, even
+average proles could probably diagnose and replace a faucet's plumbing
+with their eyes closed, if they had to.
+** Sanitar Squad
+Endlessly loyal drones to the Kommandant's every whim, varying in
+firepower, training, and intelligence. These goons take the place of
+law enforcement, janitors, and morticians all at once - with mixed
+success.
+
+A Sanitar does whatever a red-trimmed officer cap tells him to do;
+This list of duties often includes (and isn't limited to) breaking
+strikes, carrying out a census, or publicly executing the unwanted.
+
+When they aren't actively being puppeted, their duties include...
+1. Protecting the life of the Kommandant *at all costs*.
+2. Cleansing Liver Failure of that which brings pestilence, such as
+   street grime, litter, and corpses - both dead and living.
+3. Quarantining the sick (and thus, potentially contagious) of body,
+   mind, and spirit.
+4. Amputating criminals from society by death or imprisonment.
+5. Watching every square foot of Liver Failure that they possibly can,
+   in search of all that which offends the Kommandant.
+
+While Sanitars are permitted to (and make a pastime of) brutalizing
+anyone not explicitly under their protection, they would be unwise to
+inflict serious injury/death on those they watch over; That is, unless
+under an ordered execution, to protect the lives of themselves and
+other registered citizens, or to neutralize threats to the Kommandant.
+
+The death of any of Liver Failure's organs and nerves may lead to
+serious consequences - the kind of consequences that make those who
+murder worthy of the death penalty themselves.
+** Dealer
+Storekeepers, salesmen, merchants of all kinds. They'll traffick
+nearly anything through the walls to Liver Failure - as long as it
+doesn't scream too loud - and find some way to sell it to you.
+The perpetuation of their parasitic life-cycle depends on their
+ability to extort their victims for every bone they'll cough up, and
+addict them to everything they can possibly get hooked on.
+
+Their kind is poorly understood, but the consensus among the denizens
+of Liver Failure is that they have no soul (they rented out the space
+where they kept it), their hearts are as black as coal, and they'd
+sell everyone they know into slavery if they could. They're right.
+
+Their greed couldn't be satisfied just by peddling luxuries and
+oddities from foreign lands; With the limited adoption of Kapitalism,
+the Kommandant decided that distribution of the city's stock of goods
+would be delegated to Dealers, who could then resell the products of
+the workers' labor back to them. If the Atmospheric Filtration Complex
+weren't a public utility in the hands of the Kommandant, they might
+even try to sell you the air, too.
+
+That being said, they *can* sell you your own time through the unholy
+bargaining of your soul known as "employment", with your signature.
+If they're kind, you might even earn more money than you did as a
+button-pusher; At the very least, a workplace injury isn't as likely.
+** Korpsman
+Overworked and underfunded, Korpsmen spend their lives tending to the
+wounds, wear, and malfunctions of the biological industrial assets
+more often known as 'people'.
+
+Korpsmen are the living descendents of an ancient order of shamans and
+corpsefixers, whose traditions may go back thousands of years. While
+they pledged fealty to the Kommandant during the Night of Long Pipes,
+the importance of their work to Liver Failure's continued survival
+gives them incredible leverage over His government. Despite how much
+the Kommandant wishes He could fully subsume the Korpsmen into the SS,
+he is /usually/ unwilling to put the health of the city on the line and
+try to wait out a surgeons' strike.
+
+Though Liver Failure technically guarantees healthcare to all
+registered citizens, the quasi-separation of the Korpsmen from
+Liverish state apparatus means that they are free to charge whatever
+fee they please; Despite this, medical attention is still often
+provided at no cost - whether out of the kindness of their own hearts
+or for the greater good of Liver Failure.
+
+Also, if you're going to pronounce the 'P' in Korpsman, don't do it
+around them
+** Kommandant
+The unquestioned, immortal, absolute ruler of Liver Failure. He has
+endured life for at least 900 years, and His mind clearly suffers.
+Nobody says anything.
+
+His wrath, capriciousness, and enthusiasm is the beating heart of
+Liver Failure; He rabidly controls his citizens, putting in place
+petty mandates often incurred by His delusions. His unpredictable and
+widely variable tax policy terrifies all but the boldest +and dumbest+
+Arrhythmian investors.
+
+Somehow, by a combination of propaganda, surveillance, nationalism,
+punishment, and reward, He manages to keep His people in line.
+* YOU'LL REGRET EVERYTHING!
+Here's a few tips to get you through the migraines.
+
+1. Do not offend the Kommandant.
+2. *DO NOT* question the Kommandant.
+3. You are nothing, and you deserve nothing.
+4. The SS protects the City, not you.
+5. Don't try to use your voice.
+6. Work is life, life is work.
+7. Eating metal is bad for you.
+8. We hear your pain, and we're laughing.

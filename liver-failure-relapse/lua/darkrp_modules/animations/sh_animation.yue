@@ -1,0 +1,156 @@
+if SERVER
+  util.AddNetworkString"evilrp_playsignal"
+  util.AddNetworkString"evilrp_playvcd"
+
+net.Receive "evilrp_playsignal", (len, ply) ->
+  mode = net.ReadBit!
+  act = nil
+  if mode == 0
+    act = net.ReadUInt 16
+  else
+    act = net.ReadString!
+
+  if SERVER
+    if mode == 0
+      rf = {}
+      for p in *player.GetAll!
+        rf[] = p unless v == ply
+      net.Start"evilrp_playsignal"
+      net.WriteBit false
+      net.WriteUInt act, 16
+      net.WriteEntity ply
+      net.Send rf
+    else
+      ply\PlayVCD act
+  else
+    ply = net.ReadEntity!
+    if ply and IsValid(ply)
+      if mode == 0
+        ply\AnimRestartGesture GESTURE_SLOT_CUSTOM, act, true
+      else
+        ply\PlayVCD act
+
+net.Receive "evilrp_playvcd", (len) ->
+  return if SERVER
+  ent = net.ReadEntity!
+  seq = net.ReadString!
+  if ent and IsValid(ent)
+    ent\AddVCDSequenceToGestureSlot(GESTURE_SLOT_CUSTOM, ent\LookupSequence(seq), 0, true)
+
+pmeta = FindMetaTable"Player"
+pmeta[k] = v for k, v in pairs{
+  PlaySignal: (act, sendtoself) =>
+    mode = nil
+    if type(act) == "number"
+      mode = 0
+    else
+      mode = 1
+    if CLIENT
+      if mode == 0
+        @AnimRestartGesture GESTURE_SLOT_CUSTOM, act, true
+      else
+        @PlayVCD act
+      net.Start"evilrp_playsignal"
+      net.WriteBit mode == 1
+      if mode == 0
+        net.WriteUInt act, 16
+      else
+        net.WriteString act
+      net.SendToServer!
+    else
+      rf = {}
+      for p in *player.GetAll!
+        rf[] = p if (p ~= @) or sendtoself
+      net.Start"evilrp_playsignal"
+      net.WriteBit mode == 1
+      if mode == 0
+        net.WriteUInt act, 16
+      else
+        net.WriteString act
+      net.WriteEntity @
+      net.Send rf
+  PlayVCD: (seq, send_to_self) =>
+    if CLIENT
+      @AddVCDSequenceToGestureSlot(GESTURE_SLOT_CUSTOM, @LookupSequence(seq), 0, true)
+    else
+      rf = {}
+      for p in *player.GetAll!
+        rf[] = v if (v ~= @ or send_to_self)
+      net.Start"evilrp_playvcd"
+      net.WriteEntity(@)
+      net.WriteString(seq)
+      net.Send(rf)
+}
+
+handle_player_jumping = (ply, vel) ->
+  sprinting = ply\KeyDown IN_SPEED
+  jumping = ply\KeyDown IN_JUMP
+  ct = CurTime!
+  team = ply\Team!
+  if ply\Alive! and not ply\IsOnGround! and sprinting and jumping
+    ply.CalcIdeal = ACT_MP_SWIM
+    return true
+  if ply\GetMoveType! == MOVETYPE_NOCLIP
+    ply.m_bJumping = false
+    return
+  -- airwalk more like hl2mp, we airwalk until we have 0 velocity,
+  -- then it's the jump animation
+  -- underwater we're alright we airwalking
+  if (not ply.m_bJumping) and (not ply\OnGround!) and ply\WaterLevel! <= 0
+    if (not ply.m_fGroundTime)
+      ply.m_fGroundTime = ct
+    elseif (ct - ply.m_fGroundTime > 0) and vel\Length2DSqr! < 0.25
+      ply.m_bJumping = true
+      ply.m_bFirstJumpFrame = false
+      ply.m_flJumpStartTime = 0
+  if ply.m_bJumping
+    -- jumping
+    if ply.m_bFirstJumpFrame
+      if SERVER and team ~= TEAM_GHOST
+        ply\EmitSound "placenta/speech/jump.wav", 75, math.random(80,90)
+        -- add thirst here
+      ply.m_bFirstJumpFrame = false
+      ply\AnimRestartMainSequence!
+    -- landing
+    if (ply\WaterLevel! >= 2) or ((ct - ply.m_flJumpStartTime) > 0.2 and ply\OnGround!)
+      ply.m_bJumping = false
+      ply.m_fGroundTime = nil
+      if SERVER and team ~= TEAM_GHOST
+        ply\EmitSound "placenta/speech/land.wav", 75, math.random(80,90)
+      ply\AnimRestartMainSequence!
+    if ply.m_bJumping
+      ply.CalcIdeal = ACT_MP_JUMP
+      return true
+  return false
+
+should_zombie = (ply) ->
+  team = ply\Team!
+  hp = ply\Health!
+  hpm = ply\GetMaxHealth!
+  return hp <= (hpm / 2) or team == TEAM_GHOST or team == TEAM_BONEHEAD or ply\IsOnFire!
+
+calc_main_activity = (ply, vel) ->
+  return if ply.GetSitting and ply\GetSitting!
+  team = ply\Team!
+  crouching = ply\Crouching!
+  if should_zombie(ply)
+    ply.CalcIdeal = crouching and ACT_MP_CROUCH_IDLE or ACT_HL2MP_IDLE_ZOMBIE
+  else
+    ply.CalcIdeal = crouching and ACT_MP_CROUCH_IDLE or ACT_MP_STAND_IDLE
+  ply.CalcSeqOverride = -1
+  unless handle_player_jumping(ply, vel)
+    run = ply\GetRunSpeed!
+    len = vel\Length2D!
+    if (len > run / math.sqrt(2) - 8)
+      if should_zombie(ply)
+        ply.CalcIdeal = ACT_HL2MP_RUN_ZOMBIE
+      else
+        ply.CalcIdeal = ACT_MP_RUN
+    elseif (len > 0.5)
+      if should_zombie(ply)
+        ply.CalcIdeal = crouching and ACT_MP_CROUCHWALK or ACT_HL2MP_WALK_ZOMBIE_01
+      else
+        ply.CalcIdeal = crouching and ACT_MP_CROUCHWALK or ACT_MP_WALK
+  return ply.CalcIdeal, ply.CalcSeqOverride
+
+hook.Add "CalcMainActivity", "evilrp_animations", calc_main_activity

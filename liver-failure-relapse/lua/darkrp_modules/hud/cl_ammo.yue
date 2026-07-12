@@ -1,0 +1,63 @@
+draw_ammo = ->
+  ply = LocalPlayer!
+  ct = CurTime!
+  -- ent = get.Entity
+  w = LocalPlayer!\GetActiveWeapon!
+
+  if (ply\InVehicle!)
+    return
+
+  if (w ~= NULL)
+    if (w.Firearm)
+      clip = w\Clip1!
+      max = w.Primary.ClipSize
+      ammo = w\Ammo1!
+      drawclip = clip / max
+
+      if (clip == 0)
+        drawclip = 0
+          
+      elseif (drawclip < 0.2 and clip ~= 0)
+        drawclip = 0.2
+          
+      elseif (drawclip > 0.8 and clip ~= max)
+        drawclip = 0.8
+          
+      else
+        drawclip = math.max(0.2, math.Round(drawclip / 2, 1) * 2)
+
+      x1, y1 = surface.GetTextSize(clip)
+      y2 = 16
+      x = 20
+      y = 40
+      width = ScrW! * 0.4
+      height = ScrH! * 0.05
+      alpha = 0
+        
+      if (w.ShowAmmoCheck and timer.TimeLeft("ShowAmmoCheck"))
+        alpha = 180 * (timer.TimeLeft("ShowAmmoCheck") / math.random(1.95, 2.05))
+
+        if (timer.TimeLeft("ShowAmmoCheck") / math.random(1.8, 2.2)) % 0.2 == 0
+          alpha = 0
+
+      ammoColor = Color(200 + math.max(0, 56 * math.sin(ct)), 100 + math.max(0, 56 * math.sin(ct)), 0, alpha)
+      draw.RoundedBox(4, ScrW! - (width / 2) - x - 2, ScrH! - 40 - y, x + 8, y + 28, Color(0, 0, 0, alpha / 2))
+      draw.RoundedBox(4, ScrW! - (width / 2) - x - 2, ScrH! - 38 - y, x + 4, (y + 24) * drawclip, ammoColor)
+
+      numMags = ammo / max
+      partial = numMags % 1 ~= 0
+      bargap = 16
+      barx = ScrW! - (width / 2) - x + 32
+      bary = ScrH! - 38 - y
+      draw.RoundedBox(2, barx - 2, bary - 2, 12, 49, Color(0, 0, 0, alpha / 2))
+      n = math.floor(numMags)
+
+      if numMags % 1 ~= 0
+        n = n + 1
+
+      for i = 1, n
+        height = i == n and partial and 6 or 12
+        draw.RoundedBox(0, barx, bary + (i - 1) * bargap, 8, height, ammoColor)
+          
+
+hook.Add "HUDPaint", "evilrp_hud_ammo", draw_ammo

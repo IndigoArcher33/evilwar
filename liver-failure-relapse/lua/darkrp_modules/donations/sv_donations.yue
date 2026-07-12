@@ -1,0 +1,20 @@
+hook.Add "Initialize", "evilrp_setup_table_donations", ->
+  unless sql.TableExists( "evilrp_donations" )
+    sql.Query( "CREATE TABLE evilrp_donations( SteamID TEXT, Donations TEXT )" )
+
+-- the below method was taken from the source code for the original Liver Failure
+-- sorry
+get_donations_from_string = (str) ->
+  donos = {}
+  if str and string.len(str) > 0
+    expl = string.Explode "|", str
+    donos[] = v for v in *expl
+  return donos
+    
+hook.Add "PlayerInitialSpawn", "evilrp_setup_donations", (ply) ->
+  donations_check = sql.Query( "SELECT SteamID, Donations FROM evilrp_donations WHERE SteamID = '" .. ply\SteamID64! .. "'" )
+  unless donations_check
+    sql.Query( "INSERT INTO evilrp_donations( SteamID, Donations ) VALUES( '" .. ply\SteamID64! .. "', '' )" )
+  donations = sql.Query( "SELECT SteamID, Donations FROM evilrp_donations WHERE SteamID = '" .. ply\SteamID64! .. "'" )[1]
+  donations = get_donations_from_string(donations.Donations)
+  ply.donations = donations

@@ -1,0 +1,35 @@
+spawn_set_name = (ply) ->
+  jt = ply\getJobTable!
+  name = ""
+  if jt.GenerateName
+    name = jt\GenerateName ply
+  else
+    local first_name
+    local last_name
+    if jt.first_names
+      fnames = jt.first_names
+      switch type(fnames)
+        when "string"
+          first_name = fnames
+        when "table"
+          first_name = fnames[math.random(1, #fnames)]
+    if jt.last_names
+      lnames = jt.last_names
+      switch type(lnames)
+        when "string"
+          last_name = lnames
+        when "table"
+          last_name = lnames[math.random(1, #lnames)]
+    name = "#{first_name} #{last_name or ''}"
+    name = string.Trim name
+    if jt.special_name
+      if math.random(1, jt.special_name_chance) == 1
+        name = jt.special_name
+  ply\setDarkRPVar("rpname", name)
+  ply\Notify"<rgb=3,10,30>#{name}</rgb> is my name."
+  hint = jt.hint
+  if hint
+    ply\Notify"<rgb=3,10,30>#{hint}"
+  return
+      
+hook.Add "PlayerLoadout", "evilrp_spawn_name", spawn_set_name

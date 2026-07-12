@@ -1,0 +1,156 @@
+class Cannibalism extends SOUND
+  sound: ["npc/barnacle/barnacle_crunch#{i}.wav" for i=2,3]
+
+gibs = { "models/gibs/humans/mgib_01.mdl"
+  "models/gibs/humans/mgib_02.mdl"
+  "models/gibs/humans/mgib_03.mdl"
+  "models/gibs/humans/mgib_04.mdl"
+  "models/gibs/humans/mgib_05.mdl"
+  "models/gibs/humans/mgib_06.mdl"
+  "models/gibs/humans/mgib_07.mdl" }
+
+create_gibs = (pos) ->
+  amt = math.random(2,4)
+  for i=1, amt
+    gib = ents.Create"gib"
+    with gib
+      \SetModel gibs[math.random(#gibs)]
+      \SetPos pos
+      \SetCollisionGroup COLLISION_GROUP_NONE
+      \SetMoveType MOVETYPE_VPHYSICS
+      \Spawn!
+    SafeRemoveEntityDelayed gib, math.random(5, 10)
+  ed = EffectData!
+  with ed
+    \SetOrigin pos
+    \SetScale 0.4
+  util.Effect "evilrp_gored", ed
+
+pick_up = (ply, key) ->
+  return unless SERVER
+  return unless key == IN_USE
+  return if ply\Crouching!
+  return if ply\Team! == TEAM_GHOST
+  tr = GAMEMODE\GetHandTrace(ply, 80)
+  return unless (tr.Entity and IsValid(tr.Entity))
+  rag = tr.Entity
+  return if rag\GetClass! ~= "prop_ragdoll"
+  ply\PickupObject rag
+    
+hook.Add "KeyPress", "evilrp_pick_up_bodies", pick_up
+
+cannibalism = (ply, key) ->
+  return unless key == IN_USE
+  return unless ply\Crouching!
+  return if ply\Team! == TEAM_GHOST
+  return unless ply\HasOddity(ODDITY_CANNIBALISM)
+  ct = CurTime!
+  tr = GAMEMODE\GetHandTrace(ply, 50)
+  return unless (tr.Entity and IsValid(tr.Entity))
+  rag = tr.Entity
+  return if rag\GetClass! ~= "prop_ragdoll"
+  return unless rag\GetNWBool"corpse"
+  ply.next_cannibalism = ct + .5 unless ply.next_cannibalism
+  return if ct < ply.next_cannibalism
+  ply\DoAnimationEvent ACT_GMOD_GESTURE_RANGE_FRENZY
+  return unless SERVER
+  descs = {
+    "#{rag\GetNWString"body_name"}'s lifeless body"
+    "the maggot infested corpse"
+    "the shriveled carcass"
+    "the cracked pile of bones"
+  }
+  phrases = {
+    "chews open"
+    "bites into"
+    "munches at"
+    "sinks teeth into"
+  }
+  decomp = rag\GetNWInt"decomp_stage"
+  phrase = "#{phrases[math.random(#phrases)]} #{descs[decomp]}!"
+  switch decomp
+    when DSTAGE_FRESH, DSTAGE_EARLY, DSTAGE_BLACK
+      ply\ConCommand"say /me #{phrase}"
+      rag\EmitSound"Cannibalism"
+      rag\SetNWInt "decomp_finish", rag\GetNWInt"decomp_finish" - 30
+      ply\AddHunger math.random(-16, -8)
+      create_gibs tr.HitPos
+    when DSTAGE_BONES
+      ply\ConCommand"say /me gnaws on bones and breaks a tooth!"
+      rag\EmitSound"Hand_Break"
+      dmg = DamageInfo!
+      with dmg
+        \SetDamageType DMG_CLUB
+        \SetDamagePosition tr.HitPos
+        \SetAttacker ply
+        \SetInflictor rag
+        \SetDamage 10 + math.random(5,15)
+      ply\TakeDamageInfo dmg
+    
+hook.Add "KeyPress", "evilrp_cannibalism", cannibalism
+
+class Necromance extends SOUND
+  sound: ["ambient/voices/citizen_beaten#{i}.wav" for i=1,3]
+  
+necrophilia = (ply, key) ->
+  return unless key == IN_USE
+  return unless ply\Crouching!
+  return if ply\Team! == TEAM_GHOST
+  return unless ply\HasOddity(ODDITY_NECROPHILIA)
+  ct = CurTime!
+  tr = GAMEMODE\GetHandTrace(ply, 50)
+  return unless (tr.Entity and IsValid(tr.Entity))
+  rag = tr.Entity
+  return if rag\GetClass! ~= "prop_ragdoll"
+  return unless rag\GetNWBool"corpse"
+  return if rag\GetNWBool"molested"
+  ply\DoAnimationEvent ACT_GMOD_GESTURE_RANGE_FRENZY
+  return unless SERVER
+  descs = {
+    "#{rag\GetNWString"body_name"}'s lifeless body"
+    "the maggot infested corpse"
+    "the shriveled carcass"
+    "the cracked pile of bones"
+  }
+  phrases = {
+    "caresses"
+    "kisses"
+    "hugs"
+    "does something bad with"
+  }
+  moans = {
+    "Ohh YES!"
+    "Sweetheart..."
+    "You feel disgusting and you love it."
+    "Oh my."
+  }
+  decomp = rag\GetNWInt"decomp_stage"
+  phrase = "#{phrases[math.random(#phrases)]} #{descs[decomp]}!"
+  ply\ConCommand"say /me #{phrase}"
+  rag\EmitSound"Necromance"
+  desp = 7 * decomp
+  ply\AddDespair -desp
+  rag\SetNWBool "molested", true
+  if decomp == DSTAGE_BONES
+    rag\EmitSound"Hand_Break"
+    dmg = DamageInfo!
+    with dmg
+      \SetDamageType DMG_SLASH
+      \SetDamagePosition tr.HitPos
+      \SetAttacker ply
+      \SetInflictor rag
+      \SetDamage 20 + math.random(5,15)
+    ply\TakeDamageInfo dmg
+    ply\SendChat "GENERIC", "<c=200,0,0>OUCH."
+  range = 512^2
+  for p in *player.GetAll!
+    continue if p == ply
+    continue if p\Team! == TEAM_GHOST
+    continue unless (p\CanSee(ply) and p\CanSee(rag))
+    continue unless p\GetPos!\DistToSqr(ply\GetPos!) <= range
+    text = "You feel very disturbed."
+    text = "You feel jealous." if p\HasOddity(ODDITY_NECROPHILIA)
+    p\SendChat "GENERIC", "<c=200,0,0>#{text}"
+    p\AddDespair desp
+
+hook.Add "KeyPress", "evilrp_necrophilia", necrophilia

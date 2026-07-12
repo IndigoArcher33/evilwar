@@ -1,0 +1,34 @@
+create_autostitchers = ->
+  EVIL_AUTOSTITCHER_POSITIONS = {
+    ["rp_liverfailure_kidneydagger"]:
+      * pos: Vector(-2200, 2233, 162)
+        ang: Angle(0, 90, 0)
+      * pos: Vector(2570, 2233, 163)
+        ang: Angle(0, 90, 0)
+      * pos: Vector(2625, 2468, 282)
+        ang: Angle(-90, 0, 180)
+      * pos: Vector(2241, 2465, 282)
+        ang: Angle(-90, 0, 180)
+      * pos: Vector(-1426, 1919, -72) -- playground
+        ang: Angle(0, 0, 0)
+     ["test1"]:
+      * pos: Vector( 1099, 800, 56 )
+        ang: Angle(0, -90, 0)
+      * pos: Vector( 1219, 800, 56 )
+        ang: Angle(0, -90, 0)
+      * pos: Vector( 1328, 800, 56 )
+        ang: Angle(0, -90, 0)
+    }
+  map = game.GetMap!
+  if EVIL_AUTOSTITCHER_POSITIONS[map]
+    for v in *EVIL_AUTOSTITCHER_POSITIONS[map]
+      sp = ents.Create"autostitcher"
+      with sp
+        \SetPos v.pos
+        \SetAngles v.ang
+        \Spawn!
+        \Activate!
+        \GetPhysicsObject!\EnableMotion false
+  return
+
+hook.Add "InitPostEntity", "evilrp_create_autostitchers", create_autostitchers

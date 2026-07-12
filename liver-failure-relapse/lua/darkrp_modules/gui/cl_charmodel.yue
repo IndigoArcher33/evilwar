@@ -1,0 +1,108 @@
+PANEL = {}
+
+AccessorFunc(PANEL, "AllowManipulation", "AllowManipulation")
+
+AccessorFunc(PANEL, "CamPosRange", "CamPosRange")
+AccessorFunc(PANEL, "LookAtRange", "LookAtRange")
+AccessorFunc(PANEL, "FOVRange", "FOVRange")
+
+AccessorFunc(PANEL, "BaseYaw", "BaseYaw")
+AccessorFunc(PANEL, "Player", "Player")
+
+PANEL[k] = v for k, v in pairs{
+  Init: =>
+    @SetCamPosRange {Vector(100,0,50), Vector(50,0,64)}
+    @SetLookAtRange {Vector(0,0,36), Vector(0,0,64)}
+    @SetFOVRange {45, 25}
+    @SetBaseYaw 0
+    @MouseYaw = 0
+    @YawAdd = 0
+    @Zoom = 0.6
+    -- hook.Add "OnAppearanceChanged", @, @OnAppearanceChanged
+  -- OnAppearanceChanged: (ply, old, new) =>
+  --   return if ply ~= @GetPlayer!
+  --   @SetAppearance new
+  SetPlayer: (ply) =>
+    -- @SetAppearance ply\Appearance!
+    @Player = ply
+    @SetModel ply\GetModel!
+    for i=0,9
+      @Entity\SetBodygroup(i, @Player\GetBodygroup(i))
+    @Entity\SetSkin @Player\GetSkin!
+    @Entity.GetPlayerColor = -> @Player\GetPlayerColor!
+  SetEntity: (ent) =>
+    DModelPanel.SetEntity @, ent
+    ent.PanelLayoutDone = false
+  SetModel: (mdl) =>
+    cycle = 0
+    if IsValid(@Entity)
+      cycle = @Entity\GetCycle!
+      -- part.Clear @Entity
+      return if @Entity\GetModel! == mdl
+    DModelPanel.SetModel @, mdl
+    @Entity\SetCycle cycle
+  -- SetAppearance: (appearance) =>
+  --   base = assert(appearance._base, "SetAppearance somehow ended up without _base model data.")
+  --   @SetModel base.model
+  --   ent = @GetEntity!
+  --   ent\ApplyModel base
+  --   for name, data in pairs(appearance)
+  --     continue if name == "_base"
+  --     part_type = data._type or "ModelPart"
+  --     data._type = nil
+  --     data.bonemerge = true if part_type == "ModelPart" and data.bonemerge = nil
+  --     part.Add ent, part_type, name, data
+  GetCameraTarget: =>
+    pos = LerpVector(@Zoom, unpack(@CamPosRange))
+    look = LerpVector(@Zoom, unpack(@LookAtRange))
+    fov = Lerp(@Zoom, unpack(@FOVRange))
+    ratio = @GetWide! / @GetTall!
+    return @Entity\GetPos! + pos, @Entity\GetPos! + look, fov * ratio
+  LayoutEntity: (ent) =>
+    pos, look, fov = @GetCameraTarget!
+    unless ent.PanelLayoutDone
+      ent.PanelLayoutDone = true
+      @SetCamPos pos
+      @SetLookAt look
+      @SetFOV fov
+      ent\SetAngles Angle(0, @GetBaseYaw!, 0)
+    @SetCamPos @GetCamPos!\Approach(pos, 10)
+    @SetLookAt @GetLookAt!\Approach(look, 10)
+    @SetFOV math.ApproachSpeed(@GetFOV!, fov, 10)
+    ang = Angle(0, @GetBaseYaw!, 0)
+    if @Dragging
+      @MouseYaw += @GetMouseDrag!
+    @YawAdd = math.ApproachSpeed(@YawAdd, @MouseYaw, 30)
+    ang\Sub Angle(0, @YawAdd, 0)
+    att = ent\GetAttachment(ent\LookupAttachment"eyes")
+    height = att.Pos.z or 64
+    dir = att.Ang\Forward! or ent\GetForward!
+    ent\SetAngles ang
+    ent\SetEyeTarget Vector(0, 0, height) + dir * 50
+  OnMouseWheeled: (delta) =>
+    if delta > 0
+      @Zoom = math.Approach(@Zoom, 1, .2)
+    else
+      @Zoom = math.Approach(@Zoom, 0, .2)
+  GetMouseDrag: =>
+    return 0 unless @Dragging
+    offset = gui.MouseX! - @DragStart
+    diff = @LastDrag - offset
+    @LastDrag = offset
+    return diff
+  OnMousePressed: (mouse) =>
+    if @AllowManipulation
+      if mouse == MOUSE_LEFT
+        @MouseCapture true
+        @Dragging = true
+        @DragStart = gui.MouseX!
+        @LastDrag = 0
+      else
+        @YawAdd = math.NormalizeAngle(@YawAdd)
+        @MouseYaw = 0
+  OnMouseReleased: =>
+    @MouseCapture false
+    @Dragging = false
+}
+
+derma.DefineControl "EvilRP_CharacterModel", "", PANEL, "DModelPanel"

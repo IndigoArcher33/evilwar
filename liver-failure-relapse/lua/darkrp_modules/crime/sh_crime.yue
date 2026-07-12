@@ -1,0 +1,38 @@
+global CRIMES = {}
+class CRIME
+  @index: 0
+  @__inherited: (child) =>
+    CRIMES[child.__name\lower!] = child
+    @index += 1
+    child.index = @index
+    
+  name: "crime"
+  duration: 60
+
+  CommittedBy: (who) =>
+    pos = who\EyePos!
+    for ply in *player.GetAll!
+      continue if ply == who
+      team = ply\Team!
+      continue unless (team == TEAM_SANITAR or team == TEAM_KOMMANDANT)
+      if ply\CanSee(who) and ply\LookingInDirection(who\EyePos!, 0.6)
+        who\MakeWanted(@duration, @name)
+        return true
+
+class Thought extends CRIME
+  name: "thoughtcrime"
+  duration: 60
+  CommittedBy: (who) =>
+    made_wanted = super who
+    GAMEMODE\LightningPunish(who) unless made_wanted
+        
+class Assault extends CRIME
+  name: "assault"
+  duration: 90
+  CommittedBy: (who, victim) =>
+    return if who == victim
+    return super who
+
+class Murder extends CRIME
+  name: "murder"
+  duration: 300

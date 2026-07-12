@@ -1,0 +1,205 @@
+DEFINE_BASECLASS"EditablePanel"
+
+-- TODO this should really be in its own file somewhere, but i didn't
+-- want to restart the server when i ported this
+pmeta = FindMetaTable"Panel"
+pmeta.SetCloseOnPause = =>
+  @m_bCloseOnPause = true
+  hook.Add "OnPauseMenuShow", @, ->
+    if vgui.FocusedHasParent @
+      @Close!
+      return false
+  
+create_chat = ->
+  panel = GUI.Get"Chat"
+  if IsValid panel
+    buffer = panel\ExportBuffer!
+    GUI.Open"Chat"\ImportBuffer(buffer)
+  else
+    GUI.Open"Chat"
+  return
+    
+hook.Add "Initialize", "evilrp_create_chat", create_chat
+hook.Add "OnReloaded", "evilrp_create_chat", create_chat
+
+open_chat = (ply, bind, down) ->
+  if down
+    switch bind
+      when "messagemode"
+        GUI.Get"Chat"\Show!
+        return true
+  return
+  
+hook.Add "PlayerBindPress", "evilrp_chatbox", open_chat
+  
+PANEL = {
+  Init: =>
+    @SetSkin"EvilRP"
+    @SetCloseOnPause!
+    @ResizeWithScale 1.0
+    @SetWide ScrW! * .5
+    @MakePopup!
+    @Scroll = @Add"EvilRP_ChatScroll"
+    with @TopBar = @Add"Panel"
+      \SetTall 20
+    @Tabs = cookie.GetNumber("evilrp_chat_tabs", 0)
+    @Buttons = {}
+    tabs =
+      * {"LOOC",
+        TAB_LOOC}
+      * {"OOC",
+        TAB_OOC}
+      * {"IC",
+        TAB_IC}
+      * {"Sotla",
+        TAB_ADMIN}
+      * {"PM",
+        TAB_PM}
+      * {"Radio",
+        TAB_RADIO}
+    for v in *tabs
+      button = @TopBar\Add"DButton"
+      with button
+        \SetFont"Spleen_Label_Small"
+        \SetText v[1]
+        \Dock LEFT
+        \DockMargin 0, 0, 5, 0
+        .SkinVar = "Active"
+        .SkinInverted = true
+        .Active = @CanSeeTab v[2]
+        .Tab = v[2]
+        .DoClick = (pnl) ->
+          pnl.Active = not pnl.Active
+          pnl\SetTextColor nil
+          @SaveTabConfig!
+      @Buttons[] = button
+    @Input = @Add"EvilRP_ChatInput"
+    with @Input
+      \SetTall 20
+      \SetX 10
+    @CloseButton = @TopBar\Add"DButton"
+    with @CloseButton
+      \SetFont"marlett"
+      \SetText"r"
+      \Dock RIGHT
+      \SetWide 20
+      .DoClick = (pnl) -> @Close!
+    hook.Add "OnChatScaleSettingChanged", @, (_, _, old, new) -> @ResizeWithScale(new)
+      
+  ResizeWithScale: (multiplier=1.0) =>
+    s_w = 200 -- magic values from TankNut
+    s_h = 133 -- :smilecat:
+    BaseClass.SetSize @, ScreenScale(s_h) * multiplier, ScreenScaleH(s_h) * multiplier
+    @SetPos 20, ScrH! - @GetTall! - 200
+
+  Close: => @OnClose!
+
+  OnClose: => GUI.Get"Chat"\Hide!
+
+  SaveTabConfig: =>
+    val = 0
+    for button in *@Buttons
+      val += button.Tab if not button.Active
+    @Tabs = val
+    cookie.Set("evilrp_chat_tabs", val)
+
+  CanSeeTab: (tab) =>
+    return true unless tab
+    return not tobool(bit.band(@Tabs, tab))
+
+  AddMessage: (message, console_message, tabs) =>
+    @Scroll\AddMessage message, console_message, tabs
+    if tabs
+      for button in *@Buttons
+        if tobool(bit.band(button.Tab, tabs)) and not button.Active
+          button\SetTextColor @GetSkin!.Text.Primary
+    if not system.HasFocus! and @CanSeeTab tabs
+      system.FlashWindow!
+
+  -- we explicitly don't call back to normal show/hide since we don't
+  -- want to hide everything most notably we want to keep the canvas
+  -- around so we can draw chat without too much extra work
+
+  Show: =>
+    @IsOpen = true
+    @SetKeyboardInputEnabled true
+    @SetMouseInputEnabled true
+    @Scroll\Show!
+    with @Input
+      \Show!
+      \RequestFocus!
+      .HistoryIndex = 0
+    button\Show! for button in *@Buttons
+    @CloseButton\Show!
+
+  Hide: =>
+    @IsOpen = false
+    @SetKeyboardInputEnabled false
+    @SetMouseInputEnabled false
+    with @Input
+      \SetText""
+      \SetTall 20
+    @InvalidateLayout true
+    @Scroll\Hide!
+    @Input\Hide!
+    button\Hide! for button in *@Buttons
+    @CloseButton\Hide!
+
+  ExportBuffer: =>
+    return {
+      @Scroll.Buffer
+      @Scroll.BufferSize
+      @IsOpen
+      @Scroll.VBar\GetScroll!
+      @Input\GetText!
+      @Input.History
+      @Input.HistoryIndex
+    }
+
+  ImportBuffer: (buffer) =>
+    with @Scroll
+      .Buffer = buffer[1]
+      .BufferSize = buffer[2]
+      \InvalidateLayout!
+    if buffer[3]
+      @Show!
+      @Scroll.VBar\SetScroll buffer[4]
+    @Input\SetText buffer[5] or ""
+    @Input.History = buffer[6]
+    @Input.HistoryIndex = buffer[7]
+
+  PerformLayout: (w, h) =>
+    with @TopBar
+      \AlignLeft 10
+      \AlignTop 10
+      \StretchToParent nil, nil, 10
+    with @Input
+      \AlignLeft 10
+      \AlignBottom 10
+      \StretchToParent nil, nil, 10
+    pre_scroll = @Scroll\GetTall!
+    with @Scroll
+      \AlignLeft 10
+      \MoveBelow @TopBar, 5
+      \StretchToParent nil, nil, 10
+      \StretchBottomTo @Input, 5
+    -- adjusting the scrollbar to make sure it doesn't shift when the
+    -- panel height changes
+    scroll_bar = @Scroll.VBar
+    diff = @Scroll\GetTall! - pre_scroll
+    if diff ~= 0
+      @Scroll\InvalidateLayout true
+      scroll_bar\SetScroll scroll_bar\GetScroll! - diff
+
+  Paint: (w, h) =>
+    derma.SkinHook "Paint", "Chat", @, w, h if @IsOpen
+}
+
+derma.DefineControl "EvilRP_Chat", "", PANEL, "EditablePanel"
+  
+GUI.Register "Chat", (->
+  panel = vgui.Create"EvilRP_Chat"
+  panel\Hide!
+  return panel), true
+
+

@@ -1,0 +1,161 @@
+-- was written while looking at Helix's wepselect.lua plugin
+-- which was written by Chessnut
+
+hook.Add "HUDShouldDraw", "evilrp_weapon_select", (name) ->
+  return false if name == "CHudWeaponSelection"
+  return
+
+index = 1
+delta_index = index
+info_alpha = 0
+alpha = 0
+alpha_delta = alpha
+fade_time = 0
+matrix_scale = Vector(1, 1, 0)
+
+names = {
+  ["#gmod_tool"]: "Hexengland"
+  ["#GMOD_Physgun"]: "Telegland"
+}
+    
+hook.Add "HUDPaint", "evilrp_weapon_select", ->
+  ft = FrameTime!
+  ct = CurTime!
+  alpha_delta = Lerp ft * 10, alpha_delta, alpha
+  fraction = alpha_delta
+  if fraction > .01
+    spacing = math.pi * .85
+    radius = 240 * alpha_delta
+    shift_x = ScrW! * .02
+    delta_index = Lerp ft * 12, delta_index, index
+    paying = lp\GetNWBool"evilrp_paying"
+    if paying
+      amount = lp.payment_amount or 0
+      index_local = delta_index
+      money = lp\getDarkRPVar"money"
+      index = money unless amount < money
+      remaining = math.min(amount + 10, money - amount)
+      _, ty = surface.GetTextSize(tostring(amount))
+      desp = lp\GetDespair! * 0.01
+      font = "Spleen_Label"
+      -- create scribe object
+      txt = amount
+      txt = "<c=0,#{180 + math.sin(CurTime!) * 30},0>#{txt}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+      txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+      txt_w = txt_obj\GetWide!
+      txt_h = txt_obj\GetTall!
+      last_y = (txt_h) * fraction
+      p = lp\GetEyeTrace!.HitPos\ToScreen!
+      ct = CurTime!
+      x = p.x
+      x += math.cos ct * 0.75
+      y = ScrH! * .7
+      y += math.sin ct * 0.95
+      txt_obj\Draw x, y, alpha_delta, TEXT_ALIGN_CENTER
+    else
+      x = ScrW! * .3
+      y = ScrH! * .5
+      weapons = lp\GetWeapons!
+      index_local = delta_index
+      index = #weapons unless weapons[index]
+      for i=1, #weapons
+        theta = (i - index_local) * .1
+        name = weapons[i]\GetPrintName!
+        name = names[name] if names[name]
+        _, ty = surface.GetTextSize name
+        scale = 1 - math.abs(theta * 2)
+        matrix = Matrix!
+        desp = lp\GetDespair! * 0.01
+        font = "Spleen_Label"
+        -- create scribe object
+        txt = name
+        txt = "<rgb=1,1,#{i == index and 60 or 30}>#{txt}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+        txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp * (theta*2)},#{10 * desp}><f=#{font}><wave=#{6 * desp + (i == index and 10 or 3)},#{0.38 * desp + (i == index and 3 or 1.23)},2><ol=2>#{txt}", nil
+        txt_w = txt_obj\GetWide!
+        txt_h = txt_obj\GetTall!
+        last_y = (txt_h) * fraction
+        -- translate da matrix
+        translator = Vector(
+          shift_x + x + math.cos(theta * spacing + math.pi) * radius + radius,
+          y + last_y + math.sin(theta * spacing + math.pi) * radius - ty / 2,
+          1
+        )
+        matrix\Translate translator
+        matrix\Scale matrix_scale * scale
+        cam.PushModelMatrix matrix
+        txt_obj\Draw 64, 0, alpha_delta, TEXT_ALIGN_LEFT
+        cam.PopModelMatrix!
+      alpha = 0 if fade_time < ct and alpha > 0
+  return
+
+on_index_changed = (weapon) ->
+  alpha = 1
+  fade_time = CurTime! + 5
+  lp\EmitSound "common/talk.wav", 50, 180
+    
+hook.Add "PlayerBindPress", "evilrp_weapon_select", (ply, bind, pressed) ->
+  bind = bind\lower!
+  return if ply\Fallen!
+  return if not pressed
+  return if not bind\find"invprev" and not bind\find"invnext" and not bind\find"slot" and not bind\find"attack"
+  cur_wep = ply\GetActiveWeapon!
+  valid = IsValid cur_wep
+  wep_cls = valid and cur_wep\GetClass! or nil
+  local btool
+  local paying
+  return if ply\InVehicle!
+  return if valid and wep_cls == "weapon_physgun" and ply\KeyDown(IN_ATTACK)
+  paying = ply\GetNWBool"evilrp_paying"
+  if valid
+    switch wep_cls
+      when "gmod_tool"
+        tool = ply\GetTool!
+        btool = tool and (tool.Scroll ~= nil)
+  if paying
+    ply.payment_amount or= 0
+    shift = ply\KeyDown(IN_SPEED)
+    if bind\find"invprev" -- scrolling down
+      ply.payment_amount -= (shift and 5 or 1)
+    elseif bind\find"invnext" -- scrolling up
+      ply.payment_amount += (shift and 5 or 1)
+    ply.payment_amount = math.min(ply\getDarkRPVar"money", math.max(ply.payment_amount, 0))
+    old_index = index
+    index = ply.payment_amount
+    on_index_changed!
+    return
+  weapons = ply\GetWeapons!
+  if bind\find"invprev" and not btool
+    old_index = index
+    index = math.min index + 1, #weapons
+    on_index_changed weapons[index] if (alpha == 0 or old_index ~= index)
+    return true
+  elseif bind\find"invnext" and not btool
+    old_index = index
+    index = math.max index - 1, 1
+    on_index_changed weapons[index] if (alpha == 0 or old_index ~= index)
+    return true
+  elseif bind\find"slot"
+    index = math.Clamp(tonumber(bind\match"slot(%d)") or 1, 1, #weapons)
+    on_index_changed weapons[index]
+    return true
+  elseif bind\find"attack" and alpha > 0
+    weapon = weapons[index]
+    if IsValid weapon
+      lp\EmitSound"HL2Player.Use"
+      input.SelectWeapon weapon
+      alpha = 0
+    return true
+  return
+
+local was_paying
+
+hook.Add "Think", "evilrp_weapon_select", ->
+  alpha = 0 if (not IsValid(lp) or not lp\Alive!)
+  was_paying or= lp\GetNWBool"evilrp_paying"
+  if was_paying and not lp\GetNWBool"evilrp_paying"
+    was_paying = false
+    index = 0
+    delta_index = 0
+    alpha_delta = 0
+    alpha = 0
+  return
