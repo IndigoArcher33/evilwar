@@ -374,6 +374,14 @@ class Tyrant extends OS
         return
       help: "Clear the screen."
     }
+    [":stocks"]: {
+      Callback: (ply, term, args) =>
+        stocks = GAMEMODE.Stocks
+        gterm\Broadcast term, "STOCKS OF THE LAND:", GT_COL_INFO
+        gterm\Broadcast term, "  #{k}| #{v} units", GT_COL_SUCC for k, v in pairs(stocks)
+        gterm\Broadcast term, "end list", GT_COL_INTL
+      help: "View what you own."
+    }  
     [":die"]: {
       Callback: (ply, term) =>
         if ply\Team! ~= TEAM_KOMMANDANT

@@ -776,6 +776,17 @@ do
 				end,
 				help = "Clear the screen."
 			},
+			[":stocks"] = {
+				Callback = function(self, ply, term, args)
+					local stocks = GAMEMODE.Stocks
+					gterm:Broadcast(term, "STOCKS OF THE LAND:", GT_COL_INFO)
+					for k, v in pairs(stocks) do
+						gterm:Broadcast(term, "  " .. tostring(k) .. "| " .. tostring(v) .. " units", GT_COL_SUCC)
+					end
+					return gterm:Broadcast(term, "end list", GT_COL_INTL)
+				end,
+				help = "View what you own."
+			},
 			[":die"] = {
 				Callback = function(self, ply, term)
 					if ply:Team() ~= TEAM_KOMMANDANT then

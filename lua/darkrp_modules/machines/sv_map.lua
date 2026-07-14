@@ -94,7 +94,7 @@ create_machines_and_otherwise = function()
 		}
 	}
 	local EVIL_MACHINE_POSITIONS = {
-		["test1"] = {
+		["rp_lymphoma"] = {
 			{
 				pos = Vector(-1104, 1264, 36),
 				ang = Angle(-0, -180, 0),
