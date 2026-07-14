@@ -2,7 +2,7 @@ EVIL_NEXT_BOULDER = 0
 local EVIL_BOULDER_DELAY = 15
 local EVIL_BOULDER_MAX = 64
 local EVIL_BOULDER_POSITIONS = {
-	["test1"] = {
+	["rp_lymphoma"] = {
 		Vector(-1207, -1976, -643),
 		Vector(-1554, -1991, -625),
 		Vector(-1442, -2370, -625),

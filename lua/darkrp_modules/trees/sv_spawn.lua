@@ -15,7 +15,7 @@ local EVIL_TREE_POSITIONS = {
 		Vector(3, 3538, 49),
 		Vector(-154, 3459, 49)
 	},
-	["test1"] = {
+	["rp_lymphoma"] = {
 		Vector(237, -2625, -176),
 		Vector(731, -3127, -128),
 		Vector(531, -3652, -119),

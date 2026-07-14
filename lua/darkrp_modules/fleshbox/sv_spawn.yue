@@ -3,7 +3,7 @@ EVIL_BOX_DELAY = 30
 EVIL_BOX_MAX = 3
 global EVIL_BOX = {}
 EVIL_BOX_POSITIONS = {
-  ["test1"]: {
+  ["rp_lymphoma"]: {
     Vector( -1454, -2295, -829 )
     Vector( -876, -2461, -754 )
     Vector( -1165, -2813, -830 )

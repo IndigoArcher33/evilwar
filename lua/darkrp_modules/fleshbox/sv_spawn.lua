@@ -3,7 +3,7 @@ local EVIL_BOX_DELAY = 30
 local EVIL_BOX_MAX = 3
 EVIL_BOX = { }
 local EVIL_BOX_POSITIONS = {
-	["test1"] = {
+	["rp_lymphoma"] = {
 		Vector(-1454, -2295, -829),
 		Vector(-876, -2461, -754),
 		Vector(-1165, -2813, -830)

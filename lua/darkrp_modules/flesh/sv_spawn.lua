@@ -2,7 +2,7 @@ EVIL_NEXT_CAPSULE = 0
 local EVIL_CAPSULE_DELAY = 15
 local EVIL_CAPSULE_MAX = 64
 local EVIL_CAPSULE_POSITIONS = {
-	["test1"] = {
+	["rp_lymphoma"] = {
 		Vector(398, 1289, 305),
 		Vector(242, 1263, 270),
 		Vector(-667, 1225, 341),
