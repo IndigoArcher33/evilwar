@@ -1052,6 +1052,10 @@ do
 		name = "Broadcast",
 		desc = "Make them all listen.",
 		typing = "Decreeing...",
+		commands = {
+			"broadcast",
+			"ad"
+		},
 		color = Color(200, 0, 0),
 		font = "Spleen_Chat",
 		Process = function(self, ply, text)

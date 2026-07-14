@@ -459,6 +459,8 @@ class Broadcast extends CHAT_CMD_IC
   desc: "Make them all listen."
   typing: "Decreeing..."
 
+  commands: {"broadcast", "ad"}
+
   color: Color(200, 0, 0)
 
   font: "Spleen_Chat"
