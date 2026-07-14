@@ -25,15 +25,15 @@ create_autostitchers = function()
 		},
 		["test1"] = {
 			{
-				pos = Vector(1099, 800, 56),
+				pos = Vector(1099, 795, 56),
 				ang = Angle(0, -90, 0)
 			},
 			{
-				pos = Vector(1219, 800, 56),
+				pos = Vector(1219, 795, 56),
 				ang = Angle(0, -90, 0)
 			},
 			{
-				pos = Vector(1328, 800, 56),
+				pos = Vector(1328, 795, 56),
 				ang = Angle(0, -90, 0)
 			}
 		}
