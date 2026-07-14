@@ -1,7 +1,7 @@
 local create_autodealers
 create_autodealers = function()
 	local EVIL_AUTODEALER_POSITIONS = {
-		["test1"] = {
+		["rp_lymphoma"] = {
 			{
 				pos = Vector(233, 1002, 253),
 				ang = Angle(0, 0, 0)

@@ -65,7 +65,7 @@ EVIL_MACHINE_POSITIONS_CURSED = {
 local create_machines_and_otherwise
 create_machines_and_otherwise = function()
 	local EVIL_GENERATOR_POSITIONS = {
-		["test1"] = {
+		["rp_lymphoma"] = {
 			{
 				pos = Vector(-972, 1153, 1),
 				ang = Angle(-0, 0, -0),
@@ -202,27 +202,31 @@ create_machines_and_otherwise = function()
 				for _index_0 = 1, #_list_4 do
 					local v = _list_4[_index_0]
 					local sp = ents.Create(v.cls)
-					sp:SetPos(v.pos)
-					sp:SetAngles(v.ang)
+					do
+						sp:SetPos(v.pos)
+						sp:SetAngles(v.ang)
+						sp:Spawn()
+						sp:Activate()
+						local phys = sp:GetPhysicsObject()
+						if IsValid(phys) then
+							phys:EnableMotion(false)
+						end
+						MsgC(Color(0, 200, 0), tostring(sp) .. " spawned.\n")
+					end
+				end
+			end
+			if EVIL_MACHINE_POSITIONS_CURSED[map] then
+				local sp = ents.Create("machine/evil")
+				do
 					sp:Spawn()
 					sp:Activate()
 					local phys = sp:GetPhysicsObject()
 					if IsValid(phys) then
 						phys:EnableMotion(false)
 					end
-					MsgC(Color(0, 200, 0), tostring(sp) .. " spawned.\n")
+					MsgC(Color(200, 0, 0), tostring(sp) .. " SPAWNED.\n")
+					sp:Shift()
 				end
-			end
-			if EVIL_MACHINE_POSITIONS_CURSED[map] then
-				local sp = ents.Create("machine/evil")
-				sp:Spawn()
-				sp:Activate()
-				local phys = sp:GetPhysicsObject()
-				if IsValid(phys) then
-					phys:EnableMotion(false)
-				end
-				MsgC(Color(200, 0, 0), tostring(sp) .. " SPAWNED.\n")
-				sp:Shift()
 			end
 			return
 		end)

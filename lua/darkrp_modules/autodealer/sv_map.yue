@@ -1,6 +1,6 @@
 create_autodealers = ->
   EVIL_AUTODEALER_POSITIONS = {
-    ["test1"]:
+    ["rp_lymphoma"]:
       * pos: Vector( 233, 1002, 253 )
         ang: Angle(0, 0, 0)
       * pos: Vector( 600, 353, 49 )

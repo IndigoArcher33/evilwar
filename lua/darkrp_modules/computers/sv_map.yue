@@ -1,6 +1,6 @@
 create_computers = ->
   EVIL_COMPUTER_POSITIONS = {
-    ["test1"]:
+    ["rp_lymphoma"]:
       * pos: Vector( 486, 910, 261 )
         ang: Angle( 1, 112, -0 )
         cls: "terminal/xombokom"

@@ -11,7 +11,7 @@ create_autostitchers = ->
         ang: Angle(-90, 0, 180)
       * pos: Vector(-1426, 1919, -72) -- playground
         ang: Angle(0, 0, 0)
-    ["test1"]:
+    ["rp_lymphoma"]:
       * pos: Vector( 1099, 795, 56 )
         ang: Angle(0, -90, 0)
       * pos: Vector( 1219, 795, 56 )

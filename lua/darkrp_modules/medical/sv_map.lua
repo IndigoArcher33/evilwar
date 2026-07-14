@@ -23,7 +23,7 @@ create_autostitchers = function()
 				ang = Angle(0, 0, 0)
 			}
 		},
-		["test1"] = {
+		["rp_lymphoma"] = {
 			{
 				pos = Vector(1099, 795, 56),
 				ang = Angle(0, -90, 0)

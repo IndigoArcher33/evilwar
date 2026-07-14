@@ -192,93 +192,95 @@ do
 	STATUS = _class_0
 end
 local Bleed
-local _class_0
-local _parent_0 = STATUS
-local _base_0 = {
-	SetupDataTables = function(self)
-		return self:NetworkVar("Float", "Damage")
-	end,
-	AddDamage = function(self, damage)
-		return self:SetDamage(self:GetDamage() + damage)
-	end,
-	Think = function(self)
-		if SERVER then
-			local owner = self:GetOwner()
-			if self:GetDamage() <= 0 or not (owner:IsPlayer() and owner:Alive()) then
-				self:Remove()
-				return
-			end
-			self.next_bleed_tick = self.next_bleed_tick or CurTime()
-			self.next_stop_bleeding_tick = self.next_stop_bleeding_tick or CurTime()
-			if self.next_bleed_tick <= CurTime() then
-				local dmg = math.min(self:GetDamage(), math.random(1, 3))
-				local damager
-				if self.Damager and IsValid(self.Damager) then
-					damager = self.Damager
+do
+	local _class_0
+	local _parent_0 = STATUS
+	local _base_0 = {
+		SetupDataTables = function(self)
+			return self:NetworkVar("Float", "Damage")
+		end,
+		AddDamage = function(self, damage)
+			return self:SetDamage(self:GetDamage() + damage)
+		end,
+		Think = function(self)
+			if SERVER then
+				local owner = self:GetOwner()
+				if self:GetDamage() <= 0 or not (owner:IsPlayer() and owner:Alive()) then
+					self:Remove()
+					return
 				end
-				local dmginfo = DamageInfo()
-				dmginfo:SetDamageType(DMG_GENERIC)
-				dmginfo:SetDamagePosition(self:GetPos())
-				if damager and IsValid(damager) then
-					dmginfo:SetAttacker(damager)
+				self.next_bleed_tick = self.next_bleed_tick or CurTime()
+				self.next_stop_bleeding_tick = self.next_stop_bleeding_tick or CurTime()
+				if self.next_bleed_tick <= CurTime() then
+					local dmg = math.min(self:GetDamage(), math.random(1, 3))
+					local damager
+					if self.Damager and IsValid(self.Damager) then
+						damager = self.Damager
+					end
+					local dmginfo = DamageInfo()
+					dmginfo:SetDamageType(DMG_GENERIC)
+					dmginfo:SetDamagePosition(self:GetPos())
+					if damager and IsValid(damager) then
+						dmginfo:SetAttacker(damager)
+					end
+					dmginfo:SetInflictor(self)
+					dmginfo:SetDamage(dmg)
+					owner.dont_scream = true
+					owner:TakeDamageInfo(dmginfo)
+					self:AddDamage(-dmg)
+					local dir = VectorRand()
+					dir:Normalize()
+					util.Blood(owner:WorldSpaceCenter(), 6, dir, 64)
+					self.next_bleed_tick = CurTime() + 3
 				end
-				dmginfo:SetInflictor(self)
-				dmginfo:SetDamage(dmg)
-				owner.dont_scream = true
-				owner:TakeDamageInfo(dmginfo)
-				self:AddDamage(-dmg)
-				local dir = VectorRand()
-				dir:Normalize()
-				util.Blood(owner:WorldSpaceCenter(), 6, dir, 64)
-				self.next_bleed_tick = CurTime() + 3
-			end
-			if self.next_stop_bleeding_tick <= CurTime() then
-				local notmoving = (owner:GetVelocity():Length() <= 32)
-				if notmoving then
-					self:AddDamage(-2)
+				if self.next_stop_bleeding_tick <= CurTime() then
+					local notmoving = (owner:GetVelocity():Length() <= 32)
+					if notmoving then
+						self:AddDamage(-2)
+					end
+					self.next_stop_bleeding_tick = CurTime() + 1
 				end
-				self.next_stop_bleeding_tick = CurTime() + 1
 			end
 		end
-	end
-}
-for _key_0, _val_0 in pairs(_parent_0.__base) do
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then
-		_base_0[_key_0] = _val_0
-	end
-end
-if _base_0.__index == nil then
-	_base_0.__index = _base_0
-end
-setmetatable(_base_0, _parent_0.__base)
-_class_0 = setmetatable({
-	__init = function(self, ...)
-		return _class_0.__parent.__init(self, ...)
-	end,
-	__base = _base_0,
-	__name = "Bleed",
-	__parent = _parent_0
-}, {
-	__index = function(cls, name)
-		local val = rawget(_base_0, name)
-		if val == nil then
-			local parent = rawget(cls, "__parent")
-			if parent then
-				return parent[name]
-			end
-		else
-			return val
+	}
+	for _key_0, _val_0 in pairs(_parent_0.__base) do
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then
+			_base_0[_key_0] = _val_0
 		end
-	end,
-	__call = function(cls, ...)
-		local _self_0 = setmetatable({ }, _base_0)
-		cls.__init(_self_0, ...)
-		return _self_0
 	end
-})
-_base_0.__class = _class_0
-if _parent_0.__inherited then
-	_parent_0.__inherited(_parent_0, _class_0)
+	if _base_0.__index == nil then
+		_base_0.__index = _base_0
+	end
+	setmetatable(_base_0, _parent_0.__base)
+	_class_0 = setmetatable({
+		__init = function(self, ...)
+			return _class_0.__parent.__init(self, ...)
+		end,
+		__base = _base_0,
+		__name = "Bleed",
+		__parent = _parent_0
+	}, {
+		__index = function(cls, name)
+			local val = rawget(_base_0, name)
+			if val == nil then
+				local parent = rawget(cls, "__parent")
+				if parent then
+					return parent[name]
+				end
+			else
+				return val
+			end
+		end,
+		__call = function(cls, ...)
+			local _self_0 = setmetatable({ }, _base_0)
+			cls.__init(_self_0, ...)
+			return _self_0
+		end
+	})
+	_base_0.__class = _class_0
+	if _parent_0.__inherited then
+		_parent_0.__inherited(_parent_0, _class_0)
+	end
+	Bleed = _class_0
+	return _class_0
 end
-Bleed = _class_0
-return _class_0

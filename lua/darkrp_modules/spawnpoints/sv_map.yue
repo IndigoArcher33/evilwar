@@ -1,6 +1,6 @@
 create_spawnpoints = ->
   EVIL_SPAWN_POSITIONS = {
-    ["test1"]:
+    ["rp_lymphoma"]:
       * pos: Vector( 422, 275, 29 )
         job: TEAM_PRIVATE
       * pos: Vector( 3, 1305, 1 )

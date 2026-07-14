@@ -1,7 +1,7 @@
 local create_spawnpoints
 create_spawnpoints = function()
 	local EVIL_SPAWN_POSITIONS = {
-		["test1"] = {
+		["rp_lymphoma"] = {
 			{
 				pos = Vector(422, 275, 29),
 				job = TEAM_PRIVATE

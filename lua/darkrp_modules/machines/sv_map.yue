@@ -40,7 +40,7 @@ global EVIL_MACHINE_POSITIONS_CURSED = {
 
 create_machines_and_otherwise = ->
   EVIL_GENERATOR_POSITIONS = {
-    ["test1"]:
+    ["rp_lymphoma"]:
       * pos: Vector( -972, 1153, 1 )
         ang: Angle(-0, 0, -0)
         id: "tools"

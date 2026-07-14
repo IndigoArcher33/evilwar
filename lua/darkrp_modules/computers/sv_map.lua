@@ -1,7 +1,7 @@
 local create_computers
 create_computers = function()
 	local EVIL_COMPUTER_POSITIONS = {
-		["test1"] = {
+		["rp_lymphoma"] = {
 			{
 				pos = Vector(486, 910, 261),
 				ang = Angle(1, 112, -0),
