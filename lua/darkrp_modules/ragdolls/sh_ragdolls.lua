@@ -212,11 +212,9 @@ for k, v in pairs({
 			rag:SetNWInt("decomp_finish", CurTime() + 120)
 			rag:SetNWInt("decomp_stage", 1)
 			local jt = self:getJobTable()
-			do
-				local _obj_0 = jt.HandleRagdoll
-				if _obj_0 ~= nil then
-					_obj_0(rag, self)
-				end
+			local _obj_0 = jt.HandleRagdoll
+			if _obj_0 ~= nil then
+				_obj_0(rag, self)
 			end
 		end
 		if self:LastHitGroup() == HITGROUP_HEAD then
