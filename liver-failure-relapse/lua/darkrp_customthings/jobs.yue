@@ -377,7 +377,7 @@ TEAM_KORPSMAN = DarkRP.createJob "Sanitäter",
 
 TEAM_KOMMANDANT = DarkRP.createJob "Kommandant",
   color: Color(150, 20, 20)
-  model: "models/liver_failure/liverish/liverish.mdl"
+  model: "models/vel/evilwar/royalist.mdl"
   description: "Rule with an iron fist."
   command: "kommandant"
   salary: 1
