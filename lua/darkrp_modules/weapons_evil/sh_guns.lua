@@ -448,8 +448,8 @@ do -- 207
 			DefaultClip = 12, -- 228
 			Damage = 75, -- 230
 			Delay = 1.25, -- 231
-			Range = 1300, -- 233
-			Accuracy = 24, -- 234
+			Range = 2000, -- 233
+			Accuracy = 5, -- 234
 			RangeModifier = 0.95, -- 236
 			Recoil = { -- 239
 				MinAng = Angle(14.6, -2.7, 0), -- 239
@@ -459,7 +459,7 @@ do -- 207
 			}, -- 238
 			Reload = { -- 246
 				Sound = "Weapon_SMG1.Reload", -- 246
-				Amount = 2, -- 247
+				Amount = 6, -- 247
 				Shotgun = true, -- 248
 				DontFinishPump = true -- 249
 			}, -- 245

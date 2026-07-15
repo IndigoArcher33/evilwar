@@ -220,6 +220,7 @@ global class EvilRP_Weapon extends WEAPON
     @NetworkVar("Entity", "LastOwner")
 
     @NetworkVar("Bool", "Lowered")
+    @NetworkVar("Bool", "Aiming")
     @NetworkVar("Bool", "NeedPump")
     @NetworkVar("Bool", "FirstReload")
     @NetworkVar("Bool", "AbortReload")
@@ -312,6 +313,7 @@ global class EvilRP_Weapon extends WEAPON
     @HandlePump!
     @HandleBurst!
     @HandleViewModel!
+    @HandleAiming!
 
   OnReloaded: => @SetWeaponHoldType(@GetHoldType!) if @GetHoldType! ~= ""
     
@@ -321,12 +323,16 @@ global class EvilRP_Weapon extends WEAPON
 
   SetupMove: (ply, mv) =>
     fraction = @GetLowerFraction!
-    return if fraction == 1
-    min = 200 -- this should be variable per-weapon later
-    min = math.min(min, ply\GetWalkSpeed! * ply\GetCrouchedWalkSpeed!) if ply\Crouching!
-    speed = math.Remap fraction, 0, 1, min, ply\GetRunSpeed!
-    mv\SetMaxSpeed speed
-    mv\SetMaxClientSpeed speed
+    unless fraction == 1
+      min = 200
+      min = math.min(min, ply\GetWalkSpeed! * ply\GetCrouchedWalkSpeed!) if ply\Crouching!
+      speed = math.Remap fraction, 0, 1, min, ply\GetRunSpeed!
+      mv\SetMaxSpeed speed
+      mv\SetMaxClientSpeed speed
+    if @GetAiming!
+      aim_speed = ply\GetWalkSpeed! * 0.3
+      mv\SetMaxSpeed math.min(mv\GetMaxSpeed!, aim_speed)
+      mv\SetMaxClientSpeed math.min(mv\GetMaxClientSpeed!, aim_speed)
 
   OnRestore: =>
     @SetFirstReload false
@@ -467,6 +473,7 @@ global class EvilRP_Weapon extends WEAPON
     
   GetZoom: =>
     return 1 if @GetLowered!
+    return 2 if @GetAiming!
     return 1.25
 
   IsReady: => CurTime! - @GetLowerTime! >= 0.4
@@ -593,7 +600,14 @@ global class EvilRP_Weapon extends WEAPON
   HandleReload: =>
     reload = @GetFinishReload!
     @FinishReload! if reload > 0 and reload <= CurTime!
-      
+
+  HandleAiming: =>
+    ply = @GetOwner!
+    aim = ply\KeyDown(IN_ATTACK2) and @IsReady! and not @IsReloading!
+    if aim ~= @GetAiming!
+      @SetAiming aim
+      @UpdateFOV 0.2
+
   FinishReload: =>
     primary = @Primary
     reload = primary.Reload
@@ -635,11 +649,12 @@ global class EvilRP_Weapon extends WEAPON
     
   EmitFireSound: =>
     @EmitSound @Primary.Sound
-    if pump := @Primary.Pump
+    pump = @Primary.Pump
+    if pump
       timer.Simple pump.Delay or 0.4, ->
         if IsValid(@)
           @EmitSound(pump.Sound)
-    
+        
   EmitReloadSound: =>
     reload = @Primary.Reload
     @EmitSound reload.Sound if reload.Sound ~= ""
@@ -1054,3 +1069,32 @@ if CLIENT
       continue if not weapon.PostDrawTranslucentRenderables
       weapon\PostDrawTranslucentRenderables!
     return
+  hook.Add "HUDPaint", "evilrp_weapon_crosshair", ->
+    ply = LocalPlayer!
+    return unless IsValid(ply) and ply\Alive!
+    weapon = ply\GetActiveWeapon!
+    return unless IsValid(weapon)
+    return unless weapon.GetAiming and weapon\GetAiming!
+
+    width, height = ScrW!, ScrH!
+    x = width / 2
+    y = height / 2
+
+    color = Color(255, 255, 255, 200)
+
+    angle = CurTime! * 2
+    cos_a = math.cos(angle)
+    sin_a = math.sin(angle)
+
+    points = {
+      {0, -8}
+      {-5, 0}
+      {5, 0}
+    }
+
+    surface.SetDrawColor color
+    for p in *points
+      ox, oy = p[1], p[2]
+      rx = ox * cos_a - oy * sin_a
+      ry = ox * sin_a + oy * cos_a
+      surface.DrawRect (x + rx - 1), (y + ry - 1), 3, 3

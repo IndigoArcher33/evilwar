@@ -230,8 +230,8 @@ class Enforcer extends EvilRP_Weapon
     Damage: 75
     Delay: 1.25
       
-    Range: 1300
-    Accuracy: 24
+    Range: 2000
+    Accuracy: 5
 
     RangeModifier: 0.95
 
@@ -244,7 +244,7 @@ class Enforcer extends EvilRP_Weapon
 
     Reload: {
       Sound: "Weapon_SMG1.Reload"
-      Amount: 2
+      Amount: 6
       Shotgun: true
       DontFinishPump: true
     }
