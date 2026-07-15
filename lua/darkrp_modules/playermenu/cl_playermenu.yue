@@ -239,7 +239,7 @@ GAMEMODE.CreatePlayerMenu = =>
     txt_h = txt_obj\GetTall!
     -- draw scribe object
     x = (@GetWide! / 2) + (30 * math.cos(ct))
-    y = @GetTall! * .75
+    y = @GetTall! * .775
     txt_obj\Draw x, y, alpha, TEXT_ALIGN_CENTER
 
 

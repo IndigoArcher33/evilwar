@@ -417,8 +417,8 @@ class Owler extends EvilRP_Weapon
     Damage: 20
     Delay: 60 / 1000
 
-    Range: 100
-    Accuracy: 12
+    Range: 200
+    Accuracy: 8
 
     RangeModifier: 0.55
 
@@ -609,7 +609,7 @@ class Subjugator extends EvilRP_Weapon
     Delay: 1
 
     Range: 1500
-    Accuracy: 12
+    Accuracy: 4
 
     RangeModifier: 0.99
 
@@ -656,7 +656,7 @@ class Trooper extends EvilRP_Weapon
     Delay: 60 / 400
 
     Range: 1300
-    Accuracy: 12
+    Accuracy: 4
 
     RangeModifier: 0.99
 

@@ -763,8 +763,8 @@ do -- 394
 			DefaultClip = 40, -- 415
 			Damage = 20, -- 417
 			Delay = 60 / 1000, -- 418
-			Range = 100, -- 420
-			Accuracy = 12, -- 421
+			Range = 200, -- 420
+			Accuracy = 8, -- 421
 			RangeModifier = 0.55, -- 423
 			Recoil = { -- 426
 				MinAng = Angle(2.3, -0.5, 0), -- 426
@@ -1081,7 +1081,7 @@ do -- 585
 			Damage = 65, -- 608
 			Delay = 1, -- 609
 			Range = 1500, -- 611
-			Accuracy = 12, -- 612
+			Accuracy = 4, -- 612
 			RangeModifier = 0.99, -- 614
 			Recoil = { -- 617
 				MinAng = Angle(10, -0.9, 0), -- 617
@@ -1159,7 +1159,7 @@ do -- 632
 			Damage = 65, -- 655
 			Delay = 60 / 400, -- 656
 			Range = 1300, -- 658
-			Accuracy = 12, -- 659
+			Accuracy = 4, -- 659
 			RangeModifier = 0.99, -- 661
 			Recoil = { -- 664
 				MinAng = Angle(3.8, -0.9, 0), -- 664

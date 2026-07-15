@@ -277,7 +277,7 @@ GAMEMODE.CreatePlayerMenu = function(self) -- 31
 		txt_w = txt_obj:GetWide() -- 238
 		txt_h = txt_obj:GetTall() -- 239
 		x = (self:GetWide() / 2) + (30 * math.cos(ct)) -- 241
-		y = self:GetTall() * .75 -- 242
+		y = self:GetTall() * .775 -- 242
 		return txt_obj:Draw(x, y, alpha, TEXT_ALIGN_CENTER) -- 243
 	end -- 175
 	ECP.pmenu.KILL = function(self) -- 246
