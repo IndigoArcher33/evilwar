@@ -376,10 +376,19 @@ class Tyrant extends OS
     }
     [":stocks"]: {
       Callback: (ply, term, args) =>
+        @cache or= {}
         stocks = GAMEMODE.Stocks
-        gterm\Broadcast term, "STOCKS OF THE LAND:", GT_COL_INFO
-        gterm\Broadcast term, "  #{k}| #{v} units", GT_COL_SUCC for k, v in pairs(stocks)
-        gterm\Broadcast term, "end list", GT_COL_INTL
+        with gterm
+          \Broadcast term, "STOCKS OF THE LAND:", GT_COL_INFO
+          for k, v in pairs(stocks)
+            if v >0
+              etab = @cache[k]
+              unless etab
+                etab = scripted_ents.Get(k) or weapons.Get(k)
+                @cache[k] = etab
+              display = etab.PrintName or k
+              \Broadcast term, "  #{display}: #{v} units", GT_COL_SUCC
+          \Broadcast term, "end list", GT_COL_INTL
       help: "View what you own."
     }  
     [":die"]: {
