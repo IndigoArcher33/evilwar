@@ -396,7 +396,7 @@ do -- 96
 				mv:SetMaxSpeed(speed) -- 330
 				mv:SetMaxClientSpeed(speed) -- 331
 			end -- 326
-			if self:GetAiming() then -- 332
+			if self:GetAiming() and not self:GetLowered() then -- 332
 				local aim_speed = ply:GetWalkSpeed() * 0.3 -- 333
 				mv:SetMaxSpeed(math.min(mv:GetMaxSpeed(), aim_speed)) -- 334
 				return mv:SetMaxClientSpeed(math.min(mv:GetMaxClientSpeed(), aim_speed)) -- 335
@@ -1415,34 +1415,37 @@ if CLIENT then -- 1061
 		if not (weapon.GetAiming and weapon:GetAiming()) then -- 1077
 			return -- 1077
 		end -- 1077
-		local width, height = ScrW(), ScrH() -- 1079
-		local x = width / 2 -- 1080
-		local y = height / 2 -- 1081
-		local color = Color(255, 255, 255, 200) -- 1083
-		local angle = CurTime() * 2 -- 1085
-		local cos_a = math.cos(angle) -- 1086
-		local sin_a = math.sin(angle) -- 1087
-		local points = { -- 1090
-			{ -- 1090
-				0, -- 1090
-				-8 -- 1090
-			}, -- 1090
+		if not (weapon.GetLowered and not weapon:GetLowered()) then -- 1078
+			return -- 1078
+		end -- 1078
+		local width, height = ScrW(), ScrH() -- 1080
+		local x = width / 2 -- 1081
+		local y = height / 2 -- 1082
+		local color = Color(255, 255, 255, 200) -- 1084
+		local angle = CurTime() * 2 -- 1086
+		local cos_a = math.cos(angle) -- 1087
+		local sin_a = math.sin(angle) -- 1088
+		local points = { -- 1091
 			{ -- 1091
-				-5, -- 1091
-				0 -- 1091
+				0, -- 1091
+				-8 -- 1091
 			}, -- 1091
 			{ -- 1092
-				5, -- 1092
+				-5, -- 1092
 				0 -- 1092
-			} -- 1092
-		} -- 1089
-		surface.SetDrawColor(color) -- 1095
-		for _index_0 = 1, #points do -- 1096
-			local p = points[_index_0] -- 1096
-			local ox, oy = p[1], p[2] -- 1097
-			local rx = ox * cos_a - oy * sin_a -- 1098
-			local ry = ox * sin_a + oy * cos_a -- 1099
-			surface.DrawRect((x + rx - 1), (y + ry - 1), 3, 3) -- 1100
-		end -- 1100
-	end) -- 1100
+			}, -- 1092
+			{ -- 1093
+				5, -- 1093
+				0 -- 1093
+			} -- 1093
+		} -- 1090
+		surface.SetDrawColor(color) -- 1096
+		for _index_0 = 1, #points do -- 1097
+			local p = points[_index_0] -- 1097
+			local ox, oy = p[1], p[2] -- 1098
+			local rx = ox * cos_a - oy * sin_a -- 1099
+			local ry = ox * sin_a + oy * cos_a -- 1100
+			surface.DrawRect((x + rx - 1), (y + ry - 1), 3, 3) -- 1101
+		end -- 1101
+	end) -- 1101
 end -- 1061

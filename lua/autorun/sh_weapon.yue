@@ -329,7 +329,7 @@ global class EvilRP_Weapon extends WEAPON
       speed = math.Remap fraction, 0, 1, min, ply\GetRunSpeed!
       mv\SetMaxSpeed speed
       mv\SetMaxClientSpeed speed
-    if @GetAiming!
+    if @GetAiming! and not @GetLowered!
       aim_speed = ply\GetWalkSpeed! * 0.3
       mv\SetMaxSpeed math.min(mv\GetMaxSpeed!, aim_speed)
       mv\SetMaxClientSpeed math.min(mv\GetMaxClientSpeed!, aim_speed)
@@ -1075,6 +1075,7 @@ if CLIENT
     weapon = ply\GetActiveWeapon!
     return unless IsValid(weapon)
     return unless weapon.GetAiming and weapon\GetAiming!
+    return unless weapon.GetLowered and not weapon\GetLowered!
 
     width, height = ScrW!, ScrH!
     x = width / 2
