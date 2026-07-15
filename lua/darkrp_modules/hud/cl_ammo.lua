@@ -1,4 +1,4 @@
--- [yue]: /mnt/c/Program Files (x86)/Steam/steamapps/common/GarrysMod/garrysmod/addons/DarkRPmodification/lua/darkrp_modules/hud/cl_ammo.yue
+-- [yue]: darkrp_modules\hud\cl_ammo.yue
 local draw_ammo -- 1
 draw_ammo = function() -- 1
 	local ply = LocalPlayer() -- 2

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/weapons_evil/cl_holster.yue
+-- [yue]: darkrp_modules\weapons_evil\cl_holster.yue
 local toggle_holster_pressed -- 1
 local toggle_holster_think -- 2
 toggle_holster_think = function(self) -- 2

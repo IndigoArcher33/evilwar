@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/gui/cl_chatbox.yue
+-- [yue]: darkrp_modules\gui\cl_chatbox.yue
 DEFINE_BASECLASS("EditablePanel") -- 1
 local pmeta = FindMetaTable("Panel") -- 5
 pmeta.SetCloseOnPause = function(self) -- 6
@@ -91,8 +91,10 @@ local PANEL = { -- 36
 				pnl:SetTextColor(nil) -- 73
 				return self:SaveTabConfig() -- 74
 			end -- 71
-			local _obj_0 = self.Buttons -- 75
-			_obj_0[#_obj_0 + 1] = button -- 75
+			do -- 75
+				local _obj_0 = self.Buttons -- 75
+				_obj_0[#_obj_0 + 1] = button -- 75
+			end -- 75
 		end -- 75
 		self.Input = self:Add("EvilRP_ChatInput") -- 76
 		do -- 77

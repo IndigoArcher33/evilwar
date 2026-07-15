@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/weapons_evil/sh_hands.yue
+-- [yue]: darkrp_modules\weapons_evil\sh_hands.yue
 local Hand_Break -- 1
 do -- 1
 	local _class_0 -- 1
@@ -184,19 +184,21 @@ do -- 11
 			local anim = anims[math.random(1, #anims)] -- 106
 			vm:SendViewModelMatchingSequence(vm:LookupSequence(anim[1])) -- 107
 			if trace.Hit then -- 108
-				local _exp_0 = trace.MatType -- 109
-				if MAT_FLESH == _exp_0 or MAT_BLOODYFLESH == _exp_0 or MAT_ALIENFLESH == _exp_0 then -- 110
-				else -- 113
-					if SERVER then -- 114
-						local dmg = DamageInfo() -- 115
-						dmg:SetDamageType(DMG_CLUB) -- 117
-						dmg:SetDamagePosition(trace.HitPos) -- 118
-						dmg:SetAttacker(self.Owner) -- 119
-						dmg:SetInflictor(self) -- 120
-						dmg:SetDamage(5) -- 121
-						self.Owner:TakeDamageInfo(dmg) -- 122
-					end -- 114
-					self.Owner:EmitSound("Hand_Break") -- 123
+				do -- 109
+					local _exp_0 = trace.MatType -- 109
+					if MAT_FLESH == _exp_0 or MAT_BLOODYFLESH == _exp_0 or MAT_ALIENFLESH == _exp_0 then -- 110
+					else -- 113
+						if SERVER then -- 114
+							local dmg = DamageInfo() -- 115
+							dmg:SetDamageType(DMG_CLUB) -- 117
+							dmg:SetDamagePosition(trace.HitPos) -- 118
+							dmg:SetAttacker(self.Owner) -- 119
+							dmg:SetInflictor(self) -- 120
+							dmg:SetDamage(5) -- 121
+							self.Owner:TakeDamageInfo(dmg) -- 122
+						end -- 114
+						self.Owner:EmitSound("Hand_Break") -- 123
+					end -- 123
 				end -- 123
 			end -- 108
 			return hit, trace -- 124
@@ -361,83 +363,85 @@ do -- 131
 	BoneclawsHit_Heavy = _class_0 -- 131
 end -- 133
 local Boneclaws -- 135
-local _class_0 -- 135
-local _parent_0 = Hands -- 135
-local _base_0 = { -- 135
-	PrintName = "Bone Claws", -- 137
-	CanLower = function(self) -- 137
-		return false -- 137
-	end, -- 138
-	Primary = { -- 139
-		ChargeTime = 0.4, -- 139
-		Light = { -- 142
-			Damage = 10, -- 142
-			DamageType = DMG_CLUB, -- 143
-			Range = 50, -- 145
-			Delay = 0.3, -- 146
-			Act = { -- 148
-				ACT_VM_HITCENTER, -- 148
-				ACT_VM_MISSCENTER -- 148
-			}, -- 148
-			Sound = { -- 150
-				"BoneclawsHit_Light", -- 150
-				"npc/vort/claw_swing1.wav" -- 150
-			} -- 150
-		}, -- 141
-		Heavy = { -- 154
-			Damage = 20, -- 154
-			DamageType = DMG_CLUB, -- 155
-			Range = 70, -- 157
-			Delay = 1, -- 158
-			Act = ACT_VM_MISSCENTER, -- 160
-			Sound = { -- 162
-				"BoneclawsHit_Heavy", -- 162
-				"npc/vort/claw_swing1.wav" -- 162
-			} -- 162
-		} -- 153
-	}, -- 165
-	GenericAttack = function(self, ...) -- 165
-		_class_0.__parent.__base.GenericAttack(self, ...) -- 166
-		return self:GetOwner():DoAnimationEvent(ACT_GMOD_GESTURE_RANGE_FRENZY) -- 167
-	end -- 135
-} -- 135
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 167
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 135
-		_base_0[_key_0] = _val_0 -- 135
-	end -- 135
-end -- 167
-if _base_0.__index == nil then -- 135
-	_base_0.__index = _base_0 -- 135
-end -- 167
-setmetatable(_base_0, _parent_0.__base) -- 135
-_class_0 = setmetatable({ -- 135
-	__init = function(self, ...) -- 135
-		return _class_0.__parent.__init(self, ...) -- 135
-	end, -- 135
-	__base = _base_0, -- 135
-	__name = "Boneclaws", -- 135
-	__parent = _parent_0 -- 135
-}, { -- 135
-	__index = function(cls, name) -- 135
-		local val = rawget(_base_0, name) -- 135
-		if val == nil then -- 135
-			local parent = rawget(cls, "__parent") -- 135
-			if parent then -- 135
-				return parent[name] -- 135
-			end -- 135
-		else -- 135
-			return val -- 135
+do -- 135
+	local _class_0 -- 135
+	local _parent_0 = Hands -- 135
+	local _base_0 = { -- 135
+		PrintName = "Bone Claws", -- 137
+		CanLower = function(self) -- 137
+			return false -- 137
+		end, -- 138
+		Primary = { -- 139
+			ChargeTime = 0.4, -- 139
+			Light = { -- 142
+				Damage = 10, -- 142
+				DamageType = DMG_CLUB, -- 143
+				Range = 50, -- 145
+				Delay = 0.3, -- 146
+				Act = { -- 148
+					ACT_VM_HITCENTER, -- 148
+					ACT_VM_MISSCENTER -- 148
+				}, -- 148
+				Sound = { -- 150
+					"BoneclawsHit_Light", -- 150
+					"npc/vort/claw_swing1.wav" -- 150
+				} -- 150
+			}, -- 141
+			Heavy = { -- 154
+				Damage = 20, -- 154
+				DamageType = DMG_CLUB, -- 155
+				Range = 70, -- 157
+				Delay = 1, -- 158
+				Act = ACT_VM_MISSCENTER, -- 160
+				Sound = { -- 162
+					"BoneclawsHit_Heavy", -- 162
+					"npc/vort/claw_swing1.wav" -- 162
+				} -- 162
+			} -- 153
+		}, -- 165
+		GenericAttack = function(self, ...) -- 165
+			_class_0.__parent.__base.GenericAttack(self, ...) -- 166
+			return self:GetOwner():DoAnimationEvent(ACT_GMOD_GESTURE_RANGE_FRENZY) -- 167
 		end -- 135
-	end, -- 135
-	__call = function(cls, ...) -- 135
-		local _self_0 = setmetatable({ }, _base_0) -- 135
-		cls.__init(_self_0, ...) -- 135
-		return _self_0 -- 135
+	} -- 135
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 167
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 135
+			_base_0[_key_0] = _val_0 -- 135
+		end -- 135
+	end -- 167
+	if _base_0.__index == nil then -- 135
+		_base_0.__index = _base_0 -- 135
+	end -- 167
+	setmetatable(_base_0, _parent_0.__base) -- 135
+	_class_0 = setmetatable({ -- 135
+		__init = function(self, ...) -- 135
+			return _class_0.__parent.__init(self, ...) -- 135
+		end, -- 135
+		__base = _base_0, -- 135
+		__name = "Boneclaws", -- 135
+		__parent = _parent_0 -- 135
+	}, { -- 135
+		__index = function(cls, name) -- 135
+			local val = rawget(_base_0, name) -- 135
+			if val == nil then -- 135
+				local parent = rawget(cls, "__parent") -- 135
+				if parent then -- 135
+					return parent[name] -- 135
+				end -- 135
+			else -- 135
+				return val -- 135
+			end -- 135
+		end, -- 135
+		__call = function(cls, ...) -- 135
+			local _self_0 = setmetatable({ }, _base_0) -- 135
+			cls.__init(_self_0, ...) -- 135
+			return _self_0 -- 135
+		end -- 135
+	}) -- 135
+	_base_0.__class = _class_0 -- 135
+	if _parent_0.__inherited then -- 135
+		_parent_0.__inherited(_parent_0, _class_0) -- 135
 	end -- 135
-}) -- 135
-_base_0.__class = _class_0 -- 135
-if _parent_0.__inherited then -- 135
-	_parent_0.__inherited(_parent_0, _class_0) -- 135
-end -- 135
-Boneclaws = _class_0 -- 135
-return _class_0 -- 167
+	Boneclaws = _class_0 -- 135
+	return _class_0 -- 167
+end -- 167

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/hud/cl_doors.yue
+-- [yue]: darkrp_modules\hud\cl_doors.yue
 local is_door -- 1
 is_door = function(ent) -- 1
 	local _exp_0 = ent:GetClass() -- 2

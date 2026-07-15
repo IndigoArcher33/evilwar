@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/computers/sh_entity.yue
+-- [yue]: darkrp_modules\computers\sh_entity.yue
 GT_COL_NIL = 0 -- 3
 GT_COL_MSG = 1 -- 4
 GT_COL_WRN = 2 -- 5

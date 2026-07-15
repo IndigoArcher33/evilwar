@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/ghosts/sv_ghosts.yue
+-- [yue]: darkrp_modules\ghosts\sv_ghosts.yue
 local ghostpoints = { -- 2
 	["rp_liverfailure_kidneydagger"] = { -- 3
 		Vector(4719, 1913, 337), -- 3

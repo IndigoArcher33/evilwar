@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/donations/sh_donations.yue
+-- [yue]: darkrp_modules\donations\sh_donations.yue
 local meta = FindMetaTable("Player") -- 1
 meta.HasDonation = function(self, donation) -- 3
 	if self:IsBot() then -- 4
@@ -18,8 +18,10 @@ meta.AddDonation = function(self, donation, dont_save) -- 9
 		return -- 10
 	end -- 10
 	if not table.HasValue(self.donations, donation) then -- 11
-		local _obj_0 = self.donations -- 11
-		_obj_0[#_obj_0 + 1] = donation -- 11
+		do -- 11
+			local _obj_0 = self.donations -- 11
+			_obj_0[#_obj_0 + 1] = donation -- 11
+		end -- 11
 	end -- 11
 	if not dont_save then -- 12
 		return self:SaveDonations() -- 12

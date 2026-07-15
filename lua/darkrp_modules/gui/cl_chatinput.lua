@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/gui/cl_chatinput.yue
+-- [yue]: darkrp_modules\gui\cl_chatinput.yue
 local PANEL = { -- 2
 	Init = function(self) -- 2
 		self:SetFont("Spleen_Label_Small") -- 3

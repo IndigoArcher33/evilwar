@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/scribe/cl_stutter.yue
+-- [yue]: darkrp_modules\scribe\cl_stutter.yue
 local gibberish = { -- 2
 	"#", -- 2
 	"@", -- 2

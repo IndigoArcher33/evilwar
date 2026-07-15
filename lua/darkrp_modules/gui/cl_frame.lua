@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/gui/cl_frame.yue
+-- [yue]: darkrp_modules\gui\cl_frame.yue
 local PANEL = { } -- 1
 DEFINE_BASECLASS("EditablePanel") -- 2
 AccessorFunc(PANEL, "ToggleKey", "ToggleKey") -- 4
@@ -23,16 +23,18 @@ for k, v in pairs({ -- 8
 		self:SetTall(self:GetTall() + 24) -- 20
 		self:DockPadding(padding, padding + 24, padding, padding) -- 21
 		if self.m_bCloseOnPause then -- 22
-			local _with_0 = self:Add("DButton") -- 23
-			self.ButtonClose = _with_0 -- 23
-			_with_0:SetSize(24, 24) -- 24
-			_with_0:SetFont("marlett") -- 25
-			_with_0:SetText("r") -- 26
-			_with_0:PerformLayout() -- 27
-			_with_0.Paint = function() end -- 28
-			_with_0.DoClick = function(pnl) -- 29
-				return self:Close() -- 29
-			end -- 29
+			do -- 23
+				local _with_0 = self:Add("DButton") -- 23
+				self.ButtonClose = _with_0 -- 23
+				_with_0:SetSize(24, 24) -- 24
+				_with_0:SetFont("marlett") -- 25
+				_with_0:SetText("r") -- 26
+				_with_0:PerformLayout() -- 27
+				_with_0.Paint = function() end -- 28
+				_with_0.DoClick = function(pnl) -- 29
+					return self:Close() -- 29
+				end -- 29
+			end -- 23
 		end -- 22
 		do -- 30
 			local _with_0 = self:Add("DLabel") -- 30

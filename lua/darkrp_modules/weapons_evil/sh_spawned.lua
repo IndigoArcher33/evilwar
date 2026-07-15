@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/weapons_evil/sh_spawned.yue
+-- [yue]: darkrp_modules\weapons_evil\sh_spawned.yue
 local Equip_Weapon -- 1
 do -- 1
 	local _class_0 -- 1

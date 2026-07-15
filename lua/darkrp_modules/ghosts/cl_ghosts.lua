@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/ghosts/cl_ghosts.yue
+-- [yue]: darkrp_modules\ghosts\cl_ghosts.yue
 local ghost_invisibility -- 1
 ghost_invisibility = function(ply) -- 1
 	local lp = LocalPlayer() -- 2

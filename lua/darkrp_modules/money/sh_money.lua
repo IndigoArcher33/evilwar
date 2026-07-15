@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/money/sh_money.yue
+-- [yue]: darkrp_modules\money\sh_money.yue
 local meta = FindMetaTable("Player") -- 1
 meta.AddMoney = function(self, amt, src) -- 2
 	if src == nil then -- 2

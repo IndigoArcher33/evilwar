@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/equipment/sh_equipment.yue
+-- [yue]: darkrp_modules\equipment\sh_equipment.yue
 EQUIP_SLOTS = { -- 2
 	"torso", -- 2
 	"mask" -- 3

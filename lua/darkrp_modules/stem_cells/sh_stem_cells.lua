@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/stem_cells/sh_stem_cells.yue
+-- [yue]: darkrp_modules\stem_cells\sh_stem_cells.yue
 local meta = FindMetaTable("Player") -- 1
 for k, v in pairs({ -- 4
 	AddStemCells = function(self, amt) -- 4

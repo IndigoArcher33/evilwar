@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/jumpscares/cl_hud.yue
+-- [yue]: darkrp_modules\jumpscares\cl_hud.yue
 local random, min = math.random, math.min -- 1
 local hallucinations = { -- 4
 	Material("placenta/postal1.png"), -- 4

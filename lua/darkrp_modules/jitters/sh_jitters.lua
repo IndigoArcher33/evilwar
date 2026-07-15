@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/jitters/sh_jitters.yue
+-- [yue]: darkrp_modules\jitters\sh_jitters.yue
 local hp_threshold = 30 -- 1
 local intensity_max = 5 -- 2
 local disabled = false -- 3

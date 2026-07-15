@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/chat_extend/sh_chat.yue
+-- [yue]: darkrp_modules\chat_extend\sh_chat.yue
 TAB_LOOC = 2 ^ 1 -- 1
 TAB_OOC = 2 ^ 2 -- 2
 TAB_IC = 2 ^ 3 -- 3
@@ -80,13 +80,15 @@ for k, v in pairs({ -- 53
 		local snd -- 69
 		if jt.speech_sounds then -- 70
 			local sounds = jt.speech_sounds -- 71
-			local _exp_0 = type(sounds) -- 72
-			if "string" == _exp_0 then -- 73
-				snd = sounds -- 74
-			elseif "table" == _exp_0 then -- 75
-				snd = sounds[math.random(1, #sounds)] -- 76
-			elseif "function" == _exp_0 then -- 77
-				snd = sounds(self) -- 78
+			do -- 72
+				local _exp_0 = type(sounds) -- 72
+				if "string" == _exp_0 then -- 73
+					snd = sounds -- 74
+				elseif "table" == _exp_0 then -- 75
+					snd = sounds[math.random(1, #sounds)] -- 76
+				elseif "function" == _exp_0 then -- 77
+					snd = sounds(self) -- 78
+				end -- 78
 			end -- 78
 		end -- 70
 		self:SpeechGesture() -- 79
@@ -94,13 +96,15 @@ for k, v in pairs({ -- 53
 		local _with_0 = self.speech_sound -- 81
 		local pitch -- 82
 		if jt.speech_pitch then -- 83
-			local _exp_0 = type(jt.speech_pitch) -- 84
-			if "table" == _exp_0 then -- 85
-				pitch = math.random(jt.speech_pitch[1], jt.speech_pitch[2]) -- 86
-			elseif "number" == _exp_0 then -- 87
-				pitch = jt.speech_pitch -- 88
-			else -- 90
-				pitch = math.random(85, 115) -- 90
+			do -- 84
+				local _exp_0 = type(jt.speech_pitch) -- 84
+				if "table" == _exp_0 then -- 85
+					pitch = math.random(jt.speech_pitch[1], jt.speech_pitch[2]) -- 86
+				elseif "number" == _exp_0 then -- 87
+					pitch = jt.speech_pitch -- 88
+				else -- 90
+					pitch = math.random(85, 115) -- 90
+				end -- 90
 			end -- 90
 		else -- 92
 			pitch = math.random(85, 115) -- 92

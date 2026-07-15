@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/crime/sv_death.yue
+-- [yue]: darkrp_modules\crime\sv_death.yue
 local justice -- 1
 justice = function(ply, attacker, dmg) -- 1
 	if not (ply and IsValid(ply)) then -- 2

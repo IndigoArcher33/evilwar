@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/wood/sh_wood.yue
+-- [yue]: darkrp_modules\wood\sh_wood.yue
 local Submit_Wood -- 1
 do -- 1
 	local _class_0 -- 1
@@ -128,57 +128,59 @@ do -- 4
 	Wood = _class_0 -- 4
 end -- 37
 local Scrap -- 38
-local _class_0 -- 38
-local _parent_0 = Wood -- 38
-local _base_0 = { -- 38
-	Model = Model("models/gibs/wood_gib01a.mdl"), -- 41
-	PrintName = "Scrap Wood", -- 42
-	Description = "A rough wedge of a tree's flesh.", -- 43
-	UseText = { -- 44
-		"%s swallows splinters trying to gnaw on a hunk of wood." -- 44
-	}, -- 47
-	BiteDamage = 25, -- 49
-	Precursor = { -- 50
-		wood = 1 -- 50
+do -- 38
+	local _class_0 -- 38
+	local _parent_0 = Wood -- 38
+	local _base_0 = { -- 38
+		Model = Model("models/gibs/wood_gib01a.mdl"), -- 41
+		PrintName = "Scrap Wood", -- 42
+		Description = "A rough wedge of a tree's flesh.", -- 43
+		UseText = { -- 44
+			"%s swallows splinters trying to gnaw on a hunk of wood." -- 44
+		}, -- 47
+		BiteDamage = 25, -- 49
+		Precursor = { -- 50
+			wood = 1 -- 50
+		} -- 38
 	} -- 38
-} -- 38
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 50
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 38
-		_base_0[_key_0] = _val_0 -- 38
-	end -- 38
-end -- 50
-if _base_0.__index == nil then -- 38
-	_base_0.__index = _base_0 -- 38
-end -- 50
-setmetatable(_base_0, _parent_0.__base) -- 38
-_class_0 = setmetatable({ -- 38
-	__init = function(self, ...) -- 38
-		return _class_0.__parent.__init(self, ...) -- 38
-	end, -- 38
-	__base = _base_0, -- 38
-	__name = "Scrap", -- 38
-	__parent = _parent_0 -- 38
-}, { -- 38
-	__index = function(cls, name) -- 38
-		local val = rawget(_base_0, name) -- 38
-		if val == nil then -- 38
-			local parent = rawget(cls, "__parent") -- 38
-			if parent then -- 38
-				return parent[name] -- 38
-			end -- 38
-		else -- 38
-			return val -- 38
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 50
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 38
+			_base_0[_key_0] = _val_0 -- 38
 		end -- 38
-	end, -- 38
-	__call = function(cls, ...) -- 38
-		local _self_0 = setmetatable({ }, _base_0) -- 38
-		cls.__init(_self_0, ...) -- 38
-		return _self_0 -- 38
+	end -- 50
+	if _base_0.__index == nil then -- 38
+		_base_0.__index = _base_0 -- 38
+	end -- 50
+	setmetatable(_base_0, _parent_0.__base) -- 38
+	_class_0 = setmetatable({ -- 38
+		__init = function(self, ...) -- 38
+			return _class_0.__parent.__init(self, ...) -- 38
+		end, -- 38
+		__base = _base_0, -- 38
+		__name = "Scrap", -- 38
+		__parent = _parent_0 -- 38
+	}, { -- 38
+		__index = function(cls, name) -- 38
+			local val = rawget(_base_0, name) -- 38
+			if val == nil then -- 38
+				local parent = rawget(cls, "__parent") -- 38
+				if parent then -- 38
+					return parent[name] -- 38
+				end -- 38
+			else -- 38
+				return val -- 38
+			end -- 38
+		end, -- 38
+		__call = function(cls, ...) -- 38
+			local _self_0 = setmetatable({ }, _base_0) -- 38
+			cls.__init(_self_0, ...) -- 38
+			return _self_0 -- 38
+		end -- 38
+	}) -- 38
+	_base_0.__class = _class_0 -- 38
+	if _parent_0.__inherited then -- 38
+		_parent_0.__inherited(_parent_0, _class_0) -- 38
 	end -- 38
-}) -- 38
-_base_0.__class = _class_0 -- 38
-if _parent_0.__inherited then -- 38
-	_parent_0.__inherited(_parent_0, _class_0) -- 38
-end -- 38
-Scrap = _class_0 -- 38
-return _class_0 -- 50
+	Scrap = _class_0 -- 38
+	return _class_0 -- 50
+end -- 50

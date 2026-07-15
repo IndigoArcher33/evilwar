@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/screenspace/cl_screenspace.yue
+-- [yue]: darkrp_modules\screenspace\cl_screenspace.yue
 local max = math.max -- 1
 local blend_sets = { -- 3
 	HPPD = { -- 4

@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/crime/sh_player.yue
+-- [yue]: darkrp_modules\crime\sh_player.yue
 local meta = FindMetaTable("Player") -- 1
 for k, v in pairs({ -- 4
 	MakeWanted = function(self, dur, why) -- 4
@@ -21,12 +21,14 @@ for k, v in pairs({ -- 4
 						_continue_0 = true -- 12
 						break -- 12
 					end -- 12
-					local _exp_0 = term:GetOS() -- 13
-					if "public" == _exp_0 then -- 14
-						net.Start("evilrp_terminal_flicker") -- 15
-						net.WriteUInt(16, term:EntIndex()) -- 16
-						net.Broadcast() -- 17
-						gterm:Broadcast(term, tostring(self:Name()) .. " IS WANTED FOR " .. tostring(why:upper()) .. ".", GT_COL_ERR) -- 18
+					do -- 13
+						local _exp_0 = term:GetOS() -- 13
+						if "public" == _exp_0 then -- 14
+							net.Start("evilrp_terminal_flicker") -- 15
+							net.WriteUInt(16, term:EntIndex()) -- 16
+							net.Broadcast() -- 17
+							gterm:Broadcast(term, tostring(self:Name()) .. " IS WANTED FOR " .. tostring(why:upper()) .. ".", GT_COL_ERR) -- 18
+						end -- 18
 					end -- 18
 					_continue_0 = true -- 12
 				until true -- 18

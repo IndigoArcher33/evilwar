@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/pocket_evil/cl_menu.yue
+-- [yue]: darkrp_modules\pocket_evil\cl_menu.yue
 local meta = FindMetaTable("Player") -- 1
 if not GAMEMODE.pocket then -- 3
 	GAMEMODE.pocket = { } -- 3
@@ -129,7 +129,9 @@ GAMEMODE.PMUpdateInventory = function(self) -- 17
 			end -- 71
 			icon.item = item -- 107
 		end -- 37
-		local _obj_0 = ECP.pmenu.icons -- 109
-		_obj_0[#_obj_0 + 1] = icon -- 109
+		do -- 109
+			local _obj_0 = ECP.pmenu.icons -- 109
+			_obj_0[#_obj_0 + 1] = icon -- 109
+		end -- 109
 	end -- 109
 end -- 17

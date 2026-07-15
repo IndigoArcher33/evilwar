@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/playermenu/cl_playermenu.yue
+-- [yue]: darkrp_modules\playermenu\cl_playermenu.yue
 if not ECP then -- 2
 	ECP = { } -- 2
 end -- 2
@@ -270,88 +270,96 @@ GAMEMODE.CreatePlayerMenu = function(self) -- 31
 		txt_h = txt_obj:GetTall() -- 228
 		x = (self:GetWide() / 2) + (30 * math.cos(ct)) -- 230
 		y = self:GetTall() * .75 -- 231
-		return txt_obj:Draw(x, y, alpha, TEXT_ALIGN_CENTER) -- 232
+		txt_obj:Draw(x, y, alpha, TEXT_ALIGN_CENTER) -- 232
+		local teeth = lp:GetTeeth() -- 234
+		txt = "i have " .. tostring(teeth) .. " Teeth in my mouth" -- 235
+		txt_obj = scribe.Parse("<stutter><col=0,200,0><wiggle=" .. tostring(5 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt), nil) -- 237
+		txt_w = txt_obj:GetWide() -- 238
+		txt_h = txt_obj:GetTall() -- 239
+		x = (self:GetWide() / 2) + (30 * math.cos(ct)) -- 241
+		y = self:GetTall() * .75 -- 242
+		return txt_obj:Draw(x, y, alpha, TEXT_ALIGN_CENTER) -- 243
 	end -- 175
-	ECP.pmenu.KILL = function(self) -- 234
-		self:Remove() -- 235
-		self:OnClose() -- 236
-		self = nil -- 237
-		return gui.HideGameUI() -- 238
-	end -- 234
-	local rotspeed = 0.25 -- 240
-	local rotating = true -- 241
-	local rotime = 0 -- 242
-	ECP.pmenu.Think = function(self) -- 244
-		if not moused then -- 245
-			rotime = rotime + FrameTime() -- 245
-		end -- 245
-		if self.icons then -- 246
-			local angle = rotime * rotspeed % (2 * math.pi) -- 247
-			local offset = ((2 * math.pi) / #table.GetKeys(self.icons)) -- 248
-			local idx = 0 -- 249
-			for k, v in pairs(self.icons) do -- 250
-				local offset_angle = angle + (offset * (k - 1)) -- 251
-				local hx = math.cos(offset_angle) * (ScrW() * 0.2) -- 252
-				local hy = math.sin(offset_angle) * (ScrH() * 0.35) -- 253
-				local item = v.item -- 254
-				if not moused then -- 255
-					v:SetPos((self:GetWide() / 2.05) - hx, (self:GetTall() / 2.15) - hy) -- 256
-				end -- 255
-			end -- 256
-		end -- 246
-		local ct = CurTime() -- 257
-		if not self.TryClose then -- 258
-			self.TryClose = ct + 0.2 -- 258
-		end -- 258
-		if ct >= self.TryClose then -- 259
-			if not lp:Alive() then -- 260
-				self:KILL() -- 260
-			end -- 260
-			if input.IsKeyDown(KEY_ESCAPE) then -- 261
-				self:KILL() -- 261
-			end -- 261
-			if input.IsKeyDown(KEY_F3) then -- 262
-				self:KILL() -- 262
-			end -- 262
-			if input.IsKeyDown(KEY_R) then -- 263
-				self:KILL() -- 263
-			end -- 263
-			local gx = gui.MouseX() -- 264
-			local gy = gui.MouseY() -- 265
-			sw = ScrW() -- 266
-			sh = ScrH() -- 267
-			if gx < (sw * .2) then -- 268
-				self:KILL() -- 268
+	ECP.pmenu.KILL = function(self) -- 246
+		self:Remove() -- 247
+		self:OnClose() -- 248
+		self = nil -- 249
+		return gui.HideGameUI() -- 250
+	end -- 246
+	local rotspeed = 0.25 -- 252
+	local rotating = true -- 253
+	local rotime = 0 -- 254
+	ECP.pmenu.Think = function(self) -- 256
+		if not moused then -- 257
+			rotime = rotime + FrameTime() -- 257
+		end -- 257
+		if self.icons then -- 258
+			local angle = rotime * rotspeed % (2 * math.pi) -- 259
+			local offset = ((2 * math.pi) / #table.GetKeys(self.icons)) -- 260
+			local idx = 0 -- 261
+			for k, v in pairs(self.icons) do -- 262
+				local offset_angle = angle + (offset * (k - 1)) -- 263
+				local hx = math.cos(offset_angle) * (ScrW() * 0.2) -- 264
+				local hy = math.sin(offset_angle) * (ScrH() * 0.35) -- 265
+				local item = v.item -- 266
+				if not moused then -- 267
+					v:SetPos((self:GetWide() / 2.05) - hx, (self:GetTall() / 2.15) - hy) -- 268
+				end -- 267
 			end -- 268
-			if gy < (sh * .1) then -- 269
-				self:KILL() -- 269
-			end -- 269
-			if gx > (sw * .8) then -- 270
-				self:KILL() -- 270
-			end -- 270
-			if gy > (sh * .9) then -- 271
-				return self:KILL() -- 271
-			end -- 271
-		end -- 259
-	end -- 244
-	return self:PMUpdateInventory() -- 272
+		end -- 258
+		local ct = CurTime() -- 269
+		if not self.TryClose then -- 270
+			self.TryClose = ct + 0.2 -- 270
+		end -- 270
+		if ct >= self.TryClose then -- 271
+			if not lp:Alive() then -- 272
+				self:KILL() -- 272
+			end -- 272
+			if input.IsKeyDown(KEY_ESCAPE) then -- 273
+				self:KILL() -- 273
+			end -- 273
+			if input.IsKeyDown(KEY_F3) then -- 274
+				self:KILL() -- 274
+			end -- 274
+			if input.IsKeyDown(KEY_R) then -- 275
+				self:KILL() -- 275
+			end -- 275
+			local gx = gui.MouseX() -- 276
+			local gy = gui.MouseY() -- 277
+			sw = ScrW() -- 278
+			sh = ScrH() -- 279
+			if gx < (sw * .2) then -- 280
+				self:KILL() -- 280
+			end -- 280
+			if gy < (sh * .1) then -- 281
+				self:KILL() -- 281
+			end -- 281
+			if gx > (sw * .8) then -- 282
+				self:KILL() -- 282
+			end -- 282
+			if gy > (sh * .9) then -- 283
+				return self:KILL() -- 283
+			end -- 283
+		end -- 271
+	end -- 256
+	return self:PMUpdateInventory() -- 284
 end -- 31
-hook.Add("HUDPaint", "evilrp_blur_playermenu", function() -- 274
-	if ECP.pmenu and ECP.pmenu:IsValid() then -- 275
-		draw.DrawBackgroundBlur(1) -- 276
-	end -- 275
-	return -- 277
-end) -- 274
-GAMEMODE.CreateEquipmentMenu = function(self) -- 279
-	local lp = LocalPlayer() -- 280
-	local frame = vgui.Create("DFrame") -- 281
-	frame:SetSize(400, 200) -- 283
-	frame:Center() -- 284
-	frame:SetTitle("Yeah, take 'em off") -- 285
-	frame:MakePopup() -- 286
-	frame:SetSkin("EvilRP") -- 287
-	for i = 1, 4 do -- 288
-		local checkbox = vgui.Create("DCheckBox", frame) -- 289
-		checkbox:SetPos(8, 16 + i * 24) -- 291
-	end -- 291
-end -- 279
+hook.Add("HUDPaint", "evilrp_blur_playermenu", function() -- 286
+	if ECP.pmenu and ECP.pmenu:IsValid() then -- 287
+		draw.DrawBackgroundBlur(1) -- 288
+	end -- 287
+	return -- 289
+end) -- 286
+GAMEMODE.CreateEquipmentMenu = function(self) -- 291
+	local lp = LocalPlayer() -- 292
+	local frame = vgui.Create("DFrame") -- 293
+	frame:SetSize(400, 200) -- 295
+	frame:Center() -- 296
+	frame:SetTitle("Yeah, take 'em off") -- 297
+	frame:MakePopup() -- 298
+	frame:SetSkin("EvilRP") -- 299
+	for i = 1, 4 do -- 300
+		local checkbox = vgui.Create("DCheckBox", frame) -- 301
+		checkbox:SetPos(8, 16 + i * 24) -- 303
+	end -- 303
+end -- 291

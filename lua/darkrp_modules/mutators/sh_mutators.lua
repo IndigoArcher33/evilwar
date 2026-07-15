@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/mutators/sh_mutators.yue
+-- [yue]: darkrp_modules\mutators\sh_mutators.yue
 local Chromophobia -- 1
 do -- 1
 	local _class_0 -- 1

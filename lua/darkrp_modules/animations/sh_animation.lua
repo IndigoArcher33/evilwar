@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/animations/sh_animation.yue
+-- [yue]: darkrp_modules\animations\sh_animation.yue
 if SERVER then -- 1
 	util.AddNetworkString("evilrp_playsignal") -- 2
 	util.AddNetworkString("evilrp_playvcd") -- 3

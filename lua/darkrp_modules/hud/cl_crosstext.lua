@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/hud/cl_crosstext.yue
+-- [yue]: darkrp_modules\hud\cl_crosstext.yue
 cross_prog = 0 -- 1
 cross_texts = { } -- 2
 local cross_text_alpha = 0 -- 3

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/business/sv_business.yue
+-- [yue]: darkrp_modules\business\sv_business.yue
 if not GAMEMODE.Stocks then -- 1
 	GAMEMODE.Stocks = { } -- 1
 end -- 1

@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/gui/cl_chatscroll.yue
+-- [yue]: darkrp_modules\gui\cl_chatscroll.yue
 local PANEL = { -- 2
 	Init = function(self) -- 2
 		self.Buffer = { } -- 3

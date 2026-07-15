@@ -1,14 +1,15 @@
-GAMEMODE.Deaths = function()
-	return GetGlobalInt("DEATH")
-end
-local death
-death = function(ply)
-	local deaths = GAMEMODE.Deaths() + 1
-	SetGlobalInt("DEATH", deaths)
-	local bodies = "BODIES"
-	if deaths == 1 then
-		bodies = "BODY"
-	end
-	return RunConsoleCommand("hostname", tostring(string.english_number(deaths):upper()) .. " DEAD " .. tostring(bodies) .. " TODAY")
-end
-return hook.Add("DoPlayerDeath", "evilrp_death", death)
+-- [yue]: darkrp_modules\death\sh_death.yue
+GAMEMODE.Deaths = function() -- 1
+	return GetGlobalInt("DEATH") -- 1
+end -- 1
+local death -- 3
+death = function(ply) -- 3
+	local deaths = GAMEMODE.Deaths() + 1 -- 4
+	SetGlobalInt("DEATH", deaths) -- 5
+	local bodies = "BODIES" -- 6
+	if deaths == 1 then -- 7
+		bodies = "BODY" -- 7
+	end -- 7
+	return RunConsoleCommand("hostname", tostring(string.english_number(deaths):upper()) .. " DEAD " .. tostring(bodies) .. " TODAY") -- 8
+end -- 3
+return hook.Add("DoPlayerDeath", "evilrp_death", death) -- 10

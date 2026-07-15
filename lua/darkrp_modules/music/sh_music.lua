@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/music/sh_music.yue
+-- [yue]: darkrp_modules\music\sh_music.yue
 AMBIENCE_COOLDOWN = AMBIENCE_COOLDOWN or 0 -- 2
 MUSIC = { -- 6
 	songs = { -- 7

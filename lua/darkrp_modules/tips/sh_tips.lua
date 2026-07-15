@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/tips/sh_tips.yue
+-- [yue]: darkrp_modules\tips\sh_tips.yue
 local hints = { -- 2
 	"Despair distorts your vision and the stability of text.", -- 2
 	"As a ghost, pressing R will teleport you somewhere else, such as if you get stuck.", -- 3

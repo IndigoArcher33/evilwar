@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/ghosts/sh_ghosts.yue
+-- [yue]: darkrp_modules\ghosts\sh_ghosts.yue
 local Startled -- 1
 do -- 1
 	local _class_0 -- 1

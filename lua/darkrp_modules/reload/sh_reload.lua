@@ -1,6 +1,6 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/reload/sh_reload.yue
+-- [yue]: darkrp_modules\reload\sh_reload.yue
 local next_reload_sound = 0 -- 1
-local gmacs = true -- 2
+local gmacs = false -- 2
 local reload_jumpscare -- 3
 reload_jumpscare = function() -- 3
 	if gmacs then -- 4

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/player_extend/sh_player.yue
+-- [yue]: darkrp_modules\player_extend\sh_player.yue
 GAMEMODE.FindPlayer = function(self, str) -- 1
 	if not str then -- 2
 		return nil -- 2

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/emitters/cl_emitters.yue
+-- [yue]: darkrp_modules\emitters\cl_emitters.yue
 GAMEMODE.CreateParticleEmitters = function(self) -- 1
 	local ply = LocalPlayer() -- 2
 	local pos = ply:GetPos() -- 3

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/screenspace/sv_blur_on_damage.yue
+-- [yue]: darkrp_modules\screenspace\sv_blur_on_damage.yue
 util.AddNetworkString("evilrp_blur_on_damage") -- 4
 local blur_on_damage -- 8
 blur_on_damage = function(victim, attacker, health_remaining, damage) -- 8

@@ -1,4 +1,4 @@
--- [yue]: /home/danku/darkrpmodification/lua/darkrp_modules/hobo/sv_hobo.yue
+-- [yue]: darkrp_modules\hobo\sv_hobo.yue
 local random = math.random -- 1
 local sounds = { -- 4
 	{ -- 4

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/effects/cl_blood.yue
+-- [yue]: darkrp_modules\effects\cl_blood.yue
 local _list_0 = { -- 4
 	"physics/flesh/flesh_bloody_impact_hard1.wav", -- 4
 	"physics/flesh/flesh_squishy_impact_hard1.wav", -- 5
@@ -58,76 +58,78 @@ collide_callback = function(oldparticle, hitpos, hitnormal) -- 21
 	end -- 25
 end -- 21
 local Bloodstream -- 54
-local _class_0 -- 54
-local _parent_0 = FX -- 54
-local _base_0 = { -- 54
-	Init = function(self, data) -- 55
-		local pos = data:GetOrigin() + Vector(0, 0, 10) -- 56
-		local dir = data:GetNormal() -- 57
-		local force = data:GetScale() -- 58
-		local emitter = ParticleEmitter(pos) -- 59
-		for i = 1, data:GetMagnitude() do -- 60
-			local heading = (VectorRand():GetNormalized() * 3 + dir) / 4 -- 61
-			local particle = emitter:Add("effects/blood2", pos + heading) -- 62
-			particle:SetVelocity(force * math.Rand(0.8, 1) * heading) -- 64
-			particle:SetDieTime(math.Rand(3, 6)) -- 65
-			particle:SetStartAlpha(200) -- 66
-			particle:SetEndAlpha(200) -- 67
-			particle:SetStartSize(math.Rand(3, 5)) -- 68
-			particle:SetEndSize(3) -- 69
-			particle:SetRoll(math.Rand(0, 360)) -- 70
-			particle:SetRollDelta(math.Rand(-20, 20)) -- 71
-			particle:SetAirResistance(5) -- 72
-			particle:SetGravity(Vector(0, 0, -600)) -- 73
-			particle:SetCollide(true) -- 74
-			particle:SetLighting(true) -- 75
-			particle:SetColor(255, 0, 0) -- 76
-			particle:SetCollideCallback(collide_callback) -- 77
-		end -- 77
-		return emitter:Finish() -- 78
-	end, -- 80
-	Think = function(self) -- 80
-		return false -- 80
-	end, -- 82
-	Render = function(self) end -- 54
-} -- 54
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 82
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 54
-		_base_0[_key_0] = _val_0 -- 54
-	end -- 54
-end -- 82
-if _base_0.__index == nil then -- 54
-	_base_0.__index = _base_0 -- 54
-end -- 82
-setmetatable(_base_0, _parent_0.__base) -- 54
-_class_0 = setmetatable({ -- 54
-	__init = function(self, ...) -- 54
-		return _class_0.__parent.__init(self, ...) -- 54
-	end, -- 54
-	__base = _base_0, -- 54
-	__name = "Bloodstream", -- 54
-	__parent = _parent_0 -- 54
-}, { -- 54
-	__index = function(cls, name) -- 54
-		local val = rawget(_base_0, name) -- 54
-		if val == nil then -- 54
-			local parent = rawget(cls, "__parent") -- 54
-			if parent then -- 54
-				return parent[name] -- 54
-			end -- 54
-		else -- 54
-			return val -- 54
+do -- 54
+	local _class_0 -- 54
+	local _parent_0 = FX -- 54
+	local _base_0 = { -- 54
+		Init = function(self, data) -- 55
+			local pos = data:GetOrigin() + Vector(0, 0, 10) -- 56
+			local dir = data:GetNormal() -- 57
+			local force = data:GetScale() -- 58
+			local emitter = ParticleEmitter(pos) -- 59
+			for i = 1, data:GetMagnitude() do -- 60
+				local heading = (VectorRand():GetNormalized() * 3 + dir) / 4 -- 61
+				local particle = emitter:Add("effects/blood2", pos + heading) -- 62
+				particle:SetVelocity(force * math.Rand(0.8, 1) * heading) -- 64
+				particle:SetDieTime(math.Rand(3, 6)) -- 65
+				particle:SetStartAlpha(200) -- 66
+				particle:SetEndAlpha(200) -- 67
+				particle:SetStartSize(math.Rand(3, 5)) -- 68
+				particle:SetEndSize(3) -- 69
+				particle:SetRoll(math.Rand(0, 360)) -- 70
+				particle:SetRollDelta(math.Rand(-20, 20)) -- 71
+				particle:SetAirResistance(5) -- 72
+				particle:SetGravity(Vector(0, 0, -600)) -- 73
+				particle:SetCollide(true) -- 74
+				particle:SetLighting(true) -- 75
+				particle:SetColor(255, 0, 0) -- 76
+				particle:SetCollideCallback(collide_callback) -- 77
+			end -- 77
+			return emitter:Finish() -- 78
+		end, -- 80
+		Think = function(self) -- 80
+			return false -- 80
+		end, -- 82
+		Render = function(self) end -- 54
+	} -- 54
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 82
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 54
+			_base_0[_key_0] = _val_0 -- 54
 		end -- 54
-	end, -- 54
-	__call = function(cls, ...) -- 54
-		local _self_0 = setmetatable({ }, _base_0) -- 54
-		cls.__init(_self_0, ...) -- 54
-		return _self_0 -- 54
+	end -- 82
+	if _base_0.__index == nil then -- 54
+		_base_0.__index = _base_0 -- 54
+	end -- 82
+	setmetatable(_base_0, _parent_0.__base) -- 54
+	_class_0 = setmetatable({ -- 54
+		__init = function(self, ...) -- 54
+			return _class_0.__parent.__init(self, ...) -- 54
+		end, -- 54
+		__base = _base_0, -- 54
+		__name = "Bloodstream", -- 54
+		__parent = _parent_0 -- 54
+	}, { -- 54
+		__index = function(cls, name) -- 54
+			local val = rawget(_base_0, name) -- 54
+			if val == nil then -- 54
+				local parent = rawget(cls, "__parent") -- 54
+				if parent then -- 54
+					return parent[name] -- 54
+				end -- 54
+			else -- 54
+				return val -- 54
+			end -- 54
+		end, -- 54
+		__call = function(cls, ...) -- 54
+			local _self_0 = setmetatable({ }, _base_0) -- 54
+			cls.__init(_self_0, ...) -- 54
+			return _self_0 -- 54
+		end -- 54
+	}) -- 54
+	_base_0.__class = _class_0 -- 54
+	if _parent_0.__inherited then -- 54
+		_parent_0.__inherited(_parent_0, _class_0) -- 54
 	end -- 54
-}) -- 54
-_base_0.__class = _class_0 -- 54
-if _parent_0.__inherited then -- 54
-	_parent_0.__inherited(_parent_0, _class_0) -- 54
-end -- 54
-Bloodstream = _class_0 -- 54
-return _class_0 -- 82
+	Bloodstream = _class_0 -- 54
+	return _class_0 -- 82
+end -- 82

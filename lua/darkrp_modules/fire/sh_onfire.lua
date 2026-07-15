@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/fire/sh_onfire.yue
+-- [yue]: darkrp_modules\fire\sh_onfire.yue
 local cries_of_pain = { -- 2
 	"aahhhh", -- 2
 	"it burns, it burns", -- 3
@@ -100,10 +100,12 @@ onfire_movement = function(ply, dmg) -- 29
 		local should_play = not (ply.burning_agony_sound and ply.burning_agony_sound:IsPlaying()) -- 41
 		if should_play then -- 42
 			ply:ConCommand("say /y " .. tostring(cries_of_pain[math.random(#cries_of_pain)])) -- 43
-			local _with_0 = CreateSound(ply, "BurningAgony") -- 44
-			ply.burning_agony_sound = _with_0 -- 44
-			_with_0:Play() -- 45
-			_with_0:ChangePitch(math.random(100, 130)) -- 46
+			do -- 44
+				local _with_0 = CreateSound(ply, "BurningAgony") -- 44
+				ply.burning_agony_sound = _with_0 -- 44
+				_with_0:Play() -- 45
+				_with_0:ChangePitch(math.random(100, 130)) -- 46
+			end -- 44
 		end -- 42
 	end -- 33
 	return -- 47
@@ -121,9 +123,11 @@ onfire_stopmovement = function() -- 51
 			ply:ConCommand("-duck") -- 57
 			ply:SetRunSpeed(ply:GetNWFloat("runspeed")) -- 58
 			ply:SetNWBool("speedcheck", false) -- 59
-			local _obj_0 = ply.burning_agony_sound -- 60
-			if _obj_0 ~= nil then -- 60
-				_obj_0:Stop() -- 60
+			do -- 60
+				local _obj_0 = ply.burning_agony_sound -- 60
+				if _obj_0 ~= nil then -- 60
+					_obj_0:Stop() -- 60
+				end -- 60
 			end -- 60
 		end -- 53
 	end -- 60

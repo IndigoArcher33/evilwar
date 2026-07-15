@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/hurt/sv_hurt.yue
+-- [yue]: darkrp_modules\hurt\sv_hurt.yue
 local play_hurt_sound -- 1
 play_hurt_sound = function(ent) -- 1
 	local ct = CurTime() -- 2

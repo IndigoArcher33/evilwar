@@ -1,4 +1,4 @@
--- [yue]: /mnt/c/Program Files (x86)/Steam/steamapps/common/GarrysMod/garrysmod/addons/DarkRPmodification/lua/darkrp_modules/hurt/sv_death.yue
+-- [yue]: darkrp_modules\hurt\sv_death.yue
 local play_death_sound -- 1
 play_death_sound = function(ply) -- 1
 	if (ply:IsPlayer() and ply:IsValid() and (function() -- 2

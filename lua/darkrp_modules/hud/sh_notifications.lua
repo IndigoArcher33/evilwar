@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/hud/sh_notifications.yue
+-- [yue]: darkrp_modules\hud\sh_notifications.yue
 local meta = FindMetaTable("Player") -- 1
 if CLIENT then -- 3
 	netstream.Hook("SendNotification", function(payload) -- 4

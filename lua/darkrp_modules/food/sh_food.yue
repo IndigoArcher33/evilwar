@@ -7,6 +7,7 @@ class Food extends ITEM
     super!
     @NetworkVar "Bool", "Rotten"
 
+  PrintName: "Food"
   Model: Model"models/props_junk/garbage_plasticbottle002a.mdl"
   Category: "EvilRP: Food"
   Spawnable: true
@@ -236,6 +237,7 @@ class DrinkFluid extends SOUND
   level: SNDLVL_65DB
 
 class Drink extends Food
+  PrintName: "Drink"
   Sound: "DrinkFluid"
 
 class FearBeer extends Drink
@@ -422,6 +424,7 @@ class TakeMeds extends SOUND
   sound: ["npc/zombie/zombie_pain#{i}.wav" for i=1,3]
 
 class Medicine extends Food
+  PrintName: "Medicine"
   Sound: "TakeMeds"
 
 class Pills extends Medicine

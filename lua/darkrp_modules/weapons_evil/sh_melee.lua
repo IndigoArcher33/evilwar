@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/weapons_evil/sh_melee.yue
+-- [yue]: darkrp_modules\weapons_evil\sh_melee.yue
 local Crowbar -- 1
 do -- 1
 	local _class_0 -- 1
@@ -763,96 +763,98 @@ do -- 371
 	AxeHitWall = _class_0 -- 371
 end -- 372
 local Axe -- 373
-local _class_0 -- 373
-local _parent_0 = EvilRP_Melee -- 373
-local _base_0 = { -- 373
-	PrintName = "Axe", -- 375
-	Description = "A corpse's best friend, maybe yours. Terror of trees.", -- 377
-	TreeBonus = 2, -- 379
-	Slot = 0, -- 381
-	Price = 400, -- 383
-	Spawnable = true, -- 384
-	UseHands = true, -- 386
-	ViewModelFOV = 54, -- 388
-	ViewModel = Model("models/weapons/hl2meleepack/v_axe.mdl"), -- 389
-	WorldModel = Model("models/weapons/hl2meleepack/w_axe.mdl"), -- 391
-	HoldType = "melee2", -- 392
-	LowerHoldType = "normal", -- 394
-	Primary = { -- 395
-		ChargeTime = 1, -- 395
-		Light = { -- 398
-			Damage = 45, -- 398
-			DamageType = DMG_SLASH, -- 399
-			Range = 120, -- 401
-			Delay = 0.8, -- 402
-			Act = { -- 404
-				ACT_VM_MISSCENTER, -- 404
-				ACT_VM_MISSCENTER -- 404
-			}, -- 404
-			Sound = { -- 406
-				"AxeHitBody", -- 406
-				"AxeSwing", -- 406
-				"AxeHitWall" -- 406
-			} -- 406
-		}, -- 397
-		Heavy = { -- 410
-			Damage = 60, -- 410
-			DamageType = DMG_SLASH, -- 411
-			Range = 120, -- 413
-			Delay = 1, -- 414
-			Act = ACT_VM_MISSCENTER, -- 416
-			Sound = { -- 418
-				"AxeHitBody", -- 418
-				"AxeSwing", -- 418
-				"AxeHitWall" -- 418
-			} -- 418
-		} -- 409
-	}, -- 422
-	ViewOffset = { -- 423
-		Pos = Vector(-6, 0, 6) -- 423
-	}, -- 426
-	ChargeOffset = { -- 427
-		Pos = Vector(-15, 0, -10), -- 427
-		Ang = Angle(-35, 0, 0) -- 428
+do -- 373
+	local _class_0 -- 373
+	local _parent_0 = EvilRP_Melee -- 373
+	local _base_0 = { -- 373
+		PrintName = "Axe", -- 375
+		Description = "A corpse's best friend, maybe yours. Terror of trees.", -- 377
+		TreeBonus = 2, -- 379
+		Slot = 0, -- 381
+		Price = 400, -- 383
+		Spawnable = true, -- 384
+		UseHands = true, -- 386
+		ViewModelFOV = 54, -- 388
+		ViewModel = Model("models/weapons/hl2meleepack/v_axe.mdl"), -- 389
+		WorldModel = Model("models/weapons/hl2meleepack/w_axe.mdl"), -- 391
+		HoldType = "melee2", -- 392
+		LowerHoldType = "normal", -- 394
+		Primary = { -- 395
+			ChargeTime = 1, -- 395
+			Light = { -- 398
+				Damage = 45, -- 398
+				DamageType = DMG_SLASH, -- 399
+				Range = 120, -- 401
+				Delay = 0.8, -- 402
+				Act = { -- 404
+					ACT_VM_MISSCENTER, -- 404
+					ACT_VM_MISSCENTER -- 404
+				}, -- 404
+				Sound = { -- 406
+					"AxeHitBody", -- 406
+					"AxeSwing", -- 406
+					"AxeHitWall" -- 406
+				} -- 406
+			}, -- 397
+			Heavy = { -- 410
+				Damage = 60, -- 410
+				DamageType = DMG_SLASH, -- 411
+				Range = 120, -- 413
+				Delay = 1, -- 414
+				Act = ACT_VM_MISSCENTER, -- 416
+				Sound = { -- 418
+					"AxeHitBody", -- 418
+					"AxeSwing", -- 418
+					"AxeHitWall" -- 418
+				} -- 418
+			} -- 409
+		}, -- 422
+		ViewOffset = { -- 423
+			Pos = Vector(-6, 0, 6) -- 423
+		}, -- 426
+		ChargeOffset = { -- 427
+			Pos = Vector(-15, 0, -10), -- 427
+			Ang = Angle(-35, 0, 0) -- 428
+		} -- 373
 	} -- 373
-} -- 373
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 429
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 373
-		_base_0[_key_0] = _val_0 -- 373
-	end -- 373
-end -- 429
-if _base_0.__index == nil then -- 373
-	_base_0.__index = _base_0 -- 373
-end -- 429
-setmetatable(_base_0, _parent_0.__base) -- 373
-_class_0 = setmetatable({ -- 373
-	__init = function(self, ...) -- 373
-		return _class_0.__parent.__init(self, ...) -- 373
-	end, -- 373
-	__base = _base_0, -- 373
-	__name = "Axe", -- 373
-	__parent = _parent_0 -- 373
-}, { -- 373
-	__index = function(cls, name) -- 373
-		local val = rawget(_base_0, name) -- 373
-		if val == nil then -- 373
-			local parent = rawget(cls, "__parent") -- 373
-			if parent then -- 373
-				return parent[name] -- 373
-			end -- 373
-		else -- 373
-			return val -- 373
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 429
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 373
+			_base_0[_key_0] = _val_0 -- 373
 		end -- 373
-	end, -- 373
-	__call = function(cls, ...) -- 373
-		local _self_0 = setmetatable({ }, _base_0) -- 373
-		cls.__init(_self_0, ...) -- 373
-		return _self_0 -- 373
+	end -- 429
+	if _base_0.__index == nil then -- 373
+		_base_0.__index = _base_0 -- 373
+	end -- 429
+	setmetatable(_base_0, _parent_0.__base) -- 373
+	_class_0 = setmetatable({ -- 373
+		__init = function(self, ...) -- 373
+			return _class_0.__parent.__init(self, ...) -- 373
+		end, -- 373
+		__base = _base_0, -- 373
+		__name = "Axe", -- 373
+		__parent = _parent_0 -- 373
+	}, { -- 373
+		__index = function(cls, name) -- 373
+			local val = rawget(_base_0, name) -- 373
+			if val == nil then -- 373
+				local parent = rawget(cls, "__parent") -- 373
+				if parent then -- 373
+					return parent[name] -- 373
+				end -- 373
+			else -- 373
+				return val -- 373
+			end -- 373
+		end, -- 373
+		__call = function(cls, ...) -- 373
+			local _self_0 = setmetatable({ }, _base_0) -- 373
+			cls.__init(_self_0, ...) -- 373
+			return _self_0 -- 373
+		end -- 373
+	}) -- 373
+	_base_0.__class = _class_0 -- 373
+	if _parent_0.__inherited then -- 373
+		_parent_0.__inherited(_parent_0, _class_0) -- 373
 	end -- 373
-}) -- 373
-_base_0.__class = _class_0 -- 373
-if _parent_0.__inherited then -- 373
-	_parent_0.__inherited(_parent_0, _class_0) -- 373
-end -- 373
-Axe = _class_0 -- 373
-return _class_0 -- 429
+	Axe = _class_0 -- 373
+	return _class_0 -- 429
+end -- 429

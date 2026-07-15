@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/camera/cl_legs.yue
+-- [yue]: darkrp_modules\camera\cl_legs.yue
 if not CLIENT then -- 4
 	return -- 4
 end -- 4

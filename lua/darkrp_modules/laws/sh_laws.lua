@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/laws/sh_laws.yue
+-- [yue]: darkrp_modules\laws\sh_laws.yue
 local _obj_0 = GAMEMODE -- 1
 _obj_0.laws = _obj_0.laws or { } -- 1
 GAMEMODE.default_laws = { -- 4

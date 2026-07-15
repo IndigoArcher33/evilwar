@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/lightning/sh_lightning.yue
+-- [yue]: darkrp_modules\lightning\sh_lightning.yue
 local smite_dmg_range = { -- 1
 	35, -- 1
 	100 -- 1

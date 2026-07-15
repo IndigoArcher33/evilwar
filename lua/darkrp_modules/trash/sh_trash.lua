@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/trash/sh_trash.yue
+-- [yue]: darkrp_modules\trash\sh_trash.yue
 local Trash_Cardboard -- 1
 do -- 1
 	local _class_0 -- 1
@@ -562,15 +562,17 @@ do -- 124
 			if data.Speed > self.ImpactThreshold then -- 155
 				if data.HitEntity and IsValid(data.HitEntity) then -- 156
 					local attacker = self:GetNWEntity("evilrp_submitter") -- 157
-					local dmg = DamageInfo() -- 158
-					dmg:SetDamage(25) -- 159
-					if IsValid(attacker) then -- 160
-						dmg:SetAttacker(attacker) -- 160
-					end -- 160
-					dmg:SetInflictor(self) -- 161
-					dmg:SetDamageType(DMG_SLASH) -- 162
-					dmg:SetDamagePosition(data.HitPos) -- 163
-					data.HitEntity:TakeDamageInfo(dmg) -- 164
+					do -- 158
+						local dmg = DamageInfo() -- 158
+						dmg:SetDamage(25) -- 159
+						if IsValid(attacker) then -- 160
+							dmg:SetAttacker(attacker) -- 160
+						end -- 160
+						dmg:SetInflictor(self) -- 161
+						dmg:SetDamageType(DMG_SLASH) -- 162
+						dmg:SetDamagePosition(data.HitPos) -- 163
+						data.HitEntity:TakeDamageInfo(dmg) -- 164
+					end -- 158
 				end -- 156
 				local force = data.OurNewVelocity -- 165
 				return self:Shatter(force) -- 166
@@ -900,48 +902,50 @@ do -- 207
 	Pills = _class_0 -- 207
 end -- 208
 local Bleach -- 210
-local _class_0 -- 210
-local _parent_0 = Plastic -- 210
-local _base_0 = { -- 210
-	Model = Model("models/props_junk/garbage_plasticbottle001a.mdl") -- 210
-} -- 210
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 211
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 210
-		_base_0[_key_0] = _val_0 -- 210
-	end -- 210
-end -- 211
-if _base_0.__index == nil then -- 210
-	_base_0.__index = _base_0 -- 210
-end -- 211
-setmetatable(_base_0, _parent_0.__base) -- 210
-_class_0 = setmetatable({ -- 210
-	__init = function(self, ...) -- 210
-		return _class_0.__parent.__init(self, ...) -- 210
-	end, -- 210
-	__base = _base_0, -- 210
-	__name = "Bleach", -- 210
-	__parent = _parent_0 -- 210
-}, { -- 210
-	__index = function(cls, name) -- 210
-		local val = rawget(_base_0, name) -- 210
-		if val == nil then -- 210
-			local parent = rawget(cls, "__parent") -- 210
-			if parent then -- 210
-				return parent[name] -- 210
-			end -- 210
-		else -- 210
-			return val -- 210
+do -- 210
+	local _class_0 -- 210
+	local _parent_0 = Plastic -- 210
+	local _base_0 = { -- 210
+		Model = Model("models/props_junk/garbage_plasticbottle001a.mdl") -- 210
+	} -- 210
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 211
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 210
+			_base_0[_key_0] = _val_0 -- 210
 		end -- 210
-	end, -- 210
-	__call = function(cls, ...) -- 210
-		local _self_0 = setmetatable({ }, _base_0) -- 210
-		cls.__init(_self_0, ...) -- 210
-		return _self_0 -- 210
+	end -- 211
+	if _base_0.__index == nil then -- 210
+		_base_0.__index = _base_0 -- 210
+	end -- 211
+	setmetatable(_base_0, _parent_0.__base) -- 210
+	_class_0 = setmetatable({ -- 210
+		__init = function(self, ...) -- 210
+			return _class_0.__parent.__init(self, ...) -- 210
+		end, -- 210
+		__base = _base_0, -- 210
+		__name = "Bleach", -- 210
+		__parent = _parent_0 -- 210
+	}, { -- 210
+		__index = function(cls, name) -- 210
+			local val = rawget(_base_0, name) -- 210
+			if val == nil then -- 210
+				local parent = rawget(cls, "__parent") -- 210
+				if parent then -- 210
+					return parent[name] -- 210
+				end -- 210
+			else -- 210
+				return val -- 210
+			end -- 210
+		end, -- 210
+		__call = function(cls, ...) -- 210
+			local _self_0 = setmetatable({ }, _base_0) -- 210
+			cls.__init(_self_0, ...) -- 210
+			return _self_0 -- 210
+		end -- 210
+	}) -- 210
+	_base_0.__class = _class_0 -- 210
+	if _parent_0.__inherited then -- 210
+		_parent_0.__inherited(_parent_0, _class_0) -- 210
 	end -- 210
-}) -- 210
-_base_0.__class = _class_0 -- 210
-if _parent_0.__inherited then -- 210
-	_parent_0.__inherited(_parent_0, _class_0) -- 210
-end -- 210
-Bleach = _class_0 -- 210
-return _class_0 -- 211
+	Bleach = _class_0 -- 210
+	return _class_0 -- 211
+end -- 211

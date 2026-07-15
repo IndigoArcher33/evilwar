@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/ragdolls/sh_use.yue
+-- [yue]: darkrp_modules\ragdolls\sh_use.yue
 local Cannibalism -- 1
 do -- 1
 	local _class_0 -- 1

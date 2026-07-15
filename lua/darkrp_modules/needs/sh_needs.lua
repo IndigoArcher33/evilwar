@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/needs/sh_needs.yue
+-- [yue]: darkrp_modules\needs\sh_needs.yue
 if CLIENT then -- 1
 	net.Receive("evilrp_heart_attack", function() -- 2
 		GAMEMODE:Jumpscare() -- 3

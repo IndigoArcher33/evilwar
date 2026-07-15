@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/fire/sv_incinerator.yue
+-- [yue]: darkrp_modules\fire\sv_incinerator.yue
 local EVIL_INCINERATOR_BOUNDS = { -- 2
 	["rp_liverfailure_kidneydagger"] = { -- 3
 		{ -- 3

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/fungus/sh_fungus.yue
+-- [yue]: darkrp_modules\fungus\sh_fungus.yue
 local fungus_max = 666 -- 4
 local fungus_breed_delay = { -- 6
 	min = 2, -- 6
@@ -186,22 +186,24 @@ do -- 56
 					local particle = GAMEMODE.Emitter2D:Add(particle_mat, pos) -- 68
 					local vel = ((ang * 2) * i) * 1 -- 69
 					vel = vel + Vector(math.random(-4, -14), math.random(-4, 4), math.random(-4, 4)) -- 70
-					particle:SetVelocity(vel) -- 72
-					particle:SetDieTime(math.Rand(1, 4)) -- 73
-					particle:SetEndAlpha(0) -- 74
-					particle:SetDieTime(math.Rand(1, 4)) -- 75
-					particle:SetEndAlpha(0) -- 76
-					particle:SetStartSize(1 * scale) -- 77
-					particle:SetEndSize(math.random(2, 4) * scale) -- 78
-					particle:SetRoll(math.Rand(-10, 10)) -- 79
-					particle:SetRollDelta(math.Rand(-0.2, 0.2)) -- 80
-					local color_num = math.Rand(20, 75) -- 81
-					particle:SetColor(color_num, color_num, color_num) -- 82
-					particle:SetStartAlpha(color_num) -- 83
-					particle:SetGravity(Vector(0, 0, math.random(60, 120))) -- 84
-					particle:SetCollide(true) -- 85
-					particle:SetAirResistance(300) -- 86
-					particle:SetBounce(2) -- 87
+					do -- 71
+						particle:SetVelocity(vel) -- 72
+						particle:SetDieTime(math.Rand(1, 4)) -- 73
+						particle:SetEndAlpha(0) -- 74
+						particle:SetDieTime(math.Rand(1, 4)) -- 75
+						particle:SetEndAlpha(0) -- 76
+						particle:SetStartSize(1 * scale) -- 77
+						particle:SetEndSize(math.random(2, 4) * scale) -- 78
+						particle:SetRoll(math.Rand(-10, 10)) -- 79
+						particle:SetRollDelta(math.Rand(-0.2, 0.2)) -- 80
+						local color_num = math.Rand(20, 75) -- 81
+						particle:SetColor(color_num, color_num, color_num) -- 82
+						particle:SetStartAlpha(color_num) -- 83
+						particle:SetGravity(Vector(0, 0, math.random(60, 120))) -- 84
+						particle:SetCollide(true) -- 85
+						particle:SetAirResistance(300) -- 86
+						particle:SetBounce(2) -- 87
+					end -- 71
 				end -- 67
 			end -- 87
 		end, -- 88

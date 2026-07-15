@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/dev/sh_dev.yue
+-- [yue]: darkrp_modules\dev\sh_dev.yue
 local gph_callback -- 1
 gph_callback = function(ply, cmd, args, argstr) -- 1
 	if CLIENT then -- 2

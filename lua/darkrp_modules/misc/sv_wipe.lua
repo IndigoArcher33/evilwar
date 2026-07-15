@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/misc/sv_wipe.yue
+-- [yue]: darkrp_modules\misc\sv_wipe.yue
 local wipe -- 1
 wipe = function(ply, cmd, args) -- 1
 	if ply:EntIndex() ~= 0 and not ply:IsSuperAdmin() then -- 2

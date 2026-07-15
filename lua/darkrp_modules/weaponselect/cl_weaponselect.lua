@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/weaponselect/cl_weaponselect.yue
+-- [yue]: darkrp_modules\weaponselect\cl_weaponselect.yue
 hook.Add("HUDShouldDraw", "evilrp_weapon_select", function(name) -- 4
 	if name == "CHudWeaponSelection" then -- 5
 		return false -- 5

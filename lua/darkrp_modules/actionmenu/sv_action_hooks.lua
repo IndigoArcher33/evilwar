@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/actionmenu/sv_action_hooks.yue
+-- [yue]: darkrp_modules\actionmenu\sv_action_hooks.yue
 return netstream.Hook("PocketItem", function(ply, item) -- 1
 	if item.Pocketable == false then -- 2
 		return -- 2

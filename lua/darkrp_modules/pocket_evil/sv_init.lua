@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/pocket_evil/sv_init.yue
+-- [yue]: darkrp_modules\pocket_evil\sv_init.yue
 util.AddNetworkString("EvilRP_Pocket") -- 1
 util.AddNetworkString("EvilRP_PocketMenu") -- 2
 util.AddNetworkString("EvilRP_spawnPocket") -- 3

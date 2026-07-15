@@ -1,4 +1,4 @@
--- [yue]: /mnt/c/Program Files (x86)/Steam/steamapps/common/GarrysMod/garrysmod/addons/DarkRPmodification/lua/darkrp_modules/fire/sv_reanimation.yue
+-- [yue]: darkrp_modules\fire\sv_reanimation.yue
 local reanimate_burning -- 1
 reanimate_burning = function(ent, dmg) -- 1
 	if (not ent:IsPlayer() and not ent:IsValid()) then -- 2

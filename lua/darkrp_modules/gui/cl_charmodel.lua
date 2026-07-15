@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/gui/cl_charmodel.yue
+-- [yue]: darkrp_modules\gui\cl_charmodel.yue
 local PANEL = { } -- 1
 AccessorFunc(PANEL, "AllowManipulation", "AllowManipulation") -- 3
 AccessorFunc(PANEL, "CamPosRange", "CamPosRange") -- 5

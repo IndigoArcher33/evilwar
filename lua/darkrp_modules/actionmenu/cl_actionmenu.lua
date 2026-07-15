@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/actionmenu/cl_actionmenu.yue
+-- [yue]: darkrp_modules\actionmenu\cl_actionmenu.yue
 GAMEMODE.action_menu = { -- 5
 	on = false, -- 5
 	target = nil, -- 6
@@ -150,27 +150,29 @@ action_menu_usage = function(ply, bind, pressed) -- 127
 			end -- 134
 		end -- 132
 		if #actions > 0 then -- 135
-			local _tab_0 = { } -- 136
-			local _idx_0 = 1 -- 136
-			for _key_0, _value_0 in pairs(actions) do -- 136
-				if _idx_0 == _key_0 then -- 136
-					_tab_0[#_tab_0 + 1] = _value_0 -- 136
-					_idx_0 = _idx_0 + 1 -- 136
-				else -- 136
-					_tab_0[_key_0] = _value_0 -- 136
+			do -- 136
+				local _tab_0 = { } -- 136
+				local _idx_0 = 1 -- 136
+				for _key_0, _value_0 in pairs(actions) do -- 136
+					if _idx_0 == _key_0 then -- 136
+						_tab_0[#_tab_0 + 1] = _value_0 -- 136
+						_idx_0 = _idx_0 + 1 -- 136
+					else -- 136
+						_tab_0[_key_0] = _value_0 -- 136
+					end -- 136
 				end -- 136
-			end -- 136
-			local _obj_0 = get_intrinsic_actions() -- 136
-			local _idx_1 = 1 -- 136
-			for _key_0, _value_0 in pairs(_obj_0) do -- 136
-				if _idx_1 == _key_0 then -- 136
-					_tab_0[#_tab_0 + 1] = _value_0 -- 136
-					_idx_1 = _idx_1 + 1 -- 136
-				else -- 136
-					_tab_0[_key_0] = _value_0 -- 136
+				local _obj_0 = get_intrinsic_actions() -- 136
+				local _idx_1 = 1 -- 136
+				for _key_0, _value_0 in pairs(_obj_0) do -- 136
+					if _idx_1 == _key_0 then -- 136
+						_tab_0[#_tab_0 + 1] = _value_0 -- 136
+						_idx_1 = _idx_1 + 1 -- 136
+					else -- 136
+						_tab_0[_key_0] = _value_0 -- 136
+					end -- 136
 				end -- 136
+				actions = _tab_0 -- 136
 			end -- 136
-			actions = _tab_0 -- 136
 		else -- 138
 			actions = get_intrinsic_actions() -- 138
 		end -- 135

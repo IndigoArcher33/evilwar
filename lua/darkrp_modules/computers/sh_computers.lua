@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/computers/sh_computers.yue
+-- [yue]: darkrp_modules\computers\sh_computers.yue
 gterm = gterm or { } -- 2
 GT_COL_NIL = 0 -- 4
 GT_COL_MSG = 1 -- 5

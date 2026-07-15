@@ -1,4 +1,4 @@
--- [yue]: /mnt/c/Program Files (x86)/Steam/steamapps/common/GarrysMod/garrysmod/addons/DarkRPmodification/lua/darkrp_modules/weapons_evil/sh_ammocheck.yue
+-- [yue]: darkrp_modules\weapons_evil\sh_ammocheck.yue
 local ammo_check_bind -- 15
 ammo_check_bind = function(ply, bind, down) -- 15
 	local lp = LocalPlayer() -- 16

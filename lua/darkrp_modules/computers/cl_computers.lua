@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/computers/cl_computers.yue
+-- [yue]: darkrp_modules\computers\cl_computers.yue
 net.Receive("evilrp_terminal_addline", function() -- 3
 	local idx = net.ReadUInt(16) -- 4
 	local ent = Entity(idx) -- 5
@@ -19,8 +19,10 @@ net.Receive("evilrp_terminal_addline", function() -- 3
 		color = color_type -- 12
 	} -- 12
 	if (not pos) or (pos == -1) then -- 13
-		local _obj_0 = gterm[idx] -- 14
-		_obj_0[#_obj_0 + 1] = line -- 14
+		do -- 14
+			local _obj_0 = gterm[idx] -- 14
+			_obj_0[#_obj_0 + 1] = line -- 14
+		end -- 14
 	else -- 16
 		gterm[idx][pos] = line -- 16
 	end -- 13

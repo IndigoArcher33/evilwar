@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/camera/cl_calcview.yue
+-- [yue]: darkrp_modules\camera\cl_calcview.yue
 local should_do_third_person -- 7
 should_do_third_person = function() -- 7
 	local lp = LocalPlayer() -- 8

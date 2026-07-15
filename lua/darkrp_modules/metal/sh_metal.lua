@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/metal/sh_metal.yue
+-- [yue]: darkrp_modules\metal\sh_metal.yue
 local Submit_Metal -- 1
 do -- 1
 	local _class_0 -- 1
@@ -187,60 +187,62 @@ do -- 38
 	Scrap = _class_0 -- 38
 end -- 53
 local Slag -- 56
-local _class_0 -- 56
-local _parent_0 = Metal -- 56
-local _base_0 = { -- 56
-	Model = Model("models/props_junk/rock001a.mdl"), -- 59
-	PrintName = "Slag Metal", -- 60
-	Description = "A rock with a piece of metal stuck in it.\nCan be processed in a Refinery.", -- 61
-	UseText = { -- 62
-		"%s breaks their teeth trying to crack open the slag metal.", -- 62
-		"%s shatters their morals gnawing a piece of slag metal.", -- 63
-		"%s hurts their jaw on a piece of slag metal." -- 64
-	}, -- 67
-	BiteDamage = 34, -- 69
-	Refinement = { -- 70
-		result = "metal/scrap", -- 70
-		time = 2 -- 71
+do -- 56
+	local _class_0 -- 56
+	local _parent_0 = Metal -- 56
+	local _base_0 = { -- 56
+		Model = Model("models/props_junk/rock001a.mdl"), -- 59
+		PrintName = "Slag Metal", -- 60
+		Description = "A rock with a piece of metal stuck in it.\nCan be processed in a Refinery.", -- 61
+		UseText = { -- 62
+			"%s breaks their teeth trying to crack open the slag metal.", -- 62
+			"%s shatters their morals gnawing a piece of slag metal.", -- 63
+			"%s hurts their jaw on a piece of slag metal." -- 64
+		}, -- 67
+		BiteDamage = 34, -- 69
+		Refinement = { -- 70
+			result = "metal/scrap", -- 70
+			time = 2 -- 71
+		} -- 56
 	} -- 56
-} -- 56
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 71
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 56
-		_base_0[_key_0] = _val_0 -- 56
-	end -- 56
-end -- 71
-if _base_0.__index == nil then -- 56
-	_base_0.__index = _base_0 -- 56
-end -- 71
-setmetatable(_base_0, _parent_0.__base) -- 56
-_class_0 = setmetatable({ -- 56
-	__init = function(self, ...) -- 56
-		return _class_0.__parent.__init(self, ...) -- 56
-	end, -- 56
-	__base = _base_0, -- 56
-	__name = "Slag", -- 56
-	__parent = _parent_0 -- 56
-}, { -- 56
-	__index = function(cls, name) -- 56
-		local val = rawget(_base_0, name) -- 56
-		if val == nil then -- 56
-			local parent = rawget(cls, "__parent") -- 56
-			if parent then -- 56
-				return parent[name] -- 56
-			end -- 56
-		else -- 56
-			return val -- 56
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 71
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 56
+			_base_0[_key_0] = _val_0 -- 56
 		end -- 56
-	end, -- 56
-	__call = function(cls, ...) -- 56
-		local _self_0 = setmetatable({ }, _base_0) -- 56
-		cls.__init(_self_0, ...) -- 56
-		return _self_0 -- 56
+	end -- 71
+	if _base_0.__index == nil then -- 56
+		_base_0.__index = _base_0 -- 56
+	end -- 71
+	setmetatable(_base_0, _parent_0.__base) -- 56
+	_class_0 = setmetatable({ -- 56
+		__init = function(self, ...) -- 56
+			return _class_0.__parent.__init(self, ...) -- 56
+		end, -- 56
+		__base = _base_0, -- 56
+		__name = "Slag", -- 56
+		__parent = _parent_0 -- 56
+	}, { -- 56
+		__index = function(cls, name) -- 56
+			local val = rawget(_base_0, name) -- 56
+			if val == nil then -- 56
+				local parent = rawget(cls, "__parent") -- 56
+				if parent then -- 56
+					return parent[name] -- 56
+				end -- 56
+			else -- 56
+				return val -- 56
+			end -- 56
+		end, -- 56
+		__call = function(cls, ...) -- 56
+			local _self_0 = setmetatable({ }, _base_0) -- 56
+			cls.__init(_self_0, ...) -- 56
+			return _self_0 -- 56
+		end -- 56
+	}) -- 56
+	_base_0.__class = _class_0 -- 56
+	if _parent_0.__inherited then -- 56
+		_parent_0.__inherited(_parent_0, _class_0) -- 56
 	end -- 56
-}) -- 56
-_base_0.__class = _class_0 -- 56
-if _parent_0.__inherited then -- 56
-	_parent_0.__inherited(_parent_0, _class_0) -- 56
-end -- 56
-Slag = _class_0 -- 56
-return _class_0 -- 71
+	Slag = _class_0 -- 56
+	return _class_0 -- 71
+end -- 71

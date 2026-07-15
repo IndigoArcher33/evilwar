@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/fire/sv_ignite.yue
+-- [yue]: darkrp_modules\fire\sv_ignite.yue
 local max, min, random = math.max, math.min, math.random -- 1
 local damage_igniting -- 3
 damage_igniting = function(ent, dmg) -- 3

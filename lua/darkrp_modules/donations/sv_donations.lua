@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/donations/sv_donations.yue
+-- [yue]: darkrp_modules\donations\sv_donations.yue
 hook.Add("Initialize", "evilrp_setup_table_donations", function() -- 1
 	if not sql.TableExists("evilrp_donations") then -- 2
 		return sql.Query("CREATE TABLE evilrp_donations( SteamID TEXT, Donations TEXT )") -- 3

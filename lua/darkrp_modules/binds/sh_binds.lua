@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/binds/sh_binds.yue
+-- [yue]: darkrp_modules\binds\sh_binds.yue
 local default_keysens = 0.4 -- 5
 if CLIENT then -- 7
 	CreateClientConVar("lfr_key_sensitivity", default_keysens, true, true, "The time window for double-tapping or short presses.") -- 8

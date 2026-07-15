@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/weapons_evil/sh_guns.yue
+-- [yue]: darkrp_modules\weapons_evil\sh_guns.yue
 local Bodyguard -- 1
 do -- 1
 	local _class_0 -- 1
@@ -1215,80 +1215,82 @@ do -- 632
 	Trooper = _class_0 -- 632
 end -- 677
 local Mark -- 679
-local _class_0 -- 679
-local _parent_0 = EvilRP_Weapon -- 679
-local _base_0 = { -- 679
-	PrintName = "The Mark", -- 681
-	Description = "A rusty scrap pistol, rigged to fire one massive bullet.", -- 683
-	Price = 1666, -- 685
-	Slot = 1, -- 687
-	Spawnable = true, -- 689
-	UseHands = true, -- 690
-	ViewModelTargetFOV = 54, -- 691
-	ViewModel = Model("models/weapons/c_mark.mdl"), -- 692
-	WorldModel = Model("models/weapons/w_mark.mdl"), -- 694
-	HoldType = "pistol", -- 695
-	LowerHoldType = "passive", -- 697
-	Firemode = 1, -- 698
-	Primary = { -- 699
-		Ammo = "Pistol", -- 699
-		ClipSize = 1, -- 701
-		DefaultClip = 1, -- 702
-		Damage = 80, -- 704
-		Delay = 60 / 120, -- 705
-		Range = 200, -- 707
-		Accuracy = 12, -- 708
-		RangeModifier = 0.4, -- 710
-		Recoil = { -- 713
-			MinAng = Angle(11, -3, 0), -- 713
-			MaxAng = Angle(15, 3, 0), -- 714
-			Punch = 0.95, -- 715
-			Ratio = 0.3 -- 716
-		}, -- 712
-		Reload = { -- 720
-			Sound = "Weapon_Pistol.Reload" -- 720
-		}, -- 719
-		Sound = "tekka/weapons/weapon_smg3.wav", -- 723
-		TracerName = "Tracer" -- 724
+do -- 679
+	local _class_0 -- 679
+	local _parent_0 = EvilRP_Weapon -- 679
+	local _base_0 = { -- 679
+		PrintName = "The Mark", -- 681
+		Description = "A rusty scrap pistol, rigged to fire one massive bullet.", -- 683
+		Price = 1666, -- 685
+		Slot = 1, -- 687
+		Spawnable = true, -- 689
+		UseHands = true, -- 690
+		ViewModelTargetFOV = 54, -- 691
+		ViewModel = Model("models/weapons/c_mark.mdl"), -- 692
+		WorldModel = Model("models/weapons/w_mark.mdl"), -- 694
+		HoldType = "pistol", -- 695
+		LowerHoldType = "passive", -- 697
+		Firemode = 1, -- 698
+		Primary = { -- 699
+			Ammo = "Pistol", -- 699
+			ClipSize = 1, -- 701
+			DefaultClip = 1, -- 702
+			Damage = 80, -- 704
+			Delay = 60 / 120, -- 705
+			Range = 200, -- 707
+			Accuracy = 12, -- 708
+			RangeModifier = 0.4, -- 710
+			Recoil = { -- 713
+				MinAng = Angle(11, -3, 0), -- 713
+				MaxAng = Angle(15, 3, 0), -- 714
+				Punch = 0.95, -- 715
+				Ratio = 0.3 -- 716
+			}, -- 712
+			Reload = { -- 720
+				Sound = "Weapon_Pistol.Reload" -- 720
+			}, -- 719
+			Sound = "tekka/weapons/weapon_smg3.wav", -- 723
+			TracerName = "Tracer" -- 724
+		} -- 679
 	} -- 679
-} -- 679
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 726
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 679
-		_base_0[_key_0] = _val_0 -- 679
-	end -- 679
-end -- 726
-if _base_0.__index == nil then -- 679
-	_base_0.__index = _base_0 -- 679
-end -- 726
-setmetatable(_base_0, _parent_0.__base) -- 679
-_class_0 = setmetatable({ -- 679
-	__init = function(self, ...) -- 679
-		return _class_0.__parent.__init(self, ...) -- 679
-	end, -- 679
-	__base = _base_0, -- 679
-	__name = "Mark", -- 679
-	__parent = _parent_0 -- 679
-}, { -- 679
-	__index = function(cls, name) -- 679
-		local val = rawget(_base_0, name) -- 679
-		if val == nil then -- 679
-			local parent = rawget(cls, "__parent") -- 679
-			if parent then -- 679
-				return parent[name] -- 679
-			end -- 679
-		else -- 679
-			return val -- 679
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 726
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 679
+			_base_0[_key_0] = _val_0 -- 679
 		end -- 679
-	end, -- 679
-	__call = function(cls, ...) -- 679
-		local _self_0 = setmetatable({ }, _base_0) -- 679
-		cls.__init(_self_0, ...) -- 679
-		return _self_0 -- 679
+	end -- 726
+	if _base_0.__index == nil then -- 679
+		_base_0.__index = _base_0 -- 679
+	end -- 726
+	setmetatable(_base_0, _parent_0.__base) -- 679
+	_class_0 = setmetatable({ -- 679
+		__init = function(self, ...) -- 679
+			return _class_0.__parent.__init(self, ...) -- 679
+		end, -- 679
+		__base = _base_0, -- 679
+		__name = "Mark", -- 679
+		__parent = _parent_0 -- 679
+	}, { -- 679
+		__index = function(cls, name) -- 679
+			local val = rawget(_base_0, name) -- 679
+			if val == nil then -- 679
+				local parent = rawget(cls, "__parent") -- 679
+				if parent then -- 679
+					return parent[name] -- 679
+				end -- 679
+			else -- 679
+				return val -- 679
+			end -- 679
+		end, -- 679
+		__call = function(cls, ...) -- 679
+			local _self_0 = setmetatable({ }, _base_0) -- 679
+			cls.__init(_self_0, ...) -- 679
+			return _self_0 -- 679
+		end -- 679
+	}) -- 679
+	_base_0.__class = _class_0 -- 679
+	if _parent_0.__inherited then -- 679
+		_parent_0.__inherited(_parent_0, _class_0) -- 679
 	end -- 679
-}) -- 679
-_base_0.__class = _class_0 -- 679
-if _parent_0.__inherited then -- 679
-	_parent_0.__inherited(_parent_0, _class_0) -- 679
-end -- 679
-Mark = _class_0 -- 679
-return _class_0 -- 726
+	Mark = _class_0 -- 679
+	return _class_0 -- 726
+end -- 726

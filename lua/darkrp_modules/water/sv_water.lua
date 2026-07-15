@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/water/sv_water.yue
+-- [yue]: darkrp_modules\water\sv_water.yue
 local meta = FindMetaTable("Player") -- 1
 for k, v in pairs({ -- 4
 	CheckWater = function(self, distance) -- 4

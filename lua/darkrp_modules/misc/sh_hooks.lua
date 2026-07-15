@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/misc/sh_hooks.yue
+-- [yue]: darkrp_modules\misc\sh_hooks.yue
 hook.Add("PlayerSpray", "evilrp_disable_sprays", function() -- 1
 	return true -- 1
 end) -- 1

@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/settings/sh_settings.yue
+-- [yue]: darkrp_modules\settings\sh_settings.yue
 Settings = { } -- 1
 Settings.list = { } -- 3
 if CLIENT then -- 7

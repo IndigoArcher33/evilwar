@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/names/sv_names.yue
+-- [yue]: darkrp_modules\names\sv_names.yue
 local spawn_set_name -- 1
 spawn_set_name = function(ply) -- 1
 	local jt = ply:getJobTable() -- 2
@@ -10,20 +10,24 @@ spawn_set_name = function(ply) -- 1
 		local last_name -- 8
 		if jt.first_names then -- 9
 			local fnames = jt.first_names -- 10
-			local _exp_0 = type(fnames) -- 11
-			if "string" == _exp_0 then -- 12
-				first_name = fnames -- 13
-			elseif "table" == _exp_0 then -- 14
-				first_name = fnames[math.random(1, #fnames)] -- 15
+			do -- 11
+				local _exp_0 = type(fnames) -- 11
+				if "string" == _exp_0 then -- 12
+					first_name = fnames -- 13
+				elseif "table" == _exp_0 then -- 14
+					first_name = fnames[math.random(1, #fnames)] -- 15
+				end -- 15
 			end -- 15
 		end -- 9
 		if jt.last_names then -- 16
 			local lnames = jt.last_names -- 17
-			local _exp_0 = type(lnames) -- 18
-			if "string" == _exp_0 then -- 19
-				last_name = lnames -- 20
-			elseif "table" == _exp_0 then -- 21
-				last_name = lnames[math.random(1, #lnames)] -- 22
+			do -- 18
+				local _exp_0 = type(lnames) -- 18
+				if "string" == _exp_0 then -- 19
+					last_name = lnames -- 20
+				elseif "table" == _exp_0 then -- 21
+					last_name = lnames[math.random(1, #lnames)] -- 22
+				end -- 22
 			end -- 22
 		end -- 16
 		name = tostring(first_name) .. " " .. tostring(last_name or '') -- 23

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/loot/sh_lootable.yue
+-- [yue]: darkrp_modules\loot\sh_lootable.yue
 local random = math.random -- 1
 if CLIENT then -- 3
 	net.Receive("evilrp_loot_fail", function() -- 4
@@ -345,97 +345,99 @@ do -- 23
 	Lootable = _class_0 -- 23
 end -- 210
 local Dumpster -- 212
-local _class_0 -- 212
-local _parent_0 = Lootable -- 212
-local _base_0 = { -- 212
-	PrintName = "Dumpster", -- 215
-	Description = "It's metal, it's green, and it reeks.", -- 217
-	Model = "models/props_junk/TrashDumpster01a.mdl", -- 219
-	LootTable = { -- 220
-		"item/food/slopskull", -- 220
-		"item/food/slopskull", -- 221
-		"item/food/slopskull", -- 222
-		"item/food/slopskull", -- 223
-		"item/food/slopskull", -- 224
-		"item/food/slopskull", -- 225
-		"item/food/ribbone", -- 226
-		"item/food/ribbone", -- 227
-		"item/food/ribbone", -- 228
-		"item/food/ribbone", -- 229
-		"item/food/paper", -- 230
-		"item/food/paper", -- 231
-		"item/food/paper", -- 232
-		"item/food/paper", -- 233
-		"item/food/boot", -- 234
-		"item/food/boot", -- 235
-		"item/food/boot", -- 236
-		"item/food/boot", -- 237
-		"item/food/abortion", -- 238
-		"item/food/abortion", -- 239
-		"item/food/abortion", -- 240
-		"item/food/abortion", -- 241
-		"item/food/abortion", -- 242
-		"item/food/drink/fearbeer", -- 243
-		"item/food/drink/smearbeer", -- 244
-		"trash/bottle", -- 245
-		"trash/bottle", -- 246
-		"trash/bottle", -- 247
-		"trash/bottle/fearbeer", -- 248
-		"trash/bottle/fearbeer", -- 249
-		"trash/bottle/fearbeer", -- 250
-		"trash/bottle/fearbeer", -- 251
-		"trash/plastic/shake", -- 252
-		"trash/plastic/shake", -- 253
-		"trash/plastic/shake", -- 254
-		"trash/plastic/shake", -- 255
-		"trash/plastic/pills", -- 256
-		"trash/plastic/pills", -- 257
-		"trash/plastic/pills", -- 258
-		"trash/plastic/bleach", -- 259
-		"trash/plastic/bleach", -- 260
-		"trash/plastic/bleach", -- 261
-		"trash/inhaler", -- 262
-		"trash/inhaler", -- 263
-		"trash/inhaler" -- 264
+do -- 212
+	local _class_0 -- 212
+	local _parent_0 = Lootable -- 212
+	local _base_0 = { -- 212
+		PrintName = "Dumpster", -- 215
+		Description = "It's metal, it's green, and it reeks.", -- 217
+		Model = "models/props_junk/TrashDumpster01a.mdl", -- 219
+		LootTable = { -- 220
+			"item/food/slopskull", -- 220
+			"item/food/slopskull", -- 221
+			"item/food/slopskull", -- 222
+			"item/food/slopskull", -- 223
+			"item/food/slopskull", -- 224
+			"item/food/slopskull", -- 225
+			"item/food/ribbone", -- 226
+			"item/food/ribbone", -- 227
+			"item/food/ribbone", -- 228
+			"item/food/ribbone", -- 229
+			"item/food/paper", -- 230
+			"item/food/paper", -- 231
+			"item/food/paper", -- 232
+			"item/food/paper", -- 233
+			"item/food/boot", -- 234
+			"item/food/boot", -- 235
+			"item/food/boot", -- 236
+			"item/food/boot", -- 237
+			"item/food/abortion", -- 238
+			"item/food/abortion", -- 239
+			"item/food/abortion", -- 240
+			"item/food/abortion", -- 241
+			"item/food/abortion", -- 242
+			"item/food/drink/fearbeer", -- 243
+			"item/food/drink/smearbeer", -- 244
+			"trash/bottle", -- 245
+			"trash/bottle", -- 246
+			"trash/bottle", -- 247
+			"trash/bottle/fearbeer", -- 248
+			"trash/bottle/fearbeer", -- 249
+			"trash/bottle/fearbeer", -- 250
+			"trash/bottle/fearbeer", -- 251
+			"trash/plastic/shake", -- 252
+			"trash/plastic/shake", -- 253
+			"trash/plastic/shake", -- 254
+			"trash/plastic/shake", -- 255
+			"trash/plastic/pills", -- 256
+			"trash/plastic/pills", -- 257
+			"trash/plastic/pills", -- 258
+			"trash/plastic/bleach", -- 259
+			"trash/plastic/bleach", -- 260
+			"trash/plastic/bleach", -- 261
+			"trash/inhaler", -- 262
+			"trash/inhaler", -- 263
+			"trash/inhaler" -- 264
+		} -- 212
 	} -- 212
-} -- 212
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 264
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 212
-		_base_0[_key_0] = _val_0 -- 212
-	end -- 212
-end -- 264
-if _base_0.__index == nil then -- 212
-	_base_0.__index = _base_0 -- 212
-end -- 264
-setmetatable(_base_0, _parent_0.__base) -- 212
-_class_0 = setmetatable({ -- 212
-	__init = function(self, ...) -- 212
-		return _class_0.__parent.__init(self, ...) -- 212
-	end, -- 212
-	__base = _base_0, -- 212
-	__name = "Dumpster", -- 212
-	__parent = _parent_0 -- 212
-}, { -- 212
-	__index = function(cls, name) -- 212
-		local val = rawget(_base_0, name) -- 212
-		if val == nil then -- 212
-			local parent = rawget(cls, "__parent") -- 212
-			if parent then -- 212
-				return parent[name] -- 212
-			end -- 212
-		else -- 212
-			return val -- 212
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 264
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 212
+			_base_0[_key_0] = _val_0 -- 212
 		end -- 212
-	end, -- 212
-	__call = function(cls, ...) -- 212
-		local _self_0 = setmetatable({ }, _base_0) -- 212
-		cls.__init(_self_0, ...) -- 212
-		return _self_0 -- 212
+	end -- 264
+	if _base_0.__index == nil then -- 212
+		_base_0.__index = _base_0 -- 212
+	end -- 264
+	setmetatable(_base_0, _parent_0.__base) -- 212
+	_class_0 = setmetatable({ -- 212
+		__init = function(self, ...) -- 212
+			return _class_0.__parent.__init(self, ...) -- 212
+		end, -- 212
+		__base = _base_0, -- 212
+		__name = "Dumpster", -- 212
+		__parent = _parent_0 -- 212
+	}, { -- 212
+		__index = function(cls, name) -- 212
+			local val = rawget(_base_0, name) -- 212
+			if val == nil then -- 212
+				local parent = rawget(cls, "__parent") -- 212
+				if parent then -- 212
+					return parent[name] -- 212
+				end -- 212
+			else -- 212
+				return val -- 212
+			end -- 212
+		end, -- 212
+		__call = function(cls, ...) -- 212
+			local _self_0 = setmetatable({ }, _base_0) -- 212
+			cls.__init(_self_0, ...) -- 212
+			return _self_0 -- 212
+		end -- 212
+	}) -- 212
+	_base_0.__class = _class_0 -- 212
+	if _parent_0.__inherited then -- 212
+		_parent_0.__inherited(_parent_0, _class_0) -- 212
 	end -- 212
-}) -- 212
-_base_0.__class = _class_0 -- 212
-if _parent_0.__inherited then -- 212
-	_parent_0.__inherited(_parent_0, _class_0) -- 212
-end -- 212
-Dumpster = _class_0 -- 212
-return _class_0 -- 264
+	Dumpster = _class_0 -- 212
+	return _class_0 -- 264
+end -- 264

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/jumpscares/sv_death.yue
+-- [yue]: darkrp_modules\jumpscares\sv_death.yue
 util.AddNetworkString("evilrp_frighten") -- 1
 util.AddNetworkString("evilrp_jumpscare") -- 2
 util.AddNetworkString("evilrp_judgement") -- 3

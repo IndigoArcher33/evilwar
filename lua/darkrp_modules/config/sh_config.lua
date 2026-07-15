@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/config/sh_config.yue
+-- [yue]: darkrp_modules\config\sh_config.yue
 Config = { } -- 1
 Config.Get = function(key) -- 5
 	local config = (GM or GAMEMODE).Config -- 6

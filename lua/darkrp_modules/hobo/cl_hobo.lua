@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/hobo/cl_hobo.yue
+-- [yue]: darkrp_modules\hobo\cl_hobo.yue
 local tell_the_truth_hook -- 1
 tell_the_truth_hook = function(ply, bind, pressed) -- 1
 	local wep = LocalPlayer():GetActiveWeapon() -- 2

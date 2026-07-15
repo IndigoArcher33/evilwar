@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/needs/sv_needs.yue
+-- [yue]: darkrp_modules\needs\sv_needs.yue
 hook.Add("Initialize", "evilrp_setup_table_needs", function() -- 1
 	if not sql.TableExists("evilrp_needs") then -- 2
 		return sql.Query("CREATE TABLE evilrp_needs( SteamID TEXT, Hunger FLOAT, Thirst FLOAT, Despair FLOAT )") -- 3

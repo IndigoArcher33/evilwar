@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/stem_cells/sv_stem_cells.yue
+-- [yue]: darkrp_modules\stem_cells\sv_stem_cells.yue
 hook.Add("Initialize", "evilrp_setup_table_stem_cells", function() -- 1
 	if not sql.TableExists("evilrp_stem_cells") then -- 2
 		return sql.Query("CREATE TABLE evilrp_stem_cells( SteamID TEXT, Amount INTEGER )") -- 3

@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/ragdolls/sv_think.yue
+-- [yue]: darkrp_modules\ragdolls\sv_think.yue
 local max, min, random = math.max, math.min, math.random -- 1
 local gibs = { -- 3
 	"models/gibs/humans/mgib_01.mdl", -- 3

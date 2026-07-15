@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/gui/cl_scoreboard.yue
+-- [yue]: darkrp_modules\gui\cl_scoreboard.yue
 SCOREBOARD_SHOW = 0 -- 2
 SCOREBOARD_HIDDEN = 1 -- 4
 SCOREBOARD_SKIP = 2 -- 6
@@ -149,10 +149,12 @@ for k, v in pairs({ -- 134
 					_continue_0 = true -- 143
 					break -- 143
 				end -- 143
-				local header = self.Players:Add("EvilRP_ScoreboardTeam") -- 144
-				header:SetTeam(index) -- 145
-				header:SetZPos(index) -- 146
-				header:Dock(TOP) -- 147
+				do -- 144
+					local header = self.Players:Add("EvilRP_ScoreboardTeam") -- 144
+					header:SetTeam(index) -- 145
+					header:SetZPos(index) -- 146
+					header:Dock(TOP) -- 147
+				end -- 144
 				_continue_0 = true -- 143
 			until true -- 147
 			if not _continue_0 then -- 147

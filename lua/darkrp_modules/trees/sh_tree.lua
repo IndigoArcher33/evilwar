@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_modules/trees/sh_tree.yue
+-- [yue]: darkrp_modules\trees\sh_tree.yue
 local TreeHurt -- 1
 do -- 1
 	local _class_0 -- 1
@@ -161,105 +161,107 @@ do -- 9
 	TreeDeath = _class_0 -- 9
 end -- 11
 local Tree -- 13
-local _class_0 -- 13
-local _parent_0 = ENTITY -- 13
-local _base_0 = { -- 13
-	Base = "base_anim", -- 15
-	Type = "anim", -- 16
-	Spawnable = true, -- 17
-	AdminSpawnable = true, -- 19
-	Pocketable = false, -- 21
-	LootTable = { -- 22
-		"wood/scrap" -- 22
-	}, -- 24
-	SetupDataTables = function(self) -- 24
-		return self:NetworkVar("Int", "Integrity") -- 25
-	end, -- 27
-	Initialize = function(self) -- 27
-		if CLIENT then -- 28
-			return -- 28
-		end -- 28
-		self:SetModel("models/props_foliage/tree_deciduous_03a.mdl") -- 29
-		self:SetMaterial("models/charple/charple3_sheet") -- 30
-		self:PhysicsInit(SOLID_VPHYSICS) -- 31
-		self:SetIntegrity(300) -- 32
-		self:PhysWake() -- 33
-		return self:EmitSound("TreeBirth") -- 34
-	end, -- 36
-	OnTakeDamage = function(self, dmg) -- 36
-		local dtype = dmg:GetDamageType() -- 37
-		if not (dtype == DMG_SLASH) then -- 38
-			return -- 38
-		end -- 38
-		local dmg_int = dmg:GetDamage() -- 39
-		local inflictor = dmg:GetInflictor() -- 40
-		if inflictor.TreeBonus then -- 41
-			dmg_int = dmg_int * inflictor.TreeBonus -- 41
-		end -- 41
-		local pos = dmg:GetDamagePosition() -- 42
-		do -- 43
-			local edata = EffectData() -- 43
-			edata:SetOrigin(pos) -- 44
-			edata:SetScale(60) -- 45
-			util.Effect("BloodImpact", edata) -- 46
-		end -- 43
-		self:SetIntegrity(self:GetIntegrity() - dmg_int) -- 48
-		self.NextSound = self.NextSound or CurTime() -- 49
-		if CurTime() >= self.NextSound then -- 50
-			self.NextSound = CurTime() + 0.1 -- 51
-			self:EmitSound("TreeHurt") -- 52
-		end -- 50
-		if (self:GetIntegrity() <= 0) and not self.Breaking then -- 53
-			self.Breaking = true -- 54
-			self:EmitSound("TreeDeath") -- 55
-			for i = 1, math.random(1, 3) do -- 56
-				local cls = self.LootTable[math.random(1, #self.LootTable)] -- 57
-				local loot = ents.Create(cls) -- 58
-				loot:Spawn() -- 60
-				loot:Activate() -- 61
-				loot:SetPos(pos) -- 62
-			end -- 62
-			return self:Remove() -- 63
-		end -- 53
-	end -- 13
-} -- 13
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 64
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 13
-		_base_0[_key_0] = _val_0 -- 13
-	end -- 13
-end -- 64
-if _base_0.__index == nil then -- 13
-	_base_0.__index = _base_0 -- 13
-end -- 64
-setmetatable(_base_0, _parent_0.__base) -- 13
-_class_0 = setmetatable({ -- 13
-	__init = function(self, ...) -- 13
-		return _class_0.__parent.__init(self, ...) -- 13
-	end, -- 13
-	__base = _base_0, -- 13
-	__name = "Tree", -- 13
-	__parent = _parent_0 -- 13
-}, { -- 13
-	__index = function(cls, name) -- 13
-		local val = rawget(_base_0, name) -- 13
-		if val == nil then -- 13
-			local parent = rawget(cls, "__parent") -- 13
-			if parent then -- 13
-				return parent[name] -- 13
-			end -- 13
-		else -- 13
-			return val -- 13
+do -- 13
+	local _class_0 -- 13
+	local _parent_0 = ENTITY -- 13
+	local _base_0 = { -- 13
+		Base = "base_anim", -- 15
+		Type = "anim", -- 16
+		Spawnable = true, -- 17
+		AdminSpawnable = true, -- 19
+		Pocketable = false, -- 21
+		LootTable = { -- 22
+			"wood/scrap" -- 22
+		}, -- 24
+		SetupDataTables = function(self) -- 24
+			return self:NetworkVar("Int", "Integrity") -- 25
+		end, -- 27
+		Initialize = function(self) -- 27
+			if CLIENT then -- 28
+				return -- 28
+			end -- 28
+			self:SetModel("models/props_foliage/tree_deciduous_03a.mdl") -- 29
+			self:SetMaterial("models/charple/charple3_sheet") -- 30
+			self:PhysicsInit(SOLID_VPHYSICS) -- 31
+			self:SetIntegrity(300) -- 32
+			self:PhysWake() -- 33
+			return self:EmitSound("TreeBirth") -- 34
+		end, -- 36
+		OnTakeDamage = function(self, dmg) -- 36
+			local dtype = dmg:GetDamageType() -- 37
+			if not (dtype == DMG_SLASH) then -- 38
+				return -- 38
+			end -- 38
+			local dmg_int = dmg:GetDamage() -- 39
+			local inflictor = dmg:GetInflictor() -- 40
+			if inflictor.TreeBonus then -- 41
+				dmg_int = dmg_int * inflictor.TreeBonus -- 41
+			end -- 41
+			local pos = dmg:GetDamagePosition() -- 42
+			do -- 43
+				local edata = EffectData() -- 43
+				edata:SetOrigin(pos) -- 44
+				edata:SetScale(60) -- 45
+				util.Effect("BloodImpact", edata) -- 46
+			end -- 43
+			self:SetIntegrity(self:GetIntegrity() - dmg_int) -- 48
+			self.NextSound = self.NextSound or CurTime() -- 49
+			if CurTime() >= self.NextSound then -- 50
+				self.NextSound = CurTime() + 0.1 -- 51
+				self:EmitSound("TreeHurt") -- 52
+			end -- 50
+			if (self:GetIntegrity() <= 0) and not self.Breaking then -- 53
+				self.Breaking = true -- 54
+				self:EmitSound("TreeDeath") -- 55
+				for i = 1, math.random(1, 3) do -- 56
+					local cls = self.LootTable[math.random(1, #self.LootTable)] -- 57
+					local loot = ents.Create(cls) -- 58
+					loot:Spawn() -- 60
+					loot:Activate() -- 61
+					loot:SetPos(pos) -- 62
+				end -- 62
+				return self:Remove() -- 63
+			end -- 53
 		end -- 13
-	end, -- 13
-	__call = function(cls, ...) -- 13
-		local _self_0 = setmetatable({ }, _base_0) -- 13
-		cls.__init(_self_0, ...) -- 13
-		return _self_0 -- 13
+	} -- 13
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 64
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 13
+			_base_0[_key_0] = _val_0 -- 13
+		end -- 13
+	end -- 64
+	if _base_0.__index == nil then -- 13
+		_base_0.__index = _base_0 -- 13
+	end -- 64
+	setmetatable(_base_0, _parent_0.__base) -- 13
+	_class_0 = setmetatable({ -- 13
+		__init = function(self, ...) -- 13
+			return _class_0.__parent.__init(self, ...) -- 13
+		end, -- 13
+		__base = _base_0, -- 13
+		__name = "Tree", -- 13
+		__parent = _parent_0 -- 13
+	}, { -- 13
+		__index = function(cls, name) -- 13
+			local val = rawget(_base_0, name) -- 13
+			if val == nil then -- 13
+				local parent = rawget(cls, "__parent") -- 13
+				if parent then -- 13
+					return parent[name] -- 13
+				end -- 13
+			else -- 13
+				return val -- 13
+			end -- 13
+		end, -- 13
+		__call = function(cls, ...) -- 13
+			local _self_0 = setmetatable({ }, _base_0) -- 13
+			cls.__init(_self_0, ...) -- 13
+			return _self_0 -- 13
+		end -- 13
+	}) -- 13
+	_base_0.__class = _class_0 -- 13
+	if _parent_0.__inherited then -- 13
+		_parent_0.__inherited(_parent_0, _class_0) -- 13
 	end -- 13
-}) -- 13
-_base_0.__class = _class_0 -- 13
-if _parent_0.__inherited then -- 13
-	_parent_0.__inherited(_parent_0, _class_0) -- 13
-end -- 13
-Tree = _class_0 -- 13
-return _class_0 -- 64
+	Tree = _class_0 -- 13
+	return _class_0 -- 64
+end -- 64

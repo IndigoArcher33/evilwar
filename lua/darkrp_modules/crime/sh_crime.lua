@@ -1,4 +1,4 @@
--- [yue]: /home/corpse/gmodserver/garrysmod/addons/darkrpmodification/lua/darkrp_modules/crime/sh_crime.yue
+-- [yue]: darkrp_modules\crime\sh_crime.yue
 CRIMES = { } -- 1
 local CRIME -- 2
 do -- 2
