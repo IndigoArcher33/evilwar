@@ -1,6 +1,36 @@
 class Submit_Crate extends SOUND
   sound: ["weapons/crowbar/crowbar_impact#{i}.wav" for i=1,2]
 
+
+weapons = {
+  "evilrp_weapon/obrez"
+  "evilrp_weapon/obrez"
+  "evilrp_weapon/obrez"
+  "evilrp_weapon/obrez"
+  "evilrp_weapon/obrez"
+  "evilrp_weapon/pacifier"
+  "evilrp_weapon/pacifier"
+  "evilrp_weapon/pacifier"
+  "evilrp_weapon/painkiller"
+  "evilrp_weapon/painkiller"
+  "evilrp_weapon/painkiller"
+  "evilrp_weapon/greaser"
+  "evilrp_weapon/greaser"
+  "evilrp_weapon/greaser"
+  "evilrp_weapon/greaser"
+  "evilrp_weapon/greaser"
+  "evilrp_weapon/owler"
+  "evilrp_weapon/owler"
+  "evilrp_weapon/owler"
+  "evilrp_weapon/owler"
+  "evilrp_weapon/trooper"
+  "evilrp_weapon/enforcer"
+  "evilrp_weapon/enforcer"
+  "evilrp_weapon/enforcer"
+  "evilrp_weapon/subjugator"
+  "evilrp_weapon/subjugator"
+}
+
 class Crate extends ITEM
   @__entity: "crate"
   Spawnable: true
@@ -41,5 +71,5 @@ class Fleshcrate extends Crate
   BiteDamage: 34
     
   Refinement:
-    result: "evilrp_weapon/obrez"
+    result: weapons[math.random(1, #weapons)]
     time: 6
