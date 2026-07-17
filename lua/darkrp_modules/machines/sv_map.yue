@@ -101,6 +101,12 @@ create_machines_and_otherwise = ->
       * pos: Vector( -1292, 1508, 28 )
         ang: Angle(0, 180, -0)
         cls: "refinery"
+      * pos: Vector( -575, 538, 48 )
+        ang: Angle(0, 0, 0)
+        cls: "cooker"
+      * pos: Vector( -575, 494, 48 )
+        ang: Angle(0, 0, 0)
+        cls: "cooker"
   }
   map = game.GetMap!
   for gen in *ents.FindByClass"generator"

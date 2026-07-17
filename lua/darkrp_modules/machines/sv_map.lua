@@ -165,72 +165,82 @@ create_machines_and_otherwise = function() -- 41
 				pos = Vector(-1292, 1508, 28), -- 101
 				ang = Angle(0, 180, -0), -- 102
 				cls = "refinery" -- 103
-			} -- 101
+			}, -- 101
+			{ -- 104
+				pos = Vector(-575, 538, 48), -- 104
+				ang = Angle(0, 0, 0), -- 105
+				cls = "cooker" -- 106
+			}, -- 104
+			{ -- 107
+				pos = Vector(-575, 494, 48), -- 107
+				ang = Angle(0, 0, 0), -- 108
+				cls = "cooker" -- 109
+			} -- 107
 		} -- 61
 	} -- 60
-	local map = game.GetMap() -- 105
-	local _list_0 = ents.FindByClass("generator") -- 106
-	for _index_0 = 1, #_list_0 do -- 106
-		local gen = _list_0[_index_0] -- 106
-		gen:Remove() -- 107
-	end -- 107
-	if EVIL_GENERATOR_POSITIONS[map] then -- 108
-		local _list_1 = EVIL_GENERATOR_POSITIONS[map] -- 109
-		for _index_0 = 1, #_list_1 do -- 109
-			local v = _list_1[_index_0] -- 109
-			local sp = ents.Create("generator") -- 110
-			sp:SetPos(v.pos) -- 112
-			sp:SetAngles(v.ang) -- 113
-			sp:SetFactoryIdentifier(v.id) -- 114
-			sp:Spawn() -- 115
-			sp:Activate() -- 116
-			sp:GetPhysicsObject():EnableMotion(false) -- 117
-			MsgC(Color(0, 200, 0), tostring(sp) .. " spawned with factory identifier '", Color(200, 200, 200), v.id, Color(0, 200, 0), "'.\n") -- 118
-		end -- 123
-		local _list_2 = ents.FindByClass("machine/*") -- 129
-		for _index_0 = 1, #_list_2 do -- 129
-			local mach = _list_2[_index_0] -- 129
-			mach:Remove() -- 130
-		end -- 130
-		local _list_3 = ents.FindByClass("refinery") -- 131
-		for _index_0 = 1, #_list_3 do -- 131
-			local ref = _list_3[_index_0] -- 131
-			ref:Remove() -- 132
-		end -- 132
-		return timer.Simple(1, function() -- 133
-			if EVIL_MACHINE_POSITIONS[map] then -- 134
-				local _list_4 = EVIL_MACHINE_POSITIONS[map] -- 135
-				for _index_0 = 1, #_list_4 do -- 135
-					local v = _list_4[_index_0] -- 135
-					local sp = ents.Create(v.cls) -- 136
-					do -- 137
-						sp:SetPos(v.pos) -- 138
-						sp:SetAngles(v.ang) -- 139
-						sp:Spawn() -- 140
-						sp:Activate() -- 141
-						local phys = sp:GetPhysicsObject() -- 142
-						if IsValid(phys) then -- 143
-							phys:EnableMotion(false) -- 143
-						end -- 143
-						MsgC(Color(0, 200, 0), tostring(sp) .. " spawned.\n") -- 144
-					end -- 137
-				end -- 145
-			end -- 134
-			if EVIL_MACHINE_POSITIONS_CURSED[map] then -- 146
-				local sp = ents.Create("machine/evil") -- 147
-				do -- 148
-					sp:Spawn() -- 149
-					sp:Activate() -- 150
-					local phys = sp:GetPhysicsObject() -- 151
-					if IsValid(phys) then -- 152
-						phys:EnableMotion(false) -- 152
-					end -- 152
-					MsgC(Color(200, 0, 0), tostring(sp) .. " SPAWNED.\n") -- 153
-					sp:Shift() -- 155
-				end -- 148
-			end -- 146
-			return -- 156
-		end) -- 156
-	end -- 108
+	local map = game.GetMap() -- 111
+	local _list_0 = ents.FindByClass("generator") -- 112
+	for _index_0 = 1, #_list_0 do -- 112
+		local gen = _list_0[_index_0] -- 112
+		gen:Remove() -- 113
+	end -- 113
+	if EVIL_GENERATOR_POSITIONS[map] then -- 114
+		local _list_1 = EVIL_GENERATOR_POSITIONS[map] -- 115
+		for _index_0 = 1, #_list_1 do -- 115
+			local v = _list_1[_index_0] -- 115
+			local sp = ents.Create("generator") -- 116
+			sp:SetPos(v.pos) -- 118
+			sp:SetAngles(v.ang) -- 119
+			sp:SetFactoryIdentifier(v.id) -- 120
+			sp:Spawn() -- 121
+			sp:Activate() -- 122
+			sp:GetPhysicsObject():EnableMotion(false) -- 123
+			MsgC(Color(0, 200, 0), tostring(sp) .. " spawned with factory identifier '", Color(200, 200, 200), v.id, Color(0, 200, 0), "'.\n") -- 124
+		end -- 129
+		local _list_2 = ents.FindByClass("machine/*") -- 135
+		for _index_0 = 1, #_list_2 do -- 135
+			local mach = _list_2[_index_0] -- 135
+			mach:Remove() -- 136
+		end -- 136
+		local _list_3 = ents.FindByClass("refinery") -- 137
+		for _index_0 = 1, #_list_3 do -- 137
+			local ref = _list_3[_index_0] -- 137
+			ref:Remove() -- 138
+		end -- 138
+		return timer.Simple(1, function() -- 139
+			if EVIL_MACHINE_POSITIONS[map] then -- 140
+				local _list_4 = EVIL_MACHINE_POSITIONS[map] -- 141
+				for _index_0 = 1, #_list_4 do -- 141
+					local v = _list_4[_index_0] -- 141
+					local sp = ents.Create(v.cls) -- 142
+					do -- 143
+						sp:SetPos(v.pos) -- 144
+						sp:SetAngles(v.ang) -- 145
+						sp:Spawn() -- 146
+						sp:Activate() -- 147
+						local phys = sp:GetPhysicsObject() -- 148
+						if IsValid(phys) then -- 149
+							phys:EnableMotion(false) -- 149
+						end -- 149
+						MsgC(Color(0, 200, 0), tostring(sp) .. " spawned.\n") -- 150
+					end -- 143
+				end -- 151
+			end -- 140
+			if EVIL_MACHINE_POSITIONS_CURSED[map] then -- 152
+				local sp = ents.Create("machine/evil") -- 153
+				do -- 154
+					sp:Spawn() -- 155
+					sp:Activate() -- 156
+					local phys = sp:GetPhysicsObject() -- 157
+					if IsValid(phys) then -- 158
+						phys:EnableMotion(false) -- 158
+					end -- 158
+					MsgC(Color(200, 0, 0), tostring(sp) .. " SPAWNED.\n") -- 159
+					sp:Shift() -- 161
+				end -- 154
+			end -- 152
+			return -- 162
+		end) -- 162
+	end -- 114
 end -- 41
-return hook.Add("InitPostEntity", "evilrp_create_machines_and_otherwise", create_machines_and_otherwise) -- 158
+return hook.Add("InitPostEntity", "evilrp_create_machines_and_otherwise", create_machines_and_otherwise) -- 164

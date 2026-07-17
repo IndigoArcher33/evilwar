@@ -109,7 +109,7 @@ elseif SERVER then -- 10
 		ply:ConCommand("say /me " .. tostring(mach.UseText[math.random(1, #mach.UseText)])) -- 86
 		mach:SetThanksText(mach.ThanksTexts[math.random(1, #mach.ThanksTexts)]) -- 87
 		mach:EmitSound("Autodealer_Squeal") -- 88
-		ply:AddMoney(-cost, "Autocommerce") -- 89
+		ply:AddMoney(-(cost + taxed), "Autocommerce") -- 89
 		local _obj_0 = GAMEMODE.taxes_stored -- 90
 		_obj_0.sales = _obj_0.sales + taxed -- 90
 		local _obj_1 = GAMEMODE.Stocks -- 91
