@@ -1,0 +1,252 @@
+noise = Material"models/props_lab/eyescanner_disp"
+noise2 = Material"models/props_lab/cornerunit_cloud"
+screen = Material"glass/glasswindow017a"
+
+-- this is where you should put any future recipes, don't touch the rest of the recipe code
+recipes = {
+  {
+    inputs: {"item/food/slopskull", "item/food/slopskull"}
+    output: "item/food/slopbowl"
+  }
+}
+
+recipeKey = (a, b) ->
+  a, b = b, a if a > b
+  "#{a}|#{b}" -- this concatenates the two input strings in order to quickly look them up in the recipe data
+
+
+RecipeOutputs = {} -- this stores what two pairs of items (in string form as a key) will produce
+IsInput  = {} -- this stores all of the items that have an actual recipe, use this to quickly look up if any given item is used as an input
+GetRecipe = (itemA, itemB) -> RecipeOutputs[recipeKey itemA, itemB]
+
+for recipe in *recipes
+  a, b = recipe.inputs[1], recipe.inputs[2]
+  key = recipeKey a, b
+  RecipeOutputs[key] = recipe.output
+  IsInput[a] = true
+  IsInput[b] = true
+
+class Cooker extends ENTITY
+  Base: "base_anim"
+  Type: "anim"
+  PrintName: "Cooker"
+  Interesting: true
+  Category: "EvilRP: Machines"
+
+  Spawnable: true
+  AdminSpawnable: true
+
+  Pocketable: false
+
+  SetupDataTables: =>
+    @NetworkVar "String", "Producing"
+    @NetworkVar "String", "Input1"
+    @NetworkVar "String", "Input2"
+    @NetworkVar "Int", "ProductionStart"
+    @NetworkVar "Int", "ProductionEnd"
+    @NetworkVar "Int", "SoundLoop"
+    @NetworkVar "Int", "Rust"
+    @NetworkVar "Int", "Heat"
+    @NetworkVar "Entity", "Worker"
+
+  Initialize: =>
+    return if CLIENT
+    @SetUseType SIMPLE_USE
+    @SetModel"models/props_wasteland/kitchen_stove002a.mdl"
+    @PhysicsInit SOLID_VPHYSICS
+    @PhysWake!
+    @SetHeat 0
+    @NextHeat = 0
+
+  Think: =>
+    return if CLIENT
+    pend = @GetProductionEnd!
+    ct = CurTime!
+    rust = @GetRust!
+    if pend > 0 and ct >= pend
+      prod = scripted_ents.Get(@GetProducing!)
+      @SetRust math.min(100, rust + (prod.CookTime))
+      @EmitSound"buttons/lever6.wav"
+      @StopLoopingSound @GetSoundLoop!
+      worker = @GetWorker!
+      if worker and IsValid worker
+        start = @GetPos!
+        endpos = start + (@GetUp! * 128) + (@GetForward! * 24)
+        tr = util.TraceLine{
+          :start
+          :endpos
+          filter: @
+          mask: MASK_NPCWORLDSTATIC
+        }
+        if prod
+          sp = ents.Create @GetProducing!
+          with sp
+            \SetPos tr.HitPos - (@GetUp! * 40) + (@GetForward! * 38) - (@GetRight! * 2)
+            \Spawn!
+            \Activate!
+        -- implement heat here
+        -- implement rust explosions here
+        @SetWorker nil
+      @SetProducing""
+      @SetInput1""
+      @SetInput2""
+      @SetProductionStart 0
+      @SetProductionEnd 0
+    -- implement heat increasing and lowering here
+
+  Touch: (what) =>
+    if SERVER
+      return if @GetProductionEnd! > 0
+      return unless IsInput[what\GetClass!]
+      return if what.Processed
+      submitter = what\GetNWEntity("evilrp_submitter")
+      return unless submitter and IsValid(submitter)
+
+      if @GetInput1! == "" -- checks if there has been any input before this
+        @SetInput1 what\GetClass!
+        what.Processed = true
+        what\Submitted! if what.Submitted
+        what\EmitSound what.SubmitSound if what.SubmitSound
+        what\Remove!
+        return
+      prod = GetRecipe @GetInput1!, what\GetClass!
+      return unless prod
+
+      @SetInput2 what\GetClass!
+      what.Processed = true
+      what\Submitted! if what.Submitted
+      what\EmitSound what.SubmitSound if what.SubmitSound
+      @SetProducing prod
+
+      item = scripted_ents.Get(prod)
+      ct = CurTime!
+      @SetProductionStart ct
+      wait = item.CookTime * (1 + (@GetRust! / 100))
+      @SetProductionEnd ct + wait
+      @SetWorker submitter
+      @EmitSound"ambient/machines/machine1_hit1.wav"
+      @SetSoundLoop @StartLoopingSound"ambient/machines/machine_whine1.wav"
+      ed = EffectData!
+      with ed
+        \SetStart @GetPos!
+        \SetOrigin @GetPos!
+        \SetScale 2
+      util.Effect "StunstickImpact", ed, true, true
+      what\Remove!
+        
+  OnTakeDamage: (dmg) =>
+    attacker = dmg\GetAttacker!
+    if attacker and IsValid(attacker)
+      if attacker\IsPlayer!
+        switch attacker\Team!
+          when TEAM_SANITAR
+            rust = @GetRust!
+            @SetRust math.max(0, rust - (dmg\GetDamage! * .2))
+            reward = math.floor(math.abs(rust - @GetRust!) * 2.3)
+            if reward > 0
+              attacker\AddMoney reward, "The Cleansing"
+              
+  Draw: =>
+    @DrawModel!
+    @Render3D2D!
+
+  HUDRender: =>
+    ct = {}
+    ct[] = @PrintName
+    ct[] = {
+      text: "Certain items can be processed into more useful things with this."
+      font: "Spleen_Label_Small"
+    }
+    ct[] = {
+      text: "The rustier it is, the longer it will take."
+      font: "Spleen_Label_Small"
+    }
+    return ct
+
+  Render3D2D: =>
+    dist_sqr = @GetPos!\DistToSqr(lp\GetPos!)
+    return unless dist_sqr < 128^2
+    font = "Spleen_Label"
+    desp = lp\GetDespair! * 0.01
+    ct = CurTime!
+    pos = @GetPos! + (@GetUp! * 80) + (@GetForward! * 20) + (@GetRight! * 15)
+    ang = @GetAngles!
+    with ang
+      \RotateAroundAxis \Up!, -90
+      \RotateAroundAxis \Forward!, 90
+      \RotateAroundAxis \Right!, 180
+    -- 3D2D start: name
+    cam.Start3D2D pos, ang, 0.1
+    -- draw a rectangle, on which to draw the text atop
+    surface.SetMaterial noise
+    surface.SetDrawColor Color(255,255,255,255)
+    surface.DrawTexturedRect 0, 0, 152, 38
+    -- render the name
+    txt = "Cooker"
+    txt_obj = scribe.Parse "<stutter><rgb=1,1,30><wiggle=#{8 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+    txt_obj\Draw 8, 6, 1, TEXT_ALIGN_LEFT
+    -- 3D2D end
+    cam.End3D2D!
+    -- 3D2D start: input1
+    pos = @GetPos! + (@GetUp! * 72) + (@GetForward! * 16) + (@GetRight! * 8)
+    cam.Start3D2D pos, ang, 0.1
+    -- draw a rectangle, on which to draw the text atop
+    surface.SetMaterial noise2
+    surface.SetDrawColor Color(255,191,0,255)
+    surface.DrawTexturedRect 0, 0, 152, 38
+    -- render the name
+    txt = "Feed me"
+    input = scripted_ents.Get(@GetInput1!) if @GetInput1! != ""
+    txt = input.PrintName if input
+    input = nil
+    txt_obj = scribe.Parse "<stutter><rgb=1,1,30><wiggle=#{8 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+    txt_obj\Draw 8, 6, 1, TEXT_ALIGN_LEFT
+    -- 3D2D end
+    cam.End3D2D!
+    -- 3D2D start: input2
+    pos = @GetPos! + (@GetUp! * 37) + (@GetForward! * 16) + (@GetRight! * 8)
+    cam.Start3D2D pos, ang, 0.1
+    -- draw a rectangle, on which to draw the text atop
+    surface.SetMaterial noise2
+    surface.SetDrawColor Color(255,191,0,255)
+    surface.DrawTexturedRect 0, 0, 152, 38
+    -- render the name
+    txt = "Feed me"
+    input = scripted_ents.Get(@GetInput2!) if @GetInput2! != ""
+    txt = input.PrintName if input
+    input = nil
+    txt_obj = scribe.Parse "<stutter><rgb=1,1,30><wiggle=#{8 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+    txt_obj\Draw 8, 6, 1, TEXT_ALIGN_LEFT
+    -- 3D2D end
+    cam.End3D2D!
+    -- 3D2D start: rust
+    pos = @GetPos! + (@GetUp! * 80) + (@GetForward! * 20) + (@GetRight! * -1)
+    cam.Start3D2D pos, ang, 0.1
+    rust = @GetRust!
+    txt = "#{rust}% rust"
+    if rust < 0
+      txt = "give me purpose"
+    elseif rust >= 100
+      txt = "100% ROTTEN"
+    pend = @GetProductionEnd!
+    pstart = @GetProductionStart!
+    prod = @GetProducing!
+    if pend > 0 and prod
+      prod = scripted_ents.Get prod
+      text = prod.PrintName if prod
+    surface.SetDrawColor 0, 0, 0, 255
+    surface.DrawRect 0, 0, 140, 38
+    if pend > 0
+      cur = ct - pstart
+      surface.SetDrawColor 0, 150 + (100 * math.cos(ct)), 0, 255
+      surface.DrawRect 0, 0, 140 * (cur / (pend - pstart)), 38
+    elseif rust >= 100
+      surface.SetDrawColor 150 + (100 * math.cos(ct)), 0, 0, 255
+      surface.DrawRect 0, 0, 140 * (rust / 100), 38
+    else
+      surface.SetDrawColor 147, 58 + (2 * math.cos(ct)), 22, 255
+      surface.DrawRect 0, 0, 140 * (rust / 100), 38
+    txt_obj = scribe.Parse "<stutter><rgb=1,1,30><wiggle=#{8 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+    txt_obj\Draw 8, 6, 1, TEXT_ALIGN_LEFT
+    cam.End3D2D!
+    

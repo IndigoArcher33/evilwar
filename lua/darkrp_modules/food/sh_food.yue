@@ -2,6 +2,9 @@ class FoodRot extends SOUND
   sound: ["weapons/bugbait/bugbait_squeeze#{i}.wav" for i=1,3]
   level: SNDLVL_50dB
 
+class Submit_Food extends SOUND
+  sound: ["npc/barnacle/barnacle_pull#{i}.wav" for i=1,4]
+
 class Food extends ITEM
   SetupDataTables: =>
     super!
@@ -14,11 +17,13 @@ class Food extends ITEM
   Interesting: true
 
   Sound: Sound"npc/barnacle/barnacle_crunch2.wav"
+  SubmitSound: "Submit_Food"
 
   Hunger: 0 -- use negative numbers to satisfy a status
   Thirst: 0
   Despair: 0
   HealthAdd: 0 -- temp until we get a new health system
+  CookTime: 0 -- time this item takes to be cooked
 
   RotTime: 0 -- 0 means never rot
 
@@ -193,6 +198,26 @@ class SoyLoaf extends Food
     "chews off a chunk from a soylent loaf."
     "eats some soylent, like a good citizen should."
   }
+
+class SlopBowl extends Food
+  PrintName: "Slop Bowl"
+  Model: Model"models/props_c17/metalPot001a.mdl"
+  Hunger: -30
+  Thirst: 4
+  Despair: 15
+  Description: "A festering pot that oozes a disgusting liquid.\nIt seems oddly comforting."
+  CookTime: 10
+
+  Price: 20
+
+  UseText: {
+    "enjoys the slop."
+    "chokes while consuming slop."
+    "struggles to eat a slop bowl."
+    "chomps on some slop."
+    "begrudgingly eats a spoonful of slop."
+    "consumes slop."
+}
 
 class Boot extends Food
   PrintName: "Boot"
