@@ -1,12 +1,12 @@
-#+title: Liver Failure Relapse
-#+author: Toxidroma
+#+title: EvilWar
+#+author: The Derelikt
 
 * What's this?
 This is an addon for Garry's Mod that implements the vast majority of
-the game known as _Liver Failure Relapse_, a surreal horror roleplaying
-game that is built off of DarkRP.
+the game known as _EvilWar_, a surreal action roleplaying
+game that is built off of _Liver Failure Relapse_ by Toxidroma.
 
-DarkRP is modified mostly not by editing its gamemode files
+LFR is a modified version of DarkRP that is further modified mostly not by editing its gamemode files
 themselves, but a separate modification addon. This is that addon.
 
 However, in developing this project, there were unfortunately changes
@@ -18,11 +18,10 @@ installed. The below instructions assume you know where to find its
 primary directory structure.
 
 1. Clone this repository
-> ~git clone ssh://death.town:23231/liver-failure-relapse~
-2. Move =liver-failure-relapse= into =garrysmod/addons=
+2. Move =EvilWar= into =garrysmod/addons=
 The resulting folder name can be anything.
 3. Clone =relapse-darkrp=
-This is the modified DarkRP core that Liver Failure Relapse requires
+This is the modified DarkRP core that EvilWar requires
 in order to function. _It will not work_ using 'vanilla' DarkRP without
 serious problems.
 4. Move =relapse-darkrp= into =garrysmod/gamemodes=
@@ -32,7 +31,7 @@ That is, you should end up with a path that reads
 6. Pray
 * Dependencies?
 Outside of this repository and the modified DarkRP necessary for it to
-work, there is some code that Liver Failure Relapse relies on which is
+work, there is some code that EvilWar relies on which is
 not yet publicly available. If you want to host it at this time and
 you're not us, you probably can't just now. This will hopefully change
 in the future, and there will be a lot more to play with whenever that happens.
