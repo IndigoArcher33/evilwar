@@ -1,3 +1,7 @@
+class StemSound extends SOUND
+  sound: ["garrysmod/save_load#{i}.wav" for i=1,4]
+  level: SNDLVL_50dB
+
 meta = FindMetaTable"Player"
 meta[k] = v for k, v in pairs{
   -- hunger
@@ -13,6 +17,7 @@ meta[k] = v for k, v in pairs{
     else
       amt_str = string.english_number(math.abs(amt))
     if amt >= 0
+      @EmitSound"StemSound"
       @Notify"<c=0,200,0>Gained #{amt_str} stem #{cells}."
     else
       @Notify"<c=200,0,0>Lost #{amt_str} stem #{cells}."
