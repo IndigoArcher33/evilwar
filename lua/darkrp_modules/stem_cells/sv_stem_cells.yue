@@ -26,4 +26,23 @@ lose_stem_cells_on_death = (ply, attacker, dmg) ->
       rag\SetNWInt("sanitar_cells", math.abs(amount))
     )
 
+reward_stem_cells_on_kill = (ply, attacker, dmg) ->
+  return if ply\Team! == TEAM_GHOST
+  return if not attacker or not attacker\IsPlayer!
+  return if attacker == ply
+  attackerJob = RPExtraTeams[attacker\Team!]
+  plyJob = RPExtraTeams[ply\Team!]
+  if attackerJob.category == plyJob.category
+    amount = -2
+    attacker\AddStemCells(amount)
+    attacker\Notify"<c=200,0,0>I HAVE KILLED MY OWN BROTHER."
+    net.Start"evilrp_frighten"
+    net.Send attacker
+    return
+
+  amount = 1
+  attacker\AddStemCells(amount)
+
+
 hook.Add "DoPlayerDeath", "evilrp_lose_stem_cells_on_death", lose_stem_cells_on_death
+hook.Add "DoPlayerDeath", "evilrp_reward_stem_cells_on_kill", reward_stem_cells_on_kill

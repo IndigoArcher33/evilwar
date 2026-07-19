@@ -40,4 +40,29 @@ lose_stem_cells_on_death = function(ply, attacker, dmg) -- 13
 		end) -- 27
 	end -- 21
 end -- 13
-return hook.Add("DoPlayerDeath", "evilrp_lose_stem_cells_on_death", lose_stem_cells_on_death) -- 29
+local reward_stem_cells_on_kill -- 29
+reward_stem_cells_on_kill = function(ply, attacker, dmg) -- 29
+	if ply:Team() == TEAM_GHOST then -- 30
+		return -- 30
+	end -- 30
+	if not attacker or not attacker:IsPlayer() then -- 31
+		return -- 31
+	end -- 31
+	if attacker == ply then -- 32
+		return -- 32
+	end -- 32
+	local attackerJob = RPExtraTeams[attacker:Team()] -- 33
+	local plyJob = RPExtraTeams[ply:Team()] -- 34
+	if attackerJob.category == plyJob.category then -- 35
+		local amount = -2 -- 36
+		attacker:AddStemCells(amount) -- 37
+		attacker:Notify("<c=200,0,0>I HAVE KILLED MY OWN BROTHER.") -- 38
+		net.Start("evilrp_frighten") -- 39
+		net.Send(attacker) -- 40
+		return -- 41
+	end -- 35
+	local amount = 1 -- 43
+	return attacker:AddStemCells(amount) -- 44
+end -- 29
+hook.Add("DoPlayerDeath", "evilrp_lose_stem_cells_on_death", lose_stem_cells_on_death) -- 47
+return hook.Add("DoPlayerDeath", "evilrp_reward_stem_cells_on_kill", reward_stem_cells_on_kill) -- 48
