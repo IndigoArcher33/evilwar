@@ -84,6 +84,76 @@ TEAM_GHOST = DarkRP.createJob "Ghost",
         ["$pp_colour_mulb"]: 0
     return tab
 
+TEAM_STALKER = DarkRP.createJob "Stalker",
+  color: Color(20, 150, 20)
+  model: "models/liver_failure/wastelander/wastelander.mdl"
+  description: "A soul with no allegiance, destined to plunder the wasteland."
+  weapons: {"evilrp_weapon/brainpaster", "evilrp_melee/axe"}
+  category: "Scum of Liver Failure"
+  command: "stalker"
+  salary: 1
+  max: 0
+  hasLicense: false
+  candemote: false
+  speech_sounds: ["placenta/speech/prole#{i}.wav" for i=1,3]
+  hurt_sounds: ["placenta/pain/prole#{i}.wav" for i=1,5]
+  become_sounds: ["npc/zombie/zombie_alert#{i}.wav" for i=1,3]
+  death_sounds: ["placenta/death/prole#{i}.wav" for i=1,3]
+  crosstext: (ply) ->
+    text = "Don't panic."
+    switch lp\Team!
+      when TEAM_PRIVATE
+        text = "He doesn't look like me."
+      when TEAM_STALKER
+        text = "A fellow plunderer."
+      when TEAM_SANITAR
+        text = "Despicable."
+      when TEAM_KORPSMAN
+        text = "Why is he here?"
+      when TEAM_KOMMANDANT
+        text = "He might be of use to me."
+      when TEAM_GHOST
+        text = "He has a noble pursuit."
+      when TEAM_BONEHEAD
+        text = "SEEN HIM BEFORE!!"
+    return { :text, font: "Spleen_Label_Small" }, false
+  first_names: { "Wasted", "Decrepit", "Rotten", }
+  last_names: { "Soul", "Plunderer", "Traitor", "Wanderer", }
+  bar_names:
+    health: "regret"
+  special_name: "Meatwad"
+  special_name_chance: 1000
+  ShowSpare1: open_player_menu
+  ShowSpare2: open_action_menu
+  PlayerLoadout: (ply) ->
+    ply\ClearOddities!
+    ply\AddOddity ODDITY.list[math.random(#ODDITY.list)]
+    set_bodygroup(ply, slot, val) for slot, val in pairs {
+      -- head
+      [0]: 0
+      -- legs
+      [1]: 2
+      -- torso
+      [2]: {2, 3, 8, 6}
+      -- headgear
+      [3]: {19, 20}
+      -- bandana
+      [4]: 0
+      -- mask
+      [5]: 0
+      -- hat mask
+      [6]: {0,1,2,3}
+      -- fullmask
+      [7]: 0
+      -- glasses
+      [8]: 0
+      -- hands
+      [9]: {0,1}
+    }
+    skins = {4,6,7}
+    ply\SetSkin skins[math.random(1, #skins)]
+    return false
+
 class SpeechBonehead extends SOUND
   sound: "placenta/bonehead_aggrod4.wav"
   pitch: {200, 250}
