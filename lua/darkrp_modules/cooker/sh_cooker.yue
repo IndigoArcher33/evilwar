@@ -2,11 +2,15 @@ noise = Material"models/props_lab/eyescanner_disp"
 noise2 = Material"models/props_lab/cornerunit_cloud"
 screen = Material"glass/glasswindow017a"
 
--- this is where you should put any future recipes, don't touch the rest of the recipe code
+-- this is where you should put any future recipes, don't touch the rest of the recipe code (I'm not sure why you would) ~ Vel
 recipes = {
   {
     inputs: {"item/food/slopskull", "item/food/slopskull"}
     output: "item/food/slopbowl"
+  }
+  {
+    inputs: {"item/food/soyloaf", "item/food/drink/fearbeer"}
+    output: "item/food/drink/shake"
   }
 }
 
