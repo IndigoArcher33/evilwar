@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/autorun/sh_entity.yue
+-- [yue]: autorun\sh_entity.yue
 local Create = ents.Create -- 1
 local Register = scripted_ents.Register -- 3
 local lower, Left = string.lower, string.Left -- 5
@@ -156,13 +156,15 @@ do -- 49
 						end -- 106
 					end -- 105
 				elseif (#self.PartialUses > 0) then -- 109
-					local _exp_0 = self.PartialUse -- 110
-					if 0 == _exp_0 then -- 111
-						self.PartialUse = 1 -- 112
-					else -- 114
-						self:SetUser(NULL) -- 114
-						self:SetEndTime(0) -- 115
-						self.PartialUse = 0 -- 116
+					do -- 110
+						local _exp_0 = self.PartialUse -- 110
+						if 0 == _exp_0 then -- 111
+							self.PartialUse = 1 -- 112
+						else -- 114
+							self:SetUser(NULL) -- 114
+							self:SetEndTime(0) -- 115
+							self.PartialUse = 0 -- 116
+						end -- 116
 					end -- 116
 				end -- 104
 			end -- 97

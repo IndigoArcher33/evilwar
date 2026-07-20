@@ -212,7 +212,7 @@ do -- 69
 			if ply:Team() ~= TEAM_KOMMANDANT then -- 101
 				ply:Notify("<c=200,0,0> WHAT THE FUCK IS THIS? HOLY SHI~") -- 102
 				ply:AddDespair(100) -- 103
-				net.Start("evilrp_judgement") -- 104
+				net.Start("evilrp_jumpscare") -- 104
 				net.Send(ply) -- 105
 				return -- 106
 			end -- 101

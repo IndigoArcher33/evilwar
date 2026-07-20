@@ -155,13 +155,13 @@ do -- 19
 	Cannibalism = _class_0 -- 19
 end -- 21
 ODDITY_CANNIBALISM = Cannibalism.index -- 22
-local Depression -- 24
+local Prescience -- 24
 do -- 24
 	local _class_0 -- 24
 	local _parent_0 = ODDITY -- 24
 	local _base_0 = { -- 24
-		name = "Depression", -- 26
-		desc = "It's hard being a corpse. It's hard, and nobody understands." -- 24
+		name = "Prescience", -- 26
+		desc = "I have visions of the future. It's hard, but it must be done." -- 24
 	} -- 24
 	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 26
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 24
@@ -177,7 +177,7 @@ do -- 24
 			return _class_0.__parent.__init(self, ...) -- 24
 		end, -- 24
 		__base = _base_0, -- 24
-		__name = "Depression", -- 24
+		__name = "Prescience", -- 24
 		__parent = _parent_0 -- 24
 	}, { -- 24
 		__index = function(cls, name) -- 24
@@ -201,114 +201,114 @@ do -- 24
 	if _parent_0.__inherited then -- 24
 		_parent_0.__inherited(_parent_0, _class_0) -- 24
 	end -- 24
-	Depression = _class_0 -- 24
+	Prescience = _class_0 -- 24
 end -- 26
-ODDITY_DEPRESSION = Depression.index -- 27
-local Anasogonsia -- 39
-do -- 39
-	local _class_0 -- 39
-	local _parent_0 = ODDITY -- 39
-	local _base_0 = { -- 39
-		name = "Anasogonsia", -- 41
-		desc = "I can't determine anything about myself." -- 39
-	} -- 39
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 41
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 39
-			_base_0[_key_0] = _val_0 -- 39
-		end -- 39
-	end -- 41
-	if _base_0.__index == nil then -- 39
-		_base_0.__index = _base_0 -- 39
-	end -- 41
-	setmetatable(_base_0, _parent_0.__base) -- 39
-	_class_0 = setmetatable({ -- 39
-		__init = function(self, ...) -- 39
-			return _class_0.__parent.__init(self, ...) -- 39
-		end, -- 39
-		__base = _base_0, -- 39
-		__name = "Anasogonsia", -- 39
-		__parent = _parent_0 -- 39
-	}, { -- 39
-		__index = function(cls, name) -- 39
-			local val = rawget(_base_0, name) -- 39
-			if val == nil then -- 39
-				local parent = rawget(cls, "__parent") -- 39
-				if parent then -- 39
-					return parent[name] -- 39
-				end -- 39
-			else -- 39
-				return val -- 39
-			end -- 39
-		end, -- 39
-		__call = function(cls, ...) -- 39
-			local _self_0 = setmetatable({ }, _base_0) -- 39
-			cls.__init(_self_0, ...) -- 39
-			return _self_0 -- 39
-		end -- 39
-	}) -- 39
-	_base_0.__class = _class_0 -- 39
-	if _parent_0.__inherited then -- 39
-		_parent_0.__inherited(_parent_0, _class_0) -- 39
-	end -- 39
-	Anasogonsia = _class_0 -- 39
-end -- 41
-ODDITY_ANASOGONSIA = Anasogonsia.index -- 42
-local Illiteracy -- 49
-do -- 49
-	local _class_0 -- 49
-	local _parent_0 = ODDITY -- 49
-	local _base_0 = { -- 49
-		name = "Illiteracy", -- 51
-		desc = "I have no ability to read or write. Whatever." -- 49
-	} -- 49
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 51
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 49
-			_base_0[_key_0] = _val_0 -- 49
-		end -- 49
-	end -- 51
-	if _base_0.__index == nil then -- 49
-		_base_0.__index = _base_0 -- 49
-	end -- 51
-	setmetatable(_base_0, _parent_0.__base) -- 49
-	_class_0 = setmetatable({ -- 49
-		__init = function(self, ...) -- 49
-			return _class_0.__parent.__init(self, ...) -- 49
-		end, -- 49
-		__base = _base_0, -- 49
-		__name = "Illiteracy", -- 49
-		__parent = _parent_0 -- 49
-	}, { -- 49
-		__index = function(cls, name) -- 49
-			local val = rawget(_base_0, name) -- 49
-			if val == nil then -- 49
-				local parent = rawget(cls, "__parent") -- 49
-				if parent then -- 49
-					return parent[name] -- 49
-				end -- 49
-			else -- 49
-				return val -- 49
-			end -- 49
-		end, -- 49
-		__call = function(cls, ...) -- 49
-			local _self_0 = setmetatable({ }, _base_0) -- 49
-			cls.__init(_self_0, ...) -- 49
-			return _self_0 -- 49
-		end -- 49
-	}) -- 49
-	_base_0.__class = _class_0 -- 49
-	if _parent_0.__inherited then -- 49
-		_parent_0.__inherited(_parent_0, _class_0) -- 49
-	end -- 49
-	Illiteracy = _class_0 -- 49
-end -- 51
-ODDITY_ILLITERACY = Illiteracy.index -- 52
-local Delinquency -- 54
+ODDITY_Prescience = Prescience.index -- 27
+local Depression -- 29
+do -- 29
+	local _class_0 -- 29
+	local _parent_0 = ODDITY -- 29
+	local _base_0 = { -- 29
+		name = "Depression", -- 31
+		desc = "It's hard being a corpse. It's hard, and nobody understands." -- 29
+	} -- 29
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 31
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 29
+			_base_0[_key_0] = _val_0 -- 29
+		end -- 29
+	end -- 31
+	if _base_0.__index == nil then -- 29
+		_base_0.__index = _base_0 -- 29
+	end -- 31
+	setmetatable(_base_0, _parent_0.__base) -- 29
+	_class_0 = setmetatable({ -- 29
+		__init = function(self, ...) -- 29
+			return _class_0.__parent.__init(self, ...) -- 29
+		end, -- 29
+		__base = _base_0, -- 29
+		__name = "Depression", -- 29
+		__parent = _parent_0 -- 29
+	}, { -- 29
+		__index = function(cls, name) -- 29
+			local val = rawget(_base_0, name) -- 29
+			if val == nil then -- 29
+				local parent = rawget(cls, "__parent") -- 29
+				if parent then -- 29
+					return parent[name] -- 29
+				end -- 29
+			else -- 29
+				return val -- 29
+			end -- 29
+		end, -- 29
+		__call = function(cls, ...) -- 29
+			local _self_0 = setmetatable({ }, _base_0) -- 29
+			cls.__init(_self_0, ...) -- 29
+			return _self_0 -- 29
+		end -- 29
+	}) -- 29
+	_base_0.__class = _class_0 -- 29
+	if _parent_0.__inherited then -- 29
+		_parent_0.__inherited(_parent_0, _class_0) -- 29
+	end -- 29
+	Depression = _class_0 -- 29
+end -- 31
+ODDITY_DEPRESSION = Depression.index -- 32
+local Anasogonsia -- 44
+do -- 44
+	local _class_0 -- 44
+	local _parent_0 = ODDITY -- 44
+	local _base_0 = { -- 44
+		name = "Anasogonsia", -- 46
+		desc = "I can't determine anything about myself." -- 44
+	} -- 44
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 46
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 44
+			_base_0[_key_0] = _val_0 -- 44
+		end -- 44
+	end -- 46
+	if _base_0.__index == nil then -- 44
+		_base_0.__index = _base_0 -- 44
+	end -- 46
+	setmetatable(_base_0, _parent_0.__base) -- 44
+	_class_0 = setmetatable({ -- 44
+		__init = function(self, ...) -- 44
+			return _class_0.__parent.__init(self, ...) -- 44
+		end, -- 44
+		__base = _base_0, -- 44
+		__name = "Anasogonsia", -- 44
+		__parent = _parent_0 -- 44
+	}, { -- 44
+		__index = function(cls, name) -- 44
+			local val = rawget(_base_0, name) -- 44
+			if val == nil then -- 44
+				local parent = rawget(cls, "__parent") -- 44
+				if parent then -- 44
+					return parent[name] -- 44
+				end -- 44
+			else -- 44
+				return val -- 44
+			end -- 44
+		end, -- 44
+		__call = function(cls, ...) -- 44
+			local _self_0 = setmetatable({ }, _base_0) -- 44
+			cls.__init(_self_0, ...) -- 44
+			return _self_0 -- 44
+		end -- 44
+	}) -- 44
+	_base_0.__class = _class_0 -- 44
+	if _parent_0.__inherited then -- 44
+		_parent_0.__inherited(_parent_0, _class_0) -- 44
+	end -- 44
+	Anasogonsia = _class_0 -- 44
+end -- 46
+ODDITY_ANASOGONSIA = Anasogonsia.index -- 47
+local Illiteracy -- 54
 do -- 54
 	local _class_0 -- 54
 	local _parent_0 = ODDITY -- 54
 	local _base_0 = { -- 54
-		name = "Delinquency", -- 56
-		desc = "I love to cause trouble and break things." -- 54
+		name = "Illiteracy", -- 56
+		desc = "I have no ability to read or write. Whatever." -- 54
 	} -- 54
 	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 56
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 54
@@ -324,7 +324,7 @@ do -- 54
 			return _class_0.__parent.__init(self, ...) -- 54
 		end, -- 54
 		__base = _base_0, -- 54
-		__name = "Delinquency", -- 54
+		__name = "Illiteracy", -- 54
 		__parent = _parent_0 -- 54
 	}, { -- 54
 		__index = function(cls, name) -- 54
@@ -348,16 +348,16 @@ do -- 54
 	if _parent_0.__inherited then -- 54
 		_parent_0.__inherited(_parent_0, _class_0) -- 54
 	end -- 54
-	Delinquency = _class_0 -- 54
+	Illiteracy = _class_0 -- 54
 end -- 56
-ODDITY_DELINQUENCY = Delinquency.index -- 57
-local Clumsy -- 59
+ODDITY_ILLITERACY = Illiteracy.index -- 57
+local Delinquency -- 59
 do -- 59
 	local _class_0 -- 59
 	local _parent_0 = ODDITY -- 59
 	local _base_0 = { -- 59
-		name = "Clumsy", -- 61
-		desc = "I've got two left feet." -- 59
+		name = "Delinquency", -- 61
+		desc = "I love to cause trouble and break things." -- 59
 	} -- 59
 	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 61
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 59
@@ -373,7 +373,7 @@ do -- 59
 			return _class_0.__parent.__init(self, ...) -- 59
 		end, -- 59
 		__base = _base_0, -- 59
-		__name = "Clumsy", -- 59
+		__name = "Delinquency", -- 59
 		__parent = _parent_0 -- 59
 	}, { -- 59
 		__index = function(cls, name) -- 59
@@ -397,48 +397,97 @@ do -- 59
 	if _parent_0.__inherited then -- 59
 		_parent_0.__inherited(_parent_0, _class_0) -- 59
 	end -- 59
-	Clumsy = _class_0 -- 59
+	Delinquency = _class_0 -- 59
 end -- 61
-ODDITY_CLUMSY = Clumsy.index -- 62
-local meta = FindMetaTable("Player") -- 64
-for k, v in pairs({ -- 66
-	Oddities = function(self) -- 66
-		return self:GetNWInt("evilrp_oddities", 0) -- 66
-	end, -- 66
-	OddityList = function(self) -- 67
-		local returns = { } -- 68
-		for k, v in pairs(ODDITIES) do -- 69
-			if self:HasOddity(k) then -- 70
-				returns[#returns + 1] = v -- 70
-			end -- 70
-		end -- 70
-		return returns -- 71
-	end, -- 67
-	HasOddity = function(self, oddity) -- 72
-		return bit.Check(self:Oddities(), oddity) -- 72
-	end, -- 72
-	ClearOddities = function(self) -- 73
-		return self:SetNWInt("evilrp_oddities", 0) -- 73
-	end, -- 73
-	AddOddity = function(self, oddity) -- 74
-		if self:HasOddity(oddity) then -- 75
-			return -- 75
+ODDITY_DELINQUENCY = Delinquency.index -- 62
+local Clumsy -- 64
+do -- 64
+	local _class_0 -- 64
+	local _parent_0 = ODDITY -- 64
+	local _base_0 = { -- 64
+		name = "Clumsy", -- 66
+		desc = "I've got two left feet." -- 64
+	} -- 64
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 66
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 64
+			_base_0[_key_0] = _val_0 -- 64
+		end -- 64
+	end -- 66
+	if _base_0.__index == nil then -- 64
+		_base_0.__index = _base_0 -- 64
+	end -- 66
+	setmetatable(_base_0, _parent_0.__base) -- 64
+	_class_0 = setmetatable({ -- 64
+		__init = function(self, ...) -- 64
+			return _class_0.__parent.__init(self, ...) -- 64
+		end, -- 64
+		__base = _base_0, -- 64
+		__name = "Clumsy", -- 64
+		__parent = _parent_0 -- 64
+	}, { -- 64
+		__index = function(cls, name) -- 64
+			local val = rawget(_base_0, name) -- 64
+			if val == nil then -- 64
+				local parent = rawget(cls, "__parent") -- 64
+				if parent then -- 64
+					return parent[name] -- 64
+				end -- 64
+			else -- 64
+				return val -- 64
+			end -- 64
+		end, -- 64
+		__call = function(cls, ...) -- 64
+			local _self_0 = setmetatable({ }, _base_0) -- 64
+			cls.__init(_self_0, ...) -- 64
+			return _self_0 -- 64
+		end -- 64
+	}) -- 64
+	_base_0.__class = _class_0 -- 64
+	if _parent_0.__inherited then -- 64
+		_parent_0.__inherited(_parent_0, _class_0) -- 64
+	end -- 64
+	Clumsy = _class_0 -- 64
+end -- 66
+ODDITY_CLUMSY = Clumsy.index -- 67
+local meta = FindMetaTable("Player") -- 69
+for k, v in pairs({ -- 71
+	Oddities = function(self) -- 71
+		return self:GetNWInt("evilrp_oddities", 0) -- 71
+	end, -- 71
+	OddityList = function(self) -- 72
+		local returns = { } -- 73
+		for k, v in pairs(ODDITIES) do -- 74
+			if self:HasOddity(k) then -- 75
+				returns[#returns + 1] = v -- 75
+			end -- 75
 		end -- 75
-		local odds = bit.Set(self:Oddities(), oddity) -- 76
-		self:SetNWInt("evilrp_oddities", odds) -- 77
-		timer.Simple(1, function() -- 78
-			return ODDITIES[oddity]:Inform(self) -- 78
-		end) -- 78
-		return odds -- 79
-	end, -- 74
-	RemoveOddity = function(self, oddity) -- 80
-		if not self:HasOddity(oddity) then -- 81
-			return -- 81
-		end -- 81
-		local odds = bit.Unset(self:Oddities(), oddity) -- 82
-		self:SetNWInt("evilrp_oddities", odds) -- 83
+		return returns -- 76
+	end, -- 72
+	HasOddity = function(self, oddity) -- 77
+		return bit.Check(self:Oddities(), oddity) -- 77
+	end, -- 77
+	ClearOddities = function(self) -- 78
+		return self:SetNWInt("evilrp_oddities", 0) -- 78
+	end, -- 78
+	AddOddity = function(self, oddity) -- 79
+		if self:HasOddity(oddity) then -- 80
+			return -- 80
+		end -- 80
+		local odds = bit.Set(self:Oddities(), oddity) -- 81
+		self:SetNWInt("evilrp_oddities", odds) -- 82
+		timer.Simple(1, function() -- 83
+			return ODDITIES[oddity]:Inform(self) -- 83
+		end) -- 83
 		return odds -- 84
-	end -- 80
-}) do -- 85
-	meta[k] = v -- 65
-end -- 65
+	end, -- 79
+	RemoveOddity = function(self, oddity) -- 85
+		if not self:HasOddity(oddity) then -- 86
+			return -- 86
+		end -- 86
+		local odds = bit.Unset(self:Oddities(), oddity) -- 87
+		self:SetNWInt("evilrp_oddities", odds) -- 88
+		return odds -- 89
+	end -- 85
+}) do -- 90
+	meta[k] = v -- 70
+end -- 70

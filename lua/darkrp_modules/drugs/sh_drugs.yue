@@ -101,7 +101,7 @@ class Rotmelange extends Drug
     if ply\Team! ~= TEAM_KOMMANDANT
       ply\Notify "<c=200,0,0> WHAT THE FUCK IS THIS? HOLY SHI~"
       ply\AddDespair 100
-      net.Start"evilrp_judgement"
+      net.Start"evilrp_jumpscare"
       net.Send ply
       return
 

@@ -1,12 +1,14 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/autorun/client/cl_skin.yue
+-- [yue]: autorun\client\cl_skin.yue
 evilrp_perform_layout = function(self) -- 1
 	if self.btnClose and self.btnClose:IsValid() then -- 2
-		local _with_0 = self.btnClose -- 3
-		_with_0:SetPos(self:GetWide() - 24, 0) -- 4
-		_with_0:SetSize(24, 24) -- 5
-		_with_0:SetFont("marlett") -- 6
-		_with_0:SetText("r") -- 7
-		_with_0:PerformLayout() -- 8
+		do -- 3
+			local _with_0 = self.btnClose -- 3
+			_with_0:SetPos(self:GetWide() - 24, 0) -- 4
+			_with_0:SetSize(24, 24) -- 5
+			_with_0:SetFont("marlett") -- 6
+			_with_0:SetText("r") -- 7
+			_with_0:PerformLayout() -- 8
+		end -- 3
 	end -- 2
 	if self.btnMaxim and self.btnMaxim:IsValid() then -- 9
 		self.btnMaxim:Remove() -- 9

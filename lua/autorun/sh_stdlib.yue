@@ -1,4 +1,6 @@
 global include_realm
+
+print"IS THIS FUCKING WORKING?"
 include_realm = (file_name, realm) ->
   error "No file name specified for including." unless file_name
   unless realm

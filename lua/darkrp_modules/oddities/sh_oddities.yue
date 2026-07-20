@@ -21,6 +21,11 @@ class Cannibalism extends ODDITY
   desc: "Only other corpses can sate my hunger. My only drinking buddies are dead bodies."
 global ODDITY_CANNIBALISM = Cannibalism.index
 
+class Prescience extends ODDITY
+  name: "Prescience"
+  desc: "I have visions of the future. It's hard, but it must be done."
+global ODDITY_Prescience = Prescience.index
+
 class Depression extends ODDITY
   name: "Depression"
   desc: "It's hard being a corpse. It's hard, and nobody understands."

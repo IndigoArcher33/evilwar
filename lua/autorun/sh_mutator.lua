@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/autorun/sh_mutator.yue
+-- [yue]: autorun\sh_mutator.yue
 MUTATORS = { } -- 1
 do -- 2
 	local _class_0 -- 2

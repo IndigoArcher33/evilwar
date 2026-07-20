@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/autorun/sh_oddity.yue
+-- [yue]: autorun\sh_oddity.yue
 ODDITIES = { } -- 1
 do -- 2
 	local _class_0 -- 2
@@ -33,8 +33,10 @@ do -- 2
 		self.index = self.index + 1 -- 4
 		ODDITIES[2 ^ self.index] = child -- 5
 		child.index = 2 ^ self.index -- 6
-		local _obj_0 = self.list -- 7
-		_obj_0[#_obj_0 + 1] = child.index -- 7
+		do -- 7
+			local _obj_0 = self.list -- 7
+			_obj_0[#_obj_0 + 1] = child.index -- 7
+		end -- 7
 	end -- 3
 	self.index = 0 -- 9
 	self.list = { } -- 10

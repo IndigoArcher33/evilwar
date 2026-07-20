@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/autorun/sh_binds.yue
+-- [yue]: autorun\sh_binds.yue
 Binds = { -- 3
 	list = { } -- 3
 } -- 2

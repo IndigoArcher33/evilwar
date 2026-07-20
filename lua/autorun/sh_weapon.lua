@@ -1,4 +1,4 @@
--- [yue]: sh_weapon.yue
+-- [yue]: autorun\sh_weapon.yue
 local Register = weapons.Register -- 1
 local lower, Left = string.lower, string.Left -- 2
 local TraceLine = util.TraceLine -- 3

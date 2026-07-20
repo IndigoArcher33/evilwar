@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/autorun/sh_sound.yue
+-- [yue]: autorun\sh_sound.yue
 local PrecacheSound = util.PrecacheSound -- 1
 SNDLVL_NONE = 0 -- 4
 SNDLVL_20dB = 20 -- 5
