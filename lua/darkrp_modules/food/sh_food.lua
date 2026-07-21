@@ -1694,6 +1694,7 @@ end -- 527
 local Ambrosia -- 529
 do -- 529
 	local _class_0 -- 529
+	local SloppyRibs, PaperMache -- 529
 	local _parent_0 = Food -- 529
 	local _base_0 = { -- 529
 		PrintName = "Ambrosia", -- 531
@@ -1706,16 +1707,39 @@ do -- 529
 		RotTime = 0, -- 539
 		UseText = { -- 540
 			"Indulges in some ambrosia." -- 540
+		}, -- 544
+		PrintName = "Sloppy Ribs", -- 545
+		Model = Model("models/Gibs/hgibs_rib.mdl"), -- 546
+		Hunger = -28, -- 547
+		Thirst = -4, -- 548
+		Despair = 5, -- 549
+		Description = "Fresh ribs from an unknown source, now glazed in slop! \n They look delicious.", -- 551
+		UseText = { -- 552
+			"devours all of the flesh and slop on the rib, then throws it away.", -- 552
+			"munches on the rib, and then licks the glaze off his hands.", -- 553
+			"Gobbles down the rib, and spits out the bone." -- 554
+		}, -- 558
+		PrintName = "Paper Mache", -- 559
+		Model = Model("models/props_junk/garbage_bag001a.mdl"), -- 560
+		Hunger = -10, -- 561
+		Thirst = -10, -- 562
+		Despair = 15, -- 563
+		Description = "An old crumpled paper. \n now it's watered down into a little ball.", -- 565
+		UseText = { -- 566
+			"stoves the paper mache into his mouth, gagging horribly.", -- 566
+			"forces the paper down his throat, throwing up slightly", -- 567
+			"rips apart the paper mache, eating small pieces at a time.", -- 568
+			"looks miserable trying to eat watered down paper." -- 569
 		} -- 529
 	} -- 529
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 541
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 570
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 529
 			_base_0[_key_0] = _val_0 -- 529
 		end -- 529
-	end -- 541
+	end -- 570
 	if _base_0.__index == nil then -- 529
 		_base_0.__index = _base_0 -- 529
-	end -- 541
+	end -- 570
 	setmetatable(_base_0, _parent_0.__base) -- 529
 	_class_0 = setmetatable({ -- 529
 		__init = function(self, ...) -- 529
@@ -1743,9 +1767,98 @@ do -- 529
 		end -- 529
 	}) -- 529
 	_base_0.__class = _class_0 -- 529
+	local self = _class_0; -- 529
+	do -- 543
+		local _class_1 -- 543
+		local _parent_1 = Food -- 543
+		local _base_1 = { } -- 543
+		for _key_0, _val_0 in pairs(_parent_1.__base) do -- 543
+			if _base_1[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_1.__base) then -- 543
+				_base_1[_key_0] = _val_0 -- 543
+			end -- 543
+		end -- 543
+		if _base_1.__index == nil then -- 543
+			_base_1.__index = _base_1 -- 543
+		end -- 543
+		setmetatable(_base_1, _parent_1.__base) -- 543
+		_class_1 = setmetatable({ -- 543
+			__init = function(self, ...) -- 543
+				return _class_1.__parent.__init(self, ...) -- 543
+			end, -- 543
+			__base = _base_1, -- 543
+			__name = "SloppyRibs", -- 543
+			__parent = _parent_1 -- 543
+		}, { -- 543
+			__index = function(cls, name) -- 543
+				local val = rawget(_base_1, name) -- 543
+				if val == nil then -- 543
+					local parent = rawget(cls, "__parent") -- 543
+					if parent then -- 543
+						return parent[name] -- 543
+					end -- 543
+				else -- 543
+					return val -- 543
+				end -- 543
+			end, -- 543
+			__call = function(cls, ...) -- 543
+				local _self_0 = setmetatable({ }, _base_1) -- 543
+				cls.__init(_self_0, ...) -- 543
+				return _self_0 -- 543
+			end -- 543
+		}) -- 543
+		_base_1.__class = _class_1 -- 543
+		if _parent_1.__inherited then -- 543
+			_parent_1.__inherited(_parent_1, _class_1) -- 543
+		end -- 543
+		SloppyRibs = _class_1 -- 543
+	end -- 543
+	do -- 557
+		local _class_1 -- 557
+		local _parent_1 = Food -- 557
+		local _base_1 = { } -- 557
+		for _key_0, _val_0 in pairs(_parent_1.__base) do -- 557
+			if _base_1[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_1.__base) then -- 557
+				_base_1[_key_0] = _val_0 -- 557
+			end -- 557
+		end -- 557
+		if _base_1.__index == nil then -- 557
+			_base_1.__index = _base_1 -- 557
+		end -- 557
+		setmetatable(_base_1, _parent_1.__base) -- 557
+		_class_1 = setmetatable({ -- 557
+			__init = function(self, ...) -- 557
+				return _class_1.__parent.__init(self, ...) -- 557
+			end, -- 557
+			__base = _base_1, -- 557
+			__name = "PaperMache", -- 557
+			__parent = _parent_1 -- 557
+		}, { -- 557
+			__index = function(cls, name) -- 557
+				local val = rawget(_base_1, name) -- 557
+				if val == nil then -- 557
+					local parent = rawget(cls, "__parent") -- 557
+					if parent then -- 557
+						return parent[name] -- 557
+					end -- 557
+				else -- 557
+					return val -- 557
+				end -- 557
+			end, -- 557
+			__call = function(cls, ...) -- 557
+				local _self_0 = setmetatable({ }, _base_1) -- 557
+				cls.__init(_self_0, ...) -- 557
+				return _self_0 -- 557
+			end -- 557
+		}) -- 557
+		_base_1.__class = _class_1 -- 557
+		if _parent_1.__inherited then -- 557
+			_parent_1.__inherited(_parent_1, _class_1) -- 557
+		end -- 557
+		PaperMache = _class_1 -- 557
+	end -- 557
 	if _parent_0.__inherited then -- 529
 		_parent_0.__inherited(_parent_0, _class_0) -- 529
 	end -- 529
 	Ambrosia = _class_0 -- 529
-	return _class_0 -- 541
-end -- 541
+	return _class_0 -- 570
+end -- 570
