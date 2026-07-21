@@ -602,6 +602,7 @@ class Weapons extends Machine
   PrintName: "Weapons Machine"
   Precursors:
     * name: "metal"
+    * name: "polymer"
   Products:
     ["evilrp_weapon/bodyguard"]: {
       precursors:
@@ -615,7 +616,21 @@ class Weapons extends Machine
       precursors:
         metal: 4
       time: 20 }
-
+    ["evilrp_weapon/brainpaster"]: {
+      precursors:
+        metal: 5
+        polymer: 1
+      time: 20 }
+    ["evilrp_weapon/subjugator"]: {
+      precursors:
+        metal: 7
+        polymer: 3
+      time: 25 }
+    ["evilrp_weapon/trooper"]: {
+      precursors:
+        metal: 10
+        polymer: 5
+      time: 30 }
   FactoryIdentifier: "weapons"
 class Medicine extends Machine
   PrintName: "Medicine Machine"
