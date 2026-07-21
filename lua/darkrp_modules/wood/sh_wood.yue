@@ -5,7 +5,11 @@ class Wood extends ITEM
   @__entity: "wood"
   Spawnable: true
 
+  PrintName: "Wood"
+  Model: Model"models/props_junk/garbage_plasticbottle002a.mdl"
   Category: "EvilRP: Precursor"
+  Spawnable: true
+  Interesting: true
 
   Sound: "npc/barnacle/neck_snap#{math.random(1, 2)}.wav"
 
