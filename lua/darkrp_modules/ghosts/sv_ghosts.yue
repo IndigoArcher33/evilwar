@@ -1,14 +1,11 @@
 ghostpoints = {
-  ["rp_liverfailure_kidneydagger"]: {
-    Vector(4719, 1913, 337)
-    Vector(1930, 1890, 321)
-    Vector(3565, 1160, 321)
-    Vector(4629, 1171, 369)
-    Vector(4246, 2609, 241)
-    Vector(3817, 2267, 321)
-    Vector(3238, 2329, 250)
-    Vector(4666, 3370, 241)
-    Vector(743, 1922, 321)
+  ["rp_lymphoma"]: {
+    Vector( 6, 758, 1 )
+    Vector( 729, 773, 1 )
+    Vector( -1156, 938, 1 )
+    Vector( -1265, -1809, -735 )
+    Vector( -26, 2307, 1 )
+    Vector( 416, -683, 137 )
   }
 }
   
