@@ -246,7 +246,8 @@ class Spawn extends Portal
       net.WriteTable(GAMEMODE.Stocks)
       net.Send(ply)
     else
-      ply\EmitSound("placenta/jumpscare8.wav", 140, 40, 0.2)
+      net.Start"evilrp_jumpscare"
+      net.Send ply
       ply\Notify"<c=200,0,0>YOU HAVE #{ply\GetStemCells!} STEM CELLS."
       ply\Notify"<c=200,0,0>YOU NEED #{cost} STEM CELLS TO HAVE THIS PURPOSE IN LIFE."
 
