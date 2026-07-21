@@ -228,7 +228,6 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
   color: Color(20, 150, 20)
   model: "models/vel/evilwar/royalist.mdl"
   description: "A new recruit that hasn't gone through training yet."
-  weapons: {"evilrp_weapon/mark", "evilrp_melee/pipe"}
   command: "proletariat"
   salary: 1
   max: 0
@@ -244,10 +243,12 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
     switch lp\Team!
       when TEAM_PRIVATE
         text = "United in rank?"
+      when TEAM_STALKER
+        text = "A soldier from Lymphoma."
       when TEAM_SANITAR
-        text = "Keep the fear\nin his heart."
+        text = "These soldiers need guidance.\nPut the fear in their hearts."
       when TEAM_KORPSMAN
-        text = "Smelly."
+        text = "Smelly and stupid."
       when TEAM_KOMMANDANT
         text = "Is he working hard enough?"
       when TEAM_GHOST
@@ -256,8 +257,16 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
         text = "SKIN...!"
     return { :text, font: "Spleen_Label_Small" }, false
   first_names: { "Private", "PVT.", "Recruit", }
-  last_names: { "Parts", "Smallwood", "Neublud", "Smallfry", }
-  special_name: "Meatwad"
+  GenerateName: (ply) =>
+    unit_id = math.random 100, 999
+    if unit_id < 10
+      unit_id = "00#{unit_id}"
+    elseif unit_id < 100
+      unit_id = "0#{unit_id}"
+    else
+      unit_id = tostring unit_id
+    return @first_names[math.random(1,#@first_names)] .. " #" .. unit_id
+  special_name: "private parts"
   special_name_chance: 1000
   ShowSpare1: open_player_menu
   ShowSpare2: open_action_menu
@@ -299,11 +308,13 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
     text = "Don't panic."
     switch lp\Team!
       when TEAM_PRIVATE
-        text = "The Cell is here."
+        text = "A Lymphomian legend!"
+      when TEAM_STALKER
+        text = "Fight or run?!"
       when TEAM_SANITAR
-        text = "One of my only\n friends here."
+        text = "Finally...\nSomeone competent."
       when TEAM_KORPSMAN
-        text = "Beware of shadows in the\nNight of the Long Pipes."
+        text = "Is that enemy blood?\nNo of course not."
       when TEAM_KOMMANDANT
         text = "A tentacle of mine."
       when TEAM_GHOST
@@ -406,6 +417,8 @@ TEAM_KORPSMAN = DarkRP.createJob "Sanitäter",
     switch lp\Team!
       when TEAM_PRIVATE
         text = "I forgot what\nto call these guys."
+      when TEAM_STALKER
+        text = "A walking blood bag."
       when TEAM_SANITAR
         text = "Better remember\nwho lets them live."
       when TEAM_KORPSMAN
@@ -464,6 +477,8 @@ TEAM_KOMMANDANT = DarkRP.createJob "Kommandant",
     switch lp\Team!
       when TEAM_PRIVATE
         text = "Listen carefully."
+      when TEAM_STALKER
+        text = "Oh your magesty!"
       when TEAM_SANITAR
         text = "Hail, hail!"
       when TEAM_KORPSMAN
