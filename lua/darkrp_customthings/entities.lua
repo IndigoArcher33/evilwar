@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_customthings/entities.yue
+-- [yue]: darkrp_customthings\entities.yue
 DarkRP.createEntity("Drug lab", { -- 3
 	ent = "drug_lab", -- 3
 	model = "models/props_lab/crematorcase.mdl", -- 4

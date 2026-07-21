@@ -23,7 +23,16 @@ DarkRP.createCategory
   sortOrder: 100
   
 DarkRP.createCategory
-  name: "Citizens of Liver Failure"
+  name: "Wasteland"
+  categorises: "jobs"
+  startExpanded: true
+  color: Color(200, 200, 0)
+  canSee: (ply) -> true
+  sortOrder: 100
+  
+
+DarkRP.createCategory
+  name: "Royalists"
   categorises: "jobs"
   startExpanded: true
   color: Color(128, 64, 0)

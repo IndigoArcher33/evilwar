@@ -1,4 +1,4 @@
--- [yue]: /home/amanita/dev/gmod/darkrpmodification/lua/darkrp_customthings/ammo.yue
+-- [yue]: darkrp_customthings\ammo.yue
 DarkRP.createAmmoType("pistol", { -- 2
 	name = "Pistol ammo", -- 2
 	model = "models/Items/BoxSRounds.mdl", -- 3

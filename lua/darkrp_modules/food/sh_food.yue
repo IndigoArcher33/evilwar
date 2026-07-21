@@ -537,7 +537,7 @@ class Ambrosia extends Food
   RotTime: 0
 
   UseText: {
-    "Indulges in some ambrosia."
+    "indulges in some ambrosia."
   }
 
   class SloppyRibs extends Food
@@ -555,14 +555,14 @@ class Ambrosia extends Food
     UseText: {
       "devours all of the flesh and slop on the rib, then throws it away."
       "munches on the rib, and then licks the glaze off his hands."
-      "Gobbles down the rib, and spits out the bone."
+      "gobbles down the rib, and spits out the bone."
   }
 
     class EyeballNoodles extends Food
       PrintName: "Eyeball Noodles"
       Model: Model"models/vel/evilwar/eyenoodle.mdl"
       Hunger: -40
-      Thirst: 5
+      Thirst: -5
       Despair: 10
       Description: "A traditional Lymphomian dish, usually served to go. \n The texture is an acquired taste."
 
@@ -571,10 +571,11 @@ class Ambrosia extends Food
       Price: 130
 
       UseText: {
-        "devours all of the flesh and slop on the rib, then throws it away."
-        "munches on the rib, and then licks the glaze off his hands."
-        "Gobbles down the rib, and spits out the bone."
-  }
+        "slurps all of the noodles."
+        "slurps the noodles, gagging at the wet crunch of the eyeball."
+        "eats the noodles, and then spits out the eyeball."
+        "gags on the noodles, and then throws out the eyeball."
+        }
 
   class PaperMache extends Food
     PrintName: "Paper Mache"
