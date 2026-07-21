@@ -27,8 +27,10 @@ drink_water = function(ply, key) -- 19
 		if ply:CheckWater(80) then -- 22
 			ply:DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_GIVE) -- 23
 			ply:AddThirst(-5) -- 24
-			return ply:EmitSound(gulp) -- 25
+			ply:AddDespair(10) -- 25
+			ply:TakeDamage(5) -- 26
+			return ply:EmitSound(gulp) -- 27
 		end -- 22
-	end -- 25
+	end -- 27
 end -- 19
-return hook.Add("KeyPress", "evilrp_drink_water", drink_water) -- 27
+return hook.Add("KeyPress", "evilrp_drink_water", drink_water) -- 29

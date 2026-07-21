@@ -22,6 +22,8 @@ drink_water = (ply, key) ->
       if ply\CheckWater 80
         ply\DoAnimationEvent ACT_GMOD_GESTURE_ITEM_GIVE
         ply\AddThirst -5
+        ply\AddDespair 10
+        ply\TakeDamage 5
         ply\EmitSound gulp
 
 hook.Add "KeyPress", "evilrp_drink_water", drink_water

@@ -16,6 +16,10 @@ recipes = {
     inputs: {"item/food/slopskull", "item/food/ribbone"}
     output: "item/food/sloppyribs"
   }
+  {
+    inputs: {"item/food/drink/fearbeer", "item/food/paper"}
+    output: "item/food/papermache"
+  }
 }
 
 recipeKey = (a, b) ->
