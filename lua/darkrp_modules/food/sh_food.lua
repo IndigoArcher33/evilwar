@@ -1690,5 +1690,62 @@ do -- 507
 		_parent_0.__inherited(_parent_0, _class_0) -- 507
 	end -- 507
 	Bleach = _class_0 -- 507
-	return _class_0 -- 527
 end -- 527
+local Ambrosia -- 529
+do -- 529
+	local _class_0 -- 529
+	local _parent_0 = Food -- 529
+	local _base_0 = { -- 529
+		PrintName = "Ambrosia", -- 531
+		Model = Model("models/Gibs/HGIBS.mdl"), -- 532
+		Hunger = -100, -- 533
+		Thirst = -100, -- 534
+		Despair = -100, -- 535
+		HealthAdd = 100, -- 536
+		Description = "A food made for gods.", -- 537
+		RotTime = 0, -- 539
+		UseText = { -- 540
+			"Indulges in some ambrosia." -- 540
+		} -- 529
+	} -- 529
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 541
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 529
+			_base_0[_key_0] = _val_0 -- 529
+		end -- 529
+	end -- 541
+	if _base_0.__index == nil then -- 529
+		_base_0.__index = _base_0 -- 529
+	end -- 541
+	setmetatable(_base_0, _parent_0.__base) -- 529
+	_class_0 = setmetatable({ -- 529
+		__init = function(self, ...) -- 529
+			return _class_0.__parent.__init(self, ...) -- 529
+		end, -- 529
+		__base = _base_0, -- 529
+		__name = "Ambrosia", -- 529
+		__parent = _parent_0 -- 529
+	}, { -- 529
+		__index = function(cls, name) -- 529
+			local val = rawget(_base_0, name) -- 529
+			if val == nil then -- 529
+				local parent = rawget(cls, "__parent") -- 529
+				if parent then -- 529
+					return parent[name] -- 529
+				end -- 529
+			else -- 529
+				return val -- 529
+			end -- 529
+		end, -- 529
+		__call = function(cls, ...) -- 529
+			local _self_0 = setmetatable({ }, _base_0) -- 529
+			cls.__init(_self_0, ...) -- 529
+			return _self_0 -- 529
+		end -- 529
+	}) -- 529
+	_base_0.__class = _class_0 -- 529
+	if _parent_0.__inherited then -- 529
+		_parent_0.__inherited(_parent_0, _class_0) -- 529
+	end -- 529
+	Ambrosia = _class_0 -- 529
+	return _class_0 -- 541
+end -- 541

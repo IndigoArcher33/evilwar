@@ -525,3 +525,17 @@ class Bleach extends Medicine
     "unscrews a jug of bleach and pours it down the hatch."
     "chokes down gulp after gulp of chlorine bleach."
   }
+
+class Ambrosia extends Food
+  PrintName: "Ambrosia"
+  Model: Model"models/Gibs/HGIBS.mdl"
+  Hunger: -100
+  Thirst: -100
+  Despair: -100
+  HealthAdd: 100
+  Description: "A food made for gods."
+  RotTime: 0
+
+  UseText: {
+    "Indulges in some ambrosia."
+  }
