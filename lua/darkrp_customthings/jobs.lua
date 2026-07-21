@@ -1,942 +1,3 @@
-<<<<<<< Updated upstream
-local Config = GAMEMODE.Config
-local set_bodygroup
-set_bodygroup = function(ply, slot, val)
-	if type(val) == "table" then
-		val = val[math.random(1, #val)]
-	end
-	return ply:SetBodygroup(slot, val)
-end
-local open_player_menu
-open_player_menu = function(ply)
-	if not CLIENT then
-		return
-	end
-	if lp:Alive() then
-		return GAMEMODE:CreatePlayerMenu()
-	else
-		return GAMEMODE:Frighten()
-	end
-end
-local open_action_menu
-open_action_menu = function(ply)
-	if not CLIENT then
-		return
-	end
-	local tr = GAMEMODE:GetHandTrace(ply, 80)
-	return GAMEMODE:OpenActionMenu(tr.HitPos, tr.Entity)
-end
-TEAM_GHOST = DarkRP.createJob("Ghost", {
-	color = Color(150, 150, 150),
-	model = "models/player/skeleton.mdl",
-	description = "A lost soul.",
-	instant_respawn = true,
-	weapons = { },
-	command = "ghost",
-	salary = 1,
-	max = 0,
-	speech_sounds = {
-		"ambient/voices/squeal1.wav"
-	},
-	crosstext = function(ply)
-		local text = "OH SOTLA,\nTHE HORROR."
-		do
-			local _exp_0 = lp:Team()
-			if TEAM_KORPSMAN == _exp_0 then
-				text = "Evil spirits wander!\n<wiggle>Not on my shift."
-			elseif TEAM_GHOST == _exp_0 then
-				text = "We're the same,\nyou and I."
-			end
-		end
-		return {
-			text = text,
-			font = "Spleen_Label_Small"
-		}
-	end,
-	first_names = {
-		"Suffering",
-		"Fear",
-		"Agony",
-		"Malice",
-		"Hatred",
-		"Grief",
-		"Pain",
-		"Despair",
-		"Rage"
-	},
-	ShowSpare1 = function(ply)
-		if CLIENT then
-			return GAMEMODE:Frighten()
-		end
-	end,
-	ShowSpare2 = function(ply)
-		local nearby = ents.FindInSphere(ply:GetPos(), 16)
-		local found
-		for _index_0 = 1, #nearby do
-			local ent = nearby[_index_0]
-			if ent:GetClass():find("portal/spawn") then
-				found = ent
-				break
-			end
-		end
-		if not (found and IsValid(found)) then
-			if CLIENT then
-				return GAMEMODE:Frighten()
-			else
-				return ply:Notify("<c=200,0,0>There is no purpose in life near me.")
-			end
-		elseif SERVER then
-			return found:Use(ply)
-		end
-	end,
-	PlayerLoadout = function(ply)
-		ply:ClearOddities()
-		ply:SetNWInt("evilrp_gasmask", 0)
-		return true
-	end,
-	ColorMod = function(ply)
-		local abs, cos, sin = math.abs, math.cos, math.sin
-		local ct = CurTime()
-		local tab = {
-			["$pp_colour_addr"] = 0,
-			["$pp_colour_addg"] = 0,
-			["$pp_colour_addb"] = 0,
-			["$pp_colour_brightness"] = 0 + (-0.01 * cos(ct)),
-			["$pp_colour_contrast"] = 0.6 + (abs(sin(ct * 0.166)) * 0.5),
-			["$pp_colour_colour"] = 0,
-			["$pp_colour_mulr"] = 0 + abs(sin(ct * 0.789)),
-			["$pp_colour_mulg"] = 0,
-			["$pp_colour_mulb"] = 0
-		}
-		return tab
-	end
-})
-TEAM_STALKER = DarkRP.createJob("Stalker", {
-	color = Color(20, 150, 20),
-	model = "models/liver_failure/wastelander/wastelander.mdl",
-	description = "A soul with no allegiance, destined to plunder the wasteland.",
-	weapons = {
-		"evilrp_weapon/brainpaster",
-		"evilrp_melee/axe"
-	},
-	category = "Scum of Liver Failure",
-	command = "stalker",
-	salary = 1,
-	max = 0,
-	hasLicense = false,
-	candemote = false,
-	speech_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 3 do
-			_accum_0[_len_0] = "placenta/speech/prole" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	hurt_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 5 do
-			_accum_0[_len_0] = "placenta/pain/prole" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	become_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 3 do
-			_accum_0[_len_0] = "npc/zombie/zombie_alert" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	death_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 3 do
-			_accum_0[_len_0] = "placenta/death/prole" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	crosstext = function(ply)
-		local text = "Don't panic."
-		do
-			local _exp_0 = lp:Team()
-			if TEAM_PRIVATE == _exp_0 then
-				text = "He doesn't look like me."
-			elseif TEAM_STALKER == _exp_0 then
-				text = "A fellow plunderer."
-			elseif TEAM_SANITAR == _exp_0 then
-				text = "Despicable."
-			elseif TEAM_KORPSMAN == _exp_0 then
-				text = "Why is he here?"
-			elseif TEAM_KOMMANDANT == _exp_0 then
-				text = "He might be of use to me."
-			elseif TEAM_GHOST == _exp_0 then
-				text = "He has a noble pursuit."
-			elseif TEAM_BONEHEAD == _exp_0 then
-				text = "SEEN HIM BEFORE!!"
-			end
-		end
-		return {
-			text = text,
-			font = "Spleen_Label_Small"
-		}, false
-	end,
-	first_names = {
-		"Wasted",
-		"Decrepit",
-		"Rotten"
-	},
-	last_names = {
-		"Soul",
-		"Plunderer",
-		"Traitor",
-		"Wanderer"
-	},
-	bar_names = {
-		health = "regret"
-	},
-	special_name = "Meatwad",
-	special_name_chance = 1000,
-	ShowSpare1 = open_player_menu,
-	ShowSpare2 = open_action_menu,
-	PlayerLoadout = function(ply)
-		ply:ClearOddities()
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)])
-		for slot, val in pairs({
-			[0] = 0,
-			[1] = 2,
-			[2] = {
-				2,
-				3,
-				8,
-				6
-			},
-			[3] = {
-				19,
-				20
-			},
-			[4] = 0,
-			[5] = 0,
-			[6] = {
-				0,
-				1,
-				2,
-				3
-			},
-			[7] = 0,
-			[8] = 0,
-			[9] = {
-				0,
-				1
-			}
-		}) do
-			set_bodygroup(ply, slot, val)
-		end
-		local skins = {
-			4,
-			6,
-			7
-		}
-		ply:SetSkin(skins[math.random(1, #skins)])
-		return false
-	end
-})
-do
-	local _class_0
-	local _parent_0 = SOUND
-	local _base_0 = {
-		sound = "placenta/bonehead_aggrod4.wav",
-		pitch = {
-			200,
-			250
-		}
-	}
-	for _key_0, _val_0 in pairs(_parent_0.__base) do
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then
-			_base_0[_key_0] = _val_0
-		end
-	end
-	if _base_0.__index == nil then
-		_base_0.__index = _base_0
-	end
-	setmetatable(_base_0, _parent_0.__base)
-	_class_0 = setmetatable({
-		__init = function(self, ...)
-			return _class_0.__parent.__init(self, ...)
-		end,
-		__base = _base_0,
-		__name = "SpeechBonehead",
-		__parent = _parent_0
-	}, {
-		__index = function(cls, name)
-			local val = rawget(_base_0, name)
-			if val == nil then
-				local parent = rawget(cls, "__parent")
-				if parent then
-					return parent[name]
-				end
-			else
-				return val
-			end
-		end,
-		__call = function(cls, ...)
-			local _self_0 = setmetatable({ }, _base_0)
-			cls.__init(_self_0, ...)
-			return _self_0
-		end
-	})
-	_base_0.__class = _class_0
-	if _parent_0.__inherited then
-		_parent_0.__inherited(_parent_0, _class_0)
-	end
-	SpeechBonehead = _class_0
-end
-TEAM_BONEHEAD = DarkRP.createJob("Bonehead", {
-	color = Color(150, 150, 150),
-	model = "models/player/zombie_fast.mdl",
-	description = "evil fucker.",
-	instant_respawn = true,
-	command = "bonehead",
-	salary = 1,
-	max = 0,
-	speech_sounds = "SpeechBonehead",
-	hurt_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 2 do
-			_accum_0[_len_0] = "placenta/bonehead_slice" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	become_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 4 do
-			_accum_0[_len_0] = "placenta/bonehead_aggrod" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	crosstext = function(ply)
-		local text = "Don't panic."
-		do
-			local _exp_0 = lp:Team()
-			if TEAM_PRIVATE == _exp_0 then
-				text = "Oh no! He's real!"
-			elseif TEAM_SANITAR == _exp_0 then
-				text = "Oh boy."
-			elseif TEAM_KORPSMAN == _exp_0 then
-				text = "Oh no! It happened again!"
-			elseif TEAM_KOMMANDANT == _exp_0 then
-				text = "Ha. It happened again."
-			elseif TEAM_GHOST == _exp_0 then
-				text = "Lookin' good."
-			elseif TEAM_BONEHEAD == _exp_0 then
-				text = "THERE'S ANOTHER ONE."
-			end
-		end
-		return {
-			text = text,
-			font = "Spleen_Label_Small"
-		}, false
-	end,
-	first_names = {
-		"Evil"
-	},
-	last_names = {
-		"Fucker"
-	},
-	no_needs = true,
-	hint = "You are a truly pissed off skeleton. Go get 'em!",
-	bar_names = {
-		health = "EVIL FUCKER POWER"
-	},
-	bar_colors = {
-		health = Color(200, 0, 0)
-	},
-	RenderScreenspaceEffects = function(ply)
-		local ct = CurTime()
-		DrawMotionBlur(0.25, 0.2, 0.3)
-		return DrawSharpen(1 * math.sin(ct), 2 * math.random(0.8, 1.2))
-	end,
-	ColorMod = function(ply)
-		local abs, cos, sin = math.abs, math.cos, math.sin
-		local ct = CurTime()
-		local tab = {
-			["$pp_colour_addr"] = 0.1,
-			["$pp_colour_addg"] = 0,
-			["$pp_colour_addb"] = 0,
-			["$pp_colour_brightness"] = 0 + (-0.01 * cos(ct)),
-			["$pp_colour_contrast"] = 1.6 + (abs(sin(ct * 0.166)) * 0.5),
-			["$pp_colour_colour"] = 0,
-			["$pp_colour_mulr"] = 0 + abs(sin(ct * 0.789)),
-			["$pp_colour_mulg"] = 0,
-			["$pp_colour_mulb"] = 0
-		}
-		return tab
-	end,
-	ShowSpare1 = function()
-		if CLIENT then
-			return GAMEMODE:Frighten()
-		end
-	end,
-	ShowSpare2 = function()
-		if CLIENT then
-			return GAMEMODE:Frighten()
-		end
-	end,
-	PlayerLoadout = function(ply)
-		ply:SetNWInt("evilrp_gasmask", 0)
-		ply:Give("evilrp_melee/hands/boneclaws")
-		return true
-	end,
-	HandleRagdoll = function(rag, ply)
-		return rag:SetNWInt("decomp_stage", DSTAGE_BONES)
-	end
-})
-TEAM_PRIVATE = DarkRP.createJob("Private", {
-	color = Color(20, 150, 20),
-	model = "models/vel/evilwar/royalist.mdl",
-	description = "A new recruit that hasn't gone through training yet.",
-	command = "proletariat",
-	salary = 1,
-	max = 0,
-	hasLicense = true,
-	candemote = false,
-	category = "Citizens of Liver Failure",
-	speech_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 3 do
-			_accum_0[_len_0] = "placenta/speech/prole" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	hurt_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 5 do
-			_accum_0[_len_0] = "placenta/pain/prole" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	become_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 3 do
-			_accum_0[_len_0] = "npc/zombie/zombie_alert" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	death_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 3 do
-			_accum_0[_len_0] = "placenta/death/prole" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	crosstext = function(ply)
-		local text = "Don't panic."
-		do
-			local _exp_0 = lp:Team()
-			if TEAM_PRIVATE == _exp_0 then
-				text = "United in rank?"
-			elseif TEAM_STALKER == _exp_0 then
-				text = "A soldier from Lymphoma."
-			elseif TEAM_SANITAR == _exp_0 then
-				text = "These soldiers need guidance.\nPut the fear in their hearts."
-			elseif TEAM_KORPSMAN == _exp_0 then
-				text = "Smelly and stupid."
-			elseif TEAM_KOMMANDANT == _exp_0 then
-				text = "Is he working hard enough?"
-			elseif TEAM_GHOST == _exp_0 then
-				text = "Sad, but funny."
-			elseif TEAM_BONEHEAD == _exp_0 then
-				text = "SKIN...!"
-			end
-		end
-		return {
-			text = text,
-			font = "Spleen_Label_Small"
-		}, false
-	end,
-	first_names = {
-		"Private",
-		"PVT.",
-		"Recruit"
-	},
-	GenerateName = function(self, ply)
-		local unit_id = math.random(100, 999)
-		if unit_id < 10 then
-			unit_id = "00" .. tostring(unit_id)
-		elseif unit_id < 100 then
-			unit_id = "0" .. tostring(unit_id)
-		else
-			unit_id = tostring(unit_id)
-		end
-		return self.first_names[math.random(1, #self.first_names)] .. " #" .. unit_id
-	end,
-	special_name = "private parts",
-	special_name_chance = 1000,
-	ShowSpare1 = open_player_menu,
-	ShowSpare2 = open_action_menu,
-	PlayerLoadout = function(ply)
-		ply:ClearOddities()
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)])
-		for slot, val in pairs({
-			[0] = 0,
-			[1] = 0,
-			[2] = 0,
-			[3] = 0,
-			[4] = 0,
-			[5] = 0
-		}) do
-			set_bodygroup(ply, slot, val)
-		end
-		return false
-	end
-})
-TEAM_SANITAR = DarkRP.createJob("Dragoon", {
-	color = Color(25, 170, 0),
-	model = "models/vel/evilwar/royalist.mdl",
-	description = "The right hand of the Kommandant.\nRespected by his peers,\nfeared by his enemies.",
-	weapons = {
-		"evilrp_weapon/pacifier",
-		"simple_hl2_stunstick"
-	},
-	command = "ss",
-	salary = 1,
-	max = 6,
-	hasLicense = true,
-	ammo = {
-		pistol = 60
-	},
-	category = "Sanitar Squad",
-	speech_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 15 do
-			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	hurt_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 4 do
-			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	become_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 15 do
-			_accum_0[_len_0] = "ambient/levels/prison/radio_random" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	crosstext = function(ply)
-		local text = "Don't panic."
-		do
-			local _exp_0 = lp:Team()
-			if TEAM_PRIVATE == _exp_0 then
-				text = "A Lymphomian legend!"
-			elseif TEAM_STALKER == _exp_0 then
-				text = "Fight or run?!"
-			elseif TEAM_SANITAR == _exp_0 then
-				text = "Finally...\nSomeone competent."
-			elseif TEAM_KORPSMAN == _exp_0 then
-				text = "Is that enemy blood?\nNo of course not."
-			elseif TEAM_KOMMANDANT == _exp_0 then
-				text = "A tentacle of mine."
-			elseif TEAM_GHOST == _exp_0 then
-				text = "Evil, stupid,\n maybe both."
-			elseif TEAM_BONEHEAD == _exp_0 then
-				text = "DANGER."
-			end
-		end
-		return {
-			text = text,
-			font = "Spleen_Label_Small"
-		}, true
-	end,
-	first_names = {
-		"Subjugator",
-		"Dragoner",
-		"Persecuter",
-		"Draconarius",
-		"Volontaire"
-	},
-	last_names = {
-		"of Die Augen",
-		"of Knochen",
-		"of Sehne",
-		"of Knorpel",
-		"of Bauchspeicheldrüse"
-	},
-	arms_model = "models/weapons/c_arms_refugee.mdl",
-	ShowSpare1 = open_player_menu,
-	ShowSpare2 = open_action_menu,
-	bar_names = {
-		health = "resolve"
-	},
-	PlayerLoadout = function(ply)
-		ply:ClearOddities()
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)])
-		for slot, val in pairs({
-			[0] = 1,
-			[1] = 1,
-			[2] = 1,
-			[3] = 2,
-			[4] = 3,
-			[5] = 0
-		}) do
-			set_bodygroup(ply, slot, val)
-		end
-		return false
-	end
-})
-TEAM_DEALER = DarkRP.createJob("Quartermaster", {
-	color = Color(255, 140, 0),
-	model = {
-		"models/liver_failure/liverish/liverish.mdl",
-		"models/liver_failure/kidneystani/kidneystani.mdl",
-		"models/liver_failure/arrythmian/arrythmian.mdl"
-	},
-	description = "The left hand of the Kommandant.\nManage the goods and keep your men armed.",
-	weapons = { },
-	command = "dealer",
-	salary = 1,
-	max = 2,
-	hasLicense = false,
-	category = "Citizens of Liver Failure",
-	speech_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 3 do
-			_accum_0[_len_0] = "placenta/speech/dealer" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	first_names = {
-		"Kanan",
-		"Merce",
-		"Ameel",
-		"Otis",
-		"Cedric",
-		"Edwin",
-		"Floy",
-		"Benjamin",
-		"Fortune",
-		"William",
-		"Thomas",
-		"Dean",
-		"Aurum",
-		"Klep"
-	},
-	last_names = {
-		"Chapman",
-		"Merchant",
-		"Cash",
-		"Keeper",
-		"Bones",
-		"Ryker",
-		"Plutarch",
-		"Nasir",
-		"Greenback",
-		"Grocer",
-		"Flanders",
-		"Hooper",
-		"Watto",
-		"Loman",
-		"Stehlen",
-		"Reichmann",
-		"Kaufmann"
-	},
-	special_name = "Unfortunate Shopkeep",
-	special_name_chance = 1000,
-	ShowSpare1 = open_player_menu,
-	ShowSpare2 = open_action_menu,
-	bar_names = {
-		health = "insurance"
-	},
-	PlayerLoadout = function(ply)
-		ply:ClearOddities()
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)])
-		for slot, val in pairs({
-			[0] = 0,
-			[1] = 0,
-			[2] = {
-				3,
-				5,
-				16
-			},
-			[3] = 22,
-			[4] = 0,
-			[5] = 0,
-			[6] = 1,
-			[7] = 0,
-			[8] = {
-				0,
-				1,
-				2,
-				3,
-				4,
-				5
-			},
-			[9] = 0
-		}) do
-			set_bodygroup(ply, slot, val)
-		end
-		local skins = {
-			2,
-			4,
-			5,
-			6,
-			7,
-			8,
-			9,
-			10,
-			11,
-			12,
-			13,
-			14,
-			15
-		}
-		ply:SetSkin(skins[math.random(1, #skins)])
-		return false
-	end
-})
-TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", {
-	color = Color(79, 150, 150),
-	model = "models/vel/evilwar/royalist.mdl",
-	description = "You keep people alive in this terrible place.\nFill the blood and empty the rust.",
-	weapons = {
-		"evilrp/medkit"
-	},
-	command = "medic",
-	salary = 1,
-	max = 3,
-	hasLicense = false,
-	medic = true,
-	category = "Citizens of Liver Failure",
-	speech_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 4 do
-			_accum_0[_len_0] = "placenta/speech/korps" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	hurt_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 4 do
-			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	become_sounds = {
-		"items/suitchargeok1.wav"
-	},
-	crosstext = function(ply)
-		local text = "Don't panic."
-		do
-			local _exp_0 = lp:Team()
-			if TEAM_PRIVATE == _exp_0 then
-				text = "I forgot what\nto call these guys."
-			elseif TEAM_STALKER == _exp_0 then
-				text = "A walking blood bag."
-			elseif TEAM_SANITAR == _exp_0 then
-				text = "Better remember\nwho lets them live."
-			elseif TEAM_KORPSMAN == _exp_0 then
-				text = "Something to\nbe happy about."
-			elseif TEAM_KOMMANDANT == _exp_0 then
-				text = "What a strange,\nselfless thing."
-			elseif TEAM_GHOST == _exp_0 then
-				text = "A respectable mortal."
-			elseif TEAM_BONEHEAD == _exp_0 then
-				text = "CONFUSING."
-			end
-		end
-		return {
-			text = text,
-			font = "Spleen_Label_Small"
-		}, true
-	end,
-	first_names = {
-		"Dissector",
-		"Retractor",
-		"Suture",
-		"Femur",
-		"Cystic",
-		"Rasp",
-		"Ferrum",
-		"Fascia",
-		"Marrow",
-		"Lienis",
-		"Aorta",
-		"Tunica",
-		"Maxilla",
-		"Sacrum",
-		"Leach"
-	},
-	last_names = {
-		"Forceps",
-		"Scalpel",
-		"Curette",
-		"Rongeur",
-		"Trocar",
-		"Babcock",
-		"Duval",
-		"Hemostat",
-		"Ossis",
-		"Caro",
-		"Cadaver",
-		"Sanguis",
-		"Bilis",
-		"Viscera",
-		"Jugular",
-		"Clavius"
-	},
-	special_name = "Corpseman",
-	special_name_chance = 1000,
-	ShowSpare1 = open_player_menu,
-	ShowSpare2 = open_action_menu,
-	bar_names = {
-		health = "Bio-reserves"
-	},
-	PlayerLoadout = function(ply)
-		ply:ClearOddities()
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)])
-		ply:SetSkin(4)
-		for slot, val in pairs({
-			[0] = 0,
-			[1] = 0,
-			[2] = 2,
-			[3] = 3,
-			[4] = 1,
-			[5] = 0
-		}) do
-			set_bodygroup(ply, slot, val)
-		end
-		return false
-	end
-})
-TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", {
-	color = Color(150, 20, 20),
-	model = "models/vel/evilwar/royalist.mdl",
-	description = "Rule with an iron fist.",
-	command = "kommandant",
-	salary = 1,
-	weapons = {
-		"evilrp_weapon/novoluger"
-	},
-	max = 1,
-	weapons = { },
-	hasLicense = true,
-	mayor = true,
-	category = "Bureaukracy",
-	speech_sounds = (function()
-		local _accum_0 = { }
-		local _len_0 = 1
-		for i = 1, 15 do
-			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg"
-			_len_0 = _len_0 + 1
-		end
-		return _accum_0
-	end)(),
-	become_sounds = {
-		"kidneydagger/broadcast1.wav"
-	},
-	crosstext = function(ply)
-		local text = "Don't panic."
-		do
-			local _exp_0 = lp:Team()
-			if TEAM_PRIVATE == _exp_0 then
-				text = "Listen carefully."
-			elseif TEAM_STALKER == _exp_0 then
-				text = "Oh your magesty!"
-			elseif TEAM_SANITAR == _exp_0 then
-				text = "Hail, hail!"
-			elseif TEAM_KORPSMAN == _exp_0 then
-				text = "Is he feeling okay?"
-			elseif TEAM_KOMMANDANT == _exp_0 then
-				text = "Our strength\nshall prevail."
-			elseif TEAM_GHOST == _exp_0 then
-				text = "So full of lies."
-			elseif TEAM_BONEHEAD == _exp_0 then
-				text = "THERE HE IS!!"
-			end
-		end
-		return {
-			text = text,
-			font = "Spleen_Label_Small"
-		}, true
-	end,
-	first_names = ("Kommandant"),
-	special_name = "Kamdonot",
-	special_name_chance = 1000,
-	ShowSpare1 = open_player_menu,
-	ShowSpare2 = open_action_menu,
-	bar_names = {
-		health = "PRIDE"
-	},
-	PlayerLoadout = function(ply)
-		ply:ClearOddities()
-		local oddities
-		do
-			local _accum_0 = { }
-			local _len_0 = 1
-			for k, v in pairs(ODDITY.list) do
-				if v ~= ODDITY_ILLITERACY then
-					_accum_0[_len_0] = v
-					_len_0 = _len_0 + 1
-				end
-			end
-			oddities = _accum_0
-		end
-		ply:AddOddity(oddities[math.random(#oddities)])
-		for slot, val in pairs({
-			[0] = 1,
-			[1] = 2,
-			[2] = 0,
-			[3] = 1,
-			[4] = 2,
-			[5] = 0
-		}) do
-			set_bodygroup(ply, slot, val)
-		end
-		ply:SetNWInt("evilrp_gasmask", 4)
-		ply:Give("evilrp_weapon/novoluger")
-		return false
-	end
-})
-GAMEMODE.CivilProtection = {
-	[TEAM_PRIVATE] = true,
-	[TEAM_SANITAR] = true,
-	[TEAM_KOMMANDANT] = true
-}
-GAMEMODE.DefaultTeam = TEAM_GHOST
-=======
 -- [yue]: darkrp_customthings\jobs.yue
 local Config = GAMEMODE.Config -- 4
 local set_bodygroup -- 10
@@ -1061,7 +122,7 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 88
 	category = "Wasteland", -- 92
 	command = "stalker", -- 93
 	salary = 1, -- 94
-	max = 0, -- 95
+	max = 3, -- 95
 	hasLicense = false, -- 96
 	candemote = false, -- 97
 	speech_sounds = (function() -- 98
@@ -1343,527 +404,535 @@ TEAM_PRIVATE = DarkRP.createJob("Private", { -- 228
 	color = Color(20, 150, 20), -- 228
 	model = "models/vel/evilwar/royalist.mdl", -- 229
 	description = "A new recruit that hasn't gone through training yet.", -- 230
-	weapons = { -- 231
-		"evilrp_weapon/mark", -- 231
-		"evilrp_melee/pipe" -- 231
-	}, -- 231
-	command = "proletariat", -- 232
-	salary = 1, -- 233
-	max = 0, -- 234
-	hasLicense = true, -- 235
-	candemote = false, -- 236
-	category = "Royalists", -- 237
-	speech_sounds = (function() -- 238
+	command = "proletariat", -- 231
+	salary = 1, -- 232
+	max = 0, -- 233
+	hasLicense = true, -- 234
+	candemote = false, -- 235
+	category = "Royalists", -- 236
+	speech_sounds = (function() -- 237
+		local _accum_0 = { } -- 237
+		local _len_0 = 1 -- 237
+		for i = 1, 3 do -- 237
+			_accum_0[_len_0] = "placenta/speech/prole" .. tostring(i) .. ".wav" -- 237
+			_len_0 = _len_0 + 1 -- 237
+		end -- 237
+		return _accum_0 -- 237
+	end)(), -- 237
+	hurt_sounds = (function() -- 238
 		local _accum_0 = { } -- 238
 		local _len_0 = 1 -- 238
-		for i = 1, 3 do -- 238
-			_accum_0[_len_0] = "placenta/speech/prole" .. tostring(i) .. ".wav" -- 238
+		for i = 1, 5 do -- 238
+			_accum_0[_len_0] = "placenta/pain/prole" .. tostring(i) .. ".wav" -- 238
 			_len_0 = _len_0 + 1 -- 238
 		end -- 238
 		return _accum_0 -- 238
 	end)(), -- 238
-	hurt_sounds = (function() -- 239
+	become_sounds = (function() -- 239
 		local _accum_0 = { } -- 239
 		local _len_0 = 1 -- 239
-		for i = 1, 5 do -- 239
-			_accum_0[_len_0] = "placenta/pain/prole" .. tostring(i) .. ".wav" -- 239
+		for i = 1, 3 do -- 239
+			_accum_0[_len_0] = "npc/zombie/zombie_alert" .. tostring(i) .. ".wav" -- 239
 			_len_0 = _len_0 + 1 -- 239
 		end -- 239
 		return _accum_0 -- 239
 	end)(), -- 239
-	become_sounds = (function() -- 240
+	death_sounds = (function() -- 240
 		local _accum_0 = { } -- 240
 		local _len_0 = 1 -- 240
 		for i = 1, 3 do -- 240
-			_accum_0[_len_0] = "npc/zombie/zombie_alert" .. tostring(i) .. ".wav" -- 240
+			_accum_0[_len_0] = "placenta/death/prole" .. tostring(i) .. ".wav" -- 240
 			_len_0 = _len_0 + 1 -- 240
 		end -- 240
 		return _accum_0 -- 240
 	end)(), -- 240
-	death_sounds = (function() -- 241
-		local _accum_0 = { } -- 241
-		local _len_0 = 1 -- 241
-		for i = 1, 3 do -- 241
-			_accum_0[_len_0] = "placenta/death/prole" .. tostring(i) .. ".wav" -- 241
-			_len_0 = _len_0 + 1 -- 241
-		end -- 241
-		return _accum_0 -- 241
-	end)(), -- 241
-	crosstext = function(ply) -- 242
-		local text = "Don't panic." -- 243
-		do -- 244
-			local _exp_0 = lp:Team() -- 244
-			if TEAM_PRIVATE == _exp_0 then -- 245
-				text = "United in rank?" -- 246
-			elseif TEAM_SANITAR == _exp_0 then -- 247
-				text = "Keep the fear\nin his heart." -- 248
-			elseif TEAM_KORPSMAN == _exp_0 then -- 249
-				text = "Smelly." -- 250
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 251
-				text = "Is he working hard enough?" -- 252
-			elseif TEAM_GHOST == _exp_0 then -- 253
-				text = "Sad, but funny." -- 254
-			elseif TEAM_BONEHEAD == _exp_0 then -- 255
-				text = "SKIN...!" -- 256
-			end -- 256
-		end -- 256
-		return { -- 257
-			text = text, -- 257
-			font = "Spleen_Label_Small" -- 257
-		}, false -- 257
-	end, -- 242
-	first_names = { -- 258
-		"Private", -- 258
-		"PVT.", -- 258
-		"Recruit" -- 258
-	}, -- 258
-	last_names = { -- 259
-		"Parts", -- 259
-		"Smallwood", -- 259
-		"Neublud", -- 259
-		"Smallfry" -- 259
+	crosstext = function(ply) -- 241
+		local text = "Don't panic." -- 242
+		do -- 243
+			local _exp_0 = lp:Team() -- 243
+			if TEAM_PRIVATE == _exp_0 then -- 244
+				text = "United in rank?" -- 245
+			elseif TEAM_STALKER == _exp_0 then -- 246
+				text = "A soldier from Lymphoma." -- 247
+			elseif TEAM_SANITAR == _exp_0 then -- 248
+				text = "These soldiers need guidance.\nPut the fear in their hearts." -- 249
+			elseif TEAM_KORPSMAN == _exp_0 then -- 250
+				text = "Smelly and stupid." -- 251
+			elseif TEAM_KOMMANDANT == _exp_0 then -- 252
+				text = "Is he working hard enough?" -- 253
+			elseif TEAM_GHOST == _exp_0 then -- 254
+				text = "Sad, but funny." -- 255
+			elseif TEAM_BONEHEAD == _exp_0 then -- 256
+				text = "SKIN...!" -- 257
+			end -- 257
+		end -- 257
+		return { -- 258
+			text = text, -- 258
+			font = "Spleen_Label_Small" -- 258
+		}, false -- 258
+	end, -- 241
+	first_names = { -- 259
+		"Private", -- 259
+		"PVT.", -- 259
+		"Recruit" -- 259
 	}, -- 259
-	special_name = "Meatwad", -- 260
-	special_name_chance = 1000, -- 261
-	ShowSpare1 = open_player_menu, -- 262
-	ShowSpare2 = open_action_menu, -- 263
-	PlayerLoadout = function(ply) -- 264
-		ply:ClearOddities() -- 265
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 266
-		for slot, val in pairs({ -- 269
-			[0] = 0, -- 269
-			[1] = 0, -- 271
-			[2] = 0, -- 273
-			[3] = 0, -- 275
-			[4] = 0, -- 277
-			[5] = 0 -- 279
-		}) do -- 280
-			set_bodygroup(ply, slot, val) -- 267
-		end -- 267
-		return false -- 281
-	end -- 264
+	GenerateName = function(self, ply) -- 260
+		local unit_id = math.random(100, 999) -- 261
+		if unit_id < 10 then -- 262
+			unit_id = "00" .. tostring(unit_id) -- 263
+		elseif unit_id < 100 then -- 264
+			unit_id = "0" .. tostring(unit_id) -- 265
+		else -- 267
+			unit_id = tostring(unit_id) -- 267
+		end -- 262
+		return self.first_names[math.random(1, #self.first_names)] .. " #" .. unit_id -- 268
+	end, -- 260
+	special_name = "private parts", -- 269
+	special_name_chance = 1000, -- 270
+	ShowSpare1 = open_player_menu, -- 271
+	ShowSpare2 = open_action_menu, -- 272
+	PlayerLoadout = function(ply) -- 273
+		ply:ClearOddities() -- 274
+		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 275
+		for slot, val in pairs({ -- 278
+			[0] = 0, -- 278
+			[1] = 0, -- 280
+			[2] = 0, -- 282
+			[3] = 0, -- 284
+			[4] = 0, -- 286
+			[5] = 0 -- 288
+		}) do -- 289
+			set_bodygroup(ply, slot, val) -- 276
+		end -- 276
+		return false -- 290
+	end -- 273
 }) -- 227
-TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 284
-	color = Color(25, 170, 0), -- 284
-	model = "models/vel/evilwar/royalist.mdl", -- 285
-	description = "The right hand of the Kommandant.\nRespected by his peers,\nfeared by his enemies.", -- 286
-	weapons = { -- 287
-		"evilrp_weapon/pacifier", -- 287
-		"simple_hl2_stunstick" -- 287
-	}, -- 287
-	command = "ss", -- 288
-	salary = 1, -- 289
-	max = 6, -- 290
-	hasLicense = true, -- 291
-	ammo = { -- 293
-		pistol = 60 -- 293
-	}, -- 292
-	category = "Royalists", -- 294
-	speech_sounds = (function() -- 295
-		local _accum_0 = { } -- 295
-		local _len_0 = 1 -- 295
-		for i = 1, 15 do -- 295
-			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 295
-			_len_0 = _len_0 + 1 -- 295
-		end -- 295
-		return _accum_0 -- 295
-	end)(), -- 295
-	hurt_sounds = (function() -- 296
-		local _accum_0 = { } -- 296
-		local _len_0 = 1 -- 296
-		for i = 1, 4 do -- 296
-			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav" -- 296
-			_len_0 = _len_0 + 1 -- 296
-		end -- 296
-		return _accum_0 -- 296
-	end)(), -- 296
-	become_sounds = (function() -- 297
-		local _accum_0 = { } -- 297
-		local _len_0 = 1 -- 297
-		for i = 1, 15 do -- 297
-			_accum_0[_len_0] = "ambient/levels/prison/radio_random" .. tostring(i) .. ".wav" -- 297
-			_len_0 = _len_0 + 1 -- 297
-		end -- 297
-		return _accum_0 -- 297
-	end)(), -- 297
-	crosstext = function(ply) -- 298
-		local text = "Don't panic." -- 299
-		do -- 300
-			local _exp_0 = lp:Team() -- 300
-			if TEAM_PRIVATE == _exp_0 then -- 301
-				text = "The Cell is here." -- 302
-			elseif TEAM_SANITAR == _exp_0 then -- 303
-				text = "One of my only\n friends here." -- 304
-			elseif TEAM_KORPSMAN == _exp_0 then -- 305
-				text = "Beware of shadows in the\nNight of the Long Pipes." -- 306
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 307
-				text = "A tentacle of mine." -- 308
-			elseif TEAM_GHOST == _exp_0 then -- 309
-				text = "Evil, stupid,\n maybe both." -- 310
-			elseif TEAM_BONEHEAD == _exp_0 then -- 311
-				text = "DANGER." -- 312
-			end -- 312
-		end -- 312
-		return { -- 313
-			text = text, -- 313
-			font = "Spleen_Label_Small" -- 313
-		}, true -- 313
-	end, -- 298
-	first_names = { -- 314
-		"Subjugator", -- 314
-		"Dragoner", -- 314
-		"Persecuter", -- 314
-		"Draconarius", -- 314
-		"Volontaire" -- 314
-	}, -- 314
-	last_names = { -- 315
-		"of Die Augen", -- 315
-		"of Knochen", -- 315
-		"of Sehne", -- 315
-		"of Knorpel", -- 315
-		"of Bauchspeicheldrüse" -- 315
-	}, -- 315
-	arms_model = "models/weapons/c_arms_refugee.mdl", -- 316
-	ShowSpare1 = open_player_menu, -- 317
-	ShowSpare2 = open_action_menu, -- 318
-	bar_names = { -- 320
-		health = "resolve" -- 320
-	}, -- 319
-	PlayerLoadout = function(ply) -- 321
-		ply:ClearOddities() -- 322
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 323
-		for slot, val in pairs({ -- 326
-			[0] = 1, -- 326
-			[1] = 1, -- 328
-			[2] = 1, -- 330
-			[3] = 2, -- 332
-			[4] = 3, -- 334
-			[5] = 0 -- 336
-		}) do -- 337
-			set_bodygroup(ply, slot, val) -- 324
-		end -- 324
-		return false -- 338
-	end -- 321
-}) -- 283
-TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 341
-	color = Color(255, 140, 0), -- 341
-	model = { -- 342
-		"models/liver_failure/liverish/liverish.mdl", -- 342
-		"models/liver_failure/kidneystani/kidneystani.mdl", -- 343
-		"models/liver_failure/arrythmian/arrythmian.mdl" -- 344
-	}, -- 342
-	description = "The left hand of the Kommandant.\nManage the goods and keep your men armed.", -- 345
-	weapons = { }, -- 346
-	command = "dealer", -- 347
-	salary = 1, -- 348
-	max = 2, -- 349
-	hasLicense = false, -- 350
-	category = "Royalists", -- 351
-	speech_sounds = (function() -- 352
-		local _accum_0 = { } -- 352
-		local _len_0 = 1 -- 352
-		for i = 1, 3 do -- 352
-			_accum_0[_len_0] = "placenta/speech/dealer" .. tostring(i) .. ".wav" -- 352
-			_len_0 = _len_0 + 1 -- 352
-		end -- 352
-		return _accum_0 -- 352
-	end)(), -- 352
-	first_names = { -- 353
-		"Kanan", -- 353
-		"Merce", -- 353
-		"Ameel", -- 353
-		"Otis", -- 353
-		"Cedric", -- 353
-		"Edwin", -- 353
-		"Floy", -- 353
-		"Benjamin", -- 353
-		"Fortune", -- 353
-		"William", -- 353
-		"Thomas", -- 353
-		"Dean", -- 353
-		"Aurum", -- 353
-		"Klep" -- 353
+TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 293
+	color = Color(25, 170, 0), -- 293
+	model = "models/vel/evilwar/royalist.mdl", -- 294
+	description = "The right hand of the Kommandant.\nRespected by his peers,\nfeared by his enemies.", -- 295
+	weapons = { -- 296
+		"evilrp_weapon/pacifier", -- 296
+		"simple_hl2_stunstick" -- 296
+	}, -- 296
+	command = "ss", -- 297
+	salary = 1, -- 298
+	max = 6, -- 299
+	hasLicense = true, -- 300
+	ammo = { -- 302
+		pistol = 60 -- 302
+	}, -- 301
+	category = "Royalists", -- 303
+	speech_sounds = (function() -- 304
+		local _accum_0 = { } -- 304
+		local _len_0 = 1 -- 304
+		for i = 1, 15 do -- 304
+			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 304
+			_len_0 = _len_0 + 1 -- 304
+		end -- 304
+		return _accum_0 -- 304
+	end)(), -- 304
+	hurt_sounds = (function() -- 305
+		local _accum_0 = { } -- 305
+		local _len_0 = 1 -- 305
+		for i = 1, 4 do -- 305
+			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav" -- 305
+			_len_0 = _len_0 + 1 -- 305
+		end -- 305
+		return _accum_0 -- 305
+	end)(), -- 305
+	become_sounds = (function() -- 306
+		local _accum_0 = { } -- 306
+		local _len_0 = 1 -- 306
+		for i = 1, 15 do -- 306
+			_accum_0[_len_0] = "ambient/levels/prison/radio_random" .. tostring(i) .. ".wav" -- 306
+			_len_0 = _len_0 + 1 -- 306
+		end -- 306
+		return _accum_0 -- 306
+	end)(), -- 306
+	crosstext = function(ply) -- 307
+		local text = "Don't panic." -- 308
+		do -- 309
+			local _exp_0 = lp:Team() -- 309
+			if TEAM_PRIVATE == _exp_0 then -- 310
+				text = "A Lymphomian legend!" -- 311
+			elseif TEAM_STALKER == _exp_0 then -- 312
+				text = "Fight or run?!" -- 313
+			elseif TEAM_SANITAR == _exp_0 then -- 314
+				text = "Finally...\nSomeone competent." -- 315
+			elseif TEAM_KORPSMAN == _exp_0 then -- 316
+				text = "Is that enemy blood?\nNo of course not." -- 317
+			elseif TEAM_KOMMANDANT == _exp_0 then -- 318
+				text = "A tentacle of mine." -- 319
+			elseif TEAM_GHOST == _exp_0 then -- 320
+				text = "Evil, stupid,\n maybe both." -- 321
+			elseif TEAM_BONEHEAD == _exp_0 then -- 322
+				text = "DANGER." -- 323
+			end -- 323
+		end -- 323
+		return { -- 324
+			text = text, -- 324
+			font = "Spleen_Label_Small" -- 324
+		}, true -- 324
+	end, -- 307
+	first_names = { -- 325
+		"Subjugator", -- 325
+		"Dragoner", -- 325
+		"Persecuter", -- 325
+		"Draconarius", -- 325
+		"Volontaire" -- 325
+	}, -- 325
+	last_names = { -- 326
+		"of Die Augen", -- 326
+		"of Knochen", -- 326
+		"of Sehne", -- 326
+		"of Knorpel", -- 326
+		"of Bauchspeicheldrüse" -- 326
+	}, -- 326
+	arms_model = "models/weapons/c_arms_refugee.mdl", -- 327
+	ShowSpare1 = open_player_menu, -- 328
+	ShowSpare2 = open_action_menu, -- 329
+	bar_names = { -- 331
+		health = "resolve" -- 331
+	}, -- 330
+	PlayerLoadout = function(ply) -- 332
+		ply:ClearOddities() -- 333
+		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 334
+		for slot, val in pairs({ -- 337
+			[0] = 1, -- 337
+			[1] = 1, -- 339
+			[2] = 1, -- 341
+			[3] = 2, -- 343
+			[4] = 3, -- 345
+			[5] = 0 -- 347
+		}) do -- 348
+			set_bodygroup(ply, slot, val) -- 335
+		end -- 335
+		return false -- 349
+	end -- 332
+}) -- 292
+TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 352
+	color = Color(255, 140, 0), -- 352
+	model = { -- 353
+		"models/liver_failure/liverish/liverish.mdl", -- 353
+		"models/liver_failure/kidneystani/kidneystani.mdl", -- 354
+		"models/liver_failure/arrythmian/arrythmian.mdl" -- 355
 	}, -- 353
-	last_names = { -- 354
-		"Chapman", -- 354
-		"Merchant", -- 354
-		"Cash", -- 354
-		"Keeper", -- 354
-		"Bones", -- 354
-		"Ryker", -- 354
-		"Plutarch", -- 354
-		"Nasir", -- 354
-		"Greenback", -- 354
-		"Grocer", -- 354
-		"Flanders", -- 354
-		"Hooper", -- 354
-		"Watto", -- 354
-		"Loman", -- 354
-		"Stehlen", -- 354
-		"Reichmann", -- 354
-		"Kaufmann" -- 354
-	}, -- 354
-	special_name = "Unfortunate Shopkeep", -- 355
-	special_name_chance = 1000, -- 356
-	ShowSpare1 = open_player_menu, -- 357
-	ShowSpare2 = open_action_menu, -- 358
-	bar_names = { -- 360
-		health = "insurance" -- 360
-	}, -- 359
-	PlayerLoadout = function(ply) -- 361
-		ply:ClearOddities() -- 362
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 363
-		for slot, val in pairs({ -- 366
-			[0] = 0, -- 366
-			[1] = 0, -- 368
-			[2] = { -- 370
-				3, -- 370
-				5, -- 370
-				16 -- 370
-			}, -- 370
-			[3] = 22, -- 372
-			[4] = 0, -- 374
-			[5] = 0, -- 376
-			[6] = 1, -- 378
-			[7] = 0, -- 380
-			[8] = { -- 382
-				0, -- 382
-				1, -- 382
-				2, -- 382
-				3, -- 382
-				4, -- 382
-				5 -- 382
-			}, -- 382
-			[9] = 0 -- 384
-		}) do -- 385
-			set_bodygroup(ply, slot, val) -- 364
-		end -- 364
-		local skins = { -- 386
-			2, -- 386
-			4, -- 386
-			5, -- 386
-			6, -- 386
-			7, -- 386
-			8, -- 386
-			9, -- 386
-			10, -- 386
-			11, -- 386
-			12, -- 386
-			13, -- 386
-			14, -- 386
-			15 -- 386
-		} -- 386
-		ply:SetSkin(skins[math.random(1, #skins)]) -- 387
-		return false -- 388
-	end -- 361
-}) -- 340
-TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 391
-	color = Color(79, 150, 150), -- 391
-	model = "models/vel/evilwar/royalist.mdl", -- 392
-	description = "You keep people alive in this terrible place.\nFill the blood and empty the rust.", -- 393
-	weapons = { -- 394
-		"evilrp/medkit" -- 394
-	}, -- 394
-	command = "medic", -- 395
-	salary = 1, -- 396
-	max = 3, -- 397
-	hasLicense = false, -- 398
-	medic = true, -- 399
-	category = "Royalists", -- 400
-	speech_sounds = (function() -- 401
-		local _accum_0 = { } -- 401
-		local _len_0 = 1 -- 401
-		for i = 1, 4 do -- 401
-			_accum_0[_len_0] = "placenta/speech/korps" .. tostring(i) .. ".wav" -- 401
-			_len_0 = _len_0 + 1 -- 401
-		end -- 401
-		return _accum_0 -- 401
-	end)(), -- 401
-	hurt_sounds = (function() -- 402
-		local _accum_0 = { } -- 402
-		local _len_0 = 1 -- 402
-		for i = 1, 4 do -- 402
-			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav" -- 402
-			_len_0 = _len_0 + 1 -- 402
-		end -- 402
-		return _accum_0 -- 402
-	end)(), -- 402
-	become_sounds = { -- 403
-		"items/suitchargeok1.wav" -- 403
-	}, -- 403
-	crosstext = function(ply) -- 404
-		local text = "Don't panic." -- 405
-		do -- 406
-			local _exp_0 = lp:Team() -- 406
-			if TEAM_PRIVATE == _exp_0 then -- 407
-				text = "I forgot what\nto call these guys." -- 408
-			elseif TEAM_SANITAR == _exp_0 then -- 409
-				text = "Better remember\nwho lets them live." -- 410
-			elseif TEAM_KORPSMAN == _exp_0 then -- 411
-				text = "Something to\nbe happy about." -- 412
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 413
-				text = "What a strange,\nselfless thing." -- 414
-			elseif TEAM_GHOST == _exp_0 then -- 415
-				text = "A respectable mortal." -- 416
-			elseif TEAM_BONEHEAD == _exp_0 then -- 417
-				text = "CONFUSING." -- 418
-			end -- 418
-		end -- 418
-		return { -- 419
-			text = text, -- 419
-			font = "Spleen_Label_Small" -- 419
-		}, true -- 419
-	end, -- 404
-	first_names = { -- 420
-		"Dissector", -- 420
-		"Retractor", -- 420
-		"Suture", -- 420
-		"Femur", -- 420
-		"Cystic", -- 420
-		"Rasp", -- 420
-		"Ferrum", -- 420
-		"Fascia", -- 420
-		"Marrow", -- 420
-		"Lienis", -- 420
-		"Aorta", -- 420
-		"Tunica", -- 420
-		"Maxilla", -- 420
-		"Sacrum", -- 420
-		"Leach" -- 420
-	}, -- 420
-	last_names = { -- 421
-		"Forceps", -- 421
-		"Scalpel", -- 421
-		"Curette", -- 421
-		"Rongeur", -- 421
-		"Trocar", -- 421
-		"Babcock", -- 421
-		"Duval", -- 421
-		"Hemostat", -- 421
-		"Ossis", -- 421
-		"Caro", -- 421
-		"Cadaver", -- 421
-		"Sanguis", -- 421
-		"Bilis", -- 421
-		"Viscera", -- 421
-		"Jugular", -- 421
-		"Clavius" -- 421
-	}, -- 421
-	special_name = "Corpseman", -- 422
-	special_name_chance = 1000, -- 423
-	ShowSpare1 = open_player_menu, -- 424
-	ShowSpare2 = open_action_menu, -- 425
-	bar_names = { -- 427
-		health = "Bio-reserves" -- 427
-	}, -- 426
-	PlayerLoadout = function(ply) -- 428
-		ply:ClearOddities() -- 429
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 430
-		ply:SetSkin(4) -- 431
-		for slot, val in pairs({ -- 434
-			[0] = 0, -- 434
-			[1] = 0, -- 436
-			[2] = 2, -- 438
-			[3] = 3, -- 440
-			[4] = 1, -- 442
-			[5] = 0 -- 444
-		}) do -- 445
-			set_bodygroup(ply, slot, val) -- 432
-		end -- 432
-		return false -- 446
-	end -- 428
-}) -- 390
-TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", { -- 449
-	color = Color(150, 20, 20), -- 449
-	model = "models/vel/evilwar/royalist.mdl", -- 450
-	description = "Rule with an iron fist.", -- 451
-	command = "kommandant", -- 452
-	salary = 1, -- 453
-	weapons = { -- 454
-		"evilrp_weapon/novoluger" -- 454
-	}, -- 454
-	max = 1, -- 455
-	weapons = { }, -- 456
-	hasLicense = true, -- 457
-	mayor = true, -- 458
-	category = "Royalists", -- 459
-	speech_sounds = (function() -- 460
-		local _accum_0 = { } -- 460
-		local _len_0 = 1 -- 460
-		for i = 1, 15 do -- 460
-			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 460
-			_len_0 = _len_0 + 1 -- 460
-		end -- 460
-		return _accum_0 -- 460
-	end)(), -- 460
-	become_sounds = { -- 461
-		"kidneydagger/broadcast1.wav" -- 461
-	}, -- 461
-	crosstext = function(ply) -- 462
-		local text = "Don't panic." -- 463
-		do -- 464
-			local _exp_0 = lp:Team() -- 464
-			if TEAM_PRIVATE == _exp_0 then -- 465
-				text = "Listen carefully." -- 466
-			elseif TEAM_SANITAR == _exp_0 then -- 467
-				text = "Hail, hail!" -- 468
-			elseif TEAM_KORPSMAN == _exp_0 then -- 469
-				text = "Is he feeling okay?" -- 470
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 471
-				text = "Our strength\nshall prevail." -- 472
-			elseif TEAM_GHOST == _exp_0 then -- 473
-				text = "So full of lies." -- 474
-			elseif TEAM_BONEHEAD == _exp_0 then -- 475
-				text = "THERE HE IS!!" -- 476
-			end -- 476
-		end -- 476
-		return { -- 477
-			text = text, -- 477
-			font = "Spleen_Label_Small" -- 477
-		}, true -- 477
-	end, -- 462
-	first_names = ("Kommandant"), -- 478
-	special_name = "Kamdonot", -- 479
-	special_name_chance = 1000, -- 480
-	ShowSpare1 = open_player_menu, -- 481
-	ShowSpare2 = open_action_menu, -- 482
-	bar_names = { -- 484
-		health = "PRIDE" -- 484
-	}, -- 483
-	PlayerLoadout = function(ply) -- 485
-		ply:ClearOddities() -- 486
-		local oddities -- 487
-		do -- 487
-			local _accum_0 = { } -- 487
-			local _len_0 = 1 -- 487
-			for k, v in pairs(ODDITY.list) do -- 487
-				if v ~= ODDITY_ILLITERACY then -- 487
-					_accum_0[_len_0] = v -- 487
-					_len_0 = _len_0 + 1 -- 487
-				end -- 487
-			end -- 487
-			oddities = _accum_0 -- 487
-		end -- 487
-		ply:AddOddity(oddities[math.random(#oddities)]) -- 488
-		for slot, val in pairs({ -- 491
-			[0] = 1, -- 491
-			[1] = 2, -- 493
-			[2] = 0, -- 495
-			[3] = 1, -- 497
-			[4] = 2, -- 499
-			[5] = 0 -- 501
-		}) do -- 502
-			set_bodygroup(ply, slot, val) -- 489
-		end -- 489
-		ply:SetNWInt("evilrp_gasmask", 4) -- 503
-		ply:Give("evilrp_weapon/novoluger") -- 504
-		return false -- 505
-	end -- 485
-}) -- 448
-GAMEMODE.CivilProtection = { -- 508
-	[TEAM_PRIVATE] = true, -- 508
-	[TEAM_SANITAR] = true, -- 509
-	[TEAM_KOMMANDANT] = true -- 510
-} -- 507
-GAMEMODE.DefaultTeam = TEAM_GHOST -- 512
->>>>>>> Stashed changes
+	description = "The left hand of the Kommandant.\nManage the goods and keep your men armed.", -- 356
+	weapons = { }, -- 357
+	command = "dealer", -- 358
+	salary = 1, -- 359
+	max = 1, -- 360
+	hasLicense = false, -- 361
+	category = "Royalists", -- 362
+	speech_sounds = (function() -- 363
+		local _accum_0 = { } -- 363
+		local _len_0 = 1 -- 363
+		for i = 1, 3 do -- 363
+			_accum_0[_len_0] = "placenta/speech/dealer" .. tostring(i) .. ".wav" -- 363
+			_len_0 = _len_0 + 1 -- 363
+		end -- 363
+		return _accum_0 -- 363
+	end)(), -- 363
+	first_names = { -- 364
+		"Kanan", -- 364
+		"Merce", -- 364
+		"Ameel", -- 364
+		"Otis", -- 364
+		"Cedric", -- 364
+		"Edwin", -- 364
+		"Floy", -- 364
+		"Benjamin", -- 364
+		"Fortune", -- 364
+		"William", -- 364
+		"Thomas", -- 364
+		"Dean", -- 364
+		"Aurum", -- 364
+		"Klep" -- 364
+	}, -- 364
+	last_names = { -- 365
+		"Chapman", -- 365
+		"Merchant", -- 365
+		"Cash", -- 365
+		"Keeper", -- 365
+		"Bones", -- 365
+		"Ryker", -- 365
+		"Plutarch", -- 365
+		"Nasir", -- 365
+		"Greenback", -- 365
+		"Grocer", -- 365
+		"Flanders", -- 365
+		"Hooper", -- 365
+		"Watto", -- 365
+		"Loman", -- 365
+		"Stehlen", -- 365
+		"Reichmann", -- 365
+		"Kaufmann" -- 365
+	}, -- 365
+	special_name = "Unfortunate Shopkeep", -- 366
+	special_name_chance = 1000, -- 367
+	ShowSpare1 = open_player_menu, -- 368
+	ShowSpare2 = open_action_menu, -- 369
+	bar_names = { -- 371
+		health = "insurance" -- 371
+	}, -- 370
+	PlayerLoadout = function(ply) -- 372
+		ply:ClearOddities() -- 373
+		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 374
+		for slot, val in pairs({ -- 377
+			[0] = 0, -- 377
+			[1] = 0, -- 379
+			[2] = { -- 381
+				3, -- 381
+				5, -- 381
+				16 -- 381
+			}, -- 381
+			[3] = 22, -- 383
+			[4] = 0, -- 385
+			[5] = 0, -- 387
+			[6] = 1, -- 389
+			[7] = 0, -- 391
+			[8] = { -- 393
+				0, -- 393
+				1, -- 393
+				2, -- 393
+				3, -- 393
+				4, -- 393
+				5 -- 393
+			}, -- 393
+			[9] = 0 -- 395
+		}) do -- 396
+			set_bodygroup(ply, slot, val) -- 375
+		end -- 375
+		local skins = { -- 397
+			2, -- 397
+			4, -- 397
+			5, -- 397
+			6, -- 397
+			7, -- 397
+			8, -- 397
+			9, -- 397
+			10, -- 397
+			11, -- 397
+			12, -- 397
+			13, -- 397
+			14, -- 397
+			15 -- 397
+		} -- 397
+		ply:SetSkin(skins[math.random(1, #skins)]) -- 398
+		return false -- 399
+	end -- 372
+}) -- 351
+TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 402
+	color = Color(79, 150, 150), -- 402
+	model = "models/vel/evilwar/royalist.mdl", -- 403
+	description = "You keep people alive in this terrible place.\nFill the blood and empty the rust.", -- 404
+	weapons = { -- 405
+		"evilrp/medkit" -- 405
+	}, -- 405
+	command = "medic", -- 406
+	salary = 1, -- 407
+	max = 2, -- 408
+	hasLicense = false, -- 409
+	medic = true, -- 410
+	category = "Royalists", -- 411
+	speech_sounds = (function() -- 412
+		local _accum_0 = { } -- 412
+		local _len_0 = 1 -- 412
+		for i = 1, 4 do -- 412
+			_accum_0[_len_0] = "placenta/speech/korps" .. tostring(i) .. ".wav" -- 412
+			_len_0 = _len_0 + 1 -- 412
+		end -- 412
+		return _accum_0 -- 412
+	end)(), -- 412
+	hurt_sounds = (function() -- 413
+		local _accum_0 = { } -- 413
+		local _len_0 = 1 -- 413
+		for i = 1, 4 do -- 413
+			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav" -- 413
+			_len_0 = _len_0 + 1 -- 413
+		end -- 413
+		return _accum_0 -- 413
+	end)(), -- 413
+	become_sounds = { -- 414
+		"items/suitchargeok1.wav" -- 414
+	}, -- 414
+	crosstext = function(ply) -- 415
+		local text = "Don't panic." -- 416
+		do -- 417
+			local _exp_0 = lp:Team() -- 417
+			if TEAM_PRIVATE == _exp_0 then -- 418
+				text = "I forgot what\nto call these guys." -- 419
+			elseif TEAM_STALKER == _exp_0 then -- 420
+				text = "A walking blood bag." -- 421
+			elseif TEAM_SANITAR == _exp_0 then -- 422
+				text = "Better remember\nwho lets them live." -- 423
+			elseif TEAM_KORPSMAN == _exp_0 then -- 424
+				text = "Something to\nbe happy about." -- 425
+			elseif TEAM_KOMMANDANT == _exp_0 then -- 426
+				text = "What a strange,\nselfless thing." -- 427
+			elseif TEAM_GHOST == _exp_0 then -- 428
+				text = "A respectable mortal." -- 429
+			elseif TEAM_BONEHEAD == _exp_0 then -- 430
+				text = "CONFUSING." -- 431
+			end -- 431
+		end -- 431
+		return { -- 432
+			text = text, -- 432
+			font = "Spleen_Label_Small" -- 432
+		}, true -- 432
+	end, -- 415
+	first_names = { -- 433
+		"Dissector", -- 433
+		"Retractor", -- 433
+		"Suture", -- 433
+		"Femur", -- 433
+		"Cystic", -- 433
+		"Rasp", -- 433
+		"Ferrum", -- 433
+		"Fascia", -- 433
+		"Marrow", -- 433
+		"Lienis", -- 433
+		"Aorta", -- 433
+		"Tunica", -- 433
+		"Maxilla", -- 433
+		"Sacrum", -- 433
+		"Leach" -- 433
+	}, -- 433
+	last_names = { -- 434
+		"Forceps", -- 434
+		"Scalpel", -- 434
+		"Curette", -- 434
+		"Rongeur", -- 434
+		"Trocar", -- 434
+		"Babcock", -- 434
+		"Duval", -- 434
+		"Hemostat", -- 434
+		"Ossis", -- 434
+		"Caro", -- 434
+		"Cadaver", -- 434
+		"Sanguis", -- 434
+		"Bilis", -- 434
+		"Viscera", -- 434
+		"Jugular", -- 434
+		"Clavius" -- 434
+	}, -- 434
+	special_name = "Corpseman", -- 435
+	special_name_chance = 1000, -- 436
+	ShowSpare1 = open_player_menu, -- 437
+	ShowSpare2 = open_action_menu, -- 438
+	bar_names = { -- 440
+		health = "Bio-reserves" -- 440
+	}, -- 439
+	PlayerLoadout = function(ply) -- 441
+		ply:ClearOddities() -- 442
+		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 443
+		ply:SetSkin(4) -- 444
+		for slot, val in pairs({ -- 447
+			[0] = 0, -- 447
+			[1] = 0, -- 449
+			[2] = 2, -- 451
+			[3] = 3, -- 453
+			[4] = 1, -- 455
+			[5] = 0 -- 457
+		}) do -- 458
+			set_bodygroup(ply, slot, val) -- 445
+		end -- 445
+		return false -- 459
+	end -- 441
+}) -- 401
+TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", { -- 462
+	color = Color(150, 20, 20), -- 462
+	model = "models/vel/evilwar/royalist.mdl", -- 463
+	description = "Rule with an iron fist.", -- 464
+	command = "kommandant", -- 465
+	salary = 1, -- 466
+	weapons = { -- 467
+		"evilrp_weapon/novoluger" -- 467
+	}, -- 467
+	max = 1, -- 468
+	weapons = { }, -- 469
+	hasLicense = true, -- 470
+	mayor = true, -- 471
+	category = "Royalists", -- 472
+	speech_sounds = (function() -- 473
+		local _accum_0 = { } -- 473
+		local _len_0 = 1 -- 473
+		for i = 1, 15 do -- 473
+			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 473
+			_len_0 = _len_0 + 1 -- 473
+		end -- 473
+		return _accum_0 -- 473
+	end)(), -- 473
+	become_sounds = { -- 474
+		"kidneydagger/broadcast1.wav" -- 474
+	}, -- 474
+	crosstext = function(ply) -- 475
+		local text = "Don't panic." -- 476
+		do -- 477
+			local _exp_0 = lp:Team() -- 477
+			if TEAM_PRIVATE == _exp_0 then -- 478
+				text = "Listen carefully." -- 479
+			elseif TEAM_STALKER == _exp_0 then -- 480
+				text = "Oh your magesty!" -- 481
+			elseif TEAM_SANITAR == _exp_0 then -- 482
+				text = "Hail, hail!" -- 483
+			elseif TEAM_KORPSMAN == _exp_0 then -- 484
+				text = "Is he feeling okay?" -- 485
+			elseif TEAM_KOMMANDANT == _exp_0 then -- 486
+				text = "Our strength\nshall prevail." -- 487
+			elseif TEAM_GHOST == _exp_0 then -- 488
+				text = "So full of lies." -- 489
+			elseif TEAM_BONEHEAD == _exp_0 then -- 490
+				text = "THERE HE IS!!" -- 491
+			end -- 491
+		end -- 491
+		return { -- 492
+			text = text, -- 492
+			font = "Spleen_Label_Small" -- 492
+		}, true -- 492
+	end, -- 475
+	first_names = ("Kommandant"), -- 493
+	special_name = "Kamdonot", -- 494
+	special_name_chance = 1000, -- 495
+	ShowSpare1 = open_player_menu, -- 496
+	ShowSpare2 = open_action_menu, -- 497
+	bar_names = { -- 499
+		health = "PRIDE" -- 499
+	}, -- 498
+	PlayerLoadout = function(ply) -- 500
+		ply:ClearOddities() -- 501
+		local oddities -- 502
+		do -- 502
+			local _accum_0 = { } -- 502
+			local _len_0 = 1 -- 502
+			for k, v in pairs(ODDITY.list) do -- 502
+				if v ~= ODDITY_ILLITERACY then -- 502
+					_accum_0[_len_0] = v -- 502
+					_len_0 = _len_0 + 1 -- 502
+				end -- 502
+			end -- 502
+			oddities = _accum_0 -- 502
+		end -- 502
+		ply:AddOddity(oddities[math.random(#oddities)]) -- 503
+		for slot, val in pairs({ -- 506
+			[0] = 1, -- 506
+			[1] = 2, -- 508
+			[2] = 0, -- 510
+			[3] = 1, -- 512
+			[4] = 2, -- 514
+			[5] = 0 -- 516
+		}) do -- 517
+			set_bodygroup(ply, slot, val) -- 504
+		end -- 504
+		ply:SetNWInt("evilrp_gasmask", 4) -- 518
+		ply:Give("evilrp_weapon/novoluger") -- 519
+		return false -- 520
+	end -- 500
+}) -- 461
+GAMEMODE.CivilProtection = { -- 523
+	[TEAM_PRIVATE] = true, -- 523
+	[TEAM_SANITAR] = true, -- 524
+	[TEAM_KOMMANDANT] = true -- 525
+} -- 522
+GAMEMODE.DefaultTeam = TEAM_GHOST -- 527
