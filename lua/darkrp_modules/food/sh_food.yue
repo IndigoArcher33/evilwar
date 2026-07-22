@@ -540,6 +540,11 @@ class Ambrosia extends Food
     "indulges in some ambrosia."
   }
 
+  Eat: (ply) =>
+    super ply
+    return if CLIENT
+    ply\AddStemCells(5)
+
   class SloppyRibs extends Food
     PrintName: "Sloppy Ribs"
     Model: Model"models/vel/evilwar/sloppyribs.mdl"
