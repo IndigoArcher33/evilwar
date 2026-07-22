@@ -236,7 +236,7 @@ class Spawn extends Portal
     if ply\GetStemCells! >= cost
       @TeleportEffect!
       ply\Notify"<c=200,0,0>DEATHS TODAY: #{GAMEMODE\Deaths!}"
-      ply\AddStemCells(-cost)
+      ply\AddStemCells(-cost) if cost > 0
       ply\ScreenFade(SCREENFADE.IN, Color(255, 0, 0), 2.5, 0)
       ply\changeTeam(fate)
       snd = table.Random(RPExtraTeams[fate].become_sounds)

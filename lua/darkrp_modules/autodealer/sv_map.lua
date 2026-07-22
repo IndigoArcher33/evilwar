@@ -14,22 +14,26 @@ create_autodealers = function() -- 1
 			{ -- 8
 				pos = Vector(1088, 505, 46), -- 8
 				ang = Angle(0, 90, 0) -- 9
-			} -- 8
+			}, -- 8
+			{ -- 10
+				pos = Vector(-576, 588, 100), -- 10
+				ang = Angle(0, 0, 0) -- 11
+			} -- 10
 		} -- 3
 	} -- 2
-	local map = game.GetMap() -- 11
-	if EVIL_AUTODEALER_POSITIONS[map] then -- 12
-		local _list_0 = EVIL_AUTODEALER_POSITIONS[map] -- 13
-		for _index_0 = 1, #_list_0 do -- 13
-			local v = _list_0[_index_0] -- 13
-			local sp = ents.Create("autodealer") -- 14
-			sp:SetPos(v.pos) -- 16
-			sp:SetAngles(v.ang) -- 17
-			sp:Spawn() -- 18
-			sp:Activate() -- 19
-			sp:GetPhysicsObject():EnableMotion(false) -- 20
-		end -- 20
-	end -- 12
-	return -- 21
+	local map = game.GetMap() -- 13
+	if EVIL_AUTODEALER_POSITIONS[map] then -- 14
+		local _list_0 = EVIL_AUTODEALER_POSITIONS[map] -- 15
+		for _index_0 = 1, #_list_0 do -- 15
+			local v = _list_0[_index_0] -- 15
+			local sp = ents.Create("autodealer") -- 16
+			sp:SetPos(v.pos) -- 18
+			sp:SetAngles(v.ang) -- 19
+			sp:Spawn() -- 20
+			sp:Activate() -- 21
+			sp:GetPhysicsObject():EnableMotion(false) -- 22
+		end -- 22
+	end -- 14
+	return -- 23
 end -- 1
-return hook.Add("InitPostEntity", "evilrp_create_autodealers", create_autodealers) -- 23
+return hook.Add("InitPostEntity", "evilrp_create_autodealers", create_autodealers) -- 25

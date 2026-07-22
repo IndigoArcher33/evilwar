@@ -348,7 +348,9 @@ do -- 149
 			if ply:GetStemCells() >= cost then -- 236
 				self:TeleportEffect() -- 237
 				ply:Notify("<c=200,0,0>DEATHS TODAY: " .. tostring(GAMEMODE:Deaths())) -- 238
-				ply:AddStemCells(-cost) -- 239
+				if cost > 0 then -- 239
+					ply:AddStemCells(-cost) -- 239
+				end -- 239
 				ply:ScreenFade(SCREENFADE.IN, Color(255, 0, 0), 2.5, 0) -- 240
 				ply:changeTeam(fate) -- 241
 				local snd = table.Random(RPExtraTeams[fate].become_sounds) -- 242

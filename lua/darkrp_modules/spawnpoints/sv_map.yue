@@ -15,7 +15,7 @@ create_spawnpoints = ->
         job: TEAM_KOMMANDANT
       * pos: Vector(-231, -6828, -138)
         job: TEAM_STALKER
-      * pos: Vector(-461, 830, 156)
+      * pos: Vector(-461, 830, 130)
         job: TEAM_DEALER
     ["rp_slumtown"]:
       * pos: Vector( 251, 47, 137 )

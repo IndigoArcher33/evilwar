@@ -76,481 +76,494 @@ elseif SERVER then -- 10
 		local ct = CurTime() -- 60
 		local mach = net.ReadEntity() -- 61
 		local item = net.ReadString() -- 62
-		if ct < mach:GetCantPurchaseUntil() then -- 63
-			return -- 63
-		end -- 63
-		mach:SetCantPurchaseUntil(ct + 3) -- 64
-		local avail = GAMEMODE.Stocks[item] -- 65
-		local weapon = false -- 66
-		local etab = scripted_ents.Get(item) -- 67
-		if not etab then -- 68
-			etab = weapons.Get(item) -- 70
-			weapon = true -- 71
-		end -- 68
-		local cost = etab.Price or 10 -- 72
-		local taxed = math.floor(cost * (GetGlobalInt("tax_sales") / 100)) -- 73
-		local money = ply:getDarkRPVar("money") -- 74
-		if not avail then -- 75
+		if ply:Team() ~= TEAM_DEALER then -- 63
+			ply:AddDespair(10) -- 64
+			local dmg = DamageInfo() -- 65
+			dmg:SetAttacker(ply) -- 67
+			dmg:SetDamage(15) -- 68
+			dmg:SetInflictor(mach) -- 69
+			dmg:SetDamageType(DMG_SLASH) -- 70
+			ply:TakeDamageInfo(dmg) -- 71
+			ply:Notify("<c=200,0,0>Nice try, freak.") -- 72
+			mach:EmitSound("Autodealer_Squeal_Bad") -- 73
+			mach:SetThanksText(mach.HateTexts[math.random(1, #mach.HateTexts)]) -- 74
 			return -- 75
-		end -- 75
-		if avail < 1 then -- 76
+		end -- 63
+		if ct < mach:GetCantPurchaseUntil() then -- 76
 			return -- 76
 		end -- 76
-		if money < cost then -- 77
-			net.Start("evilrp_machine_fail") -- 78
-			net.WriteString("You don't have enough money. Ha!") -- 79
-			net.Send(ply) -- 80
-			mach:EmitSound("Autodealer_Squeal_Bad") -- 81
-			mach:SetThanksText(mach.HateTexts[math.random(1, #mach.HateTexts)]) -- 82
-			ply:ConCommand("say /me grimaces.") -- 83
-			ply:AddDespair(10) -- 84
-			return -- 85
-		end -- 77
-		ply:ConCommand("say /me " .. tostring(mach.UseText[math.random(1, #mach.UseText)])) -- 86
-		mach:SetThanksText(mach.ThanksTexts[math.random(1, #mach.ThanksTexts)]) -- 87
-		mach:EmitSound("Autodealer_Squeal") -- 88
-		ply:AddMoney(-(cost + taxed), "Autocommerce") -- 89
-		local _obj_0 = GAMEMODE.taxes_stored -- 90
-		_obj_0.sales = _obj_0.sales + taxed -- 90
-		local _obj_1 = GAMEMODE.Stocks -- 91
-		_obj_1[item] = _obj_1[item] - 1 -- 91
-		local product -- 92
-		if weapon then -- 93
-			product = ents.Create("evilrp/spawned/weapon") -- 94
-			product:SetModel(etab.WorldModel) -- 96
-			product:SetWeaponClass(item) -- 97
-		else -- 99
-			product = ents.Create(item) -- 99
-		end -- 93
-		local ent_pos = mach:GetPos() -- 100
-		local tr = util.TraceLine({ -- 102
-			endpos = ent_pos + (mach:GetForward() * 32) + (mach:GetUp() * 16) + (mach:GetRight() * 8), -- 102
-			filter = ply, -- 103
-			start = ply:EyePos(), -- 104
-			mask = MASK_NPCWORLDSTATIC -- 105
-		}) -- 101
-		product:Spawn() -- 107
-		product:Activate() -- 108
-		product:SetAngles(Angle(90, 90, 90)) -- 109
-		DarkRP.placeEntity(product, tr, ply) -- 110
-		net.Start("evilrp_receive_stocks") -- 111
-		net.WriteTable(GAMEMODE.Stocks) -- 112
-		return net.Broadcast() -- 113
+		mach:SetCantPurchaseUntil(ct + 3) -- 77
+		local avail = GAMEMODE.Stocks[item] -- 78
+		local weapon = false -- 79
+		local etab = scripted_ents.Get(item) -- 80
+		if not etab then -- 81
+			etab = weapons.Get(item) -- 83
+			weapon = true -- 84
+		end -- 81
+		local cost = etab.Price or 10 -- 85
+		local taxed = math.floor(cost * (GetGlobalInt("tax_sales") / 100)) -- 86
+		local money = ply:getDarkRPVar("money") -- 87
+		if not avail then -- 88
+			return -- 88
+		end -- 88
+		if avail < 1 then -- 89
+			return -- 89
+		end -- 89
+		if money < cost then -- 90
+			net.Start("evilrp_machine_fail") -- 91
+			net.WriteString("You don't have enough money. Ha!") -- 92
+			net.Send(ply) -- 93
+			mach:EmitSound("Autodealer_Squeal_Bad") -- 94
+			mach:SetThanksText(mach.HateTexts[math.random(1, #mach.HateTexts)]) -- 95
+			ply:ConCommand("say /me grimaces.") -- 96
+			ply:AddDespair(10) -- 97
+			return -- 98
+		end -- 90
+		ply:ConCommand("say /me " .. tostring(mach.UseText[math.random(1, #mach.UseText)])) -- 99
+		mach:SetThanksText(mach.ThanksTexts[math.random(1, #mach.ThanksTexts)]) -- 100
+		mach:EmitSound("Autodealer_Squeal") -- 101
+		ply:AddMoney(-(cost + taxed), "Autocommerce") -- 102
+		local _obj_0 = GAMEMODE.taxes_stored -- 103
+		_obj_0.sales = _obj_0.sales + taxed -- 103
+		local _obj_1 = GAMEMODE.Stocks -- 104
+		_obj_1[item] = _obj_1[item] - 1 -- 104
+		local product -- 105
+		if weapon then -- 106
+			product = ents.Create("evilrp/spawned/weapon") -- 107
+			product:SetModel(etab.WorldModel) -- 109
+			product:SetWeaponClass(item) -- 110
+		else -- 112
+			product = ents.Create(item) -- 112
+		end -- 106
+		local ent_pos = mach:GetPos() -- 113
+		local tr = util.TraceLine({ -- 115
+			endpos = ent_pos + (mach:GetForward() * 32) + (mach:GetUp() * 16) + (mach:GetRight() * 8), -- 115
+			filter = ply, -- 116
+			start = ply:EyePos(), -- 117
+			mask = MASK_NPCWORLDSTATIC -- 118
+		}) -- 114
+		product:Spawn() -- 120
+		product:Activate() -- 121
+		product:SetAngles(Angle(90, 90, 90)) -- 122
+		DarkRP.placeEntity(product, tr, ply) -- 123
+		net.Start("evilrp_receive_stocks") -- 124
+		net.WriteTable(GAMEMODE.Stocks) -- 125
+		return net.Broadcast() -- 126
 	end) -- 59
 end -- 6
-local Autodealer_Squeal -- 115
-do -- 115
-	local _class_0 -- 115
-	local _parent_0 = SOUND -- 115
-	local _base_0 = { -- 115
-		sound = (function() -- 116
-			local _accum_0 = { } -- 116
-			local _len_0 = 1 -- 116
-			for i = 1, 4 do -- 116
-				_accum_0[_len_0] = "placenta/coinkeeper" .. tostring(i) .. ".wav" -- 116
-				_len_0 = _len_0 + 1 -- 116
-			end -- 116
-			return _accum_0 -- 116
-		end)(), -- 117
-		level = SNDLVL_70DB -- 115
-	} -- 115
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 117
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 115
-			_base_0[_key_0] = _val_0 -- 115
-		end -- 115
-	end -- 117
-	if _base_0.__index == nil then -- 115
-		_base_0.__index = _base_0 -- 115
-	end -- 117
-	setmetatable(_base_0, _parent_0.__base) -- 115
-	_class_0 = setmetatable({ -- 115
-		__init = function(self, ...) -- 115
-			return _class_0.__parent.__init(self, ...) -- 115
-		end, -- 115
-		__base = _base_0, -- 115
-		__name = "Autodealer_Squeal", -- 115
-		__parent = _parent_0 -- 115
-	}, { -- 115
-		__index = function(cls, name) -- 115
-			local val = rawget(_base_0, name) -- 115
-			if val == nil then -- 115
-				local parent = rawget(cls, "__parent") -- 115
-				if parent then -- 115
-					return parent[name] -- 115
-				end -- 115
-			else -- 115
-				return val -- 115
-			end -- 115
-		end, -- 115
-		__call = function(cls, ...) -- 115
-			local _self_0 = setmetatable({ }, _base_0) -- 115
-			cls.__init(_self_0, ...) -- 115
-			return _self_0 -- 115
-		end -- 115
-	}) -- 115
-	_base_0.__class = _class_0 -- 115
-	if _parent_0.__inherited then -- 115
-		_parent_0.__inherited(_parent_0, _class_0) -- 115
-	end -- 115
-	Autodealer_Squeal = _class_0 -- 115
-end -- 117
-local Autodealer_Squeal_Bad -- 119
-do -- 119
-	local _class_0 -- 119
-	local _parent_0 = Autodealer_Squeal -- 119
-	local _base_0 = { -- 119
-		pitch = { -- 120
-			80, -- 120
-			95 -- 120
-		} -- 119
-	} -- 119
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 120
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 119
-			_base_0[_key_0] = _val_0 -- 119
-		end -- 119
-	end -- 120
-	if _base_0.__index == nil then -- 119
-		_base_0.__index = _base_0 -- 119
-	end -- 120
-	setmetatable(_base_0, _parent_0.__base) -- 119
-	_class_0 = setmetatable({ -- 119
-		__init = function(self, ...) -- 119
-			return _class_0.__parent.__init(self, ...) -- 119
-		end, -- 119
-		__base = _base_0, -- 119
-		__name = "Autodealer_Squeal_Bad", -- 119
-		__parent = _parent_0 -- 119
-	}, { -- 119
-		__index = function(cls, name) -- 119
-			local val = rawget(_base_0, name) -- 119
-			if val == nil then -- 119
-				local parent = rawget(cls, "__parent") -- 119
-				if parent then -- 119
-					return parent[name] -- 119
-				end -- 119
-			else -- 119
-				return val -- 119
-			end -- 119
-		end, -- 119
-		__call = function(cls, ...) -- 119
-			local _self_0 = setmetatable({ }, _base_0) -- 119
-			cls.__init(_self_0, ...) -- 119
-			return _self_0 -- 119
-		end -- 119
-	}) -- 119
-	_base_0.__class = _class_0 -- 119
-	if _parent_0.__inherited then -- 119
-		_parent_0.__inherited(_parent_0, _class_0) -- 119
-	end -- 119
-	Autodealer_Squeal_Bad = _class_0 -- 119
-end -- 120
-if CLIENT then -- 122
-	local Spleen_Autodealer -- 123
-	do -- 123
-		local _class_0 -- 123
-		local _parent_0 = FONT -- 123
-		local _base_0 = { -- 123
-			font = "Spleen 6x12", -- 125
-			size = 14 -- 123
-		} -- 123
-		for _key_0, _val_0 in pairs(_parent_0.__base) do -- 125
-			if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 123
-				_base_0[_key_0] = _val_0 -- 123
-			end -- 123
-		end -- 125
-		if _base_0.__index == nil then -- 123
-			_base_0.__index = _base_0 -- 123
-		end -- 125
-		setmetatable(_base_0, _parent_0.__base) -- 123
-		_class_0 = setmetatable({ -- 123
-			__init = function(self, ...) -- 123
-				return _class_0.__parent.__init(self, ...) -- 123
-			end, -- 123
-			__base = _base_0, -- 123
-			__name = "Spleen_Autodealer", -- 123
-			__parent = _parent_0 -- 123
-		}, { -- 123
-			__index = function(cls, name) -- 123
-				local val = rawget(_base_0, name) -- 123
-				if val == nil then -- 123
-					local parent = rawget(cls, "__parent") -- 123
-					if parent then -- 123
-						return parent[name] -- 123
-					end -- 123
-				else -- 123
-					return val -- 123
-				end -- 123
-			end, -- 123
-			__call = function(cls, ...) -- 123
-				local _self_0 = setmetatable({ }, _base_0) -- 123
-				cls.__init(_self_0, ...) -- 123
-				return _self_0 -- 123
-			end -- 123
-		}) -- 123
-		_base_0.__class = _class_0 -- 123
-		if _parent_0.__inherited then -- 123
-			_parent_0.__inherited(_parent_0, _class_0) -- 123
-		end -- 123
-		Spleen_Autodealer = _class_0 -- 123
-	end -- 125
-end -- 122
-local pressed = false -- 127
-local Autodealer -- 129
-do -- 129
-	local _class_0 -- 129
-	local _parent_0 = ENTITY -- 129
-	local _base_0 = { -- 129
-		Base = "base_anim", -- 131
-		Type = "anim", -- 132
-		PrintName = "Autodealer", -- 133
-		Spawnable = true, -- 134
-		AdminSpawnable = true, -- 135
-		Interesting = true, -- 137
-		Pocketable = false, -- 139
-		UseText = { -- 140
-			"purchases something.", -- 140
-			"exchanges money for goods and/or services.", -- 141
-			"wastes bones on a capitalist device.", -- 142
-			"buys something from a kapitalist kiosk.", -- 143
-			"purchases a product.", -- 144
-			"feeds money to a capitalist machine.", -- 145
-			"performs a monetary exchange." -- 146
-		}, -- 148
-		SetupDataTables = function(self) -- 148
-			self:NetworkVar("Float", "CantPurchaseUntil") -- 149
-			self:NetworkVar("String", "ThanksText") -- 150
-			return self:NetworkVar("Int", "Kits") -- 151
-		end, -- 153
-		ThanksTexts = { -- 154
-			"Thanks", -- 154
-			"Buy more stuff", -- 155
-			"I love you", -- 156
-			"Keep spending", -- 157
-			"More bones now", -- 158
-			"Give more bones", -- 159
-			"Stay obedient", -- 160
-			"Again please", -- 161
-			"Please buy stuff", -- 162
-			"It feels good", -- 163
-			"Buy another" -- 164
-		}, -- 166
-		HateTexts = { -- 167
-			"I hope you die", -- 167
-			"How dare you?", -- 168
-			"You are nothing", -- 169
-			"I hate you", -- 170
-			"You're a bad person", -- 171
-			"Don't touch me", -- 172
-			"Kill yourself", -- 173
-			"Get a job", -- 174
-			"Deadbeat", -- 175
-			"Get away from me", -- 176
-			"Go away freak" -- 177
-		}, -- 179
-		AmmoCost = 50, -- 180
-		AmmoMax = 10, -- 182
-		Initialize = function(self) -- 182
-			if CLIENT then -- 183
-				return -- 183
-			end -- 183
-			self:SetModel("models/props_combine/combine_smallmonitor001.mdl") -- 184
-			self:PhysicsInit(SOLID_VPHYSICS) -- 185
-			self:PhysWake() -- 186
-			return self:GetPhysicsObject():EnableMotion(false) -- 187
-		end, -- 189
-		GetAmmoCost = function(self) -- 189
-			return math.ceil(self.AmmoCost + (self.AmmoCost * (GetGlobalInt("tax_sales") / 100))) -- 189
-		end, -- 191
-		Think = function(self) -- 191
-			if SERVER then -- 192
-				local ct = CurTime() -- 193
-				if not self.next_regen then -- 194
-					self.next_regen = ct + 15 -- 194
-				end -- 194
-				if ct >= self.next_regen then -- 195
-					self.next_regen = ct + 15 -- 196
-					local kits = self:GetKits() -- 197
-					if kits < self.AmmoMax then -- 198
-						kits = kits + 1 -- 199
-						self:SetKits(kits) -- 200
-						return self:EmitSound("buttons/weapon_confirm.wav") -- 201
-					end -- 198
-				end -- 195
-			end -- 192
-		end, -- 203
-		Draw = function(self) -- 203
-			local team = lp:Team() -- 204
-			self:DrawModel() -- 205
-			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 206
-			if not (dist_sqr < 128 ^ 2) then -- 207
-				return -- 207
-			end -- 207
-			self.cache = self.cache or { } -- 208
-			if not ui3d2d.startDraw(self:LocalToWorld(pos), self:LocalToWorldAngles(ang), .1, self) then -- 209
-				return -- 209
-			end -- 209
-			surface.SetMaterial(noise) -- 210
-			surface.SetDrawColor(255, 255, 255, 255) -- 211
-			surface.DrawTexturedRect(0, 0, 212, 150) -- 212
-			local desp = (lp:GetDespair() * 0.01) -- 213
-			local font = "Spleen_Autodealer" -- 214
-			surface.SetFont(font) -- 215
-			local _, txt_h = surface.GetTextSize("[!]") -- 216
-			local y = 0 -- 217
-			if GAMEMODE.Stocks then -- 218
-				local keys = table.GetKeys(GAMEMODE.Stocks) -- 219
-				local pages = math.floor(#keys / 3) -- 220
-				page = math.min(page, pages) -- 221
-				local start = 1 + (page * 3) -- 223
-				for i = start, start + 2 do -- 224
-					local _continue_0 = false -- 225
-					repeat -- 225
-						local item = keys[i] -- 225
-						if not item then -- 226
-							_continue_0 = true -- 226
-							break -- 226
-						end -- 226
-						local amount = GAMEMODE.Stocks[item] -- 227
-						local etab = self.cache[item] -- 228
-						if not etab then -- 229
-							etab = scripted_ents.Get(item) or weapons.Get(item) -- 230
-							self.cache[item] = etab -- 231
-						end -- 229
-						local name = etab.PrintName -- 232
-						local price = etab.Price or 10 -- 233
-						local taxed = math.floor(price * (GetGlobalInt("tax_sales") / 100)) -- 234
-						price = price + taxed -- 235
-						local cost = tostring(price) .. " bones" -- 236
-						if amount <= 0 then -- 237
-							cost = "OUT OF STOCK" -- 238
-						elseif CurTime() < self:GetCantPurchaseUntil() then -- 239
-							cost = self:GetThanksText() -- 240
-						end -- 237
-						local txt = tostring(name) .. "<col=0,200,0> <col=0,200,200>(x" .. tostring(amount) .. ")\n<col=0,200,0>" .. tostring(cost) -- 241
-						local txt_obj = scribe.Parse("<f=" .. tostring(font) .. "><ol=2>" .. tostring(txt)) -- 242
-						txt_obj:Draw(24, y, 1, TEXT_ALIGN_LEFT) -- 243
-						local txt_h -- 244
-						txt_h = txt_obj:GetTall() -- 244
-						local button_txt = "[ ]" -- 245
-						if ui3d2d.isHovering(0, y, 24, txt_h) then -- 246
-							if ui3d2d.isPressing() and team ~= TEAM_GHOST then -- 247
-								button_txt = "[!]" -- 248
-								if not pressed and amount > 0 then -- 249
-									pressed = true -- 250
-									net.Start("evilrp_purchase_stock") -- 251
-									net.WriteEntity(self) -- 252
-									net.WriteString(item) -- 253
-									net.SendToServer() -- 254
-								end -- 249
-							else -- 256
-								button_txt = "[X]" -- 256
-							end -- 247
-						end -- 246
-						local button_txt_obj = scribe.Parse("<f=" .. tostring(font) .. ">" .. tostring(button_txt)) -- 257
-						button_txt_obj:Draw(0, y + 2, 1, TEXT_ALIGN_LEFT) -- 258
-						y = y + txt_h -- 259
-						_continue_0 = true -- 225
-					until true -- 259
-					if not _continue_0 then -- 259
-						break -- 259
-					end -- 259
-				end -- 259
-				local x = 0 -- 260
-				if not (page < 1) then -- 262
-					local button_txt = "[p]" -- 263
-					if ui3d2d.isHovering(x, y, 24, txt_h) then -- 264
-						button_txt = "[P]" -- 265
-						if ui3d2d.isPressing() and team ~= TEAM_GHOST then -- 266
-							if not pressed then -- 267
-								pressed = true -- 268
-								page = page - 1 -- 269
-							end -- 267
-						end -- 266
-					end -- 264
-					local button_txt_obj = scribe.Parse("<f=" .. tostring(font) .. ">" .. tostring(button_txt)) -- 270
-					button_txt_obj:Draw(x, y + 2, 1, TEXT_ALIGN_LEFT) -- 271
-					local txt_w = button_txt_obj:GetWide() -- 272
-					x = x + txt_w -- 273
-				end -- 262
-				if not (page >= pages) then -- 274
-					local button_txt = "[n]" -- 275
-					if ui3d2d.isHovering(x, y, 24, txt_h) then -- 276
-						button_txt = "[N]" -- 277
-						if ui3d2d.isPressing() and team ~= TEAM_GHOST then -- 278
-							if not pressed then -- 279
-								pressed = true -- 280
-								page = page + 1 -- 281
-							end -- 279
-						end -- 278
-					end -- 276
-					local button_txt_obj = scribe.Parse("<f=" .. tostring(font) .. ">" .. tostring(button_txt)) -- 282
-					button_txt_obj:Draw(x, y + 2, 1, TEXT_ALIGN_LEFT) -- 283
-				end -- 274
-				x = 0 -- 284
-				local wep = lp:GetActiveWeapon() -- 286
-				if IsValid(wep) and string.find(wep:GetClass(), "evilrp_weapon/") then -- 287
-					local button_txt = "[ammo:" .. tostring(self:GetKits()) .. "/<c=0,200,0>$" .. tostring(self:GetAmmoCost()) .. "</c>]" -- 288
-					local txt_w = surface.GetTextSize(button_txt) -- 289
-					y = y + txt_h -- 290
-					if ui3d2d.isHovering(x, y, txt_w, txt_h) then -- 291
-						button_txt = "[AMMO:" .. tostring(self:GetKits()) .. "/<c=0,200,0>$" .. tostring(self:GetAmmoCost()) .. "</c>]" -- 292
-						if ui3d2d.isPressing() and team ~= TEAM_GHOST then -- 293
-							if not pressed then -- 294
-								pressed = true -- 295
-								net.Start("evilrp_purchase_ammo") -- 296
-								net.WriteEntity(self) -- 297
-								net.SendToServer() -- 298
-							end -- 294
-						end -- 293
-					end -- 291
-					local button_txt_obj = scribe.Parse("<f=" .. tostring(font) .. ">" .. tostring(button_txt)) -- 299
-					button_txt_obj:Draw(x, y + 2, 1, TEXT_ALIGN_LEFT) -- 300
-				end -- 287
-			end -- 218
-			if pressed and not ui3d2d.isPressing() then -- 301
-				pressed = false -- 301
-			end -- 301
-			return ui3d2d.endDraw() -- 302
-		end -- 129
-	} -- 129
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 303
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 129
-			_base_0[_key_0] = _val_0 -- 129
-		end -- 129
-	end -- 303
-	if _base_0.__index == nil then -- 129
-		_base_0.__index = _base_0 -- 129
-	end -- 303
-	setmetatable(_base_0, _parent_0.__base) -- 129
-	_class_0 = setmetatable({ -- 129
-		__init = function(self, ...) -- 129
-			return _class_0.__parent.__init(self, ...) -- 129
-		end, -- 129
-		__base = _base_0, -- 129
-		__name = "Autodealer", -- 129
-		__parent = _parent_0 -- 129
-	}, { -- 129
-		__index = function(cls, name) -- 129
-			local val = rawget(_base_0, name) -- 129
-			if val == nil then -- 129
-				local parent = rawget(cls, "__parent") -- 129
-				if parent then -- 129
-					return parent[name] -- 129
-				end -- 129
-			else -- 129
-				return val -- 129
+local Autodealer_Squeal -- 128
+do -- 128
+	local _class_0 -- 128
+	local _parent_0 = SOUND -- 128
+	local _base_0 = { -- 128
+		sound = (function() -- 129
+			local _accum_0 = { } -- 129
+			local _len_0 = 1 -- 129
+			for i = 1, 4 do -- 129
+				_accum_0[_len_0] = "placenta/coinkeeper" .. tostring(i) .. ".wav" -- 129
+				_len_0 = _len_0 + 1 -- 129
 			end -- 129
-		end, -- 129
-		__call = function(cls, ...) -- 129
-			local _self_0 = setmetatable({ }, _base_0) -- 129
-			cls.__init(_self_0, ...) -- 129
-			return _self_0 -- 129
-		end -- 129
-	}) -- 129
-	_base_0.__class = _class_0 -- 129
-	if _parent_0.__inherited then -- 129
-		_parent_0.__inherited(_parent_0, _class_0) -- 129
-	end -- 129
-	Autodealer = _class_0 -- 129
-	return _class_0 -- 303
-end -- 303
+			return _accum_0 -- 129
+		end)(), -- 130
+		level = SNDLVL_70DB -- 128
+	} -- 128
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 130
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 128
+			_base_0[_key_0] = _val_0 -- 128
+		end -- 128
+	end -- 130
+	if _base_0.__index == nil then -- 128
+		_base_0.__index = _base_0 -- 128
+	end -- 130
+	setmetatable(_base_0, _parent_0.__base) -- 128
+	_class_0 = setmetatable({ -- 128
+		__init = function(self, ...) -- 128
+			return _class_0.__parent.__init(self, ...) -- 128
+		end, -- 128
+		__base = _base_0, -- 128
+		__name = "Autodealer_Squeal", -- 128
+		__parent = _parent_0 -- 128
+	}, { -- 128
+		__index = function(cls, name) -- 128
+			local val = rawget(_base_0, name) -- 128
+			if val == nil then -- 128
+				local parent = rawget(cls, "__parent") -- 128
+				if parent then -- 128
+					return parent[name] -- 128
+				end -- 128
+			else -- 128
+				return val -- 128
+			end -- 128
+		end, -- 128
+		__call = function(cls, ...) -- 128
+			local _self_0 = setmetatable({ }, _base_0) -- 128
+			cls.__init(_self_0, ...) -- 128
+			return _self_0 -- 128
+		end -- 128
+	}) -- 128
+	_base_0.__class = _class_0 -- 128
+	if _parent_0.__inherited then -- 128
+		_parent_0.__inherited(_parent_0, _class_0) -- 128
+	end -- 128
+	Autodealer_Squeal = _class_0 -- 128
+end -- 130
+local Autodealer_Squeal_Bad -- 132
+do -- 132
+	local _class_0 -- 132
+	local _parent_0 = Autodealer_Squeal -- 132
+	local _base_0 = { -- 132
+		pitch = { -- 133
+			80, -- 133
+			95 -- 133
+		} -- 132
+	} -- 132
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 133
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 132
+			_base_0[_key_0] = _val_0 -- 132
+		end -- 132
+	end -- 133
+	if _base_0.__index == nil then -- 132
+		_base_0.__index = _base_0 -- 132
+	end -- 133
+	setmetatable(_base_0, _parent_0.__base) -- 132
+	_class_0 = setmetatable({ -- 132
+		__init = function(self, ...) -- 132
+			return _class_0.__parent.__init(self, ...) -- 132
+		end, -- 132
+		__base = _base_0, -- 132
+		__name = "Autodealer_Squeal_Bad", -- 132
+		__parent = _parent_0 -- 132
+	}, { -- 132
+		__index = function(cls, name) -- 132
+			local val = rawget(_base_0, name) -- 132
+			if val == nil then -- 132
+				local parent = rawget(cls, "__parent") -- 132
+				if parent then -- 132
+					return parent[name] -- 132
+				end -- 132
+			else -- 132
+				return val -- 132
+			end -- 132
+		end, -- 132
+		__call = function(cls, ...) -- 132
+			local _self_0 = setmetatable({ }, _base_0) -- 132
+			cls.__init(_self_0, ...) -- 132
+			return _self_0 -- 132
+		end -- 132
+	}) -- 132
+	_base_0.__class = _class_0 -- 132
+	if _parent_0.__inherited then -- 132
+		_parent_0.__inherited(_parent_0, _class_0) -- 132
+	end -- 132
+	Autodealer_Squeal_Bad = _class_0 -- 132
+end -- 133
+if CLIENT then -- 135
+	local Spleen_Autodealer -- 136
+	do -- 136
+		local _class_0 -- 136
+		local _parent_0 = FONT -- 136
+		local _base_0 = { -- 136
+			font = "Spleen 6x12", -- 138
+			size = 14 -- 136
+		} -- 136
+		for _key_0, _val_0 in pairs(_parent_0.__base) do -- 138
+			if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 136
+				_base_0[_key_0] = _val_0 -- 136
+			end -- 136
+		end -- 138
+		if _base_0.__index == nil then -- 136
+			_base_0.__index = _base_0 -- 136
+		end -- 138
+		setmetatable(_base_0, _parent_0.__base) -- 136
+		_class_0 = setmetatable({ -- 136
+			__init = function(self, ...) -- 136
+				return _class_0.__parent.__init(self, ...) -- 136
+			end, -- 136
+			__base = _base_0, -- 136
+			__name = "Spleen_Autodealer", -- 136
+			__parent = _parent_0 -- 136
+		}, { -- 136
+			__index = function(cls, name) -- 136
+				local val = rawget(_base_0, name) -- 136
+				if val == nil then -- 136
+					local parent = rawget(cls, "__parent") -- 136
+					if parent then -- 136
+						return parent[name] -- 136
+					end -- 136
+				else -- 136
+					return val -- 136
+				end -- 136
+			end, -- 136
+			__call = function(cls, ...) -- 136
+				local _self_0 = setmetatable({ }, _base_0) -- 136
+				cls.__init(_self_0, ...) -- 136
+				return _self_0 -- 136
+			end -- 136
+		}) -- 136
+		_base_0.__class = _class_0 -- 136
+		if _parent_0.__inherited then -- 136
+			_parent_0.__inherited(_parent_0, _class_0) -- 136
+		end -- 136
+		Spleen_Autodealer = _class_0 -- 136
+	end -- 138
+end -- 135
+local pressed = false -- 140
+local Autodealer -- 142
+do -- 142
+	local _class_0 -- 142
+	local _parent_0 = ENTITY -- 142
+	local _base_0 = { -- 142
+		Base = "base_anim", -- 144
+		Type = "anim", -- 145
+		PrintName = "Autodealer", -- 146
+		Spawnable = true, -- 147
+		AdminSpawnable = true, -- 148
+		Interesting = true, -- 150
+		Pocketable = false, -- 152
+		UseText = { -- 153
+			"purchases something.", -- 153
+			"exchanges money for goods and/or services.", -- 154
+			"wastes bones on a capitalist device.", -- 155
+			"buys something from a kapitalist kiosk.", -- 156
+			"purchases a product.", -- 157
+			"feeds money to a capitalist machine.", -- 158
+			"performs a monetary exchange." -- 159
+		}, -- 161
+		SetupDataTables = function(self) -- 161
+			self:NetworkVar("Float", "CantPurchaseUntil") -- 162
+			self:NetworkVar("String", "ThanksText") -- 163
+			return self:NetworkVar("Int", "Kits") -- 164
+		end, -- 166
+		ThanksTexts = { -- 167
+			"Thanks", -- 167
+			"Buy more stuff", -- 168
+			"I love you", -- 169
+			"Keep spending", -- 170
+			"More bones now", -- 171
+			"Give more bones", -- 172
+			"Stay obedient", -- 173
+			"Again please", -- 174
+			"Please buy stuff", -- 175
+			"It feels good", -- 176
+			"Buy another" -- 177
+		}, -- 179
+		HateTexts = { -- 180
+			"I hope you die", -- 180
+			"How dare you?", -- 181
+			"You are nothing", -- 182
+			"I hate you", -- 183
+			"You're a bad person", -- 184
+			"Don't touch me", -- 185
+			"Kill yourself", -- 186
+			"Get a job", -- 187
+			"Deadbeat", -- 188
+			"Get away from me", -- 189
+			"Go away freak" -- 190
+		}, -- 192
+		AmmoCost = 50, -- 193
+		AmmoMax = 10, -- 195
+		Initialize = function(self) -- 195
+			if CLIENT then -- 196
+				return -- 196
+			end -- 196
+			self:SetModel("models/props_combine/combine_smallmonitor001.mdl") -- 197
+			self:PhysicsInit(SOLID_VPHYSICS) -- 198
+			self:PhysWake() -- 199
+			return self:GetPhysicsObject():EnableMotion(false) -- 200
+		end, -- 202
+		GetAmmoCost = function(self) -- 202
+			return math.ceil(self.AmmoCost + (self.AmmoCost * (GetGlobalInt("tax_sales") / 100))) -- 202
+		end, -- 204
+		Think = function(self) -- 204
+			if SERVER then -- 205
+				local ct = CurTime() -- 206
+				if not self.next_regen then -- 207
+					self.next_regen = ct + 15 -- 207
+				end -- 207
+				if ct >= self.next_regen then -- 208
+					self.next_regen = ct + 15 -- 209
+					local kits = self:GetKits() -- 210
+					if kits < self.AmmoMax then -- 211
+						kits = kits + 1 -- 212
+						self:SetKits(kits) -- 213
+						return self:EmitSound("buttons/weapon_confirm.wav") -- 214
+					end -- 211
+				end -- 208
+			end -- 205
+		end, -- 216
+		Draw = function(self) -- 216
+			local team = lp:Team() -- 217
+			self:DrawModel() -- 218
+			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 219
+			if not (dist_sqr < 128 ^ 2) then -- 220
+				return -- 220
+			end -- 220
+			self.cache = self.cache or { } -- 221
+			if not ui3d2d.startDraw(self:LocalToWorld(pos), self:LocalToWorldAngles(ang), .1, self) then -- 222
+				return -- 222
+			end -- 222
+			surface.SetMaterial(noise) -- 223
+			surface.SetDrawColor(255, 255, 255, 255) -- 224
+			surface.DrawTexturedRect(0, 0, 212, 150) -- 225
+			local desp = (lp:GetDespair() * 0.01) -- 226
+			local font = "Spleen_Autodealer" -- 227
+			surface.SetFont(font) -- 228
+			local _, txt_h = surface.GetTextSize("[!]") -- 229
+			local y = 0 -- 230
+			if GAMEMODE.Stocks then -- 231
+				local keys = table.GetKeys(GAMEMODE.Stocks) -- 232
+				local pages = math.floor(#keys / 3) -- 233
+				page = math.min(page, pages) -- 234
+				local start = 1 + (page * 3) -- 236
+				for i = start, start + 2 do -- 237
+					local _continue_0 = false -- 238
+					repeat -- 238
+						local item = keys[i] -- 238
+						if not item then -- 239
+							_continue_0 = true -- 239
+							break -- 239
+						end -- 239
+						local amount = GAMEMODE.Stocks[item] -- 240
+						local etab = self.cache[item] -- 241
+						if not etab then -- 242
+							etab = scripted_ents.Get(item) or weapons.Get(item) -- 243
+							self.cache[item] = etab -- 244
+						end -- 242
+						local name = etab.PrintName -- 245
+						local price = etab.Price or 10 -- 246
+						local taxed = math.floor(price * (GetGlobalInt("tax_sales") / 100)) -- 247
+						price = price + taxed -- 248
+						local cost = tostring(price) .. " bones" -- 249
+						if amount <= 0 then -- 250
+							cost = "OUT OF STOCK" -- 251
+						elseif CurTime() < self:GetCantPurchaseUntil() then -- 252
+							cost = self:GetThanksText() -- 253
+						end -- 250
+						local txt = tostring(name) .. "<col=0,200,0> <col=0,200,200>(x" .. tostring(amount) .. ")\n<col=0,200,0>" .. tostring(cost) -- 254
+						local txt_obj = scribe.Parse("<f=" .. tostring(font) .. "><ol=2>" .. tostring(txt)) -- 255
+						txt_obj:Draw(24, y, 1, TEXT_ALIGN_LEFT) -- 256
+						local txt_h -- 257
+						txt_h = txt_obj:GetTall() -- 257
+						local button_txt = "[ ]" -- 258
+						if ui3d2d.isHovering(0, y, 24, txt_h) then -- 259
+							if ui3d2d.isPressing() and team ~= TEAM_GHOST then -- 260
+								button_txt = "[!]" -- 261
+								if not pressed and amount > 0 then -- 262
+									pressed = true -- 263
+									net.Start("evilrp_purchase_stock") -- 264
+									net.WriteEntity(self) -- 265
+									net.WriteString(item) -- 266
+									net.SendToServer() -- 267
+								end -- 262
+							else -- 269
+								button_txt = "[X]" -- 269
+							end -- 260
+						end -- 259
+						local button_txt_obj = scribe.Parse("<f=" .. tostring(font) .. ">" .. tostring(button_txt)) -- 270
+						button_txt_obj:Draw(0, y + 2, 1, TEXT_ALIGN_LEFT) -- 271
+						y = y + txt_h -- 272
+						_continue_0 = true -- 238
+					until true -- 272
+					if not _continue_0 then -- 272
+						break -- 272
+					end -- 272
+				end -- 272
+				local x = 0 -- 273
+				if not (page < 1) then -- 275
+					local button_txt = "[p]" -- 276
+					if ui3d2d.isHovering(x, y, 24, txt_h) then -- 277
+						button_txt = "[P]" -- 278
+						if ui3d2d.isPressing() and team ~= TEAM_GHOST then -- 279
+							if not pressed then -- 280
+								pressed = true -- 281
+								page = page - 1 -- 282
+							end -- 280
+						end -- 279
+					end -- 277
+					local button_txt_obj = scribe.Parse("<f=" .. tostring(font) .. ">" .. tostring(button_txt)) -- 283
+					button_txt_obj:Draw(x, y + 2, 1, TEXT_ALIGN_LEFT) -- 284
+					local txt_w = button_txt_obj:GetWide() -- 285
+					x = x + txt_w -- 286
+				end -- 275
+				if not (page >= pages) then -- 287
+					local button_txt = "[n]" -- 288
+					if ui3d2d.isHovering(x, y, 24, txt_h) then -- 289
+						button_txt = "[N]" -- 290
+						if ui3d2d.isPressing() and team ~= TEAM_GHOST then -- 291
+							if not pressed then -- 292
+								pressed = true -- 293
+								page = page + 1 -- 294
+							end -- 292
+						end -- 291
+					end -- 289
+					local button_txt_obj = scribe.Parse("<f=" .. tostring(font) .. ">" .. tostring(button_txt)) -- 295
+					button_txt_obj:Draw(x, y + 2, 1, TEXT_ALIGN_LEFT) -- 296
+				end -- 287
+				x = 0 -- 297
+				local wep = lp:GetActiveWeapon() -- 299
+				if IsValid(wep) and string.find(wep:GetClass(), "evilrp_weapon/") then -- 300
+					local button_txt = "[ammo:" .. tostring(self:GetKits()) .. "/<c=0,200,0>$" .. tostring(self:GetAmmoCost()) .. "</c>]" -- 301
+					local txt_w = surface.GetTextSize(button_txt) -- 302
+					y = y + txt_h -- 303
+					if ui3d2d.isHovering(x, y, txt_w, txt_h) then -- 304
+						button_txt = "[AMMO:" .. tostring(self:GetKits()) .. "/<c=0,200,0>$" .. tostring(self:GetAmmoCost()) .. "</c>]" -- 305
+						if ui3d2d.isPressing() and team ~= TEAM_GHOST then -- 306
+							if not pressed then -- 307
+								pressed = true -- 308
+								net.Start("evilrp_purchase_ammo") -- 309
+								net.WriteEntity(self) -- 310
+								net.SendToServer() -- 311
+							end -- 307
+						end -- 306
+					end -- 304
+					local button_txt_obj = scribe.Parse("<f=" .. tostring(font) .. ">" .. tostring(button_txt)) -- 312
+					button_txt_obj:Draw(x, y + 2, 1, TEXT_ALIGN_LEFT) -- 313
+				end -- 300
+			end -- 231
+			if pressed and not ui3d2d.isPressing() then -- 314
+				pressed = false -- 314
+			end -- 314
+			return ui3d2d.endDraw() -- 315
+		end -- 142
+	} -- 142
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 316
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 142
+			_base_0[_key_0] = _val_0 -- 142
+		end -- 142
+	end -- 316
+	if _base_0.__index == nil then -- 142
+		_base_0.__index = _base_0 -- 142
+	end -- 316
+	setmetatable(_base_0, _parent_0.__base) -- 142
+	_class_0 = setmetatable({ -- 142
+		__init = function(self, ...) -- 142
+			return _class_0.__parent.__init(self, ...) -- 142
+		end, -- 142
+		__base = _base_0, -- 142
+		__name = "Autodealer", -- 142
+		__parent = _parent_0 -- 142
+	}, { -- 142
+		__index = function(cls, name) -- 142
+			local val = rawget(_base_0, name) -- 142
+			if val == nil then -- 142
+				local parent = rawget(cls, "__parent") -- 142
+				if parent then -- 142
+					return parent[name] -- 142
+				end -- 142
+			else -- 142
+				return val -- 142
+			end -- 142
+		end, -- 142
+		__call = function(cls, ...) -- 142
+			local _self_0 = setmetatable({ }, _base_0) -- 142
+			cls.__init(_self_0, ...) -- 142
+			return _self_0 -- 142
+		end -- 142
+	}) -- 142
+	_base_0.__class = _class_0 -- 142
+	if _parent_0.__inherited then -- 142
+		_parent_0.__inherited(_parent_0, _class_0) -- 142
+	end -- 142
+	Autodealer = _class_0 -- 142
+	return _class_0 -- 316
+end -- 316
