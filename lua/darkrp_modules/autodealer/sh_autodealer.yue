@@ -61,19 +61,26 @@ elseif SERVER
     mach = net.ReadEntity!
     item = net.ReadString!
     if ply\Team! ~= TEAM_DEALER
-      ply\AddDespair 10
-      dmg = DamageInfo!
-      with dmg
-        \SetAttacker ply
-        \SetDamage 15
-        \SetInflictor mach
-        \SetDamageType DMG_SLASH
-      ply\TakeDamageInfo dmg
       net.Start"evilrp_machine_fail"
       net.WriteString"WHO THE FUCK ARE YOU?!"
       net.Send ply
-      mach\EmitSound"Autodealer_Squeal_Bad"
-      mach\SetThanksText mach.HateTexts[math.random(1, #mach.HateTexts)]
+      mach\EmitSound"ambient/alarms/klaxon1.wav"
+      timer.Simple 1, ->
+        tr = util.TraceLine {
+          start: mach\GetPos!
+          endpos: ply\EyePos!
+          filter: mach
+        }
+        util.ParticleTracerEx "vortigaunt_beam", tr.StartPos, tr.HitPos, false, mach\EntIndex!, 3
+        mach\EmitSound"beams/beamstart5.wav"
+        dmg = DamageInfo!
+        with dmg
+          \SetDamage 65
+          \SetDamageType DMG_SHOCK
+          \SetAttacker mach
+          \SetInflictor mach
+          \SetDamagePosition ply\EyePos!
+        ply\TakeDamageInfo dmg
       return
     return if ct < mach\GetCantPurchaseUntil!
     mach\SetCantPurchaseUntil ct + 3

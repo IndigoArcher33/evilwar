@@ -10,19 +10,30 @@ class BoxDeath extends SOUND
   sound: "dysphoria/gore/skullcrush1.ogg"
   pitch: {80, 130}
 
+damage_types = {
+  DMG_SLASH
+  DMG_CLUB
+  DMG_BURN
+  DMG_BULLET
+  DMG_BLAST
+}
+
 class Fleshbox extends ENTITY
   Base: "base_anim"
   Type: "anim"
   Spawnable: true
+  Interesting: true
   AdminSpawnable: true
 
   Pocketable: false
+  PrintName: "Decaying Cache"
     
   LootTable:
     * "crate/fleshcrate"
 
   SetupDataTables: =>
     @NetworkVar "Int", "Integrity"
+    @NetworkVar "Int", "DamageFilter"
 
   Initialize: =>
     return if CLIENT
@@ -32,15 +43,30 @@ class Fleshbox extends ENTITY
     @SetIntegrity 300
     @PhysWake!
     @EmitSound"BoxSpawn"
+    @SetDamageFilter damage_types[math.random(1, #damage_types)]
+
+  HUDRender: =>
+    ct = {}
+    ct[] = @PrintName
+    ct[] = {
+      text: "An old military cache, you don't recognise the markings."
+      font: "Spleen_Label_Small"
+    }
+    ct[] = {
+      text: "It seems to have something inside. DMG: #{@GetDamageFilter}"
+      font: "Spleen_Label_Small"
+    }
+    return ct
+
 
   OnTakeDamage: (dmg) =>
     dtype = dmg\GetDamageType!
-    return unless (dtype == DMG_SLASH)
+    return unless ( dtype == @GetDamageFilter!)
     dmg_int = dmg\GetDamage!
     inflictor = dmg\GetInflictor!
     dmg_int *= inflictor.TreeBonus if inflictor.TreeBonus
     pos = dmg\GetDamagePosition!
-    with edata := EffectData!
+    with edata = EffectData!
       \SetOrigin pos
       \SetScale 60
       util.Effect "BloodImpact", edata
@@ -61,4 +87,4 @@ class Fleshbox extends ENTITY
           \Activate!
           \SetPos pos
       @Remove!
- 
+

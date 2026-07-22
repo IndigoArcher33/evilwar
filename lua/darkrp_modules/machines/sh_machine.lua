@@ -610,11 +610,11 @@ do -- 49
 							util.Effect("Sparks", ed) -- 396
 						end -- 379
 						ply:AddMoney(reward, "The Grind") -- 397
-						if ply:Team() == TEAM_PROLETARIAT then -- 398
+						if ply:Team() == TEAM_PRIVATE then -- 398
 							ply.buttons_pushed = ply.buttons_pushed or 0 -- 399
 							ply.buttons_pushed = ply.buttons_pushed + 1 -- 400
-							if ply.buttons_pushed % 100 == 0 then -- 401
-								ply:Notify("<c=0,200,0>Your work ethic makes Liver Failure proud.") -- 402
+							if ply.buttons_pushed % 30 == 0 then -- 401
+								ply:Notify("<c=0,200,0>Your work ethic makes your leader proud.") -- 402
 								ply:AddStemCells(1) -- 403
 							end -- 401
 						end -- 398

@@ -35,6 +35,7 @@ TEAM_GHOST = DarkRP.createJob "Ghost",
   salary: 1
   max: 0
   cost: 0
+  use_machines: false
   speech_sounds: {"ambient/voices/squeal1.wav"}
   crosstext: (ply) ->
     -- presumably, these only apply to cotards
@@ -97,6 +98,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   cost: 4
   hasLicense: false
   candemote: false
+  use_machines: false
   speech_sounds: ["placenta/cultspawn#{i}.wav" for i=1,9]
   hurt_sounds: ["placenta/pain/cult#{i}.wav" for i=1,6]
   become_sounds: ["npc/zombie/zombie_alert#{i}.wav" for i=1,3]
@@ -169,6 +171,7 @@ TEAM_BONEHEAD = DarkRP.createJob "Bonehead",
   salary: 1
   max: 0
   cost: 1
+  use_machines: false
   speech_sounds: "SpeechBonehead"
   hurt_sounds: ["placenta/bonehead_slice#{i}.wav" for i=1,2]
   become_sounds: ["placenta/bonehead_aggrod#{i}.wav" for i=1,4]
@@ -237,6 +240,7 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
   cost: 0
   hasLicense: true
   candemote: false
+  use_machines: true
   category: "Royalists"
   speech_sounds: ["placenta/speech/prole#{i}.wav" for i=1,3]
   hurt_sounds: ["placenta/pain/prole#{i}.wav" for i=1,5]
@@ -303,6 +307,7 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
   max: 6
   cost: 3
   hasLicense: true
+  use_machines: false
   ammo:
     pistol: 60
   category: "Royalists"
@@ -365,6 +370,7 @@ TEAM_DEALER = DarkRP.createJob "Quartermaster",
   max: 1
   cost: 3
   hasLicense: false
+  use_machines: false
   category: "Royalists"
   speech_sounds: ["placenta/speech/dealer#{i}.wav" for i=1,3]
   first_names: { "Kanan", "Merce", "Ameel", "Otis", "Cedric", "Edwin", "Floy", "Benjamin", "Fortune", "William", "Thomas", "Dean", "Aurum", "Klep" }
@@ -415,6 +421,7 @@ TEAM_KORPSMAN = DarkRP.createJob "Sanitäter",
   cost: 2
   hasLicense: false
   medic: true
+  use_machines: false
   category: "Royalists"
   speech_sounds: ["placenta/speech/korps#{i}.wav" for i=1,4]
   hurt_sounds: ["placenta/pain/sanitar#{i}.wav" for i=1,4]
@@ -477,6 +484,7 @@ TEAM_KOMMANDANT = DarkRP.createJob "Kommandant",
   weapons: {}
   hasLicense: true
   mayor: true
+  use_machines: false
   category: "Royalists"
   speech_sounds: ["placenta/speech/chatter#{i}.ogg" for i=1,15]
   become_sounds: {"kidneydagger/broadcast1.wav"}

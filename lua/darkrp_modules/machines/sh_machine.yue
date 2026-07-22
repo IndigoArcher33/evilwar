@@ -395,11 +395,11 @@ class Machine extends ENTITY
               \SetRadius 3
             util.Effect "Sparks", ed
           ply\AddMoney reward, "The Grind"
-          if ply\Team! == TEAM_PROLETARIAT
+          if ply\Team! == TEAM_PRIVATE
             ply.buttons_pushed or= 0
             ply.buttons_pushed += 1
-            if ply.buttons_pushed % 100 == 0
-              ply\Notify"<c=0,200,0>Your work ethic makes Liver Failure proud."
+            if ply.buttons_pushed % 30 == 0
+              ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
               ply\AddStemCells(1)
           @NewLight(ply) if (not left) or math.random(1,100) <= 50
 
