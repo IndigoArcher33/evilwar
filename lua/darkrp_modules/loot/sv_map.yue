@@ -22,6 +22,18 @@ EVIL_LOOT_POSITIONS = {
       ang: Angle(0, 93, 0)
       cls: "lootable/dumpster"
 }
+EVIL_LOOT_POSITIONS = {
+    ["rp_lymphoma"]:
+      * pos: Vector(  722.944885, -4596.397949, -162.945358 )
+        ang: Angle(-0, -90, 0)
+        cls: "lootable/dumpster" 
+      * pos: Vector( -729.105530, -4660.556641, -196.339752 )
+        ang: Angle(-0, 120, 0)
+        cls: "lootable/dumpster" 
+      * pos: Vector( 1132.062622, -2930.228516, -29.531338 )
+        ang: Angle(-0, -90, 0)
+        cls: "lootable/locker" 
+}
 
 EVIL_LOOT_REPLACEMENTS = {
   ["rp_liverfailure_kidneydagger"]:

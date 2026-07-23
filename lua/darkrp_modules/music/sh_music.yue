@@ -27,10 +27,10 @@ global MUSIC =
         path: "dysphoria/music/idle/box/traipsing.ogg"
         duration: (60*2) + 26
     dead:
-      * name: "Demon Engine"
-        artist: "Ouroboros"
-        path: "dysphoria/music/spectre/demonengine.ogg"
-        duration: 481
+      * name: "Ghost"
+        artist: "Amanita"
+        path: "placenta/music/ghost.ogg"
+        duration: 114
     autostitcher:
       * name: "White Awakening (Cable Hogue Soundtrack, #1)"
         artist: "Les Rallizes Dénudés"
@@ -116,7 +116,8 @@ global MUSIC =
         artist: "Les Rallizes Dénudés"
         path: "dysphoria/music/whitewaking/yaneura81.ogg"
         duration: 482
-}
+  }
+
 
   CreateAmbient: =>
     vol = 0.666
