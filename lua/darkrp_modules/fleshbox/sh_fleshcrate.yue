@@ -35,7 +35,7 @@ class Crate extends ITEM
   @__entity: "crate"
   Spawnable: true
 
-  Pocketable: false
+  Pocketable: true
 
   PrintName: "Crate"
   Model: Model"models/props_junk/garbage_plasticbottle002a.mdl"
