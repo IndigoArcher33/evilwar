@@ -724,3 +724,101 @@ class Mark extends EvilRP_Weapon
     TracerName: "Tracer"
 
   }
+
+
+class Hope extends EvilRP_Weapon 
+  PrintName: "Hope"
+  Description: "The standard issue Dragoon firearm, some say it speaks to them."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/tnb/weapons/c_1911.mdl"
+  WorldModel: Model"models/tnb/weapons/w_1911.mdl"
+    
+  HoldType: "pistol"
+  LowerHoldType: "normal"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "Pistol"
+
+    ClipSize: 10
+    DefaultClip: 20
+
+    Damage: 35
+    Delay: 60 / 200
+
+    Range: 850
+    Accuracy: 12
+
+    RangeModifier: 0.85
+
+    Recoil: {
+      MinAng: Angle(6, -0.5, 0)
+      MaxAng: Angle(7.5, 0.5, 0)
+      Punch: 0.8
+      Ratio: 0.6
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_mac10.wav"
+    TracerName: "Tracer"
+  }
+
+
+class Whisper extends EvilRP_Weapon 
+  PrintName: "Whisper"
+  Description: "A handmade pistol with a built in suppressor.\n It has earned its name from the gasps of outsiders whispering their final prayers as their carotid arteries were miraculously severed by this sidearm."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/tnb/weapons/c_welrod.mdl"
+  WorldModel: Model"models/tnb/weapons/w_welrod.mdl"
+    
+  HoldType: "pistol"
+  LowerHoldType: "normal"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "Pistol"
+
+    ClipSize: 3
+    DefaultClip: 9
+
+    Damage: 15
+    Delay: 60 / 200
+
+    Range: 650
+    Accuracy: 12
+
+    RangeModifier: 0.85
+
+    Recoil: {
+      MinAng: Angle(7, -0.5, 0)
+      MaxAng: Angle(8.5, 0.5, 0)
+      Punch: 0.8
+      Ratio: 0.6
+    }
+        
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_silencedthud.wav"
+    TracerName: "Tracer"
+  }
+
+
+
+

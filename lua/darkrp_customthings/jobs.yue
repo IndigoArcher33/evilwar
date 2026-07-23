@@ -90,7 +90,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   color: Color(20, 150, 20)
   model: "models/liver_failure/wastelander/wastelander.mdl"
   description: "A soul with no allegiance, destined to plunder the wasteland."
-  weapons: {"evilrp_weapon/prettyboy", "evilrp_melee/axe"}
+  weapons: {"evilrp_weapon/whisper", "evilrp_melee/axe"}
   category: "Wasteland"
   command: "stalker"
   salary: 1
@@ -99,9 +99,9 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   hasLicense: false
   candemote: false
   use_machines: false
-  speech_sounds: ["placenta/speech/cult#{i}.wav" for i=1,8]
+  speech_sounds: ["placenta/cultspawn#{i}.wav" for i=1,9]
   hurt_sounds: ["placenta/pain/cult#{i}.wav" for i=1,6]
-  become_sounds: ["placenta/cultspawn#{i}.wav" for i=1,9]
+  become_sounds: ["npc/zombie/zombie_alert#{i}.wav" for i=1,3]
   death_sounds: ["placenta/death/cult#{i}.wav" for i=1,4]
   crosstext: (ply) ->
     text = "Don't panic."
@@ -301,7 +301,7 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
   color: Color(25, 170, 0)
   model: "models/vel/evilwar/royalist.mdl"
   description: "The right hand of the Kommandant.\nRespected by his peers,\nfeared by his enemies."
-  weapons: {"evilrp_weapon/pacifier", "simple_hl2_stunstick"}
+  weapons: {"evilrp_weapon/hope", "evilrp_melee/sabre"}
   command: "ss"
   salary: 1
   max: 6
@@ -311,7 +311,7 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
   ammo:
     pistol: 60
   category: "Royalists"
-  speech_sounds: ["placenta/speech/kapitan#{i}.ogg" for i=1,6]
+  speech_sounds: ["placenta/speech/chatter#{i}.ogg" for i=1,15]
   hurt_sounds: ["placenta/pain/sanitar#{i}.wav" for i=1,4]
   become_sounds: ["ambient/levels/prison/radio_random#{i}.wav" for i=1, 15]
   crosstext: (ply) ->
@@ -486,7 +486,7 @@ TEAM_KOMMANDANT = DarkRP.createJob "Kommandant",
   mayor: true
   use_machines: false
   category: "Royalists"
-  speech_sounds: ["placenta/speech/kaiser#{i}.wav" for i=1,6]
+  speech_sounds: ["placenta/speech/chatter#{i}.ogg" for i=1,15]
   become_sounds: {"kidneydagger/broadcast1.wav"}
   crosstext: (ply) ->
     text = "Don't panic."

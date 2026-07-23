@@ -427,3 +427,60 @@ class Axe extends EvilRP_Melee
     Pos: Vector -15, 0, -10
     Ang: Angle -35, 0, 0
   }
+
+
+
+class Sabre extends EvilRP_Melee
+  PrintName: "Elite Sabre"
+  Description: "A sabre personally made for the Dragoon."
+    
+  Slot: 0
+
+  Price: 1500
+
+  Spawnable: true
+  UseHands: true
+
+  ViewModelFOV: 54
+
+  ViewModel: Model("models/tnb/weapons/c_katana.mdl")
+  WorldModel: Model("models/tnb/weapons/w_katana.mdl")
+
+  HoldType: "melee2"
+  LowerHoldType: "normal"
+    
+  Primary: {
+    ChargeTime: 0.2
+
+    Light: {
+      Damage: 25
+      DamageType: DMG_SLASH
+
+      Range: 75
+      Delay: 0.7
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"weapons/knife/knife_hit1.wav", "weapons/knife/knife_slash1.wav"}
+    },
+
+    Heavy: {
+      Damage: 40,
+      DamageType: DMG_SLASH
+
+      Range: 120
+      Delay: 1
+
+      Act: ACT_VM_MISSCENTER
+
+      Sound: {"weapons/knife/knife_hit1.wav", "weapons/knife/knife_slash1.wav"}
+    }
+  }
+  ViewOffset: {
+    Pos: Vector -6, 0, 6
+  }
+    
+  ChargeOffset: {
+    Pos: Vector -15, 0, -10
+    Ang: Angle -35, 0, 0
+  }
