@@ -79,7 +79,7 @@ class Fleshcapsule extends ENTITY
     inflictor = dmg\GetInflictor!
     dmg_int *= inflictor.MineBonus if inflictor.MineBonus
     pos = dmg\GetDamagePosition!
-    with edata := EffectData!
+    with edata = EffectData!
       \SetOrigin pos
       \SetScale 1
       \SetMagnitude 0.5
@@ -93,7 +93,7 @@ class Fleshcapsule extends ENTITY
     if (@GetIntegrity! <= 0) and not @Breaking
       @Breaking = true
       @EmitSound "physics/flesh/flesh_bloody_break.wav"
-      with edata := EffectData!
+      with edata = EffectData!
         \SetOrigin pos
         \SetScale 1
         \SetMagnitude 0.5
