@@ -216,8 +216,8 @@ class SlopBowl extends Food
     "struggles to eat a slop bowl."
     "chomps on some slop."
     "begrudgingly eats a spoonful of slop."
-    "consumes slop."
-}
+    "consumes slop." }
+
 
 class Boot extends Food
   PrintName: "Boot"
@@ -306,7 +306,7 @@ class FearBeer extends Drink
     if data.Speed > @ImpactThreshold
       if data.HitEntity and IsValid(data.HitEntity)
         attacker = @GetNWEntity"evilrp_submitter"
-        with dmg = DamageInfo!
+        with dmg := DamageInfo!
           \SetDamage 25
           \SetAttacker attacker if IsValid(attacker)
           \SetInflictor @
@@ -324,7 +324,7 @@ class FearBeer extends Drink
       continue unless ply\HasOddity(ODDITY_DELINQUENCY)
       if ply\CanSee(@) and ply\LookingInDirection(pos)
         ply\AddDespair(-math.random(2,4))
-    with ed = EffectData!
+    with ed := EffectData!
       \SetStart pos
       \SetOrigin pos
       \SetScale 8
@@ -374,7 +374,7 @@ class SmearBeer extends Drink
     if data.Speed > @ImpactThreshold
       if data.HitEntity and IsValid(data.HitEntity)
         attacker = @GetNWEntity"evilrp_submitter"
-        with dmg = DamageInfo!
+        with dmg := DamageInfo!
           \SetDamage 25
           \SetAttacker attacker if IsValid(attacker)
           \SetInflictor @
@@ -392,7 +392,7 @@ class SmearBeer extends Drink
       continue unless ply\HasOddity(ODDITY_DELINQUENCY)
       if ply\CanSee(@) and ply\LookingInDirection(pos)
         ply\AddDespair(-math.random(2,4))
-    with ed = EffectData!
+    with ed := EffectData!
       \SetStart pos
       \SetOrigin pos
       \SetScale 8
@@ -545,25 +545,25 @@ class Ambrosia extends Food
     return if CLIENT
     ply\AddStemCells(5)
 
-  class SloppyRibs extends Food
-    PrintName: "Sloppy Ribs"
-    Model: Model"models/vel/evilwar/sloppyribs.mdl"
-    Hunger: -28
-    Thirst: -4
-    Despair: 5
-    Description: "Fresh ribs from an unknown source, now glazed in slop! \n They look delicious."
 
-    CookTime: 10
+class SloppyRibs extends Food
+  PrintName: "Sloppy Ribs"
+  Model: Model"models/vel/evilwar/sloppyribs.mdl"
+  Hunger: -28
+  Thirst: -4
+  Despair: 5
+  Description: "Fresh ribs from an unknown source, now glazed in slop! \n They look delicious."
 
-    Price: 115
+  CookTime: 10
 
-    UseText: {
-      "devours all of the flesh and slop on the rib, then throws it away."
-      "munches on the rib, and then licks the glaze off his hands."
-      "gobbles down the rib, and spits out the bone."
-  }
+  Price: 115 
+  UseText: {
+   "devours all of the flesh and slop on the rib, then throws it away."
+   "munches on the rib, and then licks the glaze off his hands."
+   "gobbles down the rib, and spits out the bone."}
+  
 
-    class EyeballNoodles extends Food
+class EyeballNoodles extends Food
       PrintName: "Eyeball Noodles"
       Model: Model"models/vel/evilwar/eyenoodle.mdl"
       Hunger: -40
@@ -582,21 +582,20 @@ class Ambrosia extends Food
         "gags on the noodles, and then throws out the eyeball."
         }
 
-  class PaperMache extends Food
-    PrintName: "Paper Mache"
-    Model: Model"models/props_junk/garbage_bag001a.mdl"
-    Hunger: -10
-    Thirst: -10
-    Despair: 15
-    Description: "An old crumpled paper. \n now it's watered down into a little ball."
+class PaperMache extends Food
+ PrintName: "Paper Mache"
+ Model: Model"models/props_junk/garbage_bag001a.mdl"
+ Hunger: -10
+ Thirst: -10
+ Despair: 15
+ Description: "An old crumpled paper. \n now it's watered down into a little ball."
 
-    CookTime: 3
+ CookTime: 3
 
-    Price: 30
+ Price: 30
 
-    UseText: {
-      "stoves the paper mache into his mouth, gagging horribly."
-      "forces the paper down his throat, throwing up slightly"
-      "rips apart the paper mache, eating small pieces at a time."
-      "looks miserable trying to eat watered down paper."
-  }
+ UseText: {
+  "stoves the paper mache into his mouth, gagging horribly."
+   "forces the paper down his throat, throwing up slightly"
+   "rips apart the paper mache, eating small pieces at a time."
+   "looks miserable trying to eat watered down paper." }

@@ -90,7 +90,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   color: Color(20, 150, 20)
   model: "models/liver_failure/wastelander/wastelander.mdl"
   description: "A soul with no allegiance, destined to plunder the wasteland."
-  weapons: {"evilrp_weapon/brainpaster", "evilrp_melee/axe"}
+  weapons: {"evilrp_weapon/whisper", "evilrp_melee/axe"}
   category: "Wasteland"
   command: "stalker"
   salary: 1
@@ -301,7 +301,7 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
   color: Color(25, 170, 0)
   model: "models/vel/evilwar/royalist.mdl"
   description: "The right hand of the Kommandant.\nRespected by his peers,\nfeared by his enemies."
-  weapons: {"evilrp_weapon/pacifier", "simple_hl2_stunstick"}
+  weapons: {"evilrp_weapon/hope", "evilrp_melee/sabre"}
   command: "ss"
   salary: 1
   max: 6

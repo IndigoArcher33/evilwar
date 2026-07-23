@@ -63,11 +63,11 @@ class Hands extends EvilRP_Melee
     ChargeTime: 0.4
 
     Light: {
-      Damage: 10
+      Damage: 4
       DamageType: DMG_CLUB
 
       Range: 50
-      Delay: 0.3
+      Delay: 1
 
       Act: {ACT_VM_HITCENTER, ACT_VM_MISSCENTER}
 
@@ -75,11 +75,11 @@ class Hands extends EvilRP_Melee
     },
 
     Heavy: {
-      Damage: 20
+      Damage: 10
       DamageType: DMG_CLUB
 
       Range: 70
-      Delay: 1
+      Delay: 1.5
 
       Act: ACT_VM_MISSCENTER
 
