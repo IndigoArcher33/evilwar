@@ -5,9 +5,9 @@ local EVIL_BOX_MAX = 3 -- 3
 EVIL_BOX = { } -- 4
 local EVIL_BOX_POSITIONS = { -- 6
 	["rp_lymphoma"] = { -- 7
-		Vector(-1454, -2295, -829), -- 7
-		Vector(-876, -2461, -754), -- 8
-		Vector(-1165, -2813, -830) -- 9
+		Vector(-1454, -2295, -600), -- 7
+		Vector(-876, -2461, -600), -- 8
+		Vector(-1165, -2813, -600) -- 9
 	} -- 6
 } -- 5
 return hook.Add("Think", "evilrp_box_spawner", function() -- 13
