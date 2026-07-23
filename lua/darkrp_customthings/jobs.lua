@@ -118,7 +118,7 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 	model = "models/liver_failure/wastelander/wastelander.mdl", -- 91
 	description = "A soul with no allegiance, destined to plunder the wasteland.", -- 92
 	weapons = { -- 93
-		"evilrp_weapon/brainpaster", -- 93
+		"evilrp_weapon/prettyboy", -- 93
 		"evilrp_melee/axe" -- 93
 	}, -- 93
 	category = "Wasteland", -- 94
@@ -132,8 +132,8 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 	speech_sounds = (function() -- 102
 		local _accum_0 = { } -- 102
 		local _len_0 = 1 -- 102
-		for i = 1, 9 do -- 102
-			_accum_0[_len_0] = "placenta/cultspawn" .. tostring(i) .. ".wav" -- 102
+		for i = 1, 8 do -- 102
+			_accum_0[_len_0] = "placenta/speech/cult" .. tostring(i) .. ".wav" -- 102
 			_len_0 = _len_0 + 1 -- 102
 		end -- 102
 		return _accum_0 -- 102
@@ -150,8 +150,8 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 	become_sounds = (function() -- 104
 		local _accum_0 = { } -- 104
 		local _len_0 = 1 -- 104
-		for i = 1, 3 do -- 104
-			_accum_0[_len_0] = "npc/zombie/zombie_alert" .. tostring(i) .. ".wav" -- 104
+		for i = 1, 9 do -- 104
+			_accum_0[_len_0] = "placenta/cultspawn" .. tostring(i) .. ".wav" -- 104
 			_len_0 = _len_0 + 1 -- 104
 		end -- 104
 		return _accum_0 -- 104
@@ -536,8 +536,8 @@ TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 301
 	speech_sounds = (function() -- 314
 		local _accum_0 = { } -- 314
 		local _len_0 = 1 -- 314
-		for i = 1, 15 do -- 314
-			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 314
+		for i = 1, 6 do -- 314
+			_accum_0[_len_0] = "placenta/speech/kapitan" .. tostring(i) .. ".ogg" -- 314
 			_len_0 = _len_0 + 1 -- 314
 		end -- 314
 		return _accum_0 -- 314
@@ -874,8 +874,8 @@ TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", { -- 476
 	speech_sounds = (function() -- 489
 		local _accum_0 = { } -- 489
 		local _len_0 = 1 -- 489
-		for i = 1, 15 do -- 489
-			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 489
+		for i = 1, 6 do -- 489
+			_accum_0[_len_0] = "placenta/speech/kaiser" .. tostring(i) .. ".wav" -- 489
 			_len_0 = _len_0 + 1 -- 489
 		end -- 489
 		return _accum_0 -- 489

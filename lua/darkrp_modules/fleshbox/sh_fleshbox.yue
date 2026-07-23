@@ -1,5 +1,5 @@
 class BoxHurt extends SOUND
-  sound: ["physics/flesh/flesh_squishy_impact_hard#{i}.wav" for i=1,4]
+  sound: ["npc/barnacle/barnacle_bark#{i}.wav" for i=1,2]
   pitch: {80, 115}
 
 class BoxSpawn extends SOUND
@@ -14,8 +14,6 @@ damage_types = {
   DMG_SLASH
   DMG_CLUB
   DMG_BURN
-  DMG_BULLET
-  DMG_BLAST
 }
 
 class Fleshbox extends ENTITY
@@ -37,9 +35,11 @@ class Fleshbox extends ENTITY
 
   Initialize: =>
     return if CLIENT
-    @SetModel"models/props/de_prodigy/ammo_can_01.mdl"
+    @SetModel"models/props_junk/wood_crate002a.mdl"
     @SetMaterial"models/gibs/humans/liver_gib"
     @PhysicsInit SOLID_VPHYSICS
+    @SetMoveType MOVETYPE_VPHYSICS
+    @SetSolid SOLID_VPHYSICS
     @SetIntegrity 300
     @PhysWake!
     @EmitSound"BoxSpawn"
@@ -53,7 +53,7 @@ class Fleshbox extends ENTITY
       font: "Spleen_Label_Small"
     }
     ct[] = {
-      text: "It seems to have something inside. DMG: #{@GetDamageFilter}"
+      text: "It seems to have something inside. DMG: #{@GetDamageFilter!}"
       font: "Spleen_Label_Small"
     }
     return ct
@@ -61,7 +61,7 @@ class Fleshbox extends ENTITY
 
   OnTakeDamage: (dmg) =>
     dtype = dmg\GetDamageType!
-    return unless ( dtype == @GetDamageFilter!)
+    return unless bit.band(dtype, @GetDamageFilter!) ~= 0 -- bitwise operation to check if the filter matches any of the damage types (could be several in one damage action)
     dmg_int = dmg\GetDamage!
     inflictor = dmg\GetInflictor!
     dmg_int *= inflictor.TreeBonus if inflictor.TreeBonus
@@ -74,8 +74,8 @@ class Fleshbox extends ENTITY
     @SetIntegrity @GetIntegrity! - dmg_int
     @NextSound or= CurTime!
     if CurTime! >= @NextSound
-      @NextSound = CurTime! + 0.1
-      @EmitSound"TreeHurt"
+      @NextSound = CurTime! + 0.3
+      @EmitSound"BoxHurt"
     if (@GetIntegrity! <= 0) and not @Breaking
       @Breaking = true
       @EmitSound"BoxDeath"

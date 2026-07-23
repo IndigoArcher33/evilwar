@@ -7,8 +7,8 @@ do -- 1
 		sound = (function() -- 2
 			local _accum_0 = { } -- 2
 			local _len_0 = 1 -- 2
-			for i = 1, 4 do -- 2
-				_accum_0[_len_0] = "physics/flesh/flesh_squishy_impact_hard" .. tostring(i) .. ".wav" -- 2
+			for i = 1, 2 do -- 2
+				_accum_0[_len_0] = "npc/barnacle/barnacle_bark" .. tostring(i) .. ".wav" -- 2
 				_len_0 = _len_0 + 1 -- 2
 			end -- 2
 			return _accum_0 -- 2
@@ -163,36 +163,36 @@ end -- 11
 local damage_types = { -- 14
 	DMG_SLASH, -- 14
 	DMG_CLUB, -- 15
-	DMG_BURN, -- 16
-	DMG_BULLET, -- 17
-	DMG_BLAST -- 18
+	DMG_BURN -- 16
 } -- 13
-local Fleshbox -- 21
-do -- 21
-	local _class_0 -- 21
-	local _parent_0 = ENTITY -- 21
-	local _base_0 = { -- 21
-		Base = "base_anim", -- 23
-		Type = "anim", -- 24
-		Spawnable = true, -- 25
-		Interesting = true, -- 26
-		AdminSpawnable = true, -- 28
-		Pocketable = false, -- 29
-		PrintName = "Decaying Cache", -- 31
-		LootTable = { -- 32
-			"crate/fleshcrate" -- 32
-		}, -- 34
-		SetupDataTables = function(self) -- 34
-			self:NetworkVar("Int", "Integrity") -- 35
-			return self:NetworkVar("Int", "DamageFilter") -- 36
-		end, -- 38
-		Initialize = function(self) -- 38
-			if CLIENT then -- 39
-				return -- 39
-			end -- 39
-			self:SetModel("models/props/de_prodigy/ammo_can_01.mdl") -- 40
-			self:SetMaterial("models/gibs/humans/liver_gib") -- 41
-			self:PhysicsInit(SOLID_VPHYSICS) -- 42
+local Fleshbox -- 19
+do -- 19
+	local _class_0 -- 19
+	local _parent_0 = ENTITY -- 19
+	local _base_0 = { -- 19
+		Base = "base_anim", -- 21
+		Type = "anim", -- 22
+		Spawnable = true, -- 23
+		Interesting = true, -- 24
+		AdminSpawnable = true, -- 26
+		Pocketable = false, -- 27
+		PrintName = "Decaying Cache", -- 29
+		LootTable = { -- 30
+			"crate/fleshcrate" -- 30
+		}, -- 32
+		SetupDataTables = function(self) -- 32
+			self:NetworkVar("Int", "Integrity") -- 33
+			return self:NetworkVar("Int", "DamageFilter") -- 34
+		end, -- 36
+		Initialize = function(self) -- 36
+			if CLIENT then -- 37
+				return -- 37
+			end -- 37
+			self:SetModel("models/props_junk/wood_crate002a.mdl") -- 38
+			self:SetMaterial("models/gibs/humans/liver_gib") -- 39
+			self:PhysicsInit(SOLID_VPHYSICS) -- 40
+			self:SetMoveType(MOVETYPE_VPHYSICS) -- 41
+			self:SetSolid(SOLID_VPHYSICS) -- 42
 			self:SetIntegrity(300) -- 43
 			self:PhysWake() -- 44
 			self:EmitSound("BoxSpawn") -- 45
@@ -206,14 +206,14 @@ do -- 21
 				font = "Spleen_Label_Small" -- 53
 			} -- 51
 			ct[#ct + 1] = { -- 56
-				text = "It seems to have something inside. DMG: " .. tostring(self.GetDamageFilter), -- 56
+				text = "It seems to have something inside. DMG: " .. tostring(self:GetDamageFilter()), -- 56
 				font = "Spleen_Label_Small" -- 57
 			} -- 55
 			return ct -- 59
 		end, -- 62
 		OnTakeDamage = function(self, dmg) -- 62
 			local dtype = dmg:GetDamageType() -- 63
-			if not (dtype == self:GetDamageFilter()) then -- 64
+			if not (bit.band(dtype, self:GetDamageFilter()) ~= 0) then -- 64
 				return -- 64
 			end -- 64
 			local dmg_int = dmg:GetDamage() -- 65
@@ -231,8 +231,8 @@ do -- 21
 			self:SetIntegrity(self:GetIntegrity() - dmg_int) -- 74
 			self.NextSound = self.NextSound or CurTime() -- 75
 			if CurTime() >= self.NextSound then -- 76
-				self.NextSound = CurTime() + 0.1 -- 77
-				self:EmitSound("TreeHurt") -- 78
+				self.NextSound = CurTime() + 0.3 -- 77
+				self:EmitSound("BoxHurt") -- 78
 			end -- 76
 			if (self:GetIntegrity() <= 0) and not self.Breaking then -- 79
 				self.Breaking = true -- 80
@@ -246,46 +246,46 @@ do -- 21
 				end -- 88
 				return self:Remove() -- 89
 			end -- 79
-		end -- 21
-	} -- 21
+		end -- 19
+	} -- 19
 	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 89
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 21
-			_base_0[_key_0] = _val_0 -- 21
-		end -- 21
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 19
+			_base_0[_key_0] = _val_0 -- 19
+		end -- 19
 	end -- 89
-	if _base_0.__index == nil then -- 21
-		_base_0.__index = _base_0 -- 21
+	if _base_0.__index == nil then -- 19
+		_base_0.__index = _base_0 -- 19
 	end -- 89
-	setmetatable(_base_0, _parent_0.__base) -- 21
-	_class_0 = setmetatable({ -- 21
-		__init = function(self, ...) -- 21
-			return _class_0.__parent.__init(self, ...) -- 21
-		end, -- 21
-		__base = _base_0, -- 21
-		__name = "Fleshbox", -- 21
-		__parent = _parent_0 -- 21
-	}, { -- 21
-		__index = function(cls, name) -- 21
-			local val = rawget(_base_0, name) -- 21
-			if val == nil then -- 21
-				local parent = rawget(cls, "__parent") -- 21
-				if parent then -- 21
-					return parent[name] -- 21
-				end -- 21
-			else -- 21
-				return val -- 21
-			end -- 21
-		end, -- 21
-		__call = function(cls, ...) -- 21
-			local _self_0 = setmetatable({ }, _base_0) -- 21
-			cls.__init(_self_0, ...) -- 21
-			return _self_0 -- 21
-		end -- 21
-	}) -- 21
-	_base_0.__class = _class_0 -- 21
-	if _parent_0.__inherited then -- 21
-		_parent_0.__inherited(_parent_0, _class_0) -- 21
-	end -- 21
-	Fleshbox = _class_0 -- 21
+	setmetatable(_base_0, _parent_0.__base) -- 19
+	_class_0 = setmetatable({ -- 19
+		__init = function(self, ...) -- 19
+			return _class_0.__parent.__init(self, ...) -- 19
+		end, -- 19
+		__base = _base_0, -- 19
+		__name = "Fleshbox", -- 19
+		__parent = _parent_0 -- 19
+	}, { -- 19
+		__index = function(cls, name) -- 19
+			local val = rawget(_base_0, name) -- 19
+			if val == nil then -- 19
+				local parent = rawget(cls, "__parent") -- 19
+				if parent then -- 19
+					return parent[name] -- 19
+				end -- 19
+			else -- 19
+				return val -- 19
+			end -- 19
+		end, -- 19
+		__call = function(cls, ...) -- 19
+			local _self_0 = setmetatable({ }, _base_0) -- 19
+			cls.__init(_self_0, ...) -- 19
+			return _self_0 -- 19
+		end -- 19
+	}) -- 19
+	_base_0.__class = _class_0 -- 19
+	if _parent_0.__inherited then -- 19
+		_parent_0.__inherited(_parent_0, _class_0) -- 19
+	end -- 19
+	Fleshbox = _class_0 -- 19
 	return _class_0 -- 89
 end -- 89

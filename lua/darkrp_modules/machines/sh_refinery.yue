@@ -51,11 +51,22 @@ class Refinery extends ENTITY
           mask: MASK_NPCWORLDSTATIC
         }
         if prod.result
-          sp = ents.Create prod.result
-          with sp
-            \SetPos tr.HitPos - (@GetUp! * 86) - (@GetForward! * 38) - (@GetRight! * 8)
-            \Spawn!
-            \Activate!
+          wep = weapons.Get(prod.result)
+          if wep
+            sp = ents.Create"evilrp/spawned/weapon"
+            with sp
+              \SetPos tr.HitPos - (@GetUp! * 86) - (@GetForward! * 38) - (@GetRight! * 8)
+              \SetModel wep.WorldModel
+              \SetWeaponClass prod.result
+              \Spawn!
+              \Activate!
+          else
+            sp = ents.Create prod.result
+            with sp
+            
+              \SetPos tr.HitPos - (@GetUp! * 86) - (@GetForward! * 38) - (@GetRight! * 8)
+              \Spawn!
+              \Activate!
         -- implement heat here
         -- implement rust explosions here
         @SetWorker nil

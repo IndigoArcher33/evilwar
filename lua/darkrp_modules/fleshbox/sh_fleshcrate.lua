@@ -88,7 +88,7 @@ do -- 34
 	local _parent_0 = ITEM -- 34
 	local _base_0 = { -- 34
 		Spawnable = true, -- 38
-		Pocketable = false, -- 40
+		Pocketable = true, -- 40
 		PrintName = "Crate", -- 41
 		Model = Model("models/props_junk/garbage_plasticbottle002a.mdl"), -- 42
 		Material = Material("models/gibs/humans/brain_gib"), -- 43
