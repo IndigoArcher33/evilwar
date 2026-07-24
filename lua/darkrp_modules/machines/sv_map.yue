@@ -107,7 +107,7 @@ create_machines_and_otherwise = ->
       * pos: Vector( -575, 494, 48 )
         ang: Angle(0, 0, 0)
         cls: "cooker"
-      * pos: Vector( 573.55, -3365,23, -815 )
+      * pos: Vector( 573.55, -3365.23, -815 )
         ang: Angle(0, -180, 0)
         cls: "cooker"
   }

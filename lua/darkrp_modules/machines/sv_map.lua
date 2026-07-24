@@ -177,7 +177,7 @@ create_machines_and_otherwise = function() -- 41
 				cls = "cooker" -- 109
 			}, -- 107
 			{ -- 110
-				pos = Vector(573.55, -3365, 23, -815), -- 110
+				pos = Vector(573.55, -3365.23, -815), -- 110
 				ang = Angle(0, -180, 0), -- 111
 				cls = "cooker" -- 112
 			} -- 110

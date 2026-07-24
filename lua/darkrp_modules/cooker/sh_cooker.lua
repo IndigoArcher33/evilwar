@@ -205,11 +205,11 @@ do -- 41
 			local ct = { } -- 166
 			ct[#ct + 1] = self.PrintName -- 167
 			ct[#ct + 1] = { -- 169
-				text = "Certain items can be processed into more useful things with this.", -- 169
+				text = "In the hands of a good cook, edible things can come out of this.", -- 169
 				font = "Spleen_Label_Small" -- 170
 			} -- 168
 			ct[#ct + 1] = { -- 173
-				text = "The rustier it is, the longer it will take.", -- 173
+				text = "It can cook much more than just food.", -- 173
 				font = "Spleen_Label_Small" -- 174
 			} -- 172
 			return ct -- 176

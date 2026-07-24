@@ -24,11 +24,11 @@ recipes = {
 
 recipeKey = (a, b) ->
   a, b = b, a if a > b
-  "#{a}|#{b}" -- this concatenates the two input strings in order to quickly look them up in the recipe data
+  "#{a}|#{b}" -- concatenates the two inputs in order to quickly look them up in the recipe data
 
 
-RecipeOutputs = {} -- this stores what two pairs of items (in string form as a key) will produce
-IsInput  = {} -- this stores all of the items that have an actual recipe, use this to quickly look up if any given item is used as an input
+RecipeOutputs = {} -- stores what two pairs of items (in string form as a key) will produce
+IsInput  = {} -- stores all of the items that have an actual recipe, use this to quickly look up if any given item is used as an input
 GetRecipe = (itemA, itemB) -> RecipeOutputs[recipeKey itemA, itemB]
 
 for recipe in *recipes
@@ -166,11 +166,11 @@ class Cooker extends ENTITY
     ct = {}
     ct[] = @PrintName
     ct[] = {
-      text: "Certain items can be processed into more useful things with this."
+      text: "In the hands of a good cook, edible things can come out of this."
       font: "Spleen_Label_Small"
     }
     ct[] = {
-      text: "The rustier it is, the longer it will take."
+      text: "It can cook much more than just food."
       font: "Spleen_Label_Small"
     }
     return ct
