@@ -270,12 +270,10 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
       when TEAM_BONEHEAD
         text = "SKIN...!"
     return { :text, font: "Spleen_Label_Small" }, false
-  first_names: { "Private", "PVT.", "Recruit", }
+  first_names: { "Private", "PVT.", "Recruit", "Enlisted", "Grunt", "Fodder", "Cadet", "CDT.", "Rookie"}
   GenerateName: (ply) =>
-    unit_id = math.random 100, 999
+    unit_id = math.random 1, 99
     if unit_id < 10
-      unit_id = "00#{unit_id}"
-    elseif unit_id < 100
       unit_id = "0#{unit_id}"
     else
       unit_id = tostring unit_id
