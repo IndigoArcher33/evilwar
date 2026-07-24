@@ -186,7 +186,7 @@ do -- 69
 		RotTime = 240, -- 77
 		Description = "A cigar packed with a mysterious substance from the wasteland.\nIt will reveal your deepest worries, if you're strong enough.", -- 78
 		Sound = Sound("ghostbong/ghostbong_hit.mp3"), -- 79
-		DrugTime = 30, -- 81
+		DrugTime = 180, -- 81
 		UseText = { -- 82
 			"takes a fat rip of melange.", -- 82
 			"smokes a mysterious cigar.", -- 83
@@ -196,45 +196,55 @@ do -- 69
 			"takes a strong hit of melange.", -- 87
 			"leaves a disgusting cloud of red smoke." -- 88
 		}, -- 91
-		ConsumeThink = function(self, ply, drug) -- 91
-			drug.nextTime = drug.nextTime or 0 -- 92
-			if CurTime() >= drug.nextTime then -- 93
-				drug.nextTime = CurTime() + 5 -- 94
-				net.Start("evilrp_frighten") -- 95
-				return net.Send(ply) -- 96
-			end -- 93
-		end, -- 98
-		Consume = function(self, ply) -- 98
-			_class_0.__parent.__base.Consume(self, ply) -- 99
-			if CLIENT then -- 100
-				return -- 100
-			end -- 100
-			if ply:Team() ~= TEAM_KOMMANDANT then -- 101
-				ply:Notify("<c=200,0,0> WHAT THE FUCK IS THIS? HOLY SHI~") -- 102
-				ply:AddDespair(100) -- 103
+		NotifyText = { -- 92
+			"The future...", -- 92
+			"The past...", -- 93
+			"The present...", -- 94
+			"Everything...", -- 95
+			"Memories...", -- 96
+			"A sweet lie..." -- 97
+		}, -- 100
+		ConsumeThink = function(self, ply, drug) -- 100
+			drug.nextTime = drug.nextTime or 0 -- 101
+			if CurTime() >= drug.nextTime then -- 102
+				drug.nextTime = CurTime() + 30 + math.random(1, 30) -- 103
 				net.Start("evilrp_jumpscare") -- 104
 				net.Send(ply) -- 105
-				return -- 106
-			end -- 101
-			ply:AddStemCells(2) -- 108
-			return ply:Notify("<c=0,200,0> You embrace the prescient path.") -- 109
-		end, -- 111
-		End = function(self, ply) -- 111
-			_class_0.__parent.__base.End(self, ply) -- 112
-			if CLIENT then -- 113
-				return -- 113
-			end -- 113
-			return ply:Notify("<c=200,0,0> Your addiction to melange slowly fades.") -- 114
+				ply:AddStemCells(1) -- 106
+				return ply:Notify("<c=0,200,0> " .. tostring(table.Random(self.NotifyText))) -- 107
+			end -- 102
+		end, -- 109
+		Consume = function(self, ply) -- 109
+			_class_0.__parent.__base.Consume(self, ply) -- 110
+			if CLIENT then -- 111
+				return -- 111
+			end -- 111
+			if (ply:Team() ~= TEAM_KOMMANDANT) or (ply:Team() ~= TEAM_STALKER) then -- 112
+				ply:Notify("<c=200,0,0> WHAT THE FUCK IS THIS? HOLY SHI~") -- 113
+				ply:AddDespair(100) -- 114
+				net.Start("evilrp_jumpscare") -- 115
+				net.Send(ply) -- 116
+				return -- 117
+			end -- 112
+			ply:AddStemCells(2) -- 119
+			return ply:Notify("<c=0,200,0> Embrace the prescient path.") -- 120
+		end, -- 122
+		End = function(self, ply) -- 122
+			_class_0.__parent.__base.End(self, ply) -- 123
+			if CLIENT then -- 124
+				return -- 124
+			end -- 124
+			return ply:Notify("<c=200,0,0> Your addiction to melange slowly fades.") -- 125
 		end -- 69
 	} -- 69
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 114
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 125
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 69
 			_base_0[_key_0] = _val_0 -- 69
 		end -- 69
-	end -- 114
+	end -- 125
 	if _base_0.__index == nil then -- 69
 		_base_0.__index = _base_0 -- 69
-	end -- 114
+	end -- 125
 	setmetatable(_base_0, _parent_0.__base) -- 69
 	_class_0 = setmetatable({ -- 69
 		__init = function(self, ...) -- 69
@@ -266,38 +276,38 @@ do -- 69
 		_parent_0.__inherited(_parent_0, _class_0) -- 69
 	end -- 69
 	Rotmelange = _class_0 -- 69
-end -- 114
-local drug_think -- 117
-drug_think = function() -- 117
-	if CLIENT then -- 118
-		return -- 118
-	end -- 118
-	local _list_0 = player.GetAll() -- 119
-	for _index_0 = 1, #_list_0 do -- 119
-		local ply = _list_0[_index_0] -- 119
-		local _continue_0 = false -- 120
-		repeat -- 120
-			if not ply:Alive() then -- 120
-				ply.Drugs = { } -- 121
-				return -- 122
-			end -- 120
-			if not ply.Drugs then -- 123
-				_continue_0 = true -- 123
-				break -- 123
-			end -- 123
-			for key, drug in pairs(ply.Drugs) do -- 124
-				if CurTime() > drug["end"] then -- 125
-					drug.onEnd(nil, ply) -- 126
-					ply.Drugs[key] = nil -- 127
-				else -- 129
-					drug.onThink(nil, ply, drug) -- 129
-				end -- 125
-			end -- 129
-			_continue_0 = true -- 120
-		until true -- 129
-		if not _continue_0 then -- 129
-			break -- 129
-		end -- 129
+end -- 125
+local drug_think -- 128
+drug_think = function() -- 128
+	if CLIENT then -- 129
+		return -- 129
 	end -- 129
-end -- 117
-return hook.Add("Think", "evilrp_drug_think", drug_think) -- 131
+	local _list_0 = player.GetAll() -- 130
+	for _index_0 = 1, #_list_0 do -- 130
+		local ply = _list_0[_index_0] -- 130
+		local _continue_0 = false -- 131
+		repeat -- 131
+			if not ply:Alive() then -- 131
+				ply.Drugs = { } -- 132
+				return -- 133
+			end -- 131
+			if not ply.Drugs then -- 134
+				_continue_0 = true -- 134
+				break -- 134
+			end -- 134
+			for key, drug in pairs(ply.Drugs) do -- 135
+				if CurTime() > drug["end"] then -- 136
+					drug.onEnd(nil, ply) -- 137
+					ply.Drugs[key] = nil -- 138
+				else -- 140
+					drug.onThink(nil, ply, drug) -- 140
+				end -- 136
+			end -- 140
+			_continue_0 = true -- 131
+		until true -- 140
+		if not _continue_0 then -- 140
+			break -- 140
+		end -- 140
+	end -- 140
+end -- 128
+return hook.Add("Think", "evilrp_drug_think", drug_think) -- 142

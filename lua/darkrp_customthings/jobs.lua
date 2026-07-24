@@ -48,8 +48,8 @@ TEAM_GHOST = DarkRP.createJob("Ghost", { -- 29
 				text = "Evil spirits wander!\n<wiggle>Not on my shift." -- 45
 			elseif TEAM_GHOST == _exp_0 then -- 46
 				text = "We're the same,\nyou and I." -- 47
-			end -- 43
-		end -- 43
+			end -- 47
+		end -- 47
 		return { -- 48
 			text = text, -- 48
 			font = "Spleen_Label_Small" -- 48
@@ -80,7 +80,7 @@ TEAM_GHOST = DarkRP.createJob("Ghost", { -- 29
 				found = ent -- 60
 				break -- 61
 			end -- 59
-		end -- 58
+		end -- 61
 		if not (found and IsValid(found)) then -- 62
 			if CLIENT then -- 63
 				return GAMEMODE:Frighten() -- 64
@@ -185,8 +185,8 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 				text = "He has a noble pursuit." -- 122
 			elseif TEAM_BONEHEAD == _exp_0 then -- 123
 				text = "SEEN HIM BEFORE!!" -- 124
-			end -- 108
-		end -- 108
+			end -- 124
+		end -- 124
 		return { -- 125
 			text = text, -- 125
 			font = "Spleen_Label_Small" -- 125
@@ -213,7 +213,7 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 	PlayerLoadout = function(ply) -- 134
 		ply:ClearOddities() -- 135
 		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 136
-		for slot, val in pairs({ -- 138
+		for slot, val in pairs({ -- 139
 			[0] = 0, -- 139
 			[1] = 2, -- 141
 			[2] = { -- 143
@@ -240,7 +240,7 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 				0, -- 157
 				1 -- 157
 			} -- 157
-		}) do -- 137
+		}) do -- 158
 			set_bodygroup(ply, slot, val) -- 137
 		end -- 137
 		local skins = { -- 159
@@ -256,20 +256,20 @@ do -- 163
 	local _class_0 -- 163
 	local _parent_0 = SOUND -- 163
 	local _base_0 = { -- 163
-		sound = "placenta/bonehead_aggrod4.wav", -- 164
+		sound = "placenta/bonehead_aggrod4.wav", -- 165
 		pitch = { -- 165
 			200, -- 165
 			250 -- 165
-		} -- 165
+		} -- 163
 	} -- 163
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 163
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 165
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 163
 			_base_0[_key_0] = _val_0 -- 163
 		end -- 163
-	end -- 163
+	end -- 165
 	if _base_0.__index == nil then -- 163
 		_base_0.__index = _base_0 -- 163
-	end -- 163
+	end -- 165
 	setmetatable(_base_0, _parent_0.__base) -- 163
 	_class_0 = setmetatable({ -- 163
 		__init = function(self, ...) -- 163
@@ -301,7 +301,7 @@ do -- 163
 		_parent_0.__inherited(_parent_0, _class_0) -- 163
 	end -- 163
 	SpeechBonehead = _class_0 -- 163
-end -- 163
+end -- 165
 TEAM_BONEHEAD = DarkRP.createJob("Bonehead", { -- 168
 	color = Color(150, 150, 150), -- 168
 	model = "models/player/zombie_fast.mdl", -- 169
@@ -349,8 +349,8 @@ TEAM_BONEHEAD = DarkRP.createJob("Bonehead", { -- 168
 				text = "Lookin' good." -- 194
 			elseif TEAM_BONEHEAD == _exp_0 then -- 195
 				text = "THERE'S ANOTHER ONE." -- 196
-			end -- 182
-		end -- 182
+			end -- 196
+		end -- 196
 		return { -- 197
 			text = text, -- 197
 			font = "Spleen_Label_Small" -- 197
@@ -478,8 +478,8 @@ TEAM_PRIVATE = DarkRP.createJob("Private", { -- 238
 				text = "Sad, but funny." -- 269
 			elseif TEAM_BONEHEAD == _exp_0 then -- 270
 				text = "SKIN...!" -- 271
-			end -- 255
-		end -- 255
+			end -- 271
+		end -- 271
 		return { -- 272
 			text = text, -- 272
 			font = "Spleen_Label_Small" -- 272
@@ -508,14 +508,14 @@ TEAM_PRIVATE = DarkRP.createJob("Private", { -- 238
 	PlayerLoadout = function(ply) -- 287
 		ply:ClearOddities() -- 288
 		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 289
-		for slot, val in pairs({ -- 291
+		for slot, val in pairs({ -- 292
 			[0] = 0, -- 292
 			[1] = 0, -- 294
 			[2] = 0, -- 296
 			[3] = 0, -- 298
 			[4] = 0, -- 300
 			[5] = 0 -- 302
-		}) do -- 290
+		}) do -- 303
 			set_bodygroup(ply, slot, val) -- 290
 		end -- 290
 		return false -- 304
@@ -586,8 +586,8 @@ TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 307
 				text = "Evil, stupid,\n maybe both." -- 339
 			elseif TEAM_BONEHEAD == _exp_0 then -- 340
 				text = "DANGER." -- 341
-			end -- 325
-		end -- 325
+			end -- 341
+		end -- 341
 		return { -- 342
 			text = text, -- 342
 			font = "Spleen_Label_Small" -- 342
@@ -616,14 +616,14 @@ TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 307
 	PlayerLoadout = function(ply) -- 350
 		ply:ClearOddities() -- 351
 		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 352
-		for slot, val in pairs({ -- 354
+		for slot, val in pairs({ -- 355
 			[0] = 1, -- 355
 			[1] = 1, -- 357
 			[2] = 1, -- 359
 			[3] = 2, -- 361
 			[4] = 3, -- 363
 			[5] = 0 -- 365
-		}) do -- 353
+		}) do -- 366
 			set_bodygroup(ply, slot, val) -- 353
 		end -- 353
 		return false -- 367
@@ -688,8 +688,8 @@ TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 370
 				text = "Glorified accountant." -- 400
 			elseif TEAM_BONEHEAD == _exp_0 then -- 401
 				text = "BONES ARE HIS DOLLARS." -- 402
-			end -- 386
-		end -- 386
+			end -- 402
+		end -- 402
 		return { -- 403
 			text = text, -- 403
 			font = "Spleen_Label_Small" -- 403
@@ -712,14 +712,14 @@ TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 370
 	PlayerLoadout = function(ply) -- 412
 		ply:ClearOddities() -- 413
 		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 414
-		for slot, val in pairs({ -- 416
+		for slot, val in pairs({ -- 417
 			[0] = 1, -- 417
 			[1] = 1, -- 419
 			[2] = 1, -- 421
 			[3] = 1, -- 423
 			[4] = 3, -- 425
 			[5] = 0 -- 427
-		}) do -- 415
+		}) do -- 428
 			set_bodygroup(ply, slot, val) -- 415
 		end -- 415
 		return false -- 429
@@ -781,8 +781,8 @@ TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 432
 				text = "A respectable mortal." -- 463
 			elseif TEAM_BONEHEAD == _exp_0 then -- 464
 				text = "CONFUSING." -- 465
-			end -- 449
-		end -- 449
+			end -- 465
+		end -- 465
 		return { -- 466
 			text = text, -- 466
 			font = "Spleen_Label_Small" -- 466
@@ -834,14 +834,14 @@ TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 432
 		ply:ClearOddities() -- 476
 		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 477
 		ply:SetSkin(4) -- 478
-		for slot, val in pairs({ -- 480
+		for slot, val in pairs({ -- 481
 			[0] = 0, -- 481
 			[1] = 0, -- 483
 			[2] = 2, -- 485
 			[3] = 3, -- 487
 			[4] = 1, -- 489
 			[5] = 0 -- 491
-		}) do -- 479
+		}) do -- 492
 			set_bodygroup(ply, slot, val) -- 479
 		end -- 479
 		return false -- 493
@@ -895,8 +895,8 @@ TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", { -- 496
 				text = "So full of lies." -- 527
 			elseif TEAM_BONEHEAD == _exp_0 then -- 528
 				text = "THERE HE IS!!" -- 529
-			end -- 513
-		end -- 513
+			end -- 529
+		end -- 529
 		return { -- 530
 			text = text, -- 530
 			font = "Spleen_Label_Small" -- 530
@@ -925,14 +925,14 @@ TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", { -- 496
 			oddities = _accum_0 -- 540
 		end -- 540
 		ply:AddOddity(oddities[math.random(#oddities)]) -- 541
-		for slot, val in pairs({ -- 543
+		for slot, val in pairs({ -- 544
 			[0] = 1, -- 544
 			[1] = 2, -- 546
 			[2] = 0, -- 548
 			[3] = 1, -- 550
 			[4] = 2, -- 552
 			[5] = 0 -- 554
-		}) do -- 542
+		}) do -- 555
 			set_bodygroup(ply, slot, val) -- 542
 		end -- 542
 		ply:SetNWInt("evilrp_gasmask", 4) -- 556

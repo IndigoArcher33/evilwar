@@ -265,9 +265,9 @@ class Dumpster extends Lootable
 
 
 class Locker extends Lootable -- for the outsiders to loot to use against or sell for the city (cinnamon)
-  PrintName: "Ancient locker" 
+  PrintName: "Antique Locker" 
 
-  Description: "A locker that seems to have washed up from whatever ancient battlefront it came from. "
+  Description: "A locker, washed up from some ancient, forgotten battle. "
 
   Model: "models/props_c17/lockers001a.mdl" 
   LootMax: 8 

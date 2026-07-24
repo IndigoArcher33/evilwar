@@ -445,8 +445,8 @@ do -- 267
 	local _class_0 -- 267
 	local _parent_0 = Lootable -- 267
 	local _base_0 = { -- 267
-		PrintName = "Ancient locker", -- 270
-		Description = "A locker that seems to have washed up from whatever ancient battlefront it came from. ", -- 272
+		PrintName = "Antique Locker", -- 270
+		Description = "A locker, washed up from some ancient, forgotten battle. ", -- 272
 		Model = "models/props_c17/lockers001a.mdl", -- 273
 		LootMax = 8, -- 274
 		TimeToUse = 12, -- 276
@@ -463,17 +463,27 @@ do -- 267
 			"trash/bottle", -- 286
 			"trash/bottle", -- 287
 			"trash/bottle", -- 288
-			"evilrp_weapon/greaser" -- 289
+			"trash/plastic/shake", -- 289
+			"trash/plastic/shake", -- 290
+			"trash/plastic/pills", -- 291
+			"trash/plastic/bleach", -- 292
+			"evilrp_weapon/greaser", -- 293
+			"item/food/slopskull", -- 294
+			"item/food/slopskull", -- 295
+			"item/food/slopskull", -- 296
+			"item/food/ribbone", -- 297
+			"item/food/ribbone", -- 298
+			"item/food/ribbone" -- 299
 		} -- 267
 	} -- 267
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 289
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 299
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 267
 			_base_0[_key_0] = _val_0 -- 267
 		end -- 267
-	end -- 289
+	end -- 299
 	if _base_0.__index == nil then -- 267
 		_base_0.__index = _base_0 -- 267
-	end -- 289
+	end -- 299
 	setmetatable(_base_0, _parent_0.__base) -- 267
 	_class_0 = setmetatable({ -- 267
 		__init = function(self, ...) -- 267
@@ -505,5 +515,5 @@ do -- 267
 		_parent_0.__inherited(_parent_0, _class_0) -- 267
 	end -- 267
 	Locker = _class_0 -- 267
-	return _class_0 -- 289
-end -- 289
+	return _class_0 -- 299
+end -- 299
