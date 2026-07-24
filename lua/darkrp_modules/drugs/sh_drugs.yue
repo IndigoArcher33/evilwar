@@ -76,7 +76,7 @@ class Rotmelange extends Drug
   RotTime: 240
   Description: "A cigar packed with a mysterious substance from the wasteland.\nIt will reveal your deepest worries, if you're strong enough."
   Sound: Sound"ghostbong/ghostbong_hit.mp3"
-  DrugTime: 30
+  DrugTime: 180
 
   UseText: {
     "takes a fat rip of melange."
@@ -88,17 +88,28 @@ class Rotmelange extends Drug
     "leaves a disgusting cloud of red smoke."
   }
 
+  NotifyText: {
+    "The future..."
+    "The past..."
+    "The present..."
+    "Everything..."
+    "Memories..."
+    "A sweet lie..."
+  }
+
   ConsumeThink: (ply, drug) =>
     drug.nextTime or= 0
     if CurTime! >= drug.nextTime
-      drug.nextTime = CurTime! + 5
-      net.Start"evilrp_frighten"
+      drug.nextTime = CurTime! + 30 + math.random(1, 30)
+      net.Start"evilrp_jumpscare"
       net.Send ply
+      ply\AddStemCells(1)
+      ply\Notify "<c=0,200,0> #{table.Random @NotifyText}"
 
   Consume: (ply) =>
     super ply
     return if CLIENT
-    if ply\Team! ~= TEAM_KOMMANDANT
+    if (ply\Team! ~= TEAM_KOMMANDANT) or (ply\Team! ~= TEAM_STALKER)
       ply\Notify "<c=200,0,0> WHAT THE FUCK IS THIS? HOLY SHI~"
       ply\AddDespair 100
       net.Start"evilrp_jumpscare"
@@ -106,7 +117,7 @@ class Rotmelange extends Drug
       return
 
     ply\AddStemCells(2)
-    ply\Notify "<c=0,200,0> You embrace the prescient path."
+    ply\Notify "<c=0,200,0> Embrace the prescient path."
   
   End: (ply) => 
     super ply
