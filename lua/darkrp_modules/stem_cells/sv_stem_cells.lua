@@ -20,7 +20,7 @@ lose_stem_cells_on_death = function(ply, attacker, dmg) -- 13
 	if ply:Team() == TEAM_GHOST then -- 14
 		return -- 14
 	end -- 14
-	local amount = -1 -- 15
+	local amount = 0 -- 15
 	if ply.death_by_neglect then -- 16
 		amount = amount - 1 -- 17
 		ply.death_by_neglect = nil -- 18
