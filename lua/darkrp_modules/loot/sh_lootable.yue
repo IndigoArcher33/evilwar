@@ -297,3 +297,81 @@ class Locker extends Lootable -- for the outsiders to loot to use against or sel
     * "item/food/ribbone"
     * "item/food/ribbone"
     * "item/food/ribbone"
+
+
+class Chest extends Lootable -- for the outsiders to loot to use against or sell for the city (vel)
+  PrintName: "Rotten Chest" 
+
+  Description: "A wooden chest, the surface is covered with maggots."
+
+  Model: "models/props_forest/footlocker01_closed.mdl" 
+  LootMax: 5 
+  TimeToUse: 12
+  
+  LootTable:
+    * "item/food/paper"
+    * "item/food/paper"
+    * "item/drug/rotmelange"
+    * "trash/bottle"
+    * "trash/bottle"
+    * "trash/bottle"
+    * "trash/plastic/shake"
+    * "trash/plastic/shake"
+    * "trash/plastic/shake"
+    * "trash/plastic/pills"
+    * "trash/plastic/pills"
+    * "trash/plastic/pills"
+    * "trash/plastic/bleach"
+    * "item/food/abortion"
+    * "item/food/abortion"
+    * "item/food/abortion"
+    * "item/food/slopskull"
+    * "item/food/slopskull"
+    * "item/food/slopskull"     
+    * "item/food/ribbone"
+    * "item/food/ribbone"
+    * "item/food/ribbone"
+    * "trash/bottle/fearbeer"
+    * "trash/bottle/fearbeer"
+    * "item/food/drink/fearbeer"
+    * "item/food/drink/fearbeer"
+    * "item/food/drink/smearbeer"
+    * "item/food/drink/smearbeer"
+    * "item/food/drink/shake"
+    * "item/food/drink/shake"
+    * "item/food/drink/loaf"
+    * "item/food/drink/loaf"
+    * "item/food/drink/loaf"
+
+class Cache extends Lootable -- for the outsiders to loot to use against or sell for the city (vel)
+  PrintName: "Abandoned Cache" 
+
+  Description: "Someone left this in a hurry, it has foreign markings."
+
+  Model: "models/props/de_prodigy/ammo_can_01.mdl" 
+  LootMax: 2 
+  TimeToUse: 20
+  
+  LootTable:
+    * "item/food/paper"
+    * "item/drug/rotmelange"
+    * "trash/bottle"
+    * "trash/plastic/shake"
+    * "trash/plastic/pills"
+    * "trash/plastic/bleach"
+    * "trash/bottle/fearbeer"
+    * "item/food/drink/fearbeer"
+    * "item/food/drink/smearbeer"
+    * "item/food/drink/smearbeer"
+    * "evilrp_weapon/greaser"
+    * "evilrp_weapon/greaser"
+    * "evilrp_weapon/prettyboy"
+    * "evilrp_weapon/prettyboy"
+    * "evilrp_melee/shovel"
+    * "evilrp_melee/shovel"
+    * "evilrp_melee/shovel"
+    * "evilrp_weapon/hope"
+    * "evilrp_weapon/hope"
+    * "evilrp_weapon/owler"
+    * "item/food/eyeballnoodles"
+    * "item/food/eyeballnoodles"

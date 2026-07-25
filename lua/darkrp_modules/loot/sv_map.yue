@@ -35,7 +35,25 @@ EVIL_LOOT_POSITIONS = {
         cls: "lootable/locker" 
       * pos: Vector( -1341.062622, -3766.904541, -748.007935 )
         ang: Angle(-0, 90, 0)
-        cls: "lootable/locker" 
+        cls: "lootable/locker"
+      * pos: Vector( -96, 311, -764.007935 )
+        ang: Angle(-0, -0, 0)
+        cls: "lootable/locker"
+      * pos: Vector( -40.7, 97.68, -799.5 )
+        ang: Angle(-0, 180, 0)
+        cls: "lootable/cache"
+      * pos: Vector( 622.469421, -3962.344727, -59.953209 )
+        ang: Angle(-19.168, 52.573, 4.997)
+        cls: "lootable/cache"
+      * pos: Vector( -540.29, -2113.26, -995.44 )
+        ang: Angle(-0, 0, 0)
+        cls: "lootable/chest"    
+      * pos: Vector( 489.881622, -3148.358887, -803.429688 )
+        ang: Angle(-0, -90, 0)
+        cls: "lootable/chest"
+      * pos: Vector( -981.443359, -5135.492188, 73.638565 )
+        ang: Angle(-15.135, -136.930, 2.269)
+        cls: "lootable/chest"
 }
 
 EVIL_LOOT_REPLACEMENTS = {
