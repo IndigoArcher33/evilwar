@@ -12,7 +12,7 @@ hook.Add "PlayerInitialSpawn", "evilrp_setup_stem_cells", (ply) ->
 
 lose_stem_cells_on_death = (ply, attacker, dmg) ->
   return if ply\Team! == TEAM_GHOST
-  amount = -1
+  amount = 0
   if ply.death_by_neglect
     amount -= 1
     ply.death_by_neglect = nil
