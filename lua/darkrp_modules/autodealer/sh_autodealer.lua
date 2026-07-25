@@ -76,7 +76,7 @@ elseif SERVER then -- 10
 		local ct = CurTime() -- 60
 		local mach = net.ReadEntity() -- 61
 		local item = net.ReadString() -- 62
-		if (ply:Team() ~= TEAM_DEALER) or (ply:Team() ~= TEAM_KOMMANDANT) then -- 63
+		if (ply:Team() ~= TEAM_DEALER) and (ply:Team() ~= TEAM_KOMMANDANT) then -- 63
 			net.Start("evilrp_machine_fail") -- 64
 			net.WriteString("WHO THE FUCK ARE YOU?!") -- 65
 			net.Send(ply) -- 66
