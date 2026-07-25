@@ -67,7 +67,7 @@ EVIL_LOOT_POSITIONS = { -- 26
 		}, -- 39
 		{ -- 42
 			pos = Vector(-96, 311, -764.007935), -- 42
-			ang = Angle(-0, -0, 0), -- 43
+			ang = Angle(-0, -90, 0), -- 43
 			cls = "lootable/locker" -- 44
 		}, -- 42
 		{ -- 45

@@ -165,10 +165,21 @@ class Lootable extends ENTITY_LONGUSE
       filter: ply
     }
     cls = @LootTable[random 1, #@LootTable]
-    loot = ents.Create cls
-    with loot
-      loot\Spawn!
-      loot\Activate!
+    wep = weapons.Get(cls)
+    local loot
+    if wep
+      loot = ents.Create"evilrp/spawned/weapon"
+      print "spawning weapon #{cls}"
+      with loot
+        \SetModel wep.WorldModel
+        \SetWeaponClass cls
+        \Spawn!
+        \Activate!
+    else
+      loot = ents.Create cls
+      with loot
+        \Spawn!
+        \Activate!
     DarkRP.placeEntity loot, tr, ply
     @SetRemaining(@GetRemaining! - 1)
 
@@ -269,7 +280,7 @@ class Crate extends Lootable -- this is for workers to get tools at the beginnin
 
   Description: "A old crate that was once filled with tools, hopefully some were left behind for you."
 
-  LootMax: 7
+  LootMax: 1
   TimeToUse: 6
 
   AccumulateInterval: 540
@@ -278,11 +289,30 @@ class Crate extends Lootable -- this is for workers to get tools at the beginnin
     * "evilrp_melee/pipe"
     * "evilrp_melee/pipe"
     * "evilrp_melee/pipe"
+    * "evilrp_melee/pipe"
+    * "evilrp_melee/pipe"
     * "evilrp_melee/pot"
+    * "evilrp_melee/pot"
+    * "evilrp_melee/pot"
+    * "evilrp_melee/pan"
+    * "evilrp_melee/axe"
+    * "item/food/boot"
+    * "item/food/boot"
     * "item/food/boot"
     * "trash/bottle"
+    * "trash/bottle"
+    * "trash/bottle"
     * "trash/bottle/fearbeer"
-    *  "item/food/paper"
+    * "item/food/paper"
+    * "item/food/paper"
+    * "item/food/paper"
+    * "trash/plastic/bleach"
+    * "item/loot/rustkill"
+    * "item/loot/rustkill"
+    * "item/loot/rustkill"
+    * "item/loot/rustkill"
+    * "item/loot/rustkill"
+    * "item/loot/rustkill"
 
 
 class Locker extends Lootable -- for the outsiders to loot to use against or sell for the city ~ cinnamon
@@ -291,7 +321,7 @@ class Locker extends Lootable -- for the outsiders to loot to use against or sel
   Description: "A locker, washed up from some ancient, forgotten battle. "
 
   Model: "models/props_c17/lockers001a.mdl" 
-  LootMax: 8 
+  LootMax: 3 
   TimeToUse: 12
   
   AccumulateInterval: 360
@@ -319,6 +349,8 @@ class Locker extends Lootable -- for the outsiders to loot to use against or sel
     * "item/food/ribbone"
     * "item/food/ribbone"
     * "item/food/ribbone"
+    * "item/loot/rustkill"
+    * "item/loot/rustkill"
 
 
 class Chest extends Lootable -- for the outsiders to loot to use against or sell for the city (vel)
@@ -327,8 +359,8 @@ class Chest extends Lootable -- for the outsiders to loot to use against or sell
   Description: "A wooden chest, the surface is covered with maggots."
 
   Model: "models/props_forest/footlocker01_closed.mdl" 
-  LootMax: 5 
-  TimeToUse: 12
+  LootMax: 2 
+  TimeToUse: 20
   
   LootTable:
     * "item/food/paper"
@@ -347,6 +379,8 @@ class Chest extends Lootable -- for the outsiders to loot to use against or sell
     * "item/food/abortion"
     * "item/food/abortion"
     * "item/food/abortion"
+    * "item/food/slopskull"
+    * "item/food/slopskull"
     * "item/food/slopskull"
     * "item/food/slopskull"
     * "item/food/slopskull"     
@@ -361,9 +395,12 @@ class Chest extends Lootable -- for the outsiders to loot to use against or sell
     * "item/food/drink/smearbeer"
     * "item/food/drink/shake"
     * "item/food/drink/shake"
-    * "item/food/drink/loaf"
-    * "item/food/drink/loaf"
-    * "item/food/drink/loaf"
+    * "item/food/loaf"
+    * "item/food/loaf"
+    * "item/food/loaf"
+    * "item/loot/rustkill"
+    * "item/loot/rustkill"
+    * "item/loot/rustkill"
 
 class Cache extends Lootable -- for the outsiders to loot to use against or sell for the city (vel)
   PrintName: "Abandoned Cache" 
@@ -372,7 +409,8 @@ class Cache extends Lootable -- for the outsiders to loot to use against or sell
 
   Model: "models/props/de_prodigy/ammo_can_01.mdl" 
   LootMax: 2 
-  TimeToUse: 20
+  TimeToUse: 15
+  AccumulateInterval: 200
   
   LootTable:
     * "item/food/paper"
@@ -389,11 +427,25 @@ class Cache extends Lootable -- for the outsiders to loot to use against or sell
     * "evilrp_weapon/greaser"
     * "evilrp_weapon/prettyboy"
     * "evilrp_weapon/prettyboy"
+    * "evilrp_weapon/prettyboy"
+    * "evilrp_weapon/prettyboy"
     * "evilrp_melee/shovel"
     * "evilrp_melee/shovel"
     * "evilrp_melee/shovel"
+    * "evilrp_melee/shovel"
+    * "evilrp_melee/shovel"
+    * "evilrp_weapon/hope"
+    * "evilrp_weapon/hope"
     * "evilrp_weapon/hope"
     * "evilrp_weapon/hope"
     * "evilrp_weapon/owler"
     * "item/food/eyeballnoodles"
     * "item/food/eyeballnoodles"
+    * "item/loot/spareammo"
+    * "item/loot/spareammo"
+    * "item/loot/spareammo"
+    * "item/loot/spareammo"
+    * "item/loot/spareammo"
+    * "item/loot/spareammo"
+    * "item/loot/spareammo"
+    * "item/loot/spareammo"
