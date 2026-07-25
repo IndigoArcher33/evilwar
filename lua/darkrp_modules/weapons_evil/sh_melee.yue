@@ -79,7 +79,7 @@ class Knife extends EvilRP_Melee
       DamageType: DMG_SLASH
 
       Range: 75
-      Delay: 0.2
+      Delay: 0.5
 
       Act: ACT_VM_MISSCENTER
 
@@ -87,11 +87,11 @@ class Knife extends EvilRP_Melee
     },
 
     Heavy: {
-      Damage: 30,
+      Damage: 25
       DamageType: DMG_SLASH
 
       Range: 75
-      Delay: 0.5
+      Delay: 0.9
 
       Act: ACT_VM_MISSCENTER
 
@@ -139,7 +139,7 @@ class Pan extends EvilRP_Melee
     },
 
     Heavy: {
-      Damage: 50,
+      Damage: 40
       DamageType: DMG_CLUB
 
       Range: 75
@@ -179,7 +179,7 @@ class Pickaxe extends EvilRP_Melee
     ChargeTime: 1
 
     Light: {
-      Damage: 45
+      Damage: 35
       DamageType: DMG_CLUB
 
       Range: 80
@@ -191,7 +191,7 @@ class Pickaxe extends EvilRP_Melee
     },
 
     Heavy: {
-      Damage: 75,
+      Damage: 55
       DamageType: DMG_CLUB
 
       Range: 75
@@ -231,7 +231,7 @@ class Pipe extends EvilRP_Melee
     ChargeTime: 1
 
     Light: {
-      Damage: 20
+      Damage: 15
       DamageType: DMG_CLUB
 
       Range: 75
@@ -243,7 +243,7 @@ class Pipe extends EvilRP_Melee
     },
 
     Heavy: {
-      Damage: 40,
+      Damage: 35
       DamageType: DMG_CLUB
 
       Range: 75
@@ -314,7 +314,7 @@ class Pot extends EvilRP_Melee
 
 class Shovel extends EvilRP_Melee
   PrintName: "Shovel"
-  Description: "Kidneystani partisan used to dig holes in concrete walls with these."
+  Description: "Lymphomian partisans used to dig holes in concrete walls with these."
     
   Slot: 0
 
@@ -456,7 +456,7 @@ class Sabre extends EvilRP_Melee
       Damage: 25
       DamageType: DMG_SLASH
 
-      Range: 75
+      Range: 80
       Delay: 0.7
 
       Act: ACT_VM_MISSCENTER

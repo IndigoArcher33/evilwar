@@ -118,22 +118,22 @@ class Lootable extends ENTITY_LONGUSE
     tags = ""
     local col
     local msgs
-    roll = math.random(5)
+    roll = math.random(4)
     roll += 1 if @GetRemaining! <= 0
     noticed_empty = false
     switch roll
-      when 1
+      when 1, 2
         col = "0,200,0" -- green
         msgs = @LootMessages.success
         @Loot ply
-      when 2, 3, 4
+      when 3, 4
         col = "200,200,0" -- yellow
         msgs = @LootMessages.failure
         sad = math.random(0)
         sad *= 2 if ply\HasOddity(ODDITY_DEPRESSION)
         ply\AddDespair(sad)
         noticed_empty = true if (@GetRemaining! <= 0) and math.random(3) == 2
-      when 5, 6
+      when 5 
         col = "200,0,0" -- red
         msgs = @LootMessages.damage
         dmg = DamageInfo!
@@ -263,8 +263,27 @@ class Dumpster extends Lootable
     * "trash/inhaler"
     * "trash/inhaler"
 
+class Crate extends Lootable -- this is for workers to get tools at the beginning of a round ~ cinnamon
+  PrintName: "Tools Crate" 
+  Model: "models/items/ammocrate_ar2.mdl" 
+  
+  LootMax: 7
+  TimeToUse: 6
 
-class Locker extends Lootable -- for the outsiders to loot to use against or sell for the city (cinnamon)
+  AccumulateInterval: 540
+
+  LootTable:
+    * "evilrp_melee/pipe"
+    * "evilrp_melee/pipe"
+    * "evilrp_melee/pipe"
+    * "evilrp_melee/pot"
+    * "item/food/boot"
+    * "trash/bottle"
+    * "trash/bottle/fearbeer"
+    *  "item/food/paper"
+
+
+class Locker extends Lootable -- for the outsiders to loot to use against or sell for the city ~ cinnamon
   PrintName: "Antique Locker" 
 
   Description: "A locker, washed up from some ancient, forgotten battle. "
@@ -273,12 +292,12 @@ class Locker extends Lootable -- for the outsiders to loot to use against or sel
   LootMax: 8 
   TimeToUse: 12
   
+  AccumulateInterval: 360
+
   LootTable:
     * "evilrp_weapon/obrez"
     * "item/food/paper"
     * "item/food/paper"
-    * "evilrp_weapon/enforcer"
-    * "evilrp_weapon/enforcer"
     * "item/food/boot"
     * "item/food/boot"
     * "item/food/boot"

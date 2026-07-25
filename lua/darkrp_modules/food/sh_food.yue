@@ -199,6 +199,23 @@ class SoyLoaf extends Food
     "eats some soylent, like a good citizen should."
   }
 
+class BootSoup extends Food
+  PrintName: "Boot n' soup"
+  Model: Model"models/props_c17/metalPot001a.mdl"
+  HealthAdd: -5
+  Hunger: -40
+  Thirst: -4
+  Despair: 25
+  Description: "Formerly only filled with slop, now comes with 'vegan-meat'!"
+  CookTime: 13
+
+  Price: 20
+
+  UseText: {
+    "drinks the soup slowly, but chokes on the 'vegan-meat' ."
+    "miserably slurps the soup, spitting out small chunks of 'vegan-meat'."
+    "struggles to eat any of the soup and 'vegan-meat'." }
+
 class SlopBowl extends Food
   PrintName: "Slop Bowl"
   Model: Model"models/props_c17/metalPot001a.mdl"
@@ -240,9 +257,10 @@ class Boot extends Food
 
 class MoldMelon extends Food
   PrintName: "Mold Melon"
-  Model: Model"models/gibs/antlionegg01_chunk01c.mdl"
-  AddHealth: 5
-  Hunger: => (math.random -10, -18)
+  Model: Model "models/props_junk/watermelon01_chunk01c.mdl"
+  AddHealth: -6
+  Hunger: -12
+  Despair: 4 
   Description: "A pithy husk of fruit, fully colonized by white mold."
 
   Price: 25
@@ -508,10 +526,10 @@ class Bleach extends Medicine
   PrintName: "Chlorine"
   Model: Model"models/props_junk/garbage_plasticbottle002a"
   Sound: "DrinkFluid"
-  AddHealth: => (math.random 75, 99)
-  Hunger: 70
-  Thirst: 70
-  Despair: 70
+  AddHealth: -50
+  Hunger: 50
+  Thirst: -40
+  Despair: 
   --Pox: -100
   Description: "A jug full of bleach."
 
@@ -539,11 +557,23 @@ class Ambrosia extends Food
   UseText: {
     "indulges in some ambrosia."
   }
+  
+  Precursor:
+    biomass: 15
+    wood: 15
+    metal: 15
+  
+   
+   
 
   Eat: (ply) =>
     super ply
     return if CLIENT
     ply\AddStemCells(5)
+
+
+
+
 
 
 class SloppyRibs extends Food

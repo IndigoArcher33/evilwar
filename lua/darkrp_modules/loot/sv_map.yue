@@ -30,12 +30,21 @@ EVIL_LOOT_POSITIONS = {
       * pos: Vector( -729.105530, -4660.556641, -196.339752 )
         ang: Angle(-0, 120, 0)
         cls: "lootable/dumpster" 
+      * pos: Vector( -208.764374, 844.963379, 23.443558 )
+        ang: Angle(-0, 0, 0)
+        cls: "lootable/dumpster"
       * pos: Vector( 1132.062622, -2930.228516, -29.531338 )
         ang: Angle(-0, -90, 0)
         cls: "lootable/locker" 
       * pos: Vector( -1341.062622, -3766.904541, -748.007935 )
         ang: Angle(-0, 90, 0)
         cls: "lootable/locker" 
+      * pos: Vector( -1369.443237, 791.270508, 18.443558 )
+        ang: Angle(-0, -45, 0)
+        cls: "lootable/crate"
+      * pos: Vector( -1379.369263, 908.375488, 18.443558 )
+        ang: Angle(-0, 45, 0)
+        cls: "lootable/crate"
 }
 
 EVIL_LOOT_REPLACEMENTS = {

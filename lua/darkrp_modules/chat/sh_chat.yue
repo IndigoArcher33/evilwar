@@ -254,9 +254,10 @@ Chat.StupidMistakes = {
    ["mother of god"]: "mother of Sotla"
    ["brother in christ"]: "brother in Sotla"
    ["mfer"]: "friend of mine"
-}
+   ["bro"]: "brother"
+   }
 
-Chat.BadWords = { "chud","nigger", "tranny", "nigga", "kike", "autism", "autistic", "autist", "trannies", "faggot", "fag", "fgt", "libtard", "retard", "gmyza", "poggers", "pogchamp", "prole gaming", "omegalol", "kekw", "trihard7", "ur mom", "ur mum", "bri-ish", "bri'ish", "nword", "rdm", "nlr", "failrp", "chad", "hoes mad", "yeet", "corpsed", "kek", "chungus", "pog", "fortnite", "skinwalk", "skinshift", "skin walk", "skin shift", "unbindall", "white walking", "weeb", "weeaboo", "amogus", "amog us", "pretty cringe", "that's cringe", "redpilled", "tradcath", "zoomer", "boomer", "doomer", "groyper", "bluepill", "redpill", "tradwife", "blackpill", "big chungus", "spongebob", "impostor among us", "imposter among us", "ligma", "trolled", "deez", "swag", "font", "bussin", "sussy", "bussy", "meme", "koom", "niglet", "stem cell meat", "make me butcher", "nlgger", "nlgga", "nlg", "bruh", "allah", "akbar", "alahu", "ackbar", "lifeweb", "cuck", "coom", "tryhard", "morbius", "morbin", "/advert", "skibidi", "rizz", "gyatt", "solta" }
+Chat.BadWords = {  "woke", "kirk","chud","nigger", "tranny", "nigga", "kike", "autism", "autistic", "autist", "trannies", "faggot", "fag", "fgt", "libtard", "retard", "gmyza", "poggers", "pogchamp", "prole gaming", "omegalol", "kekw", "trihard7", "ur mom", "ur mum", "bri-ish", "bri'ish", "nword", "rdm", "nlr", "failrp", "chad", "hoes mad", "yeet", "corpsed", "kek", "chungus", "pog", "fortnite", "skinwalk", "skinshift", "skin walk", "skin shift", "unbindall", "white walking", "weeb", "weeaboo", "amogus", "amog us", "pretty cringe", "that's cringe", "redpilled", "tradcath", "zoomer", "boomer", "doomer", "groyper", "bluepill", "redpill", "tradwife", "blackpill", "big chungus", "spongebob", "impostor among us", "imposter among us", "ligma", "trolled", "deez", "swag", "font", "bussin", "sussy", "bussy", "meme", "koom", "niglet", "stem cell meat", "make me butcher", "nlgger", "nlgga", "nlg", "bruh", "allah", "akbar", "alahu", "ackbar", "lifeweb", "cuck", "coom", "tryhard", "morbius", "morbin", "/advert", "skibidi", "rizz", "gyatt", "solta" }
 
 class extends CHAT_CMD
   name: "GENERIC"
