@@ -313,6 +313,7 @@ Chat.StupidMistakes = { -- 153
 	["bro"] = "brother" -- 257
 } -- 152
 Chat.BadWords = { -- 260
+	"larp", -- 260
 	"woke", -- 260
 	"kirk", -- 260
 	"chud", -- 260

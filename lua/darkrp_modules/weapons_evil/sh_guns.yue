@@ -372,12 +372,12 @@ class Obrez extends EvilRP_Weapon
     Delay: 1.25
       
     Range: 300
-    Accuracy: 10
+    Accuracy: 20
 
     RangeModifier: 0.95
 
     Recoil: {
-      MinAng: Angle(11, -6.2, 0)
+      MinAng: Angle(15 -6.2, 0)
       MaxAng: Angle(20, 6.2, 0)
       Punch: 0.95
       Ratio: 0.2

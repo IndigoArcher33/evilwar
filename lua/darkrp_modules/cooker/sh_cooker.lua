@@ -37,319 +37,340 @@ local recipes = { -- 7
 			"item/food/boot" -- 24
 		}, -- 24
 		output = "item/food/bootsoup" -- 25
-	} -- 23
+	}, -- 23
+	{ -- 28
+		inputs = { -- 28
+			"item/food/moldmelon", -- 28
+			"item/food/medicine/bleach" -- 28
+		}, -- 28
+		output = "item/food/bleachedmelon" -- 29
+	}, -- 27
+	{ -- 32
+		inputs = { -- 32
+			"item/food/abortion", -- 32
+			"item/food/soyloaf" -- 32
+		}, -- 32
+		output = "item/food/meatloaf" -- 33
+	}, -- 31
+	{ -- 36
+		inputs = { -- 36
+			"item/food/drink/shake", -- 36
+			"item/food/abortion" -- 36
+		}, -- 36
+		output = "item/food/eyeballnoodles" -- 37
+	} -- 35
 } -- 6
-local recipeKey -- 29
-recipeKey = function(a, b) -- 29
-	if a > b then -- 30
-		a, b = b, a -- 30
-	end -- 30
-	return tostring(a) .. "|" .. tostring(b) -- 31
-end -- 29
-local RecipeOutputs = { } -- 34
-local IsInput = { } -- 35
-local GetRecipe -- 36
-GetRecipe = function(itemA, itemB) -- 36
-	return RecipeOutputs[recipeKey(itemA, itemB)] -- 36
-end -- 36
-for _index_0 = 1, #recipes do -- 38
-	local recipe = recipes[_index_0] -- 38
-	local a, b = recipe.inputs[1], recipe.inputs[2] -- 39
-	local key = recipeKey(a, b) -- 40
-	RecipeOutputs[key] = recipe.output -- 41
-	IsInput[a] = true -- 42
-	IsInput[b] = true -- 43
-end -- 43
-local Cooker -- 45
-do -- 45
-	local _class_0 -- 45
-	local _parent_0 = ENTITY -- 45
-	local _base_0 = { -- 45
-		Base = "base_anim", -- 47
-		Type = "anim", -- 48
-		PrintName = "Cooker", -- 49
-		Interesting = true, -- 50
-		Category = "EvilRP: Machines", -- 52
-		Spawnable = true, -- 53
-		AdminSpawnable = true, -- 55
-		Pocketable = false, -- 57
-		SetupDataTables = function(self) -- 57
-			self:NetworkVar("String", "Producing") -- 58
-			self:NetworkVar("String", "Input1") -- 59
-			self:NetworkVar("String", "Input2") -- 60
-			self:NetworkVar("Int", "ProductionStart") -- 61
-			self:NetworkVar("Int", "ProductionEnd") -- 62
-			self:NetworkVar("Int", "SoundLoop") -- 63
-			self:NetworkVar("Int", "Rust") -- 64
-			self:NetworkVar("Int", "Heat") -- 65
-			return self:NetworkVar("Entity", "Worker") -- 66
-		end, -- 68
-		Initialize = function(self) -- 68
-			if CLIENT then -- 69
-				return -- 69
-			end -- 69
-			self:SetUseType(SIMPLE_USE) -- 70
-			self:SetModel("models/props_wasteland/kitchen_stove002a.mdl") -- 71
-			self:PhysicsInit(SOLID_VPHYSICS) -- 72
-			self:PhysWake() -- 73
-			self:SetHeat(0) -- 74
-			self.NextHeat = 0 -- 75
-		end, -- 77
-		Think = function(self) -- 77
-			if CLIENT then -- 78
-				return -- 78
-			end -- 78
-			local pend = self:GetProductionEnd() -- 79
-			local ct = CurTime() -- 80
-			local rust = self:GetRust() -- 81
-			if pend > 0 and ct >= pend then -- 82
-				local prod = scripted_ents.Get(self:GetProducing()) -- 83
-				self:SetRust(math.min(100, rust + (prod.CookTime))) -- 84
-				self:EmitSound("buttons/lever6.wav") -- 85
-				self:StopLoopingSound(self:GetSoundLoop()) -- 86
-				local worker = self:GetWorker() -- 87
-				if worker and IsValid(worker) then -- 88
-					local start = self:GetPos() -- 89
-					local endpos = start + (self:GetUp() * 128) + (self:GetForward() * 24) -- 90
-					local tr = util.TraceLine({ -- 92
-						start = start, -- 92
-						endpos = endpos, -- 93
-						filter = self, -- 94
-						mask = MASK_NPCWORLDSTATIC -- 95
-					}) -- 91
-					if prod then -- 97
-						local sp = ents.Create(self:GetProducing()) -- 98
-						sp:SetPos(tr.HitPos - (self:GetUp() * 40) + (self:GetForward() * 38) - (self:GetRight() * 2)) -- 100
-						sp:Spawn() -- 101
-						sp:Activate() -- 102
-					end -- 97
-					self:SetWorker(nil) -- 105
-				end -- 88
-				self:SetProducing("") -- 106
-				self:SetInput1("") -- 107
-				self:SetInput2("") -- 108
-				self:SetProductionStart(0) -- 109
-				return self:SetProductionEnd(0) -- 110
-			end -- 82
-		end, -- 113
-		Touch = function(self, what) -- 113
-			if SERVER then -- 114
-				if self:GetProductionEnd() > 0 then -- 115
-					return -- 115
-				end -- 115
-				if not IsInput[what:GetClass()] then -- 116
-					return -- 116
-				end -- 116
-				if what.Processed then -- 117
-					return -- 117
-				end -- 117
-				local submitter = what:GetNWEntity("evilrp_submitter") -- 118
-				if not (submitter and IsValid(submitter)) then -- 119
-					return -- 119
-				end -- 119
-				if self:GetInput1() == "" then -- 121
-					self:SetInput1(what:GetClass()) -- 122
-					what.Processed = true -- 123
-					if what.Submitted then -- 124
-						what:Submitted() -- 124
-					end -- 124
-					if what.SubmitSound then -- 125
-						what:EmitSound(what.SubmitSound) -- 125
-					end -- 125
-					what:Remove() -- 126
+local recipeKey -- 41
+recipeKey = function(a, b) -- 41
+	if a > b then -- 42
+		a, b = b, a -- 42
+	end -- 42
+	return tostring(a) .. "|" .. tostring(b) -- 43
+end -- 41
+local RecipeOutputs = { } -- 46
+local IsInput = { } -- 47
+local GetRecipe -- 48
+GetRecipe = function(itemA, itemB) -- 48
+	return RecipeOutputs[recipeKey(itemA, itemB)] -- 48
+end -- 48
+for _index_0 = 1, #recipes do -- 50
+	local recipe = recipes[_index_0] -- 50
+	local a, b = recipe.inputs[1], recipe.inputs[2] -- 51
+	local key = recipeKey(a, b) -- 52
+	RecipeOutputs[key] = recipe.output -- 53
+	IsInput[a] = true -- 54
+	IsInput[b] = true -- 55
+end -- 55
+local Cooker -- 57
+do -- 57
+	local _class_0 -- 57
+	local _parent_0 = ENTITY -- 57
+	local _base_0 = { -- 57
+		Base = "base_anim", -- 59
+		Type = "anim", -- 60
+		PrintName = "Cooker", -- 61
+		Interesting = true, -- 62
+		Category = "EvilRP: Machines", -- 64
+		Spawnable = true, -- 65
+		AdminSpawnable = true, -- 67
+		Pocketable = false, -- 69
+		SetupDataTables = function(self) -- 69
+			self:NetworkVar("String", "Producing") -- 70
+			self:NetworkVar("String", "Input1") -- 71
+			self:NetworkVar("String", "Input2") -- 72
+			self:NetworkVar("Int", "ProductionStart") -- 73
+			self:NetworkVar("Int", "ProductionEnd") -- 74
+			self:NetworkVar("Int", "SoundLoop") -- 75
+			self:NetworkVar("Int", "Rust") -- 76
+			self:NetworkVar("Int", "Heat") -- 77
+			return self:NetworkVar("Entity", "Worker") -- 78
+		end, -- 80
+		Initialize = function(self) -- 80
+			if CLIENT then -- 81
+				return -- 81
+			end -- 81
+			self:SetUseType(SIMPLE_USE) -- 82
+			self:SetModel("models/props_wasteland/kitchen_stove002a.mdl") -- 83
+			self:PhysicsInit(SOLID_VPHYSICS) -- 84
+			self:PhysWake() -- 85
+			self:SetHeat(0) -- 86
+			self.NextHeat = 0 -- 87
+		end, -- 89
+		Think = function(self) -- 89
+			if CLIENT then -- 90
+				return -- 90
+			end -- 90
+			local pend = self:GetProductionEnd() -- 91
+			local ct = CurTime() -- 92
+			local rust = self:GetRust() -- 93
+			if pend > 0 and ct >= pend then -- 94
+				local prod = scripted_ents.Get(self:GetProducing()) -- 95
+				self:SetRust(math.min(100, rust + (prod.CookTime))) -- 96
+				self:EmitSound("buttons/lever6.wav") -- 97
+				self:StopLoopingSound(self:GetSoundLoop()) -- 98
+				local worker = self:GetWorker() -- 99
+				if worker and IsValid(worker) then -- 100
+					local start = self:GetPos() -- 101
+					local endpos = start + (self:GetUp() * 128) + (self:GetForward() * 24) -- 102
+					local tr = util.TraceLine({ -- 104
+						start = start, -- 104
+						endpos = endpos, -- 105
+						filter = self, -- 106
+						mask = MASK_NPCWORLDSTATIC -- 107
+					}) -- 103
+					if prod then -- 109
+						local sp = ents.Create(self:GetProducing()) -- 110
+						sp:SetPos(tr.HitPos - (self:GetUp() * 40) + (self:GetForward() * 38) - (self:GetRight() * 2)) -- 112
+						sp:Spawn() -- 113
+						sp:Activate() -- 114
+					end -- 109
+					self:SetWorker(nil) -- 117
+				end -- 100
+				self:SetProducing("") -- 118
+				self:SetInput1("") -- 119
+				self:SetInput2("") -- 120
+				self:SetProductionStart(0) -- 121
+				return self:SetProductionEnd(0) -- 122
+			end -- 94
+		end, -- 125
+		Touch = function(self, what) -- 125
+			if SERVER then -- 126
+				if self:GetProductionEnd() > 0 then -- 127
 					return -- 127
-				end -- 121
-				local prod = GetRecipe(self:GetInput1(), what:GetClass()) -- 128
-				if not prod then -- 129
+				end -- 127
+				if not IsInput[what:GetClass()] then -- 128
+					return -- 128
+				end -- 128
+				if what.Processed then -- 129
 					return -- 129
 				end -- 129
-				self:SetInput2(what:GetClass()) -- 131
-				what.Processed = true -- 132
-				if what.Submitted then -- 133
-					what:Submitted() -- 133
+				local submitter = what:GetNWEntity("evilrp_submitter") -- 130
+				if not (submitter and IsValid(submitter)) then -- 131
+					return -- 131
+				end -- 131
+				if self:GetInput1() == "" then -- 133
+					self:SetInput1(what:GetClass()) -- 134
+					what.Processed = true -- 135
+					if what.Submitted then -- 136
+						what:Submitted() -- 136
+					end -- 136
+					if what.SubmitSound then -- 137
+						what:EmitSound(what.SubmitSound) -- 137
+					end -- 137
+					what:Remove() -- 138
+					return -- 139
 				end -- 133
-				if what.SubmitSound then -- 134
-					what:EmitSound(what.SubmitSound) -- 134
-				end -- 134
-				self:SetProducing(prod) -- 135
-				local item = scripted_ents.Get(prod) -- 137
-				local ct = CurTime() -- 138
-				self:SetProductionStart(ct) -- 139
-				local wait = item.CookTime * (1 + (self:GetRust() / 100)) -- 140
-				self:SetProductionEnd(ct + wait) -- 141
-				self:SetWorker(submitter) -- 142
-				self:EmitSound("ambient/machines/machine1_hit1.wav") -- 143
-				self:SetSoundLoop(self:StartLoopingSound("ambient/machines/machine_whine1.wav")) -- 144
-				local ed = EffectData() -- 145
-				ed:SetStart(self:GetPos()) -- 147
-				ed:SetOrigin(self:GetPos()) -- 148
-				ed:SetScale(2) -- 149
-				util.Effect("StunstickImpact", ed, true, true) -- 150
-				return what:Remove() -- 151
-			end -- 114
-		end, -- 153
-		OnTakeDamage = function(self, dmg) -- 153
-			local attacker = dmg:GetAttacker() -- 154
-			if attacker and IsValid(attacker) then -- 155
-				if attacker:IsPlayer() then -- 156
-					local _exp_0 = attacker:Team() -- 157
-					if TEAM_SANITAR == _exp_0 then -- 158
-						local rust = self:GetRust() -- 159
-						self:SetRust(math.max(0, rust - (dmg:GetDamage() * .2))) -- 160
-						local reward = math.floor(math.abs(rust - self:GetRust()) * 2.3) -- 161
-						if reward > 0 then -- 162
-							return attacker:AddMoney(reward, "The Cleansing") -- 163
-						end -- 162
-					end -- 164
-				end -- 156
-			end -- 155
+				local prod = GetRecipe(self:GetInput1(), what:GetClass()) -- 140
+				if not prod then -- 141
+					return -- 141
+				end -- 141
+				self:SetInput2(what:GetClass()) -- 143
+				what.Processed = true -- 144
+				if what.Submitted then -- 145
+					what:Submitted() -- 145
+				end -- 145
+				if what.SubmitSound then -- 146
+					what:EmitSound(what.SubmitSound) -- 146
+				end -- 146
+				self:SetProducing(prod) -- 147
+				local item = scripted_ents.Get(prod) -- 149
+				local ct = CurTime() -- 150
+				self:SetProductionStart(ct) -- 151
+				local wait = item.CookTime * (1 + (self:GetRust() / 100)) -- 152
+				self:SetProductionEnd(ct + wait) -- 153
+				self:SetWorker(submitter) -- 154
+				self:EmitSound("ambient/machines/machine1_hit1.wav") -- 155
+				self:SetSoundLoop(self:StartLoopingSound("ambient/machines/machine_whine1.wav")) -- 156
+				local ed = EffectData() -- 157
+				ed:SetStart(self:GetPos()) -- 159
+				ed:SetOrigin(self:GetPos()) -- 160
+				ed:SetScale(2) -- 161
+				util.Effect("StunstickImpact", ed, true, true) -- 162
+				return what:Remove() -- 163
+			end -- 126
 		end, -- 165
-		Draw = function(self) -- 165
-			self:DrawModel() -- 166
-			return self:Render3D2D() -- 167
-		end, -- 169
-		HUDRender = function(self) -- 169
-			local ct = { } -- 170
-			ct[#ct + 1] = self.PrintName -- 171
-			ct[#ct + 1] = { -- 173
-				text = "In the hands of a good cook, edible things can come out of this.", -- 173
-				font = "Spleen_Label_Small" -- 174
-			} -- 172
-			ct[#ct + 1] = { -- 177
-				text = "It can cook much more than just food.", -- 177
-				font = "Spleen_Label_Small" -- 178
-			} -- 176
-			return ct -- 180
-		end, -- 182
-		Render3D2D = function(self) -- 182
-			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 183
-			if not (dist_sqr < 128 ^ 2) then -- 184
-				return -- 184
-			end -- 184
-			local font = "Spleen_Label" -- 185
-			local desp = lp:GetDespair() * 0.01 -- 186
-			local ct = CurTime() -- 187
-			local pos = self:GetPos() + (self:GetUp() * 80) + (self:GetForward() * 20) + (self:GetRight() * 15) -- 188
-			local ang = self:GetAngles() -- 189
-			ang:RotateAroundAxis(ang:Up(), -90) -- 191
-			ang:RotateAroundAxis(ang:Forward(), 90) -- 192
-			ang:RotateAroundAxis(ang:Right(), 180) -- 193
-			cam.Start3D2D(pos, ang, 0.1) -- 195
-			surface.SetMaterial(noise) -- 197
-			surface.SetDrawColor(Color(255, 255, 255, 255)) -- 198
-			surface.DrawTexturedRect(0, 0, 152, 38) -- 199
-			local txt = "Cooker" -- 201
-			local txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 202
-			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 203
-			cam.End3D2D() -- 205
-			pos = self:GetPos() + (self:GetUp() * 72) + (self:GetForward() * 16) + (self:GetRight() * 8) -- 207
-			cam.Start3D2D(pos, ang, 0.1) -- 208
-			surface.SetMaterial(noise2) -- 210
-			surface.SetDrawColor(Color(255, 191, 0, 255)) -- 211
-			surface.DrawTexturedRect(0, 0, 152, 38) -- 212
-			txt = "Feed me" -- 214
-			local input -- 215
-			if self:GetInput1() ~= "" then -- 215
-				input = scripted_ents.Get(self:GetInput1()) -- 215
-			end -- 215
-			if input then -- 216
-				txt = input.PrintName -- 216
-			end -- 216
-			input = nil -- 217
-			txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 218
-			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 219
-			cam.End3D2D() -- 221
-			pos = self:GetPos() + (self:GetUp() * 37) + (self:GetForward() * 16) + (self:GetRight() * 8) -- 223
-			cam.Start3D2D(pos, ang, 0.1) -- 224
-			surface.SetMaterial(noise2) -- 226
-			surface.SetDrawColor(Color(255, 191, 0, 255)) -- 227
-			surface.DrawTexturedRect(0, 0, 152, 38) -- 228
-			txt = "Feed me" -- 230
-			if self:GetInput2() ~= "" then -- 231
-				input = scripted_ents.Get(self:GetInput2()) -- 231
-			end -- 231
-			if input then -- 232
-				txt = input.PrintName -- 232
-			end -- 232
-			input = nil -- 233
-			txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 234
-			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 235
-			cam.End3D2D() -- 237
-			pos = self:GetPos() + (self:GetUp() * 80) + (self:GetForward() * 20) + (self:GetRight() * -1) -- 239
-			cam.Start3D2D(pos, ang, 0.1) -- 240
-			local rust = self:GetRust() -- 241
-			txt = tostring(rust) .. "% rust" -- 242
-			if rust < 0 then -- 243
-				txt = "give me purpose" -- 244
-			elseif rust >= 100 then -- 245
-				txt = "100% ROTTEN" -- 246
+		OnTakeDamage = function(self, dmg) -- 165
+			local attacker = dmg:GetAttacker() -- 166
+			if attacker and IsValid(attacker) then -- 167
+				if attacker:IsPlayer() then -- 168
+					local _exp_0 = attacker:Team() -- 169
+					if TEAM_SANITAR == _exp_0 then -- 170
+						local rust = self:GetRust() -- 171
+						self:SetRust(math.max(0, rust - (dmg:GetDamage() * .2))) -- 172
+						local reward = math.floor(math.abs(rust - self:GetRust()) * 2.3) -- 173
+						if reward > 0 then -- 174
+							return attacker:AddMoney(reward, "The Cleansing") -- 175
+						end -- 174
+					end -- 176
+				end -- 168
+			end -- 167
+		end, -- 177
+		Draw = function(self) -- 177
+			self:DrawModel() -- 178
+			return self:Render3D2D() -- 179
+		end, -- 181
+		HUDRender = function(self) -- 181
+			local ct = { } -- 182
+			ct[#ct + 1] = self.PrintName -- 183
+			ct[#ct + 1] = { -- 185
+				text = "In the hands of a good cook, edible things can come out of this.", -- 185
+				font = "Spleen_Label_Small" -- 186
+			} -- 184
+			ct[#ct + 1] = { -- 189
+				text = "It can cook much more than just food.", -- 189
+				font = "Spleen_Label_Small" -- 190
+			} -- 188
+			return ct -- 192
+		end, -- 194
+		Render3D2D = function(self) -- 194
+			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 195
+			if not (dist_sqr < 128 ^ 2) then -- 196
+				return -- 196
+			end -- 196
+			local font = "Spleen_Label" -- 197
+			local desp = lp:GetDespair() * 0.01 -- 198
+			local ct = CurTime() -- 199
+			local pos = self:GetPos() + (self:GetUp() * 80) + (self:GetForward() * 20) + (self:GetRight() * 15) -- 200
+			local ang = self:GetAngles() -- 201
+			ang:RotateAroundAxis(ang:Up(), -90) -- 203
+			ang:RotateAroundAxis(ang:Forward(), 90) -- 204
+			ang:RotateAroundAxis(ang:Right(), 180) -- 205
+			cam.Start3D2D(pos, ang, 0.1) -- 207
+			surface.SetMaterial(noise) -- 209
+			surface.SetDrawColor(Color(255, 255, 255, 255)) -- 210
+			surface.DrawTexturedRect(0, 0, 152, 38) -- 211
+			local txt = "Cooker" -- 213
+			local txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 214
+			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 215
+			cam.End3D2D() -- 217
+			pos = self:GetPos() + (self:GetUp() * 72) + (self:GetForward() * 16) + (self:GetRight() * 8) -- 219
+			cam.Start3D2D(pos, ang, 0.1) -- 220
+			surface.SetMaterial(noise2) -- 222
+			surface.SetDrawColor(Color(255, 191, 0, 255)) -- 223
+			surface.DrawTexturedRect(0, 0, 152, 38) -- 224
+			txt = "Feed me" -- 226
+			local input -- 227
+			if self:GetInput1() ~= "" then -- 227
+				input = scripted_ents.Get(self:GetInput1()) -- 227
+			end -- 227
+			if input then -- 228
+				txt = input.PrintName -- 228
+			end -- 228
+			input = nil -- 229
+			txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 230
+			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 231
+			cam.End3D2D() -- 233
+			pos = self:GetPos() + (self:GetUp() * 37) + (self:GetForward() * 16) + (self:GetRight() * 8) -- 235
+			cam.Start3D2D(pos, ang, 0.1) -- 236
+			surface.SetMaterial(noise2) -- 238
+			surface.SetDrawColor(Color(255, 191, 0, 255)) -- 239
+			surface.DrawTexturedRect(0, 0, 152, 38) -- 240
+			txt = "Feed me" -- 242
+			if self:GetInput2() ~= "" then -- 243
+				input = scripted_ents.Get(self:GetInput2()) -- 243
 			end -- 243
-			local pend = self:GetProductionEnd() -- 247
-			local pstart = self:GetProductionStart() -- 248
-			local prod = self:GetProducing() -- 249
-			if pend > 0 and prod then -- 250
-				prod = scripted_ents.Get(prod) -- 251
-				local text -- 252
-				if prod then -- 252
-					text = prod.PrintName -- 252
-				end -- 252
-			end -- 250
-			surface.SetDrawColor(0, 0, 0, 255) -- 253
-			surface.DrawRect(0, 0, 140, 38) -- 254
-			if pend > 0 then -- 255
-				local cur = ct - pstart -- 256
-				surface.SetDrawColor(0, 150 + (100 * math.cos(ct)), 0, 255) -- 257
-				surface.DrawRect(0, 0, 140 * (cur / (pend - pstart)), 38) -- 258
-			elseif rust >= 100 then -- 259
-				surface.SetDrawColor(150 + (100 * math.cos(ct)), 0, 0, 255) -- 260
-				surface.DrawRect(0, 0, 140 * (rust / 100), 38) -- 261
-			else -- 263
-				surface.SetDrawColor(147, 58 + (2 * math.cos(ct)), 22, 255) -- 263
-				surface.DrawRect(0, 0, 140 * (rust / 100), 38) -- 264
+			if input then -- 244
+				txt = input.PrintName -- 244
+			end -- 244
+			input = nil -- 245
+			txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 246
+			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 247
+			cam.End3D2D() -- 249
+			pos = self:GetPos() + (self:GetUp() * 80) + (self:GetForward() * 20) + (self:GetRight() * -1) -- 251
+			cam.Start3D2D(pos, ang, 0.1) -- 252
+			local rust = self:GetRust() -- 253
+			txt = tostring(rust) .. "% rust" -- 254
+			if rust < 0 then -- 255
+				txt = "give me purpose" -- 256
+			elseif rust >= 100 then -- 257
+				txt = "100% ROTTEN" -- 258
 			end -- 255
-			txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 265
-			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 266
-			return cam.End3D2D() -- 267
-		end -- 45
-	} -- 45
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 268
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 45
-			_base_0[_key_0] = _val_0 -- 45
-		end -- 45
-	end -- 268
-	if _base_0.__index == nil then -- 45
-		_base_0.__index = _base_0 -- 45
-	end -- 268
-	setmetatable(_base_0, _parent_0.__base) -- 45
-	_class_0 = setmetatable({ -- 45
-		__init = function(self, ...) -- 45
-			return _class_0.__parent.__init(self, ...) -- 45
-		end, -- 45
-		__base = _base_0, -- 45
-		__name = "Cooker", -- 45
-		__parent = _parent_0 -- 45
-	}, { -- 45
-		__index = function(cls, name) -- 45
-			local val = rawget(_base_0, name) -- 45
-			if val == nil then -- 45
-				local parent = rawget(cls, "__parent") -- 45
-				if parent then -- 45
-					return parent[name] -- 45
-				end -- 45
-			else -- 45
-				return val -- 45
-			end -- 45
-		end, -- 45
-		__call = function(cls, ...) -- 45
-			local _self_0 = setmetatable({ }, _base_0) -- 45
-			cls.__init(_self_0, ...) -- 45
-			return _self_0 -- 45
-		end -- 45
-	}) -- 45
-	_base_0.__class = _class_0 -- 45
-	if _parent_0.__inherited then -- 45
-		_parent_0.__inherited(_parent_0, _class_0) -- 45
-	end -- 45
-	Cooker = _class_0 -- 45
-	return _class_0 -- 268
-end -- 268
+			local pend = self:GetProductionEnd() -- 259
+			local pstart = self:GetProductionStart() -- 260
+			local prod = self:GetProducing() -- 261
+			if pend > 0 and prod then -- 262
+				prod = scripted_ents.Get(prod) -- 263
+				local text -- 264
+				if prod then -- 264
+					text = prod.PrintName -- 264
+				end -- 264
+			end -- 262
+			surface.SetDrawColor(0, 0, 0, 255) -- 265
+			surface.DrawRect(0, 0, 140, 38) -- 266
+			if pend > 0 then -- 267
+				local cur = ct - pstart -- 268
+				surface.SetDrawColor(0, 150 + (100 * math.cos(ct)), 0, 255) -- 269
+				surface.DrawRect(0, 0, 140 * (cur / (pend - pstart)), 38) -- 270
+			elseif rust >= 100 then -- 271
+				surface.SetDrawColor(150 + (100 * math.cos(ct)), 0, 0, 255) -- 272
+				surface.DrawRect(0, 0, 140 * (rust / 100), 38) -- 273
+			else -- 275
+				surface.SetDrawColor(147, 58 + (2 * math.cos(ct)), 22, 255) -- 275
+				surface.DrawRect(0, 0, 140 * (rust / 100), 38) -- 276
+			end -- 267
+			txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 277
+			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 278
+			return cam.End3D2D() -- 279
+		end -- 57
+	} -- 57
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 280
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 57
+			_base_0[_key_0] = _val_0 -- 57
+		end -- 57
+	end -- 280
+	if _base_0.__index == nil then -- 57
+		_base_0.__index = _base_0 -- 57
+	end -- 280
+	setmetatable(_base_0, _parent_0.__base) -- 57
+	_class_0 = setmetatable({ -- 57
+		__init = function(self, ...) -- 57
+			return _class_0.__parent.__init(self, ...) -- 57
+		end, -- 57
+		__base = _base_0, -- 57
+		__name = "Cooker", -- 57
+		__parent = _parent_0 -- 57
+	}, { -- 57
+		__index = function(cls, name) -- 57
+			local val = rawget(_base_0, name) -- 57
+			if val == nil then -- 57
+				local parent = rawget(cls, "__parent") -- 57
+				if parent then -- 57
+					return parent[name] -- 57
+				end -- 57
+			else -- 57
+				return val -- 57
+			end -- 57
+		end, -- 57
+		__call = function(cls, ...) -- 57
+			local _self_0 = setmetatable({ }, _base_0) -- 57
+			cls.__init(_self_0, ...) -- 57
+			return _self_0 -- 57
+		end -- 57
+	}) -- 57
+	_base_0.__class = _class_0 -- 57
+	if _parent_0.__inherited then -- 57
+		_parent_0.__inherited(_parent_0, _class_0) -- 57
+	end -- 57
+	Cooker = _class_0 -- 57
+	return _class_0 -- 280
+end -- 280

@@ -447,28 +447,29 @@ do -- 266
 	local _base_0 = { -- 266
 		PrintName = "Tools Crate", -- 268
 		Model = "models/items/ammocrate_ar2.mdl", -- 270
-		LootMax = 7, -- 271
-		TimeToUse = 6, -- 273
-		AccumulateInterval = 540, -- 275
-		LootTable = { -- 276
-			"evilrp_melee/pipe", -- 276
-			"evilrp_melee/pipe", -- 277
+		Description = "A old crate that was once filled with tools, hopefully some were left behind for you.", -- 272
+		LootMax = 7, -- 273
+		TimeToUse = 6, -- 275
+		AccumulateInterval = 540, -- 277
+		LootTable = { -- 278
 			"evilrp_melee/pipe", -- 278
-			"evilrp_melee/pot", -- 279
-			"item/food/boot", -- 280
-			"trash/bottle", -- 281
-			"trash/bottle/fearbeer", -- 282
-			"item/food/paper" -- 283
+			"evilrp_melee/pipe", -- 279
+			"evilrp_melee/pipe", -- 280
+			"evilrp_melee/pot", -- 281
+			"item/food/boot", -- 282
+			"trash/bottle", -- 283
+			"trash/bottle/fearbeer", -- 284
+			"item/food/paper" -- 285
 		} -- 266
 	} -- 266
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 283
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 285
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 266
 			_base_0[_key_0] = _val_0 -- 266
 		end -- 266
-	end -- 283
+	end -- 285
 	if _base_0.__index == nil then -- 266
 		_base_0.__index = _base_0 -- 266
-	end -- 283
+	end -- 285
 	setmetatable(_base_0, _parent_0.__base) -- 266
 	_class_0 = setmetatable({ -- 266
 		__init = function(self, ...) -- 266
@@ -500,80 +501,81 @@ do -- 266
 		_parent_0.__inherited(_parent_0, _class_0) -- 266
 	end -- 266
 	Crate = _class_0 -- 266
-end -- 283
-local Locker -- 286
-do -- 286
-	local _class_0 -- 286
-	local _parent_0 = Lootable -- 286
-	local _base_0 = { -- 286
-		PrintName = "Antique Locker", -- 289
-		Description = "A locker, washed up from some ancient, forgotten battle. ", -- 291
-		Model = "models/props_c17/lockers001a.mdl", -- 292
-		LootMax = 8, -- 293
-		TimeToUse = 12, -- 295
-		AccumulateInterval = 360, -- 297
-		LootTable = { -- 298
-			"evilrp_weapon/obrez", -- 298
-			"item/food/paper", -- 299
-			"item/food/paper", -- 300
-			"item/food/boot", -- 301
-			"item/food/boot", -- 302
+end -- 285
+local Locker -- 288
+do -- 288
+	local _class_0 -- 288
+	local _parent_0 = Lootable -- 288
+	local _base_0 = { -- 288
+		PrintName = "Antique Locker", -- 291
+		Description = "A locker, washed up from some ancient, forgotten battle. ", -- 293
+		Model = "models/props_c17/lockers001a.mdl", -- 294
+		LootMax = 8, -- 295
+		TimeToUse = 12, -- 297
+		AccumulateInterval = 360, -- 299
+		LootTable = { -- 300
+			"evilrp_weapon/obrez", -- 300
+			"item/food/paper", -- 301
+			"item/food/paper", -- 302
 			"item/food/boot", -- 303
-			"item/drug/rotmelange", -- 304
-			"trash/bottle", -- 305
-			"trash/bottle", -- 306
+			"item/food/boot", -- 304
+			"item/food/boot", -- 305
+			"item/drug/rotmelange", -- 306
 			"trash/bottle", -- 307
-			"trash/plastic/shake", -- 308
-			"trash/plastic/shake", -- 309
-			"trash/plastic/pills", -- 310
-			"trash/plastic/bleach", -- 311
-			"evilrp_weapon/greaser", -- 312
-			"item/food/slopskull", -- 313
-			"item/food/slopskull", -- 314
-			"item/food/slopskull", -- 315
-			"item/food/ribbone", -- 316
-			"item/food/ribbone", -- 317
-			"item/food/ribbone" -- 318
-		} -- 286
-	} -- 286
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 318
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 286
-			_base_0[_key_0] = _val_0 -- 286
-		end -- 286
-	end -- 318
-	if _base_0.__index == nil then -- 286
-		_base_0.__index = _base_0 -- 286
-	end -- 318
-	setmetatable(_base_0, _parent_0.__base) -- 286
-	_class_0 = setmetatable({ -- 286
-		__init = function(self, ...) -- 286
-			return _class_0.__parent.__init(self, ...) -- 286
-		end, -- 286
-		__base = _base_0, -- 286
-		__name = "Locker", -- 286
-		__parent = _parent_0 -- 286
-	}, { -- 286
-		__index = function(cls, name) -- 286
-			local val = rawget(_base_0, name) -- 286
-			if val == nil then -- 286
-				local parent = rawget(cls, "__parent") -- 286
-				if parent then -- 286
-					return parent[name] -- 286
-				end -- 286
-			else -- 286
-				return val -- 286
-			end -- 286
-		end, -- 286
-		__call = function(cls, ...) -- 286
-			local _self_0 = setmetatable({ }, _base_0) -- 286
-			cls.__init(_self_0, ...) -- 286
-			return _self_0 -- 286
-		end -- 286
-	}) -- 286
-	_base_0.__class = _class_0 -- 286
-	if _parent_0.__inherited then -- 286
-		_parent_0.__inherited(_parent_0, _class_0) -- 286
-	end -- 286
-	Locker = _class_0 -- 286
-	return _class_0 -- 318
-end -- 318
+			"trash/bottle", -- 308
+			"item/food/drink/fearbeer", -- 309
+			"item/food/drink/fearbeer", -- 310
+			"trash/plastic/shake", -- 311
+			"trash/plastic/shake", -- 312
+			"trash/plastic/pills", -- 313
+			"trash/plastic/bleach", -- 314
+			"evilrp_weapon/greaser", -- 315
+			"item/food/slopskull", -- 316
+			"item/food/slopskull", -- 317
+			"item/food/slopskull", -- 318
+			"item/food/ribbone", -- 319
+			"item/food/ribbone", -- 320
+			"item/food/ribbone" -- 321
+		} -- 288
+	} -- 288
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 321
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 288
+			_base_0[_key_0] = _val_0 -- 288
+		end -- 288
+	end -- 321
+	if _base_0.__index == nil then -- 288
+		_base_0.__index = _base_0 -- 288
+	end -- 321
+	setmetatable(_base_0, _parent_0.__base) -- 288
+	_class_0 = setmetatable({ -- 288
+		__init = function(self, ...) -- 288
+			return _class_0.__parent.__init(self, ...) -- 288
+		end, -- 288
+		__base = _base_0, -- 288
+		__name = "Locker", -- 288
+		__parent = _parent_0 -- 288
+	}, { -- 288
+		__index = function(cls, name) -- 288
+			local val = rawget(_base_0, name) -- 288
+			if val == nil then -- 288
+				local parent = rawget(cls, "__parent") -- 288
+				if parent then -- 288
+					return parent[name] -- 288
+				end -- 288
+			else -- 288
+				return val -- 288
+			end -- 288
+		end, -- 288
+		__call = function(cls, ...) -- 288
+			local _self_0 = setmetatable({ }, _base_0) -- 288
+			cls.__init(_self_0, ...) -- 288
+			return _self_0 -- 288
+		end -- 288
+	}) -- 288
+	_base_0.__class = _class_0 -- 288
+	if _parent_0.__inherited then -- 288
+		_parent_0.__inherited(_parent_0, _class_0) -- 288
+	end -- 288
+	Locker = _class_0 -- 288
+	return _class_0 -- 321
+end -- 321

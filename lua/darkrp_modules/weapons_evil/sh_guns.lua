@@ -686,10 +686,10 @@ do -- 348
 			Damage = 40, -- 371
 			Delay = 1.25, -- 372
 			Range = 300, -- 374
-			Accuracy = 10, -- 375
+			Accuracy = 20, -- 375
 			RangeModifier = 0.95, -- 377
 			Recoil = { -- 380
-				MinAng = Angle(11, -6.2, 0), -- 380
+				MinAng = Angle(15 - 6.2, 0), -- 380
 				MaxAng = Angle(20, 6.2, 0), -- 381
 				Punch = 0.95, -- 382
 				Ratio = 0.2 -- 383
