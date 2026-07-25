@@ -304,15 +304,10 @@ class Crate extends Lootable -- this is for workers to get tools at the beginnin
     * "trash/bottle"
     * "trash/bottle/fearbeer"
     * "item/food/paper"
-    * "item/food/paper"
-    * "item/food/paper"
     * "trash/plastic/bleach"
     * "item/loot/rustkill"
     * "item/loot/rustkill"
-    * "item/loot/rustkill"
-    * "item/loot/rustkill"
-    * "item/loot/rustkill"
-    * "item/loot/rustkill"
+    
 
 
 class Locker extends Lootable -- for the outsiders to loot to use against or sell for the city ~ cinnamon

@@ -204,7 +204,7 @@ class BootSoup extends Food
   HealthAdd: -5
   Hunger: -40
   Thirst: -4
-  Despair: 25
+  Despair: -5
   Description: "Formerly only filled with slop, now comes with 'vegan-meat'!"
   CookTime: 13
 
@@ -220,7 +220,7 @@ class MeatLoaf extends Food
   Model: Model"models/props_junk/garbage_takeoutcarton001a.mdl"
   Hunger: -40
   Thirst: -9
-  Despair: 4
+  Despair: -20
   Description: "Delicious meatloaf, a favorite of many soldiers."
   CookTime: 15
 
@@ -349,8 +349,8 @@ class Drink extends Food
 class FearBeer extends Drink
   PrintName: "Fear Beer"
   Model: Model"models/props_junk/garbage_glassbottle001a.mdl"
-  Thirst: -12
-  Despair: -15
+  Thirst: -25
+  Despair: -30
   Description: "A bottle of foul off-yellow liquid.\n'BEER' is hand-written on the label."
 
   Price: 60
@@ -417,8 +417,8 @@ class FearBeer extends Drink
 class SmearBeer extends Drink
   PrintName: "Smear Beer"
   Model: Model"models/props_junk/garbage_glassbottle003a.mdl"
-  Thirst: -27
-  Despair: -35
+  Thirst: -45
+  Despair: -50
   Description: "A bottle of cloudy, greyish red booze.\nThe label is obscured with a smear of old blood."
 
   Price: 95
@@ -666,7 +666,7 @@ class SloppyRibs extends Food
   Model: Model"models/vel/evilwar/sloppyribs.mdl"
   Hunger: -28
   Thirst: -4
-  Despair: 5
+  Despair: -15
   Description: "Fresh ribs from an unknown source, now glazed in slop! \n They look delicious."
 
   CookTime: 10
@@ -681,9 +681,9 @@ class SloppyRibs extends Food
 class EyeballNoodles extends Food
   PrintName: "Eyeball Noodles"
   Model: Model"models/vel/evilwar/eyenoodle.mdl"
-  Hunger: -50
+  Hunger: -40
   Thirst: -20
-  Despair: 5
+  Despair: -20
   Description: "A traditional Lymphomian dish, usually served to go. \n The texture is an acquired taste."
 
   CookTime: 8

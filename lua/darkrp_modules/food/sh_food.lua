@@ -680,7 +680,7 @@ do -- 201
 		HealthAdd = -5, -- 205
 		Hunger = -40, -- 206
 		Thirst = -4, -- 207
-		Despair = 25, -- 208
+		Despair = -5, -- 208
 		Description = "Formerly only filled with slop, now comes with 'vegan-meat'!", -- 209
 		CookTime = 13, -- 211
 		Price = 20, -- 213
@@ -739,7 +739,7 @@ do -- 218
 		Model = Model("models/props_junk/garbage_takeoutcarton001a.mdl"), -- 221
 		Hunger = -40, -- 222
 		Thirst = -9, -- 223
-		Despair = 4, -- 224
+		Despair = -20, -- 224
 		Description = "Delicious meatloaf, a favorite of many soldiers.", -- 225
 		CookTime = 15, -- 227
 		Price = 100, -- 230
@@ -1216,8 +1216,8 @@ do -- 349
 	local _base_0 = { -- 349
 		PrintName = "Fear Beer", -- 351
 		Model = Model("models/props_junk/garbage_glassbottle001a.mdl"), -- 352
-		Thirst = -12, -- 353
-		Despair = -15, -- 354
+		Thirst = -25, -- 353
+		Despair = -30, -- 354
 		Description = "A bottle of foul off-yellow liquid.\n'BEER' is hand-written on the label.", -- 356
 		Price = 60, -- 358
 		TrashClass = "trash/bottle/fearbeer", -- 360
@@ -1356,8 +1356,8 @@ do -- 417
 	local _base_0 = { -- 417
 		PrintName = "Smear Beer", -- 419
 		Model = Model("models/props_junk/garbage_glassbottle003a.mdl"), -- 420
-		Thirst = -27, -- 421
-		Despair = -35, -- 422
+		Thirst = -45, -- 421
+		Despair = -50, -- 422
 		Description = "A bottle of cloudy, greyish red booze.\nThe label is obscured with a smear of old blood.", -- 424
 		Price = 95, -- 426
 		TrashClass = "trash/bottle", -- 428
@@ -2090,7 +2090,7 @@ do -- 664
 		Model = Model("models/vel/evilwar/sloppyribs.mdl"), -- 667
 		Hunger = -28, -- 668
 		Thirst = -4, -- 669
-		Despair = 5, -- 670
+		Despair = -15, -- 670
 		Description = "Fresh ribs from an unknown source, now glazed in slop! \n They look delicious.", -- 672
 		CookTime = 10, -- 674
 		Price = 115, -- 675
@@ -2147,9 +2147,9 @@ do -- 681
 	local _base_0 = { -- 681
 		PrintName = "Eyeball Noodles", -- 683
 		Model = Model("models/vel/evilwar/eyenoodle.mdl"), -- 684
-		Hunger = -50, -- 685
+		Hunger = -40, -- 685
 		Thirst = -20, -- 686
-		Despair = 5, -- 687
+		Despair = -20, -- 687
 		Description = "A traditional Lymphomian dish, usually served to go. \n The texture is an acquired taste.", -- 689
 		CookTime = 8, -- 691
 		Price = 130, -- 693
