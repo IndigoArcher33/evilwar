@@ -266,7 +266,9 @@ class Dumpster extends Lootable
 class Crate extends Lootable -- this is for workers to get tools at the beginning of a round ~ cinnamon
   PrintName: "Tools Crate" 
   Model: "models/items/ammocrate_ar2.mdl" 
-  
+
+  Description: "A old crate that was once filled with tools, hopefully some were left behind for you."
+
   LootMax: 7
   TimeToUse: 6
 
