@@ -66,61 +66,91 @@ EVIL_LOOT_POSITIONS = { -- 26
 			cls = "lootable/locker" -- 41
 		}, -- 39
 		{ -- 42
-			pos = Vector(-1369.443237, 791.270508, 18.443558), -- 42
-			ang = Angle(-0, -45, 0), -- 43
-			cls = "lootable/crate" -- 44
+			pos = Vector(-96, 311, -764.007935), -- 42
+			ang = Angle(-0, -0, 0), -- 43
+			cls = "lootable/locker" -- 44
 		}, -- 42
 		{ -- 45
-			pos = Vector(-1379.369263, 908.375488, 18.443558), -- 45
-			ang = Angle(-0, 45, 0), -- 46
-			cls = "lootable/crate" -- 47
-		} -- 45
+			pos = Vector(-40.7, 97.68, -799.5), -- 45
+			ang = Angle(-0, 180, 0), -- 46
+			cls = "lootable/cache" -- 47
+		}, -- 45
+		{ -- 48
+			pos = Vector(622.469421, -3962.344727, -59.953209), -- 48
+			ang = Angle(-19.168, 52.573, 4.997), -- 49
+			cls = "lootable/cache" -- 50
+		}, -- 48
+		{ -- 51
+			pos = Vector(-540.29, -2113.26, -995.44), -- 51
+			ang = Angle(-0, 0, 0), -- 52
+			cls = "lootable/chest" -- 53
+		}, -- 51
+		{ -- 54
+			pos = Vector(489.881622, -3148.358887, -803.429688), -- 54
+			ang = Angle(-0, -90, 0), -- 55
+			cls = "lootable/chest" -- 56
+		}, -- 54
+		{ -- 57
+			pos = Vector(-981.443359, -5135.492188, 73.638565), -- 57
+			ang = Angle(-15.135, -136.930, 2.269), -- 58
+			cls = "lootable/chest" -- 59
+		}, -- 57
+		{ -- 60
+			pos = Vector(-1369.443237, 791.270508, 18.443558), -- 60
+			ang = Angle(-0, -45, 0), -- 61
+			cls = "lootable/crate" -- 62
+		}, -- 60
+		{ -- 63
+			pos = Vector(-1379.369263, 908.375488, 18.443558), -- 63
+			ang = Angle(-0, 45, 0), -- 64
+			cls = "lootable/crate" -- 65
+		} -- 63
 	} -- 26
 } -- 25
-local EVIL_LOOT_REPLACEMENTS = { -- 51
-	["rp_liverfailure_kidneydagger"] = { -- 52
-		["models/props_junk/trashdumpster01a.mdl"] = "lootable/dumpster" -- 52
-	} -- 51
-} -- 50
-local create_loot -- 55
-create_loot = function() -- 55
-	local map = game.GetMap() -- 56
-	local _list_0 = ents.FindByClass("lootable/*") -- 57
-	for _index_0 = 1, #_list_0 do -- 57
-		local lootable = _list_0[_index_0] -- 57
-		if not lootable.leave_alone then -- 58
-			lootable:Remove() -- 58
-		end -- 58
-	end -- 58
-	if EVIL_LOOT_POSITIONS[map] then -- 59
-		local _list_1 = EVIL_LOOT_POSITIONS[map] -- 60
-		for _index_0 = 1, #_list_1 do -- 60
-			local v = _list_1[_index_0] -- 60
-			local sp = ents.Create(v.cls) -- 61
-			sp:SetPos(v.pos) -- 63
-			sp:SetAngles(v.ang) -- 64
-			sp:Spawn() -- 65
-			sp:Activate() -- 66
-			sp:GetPhysicsObject():EnableMotion(false) -- 67
-		end -- 67
-	end -- 59
-	if EVIL_LOOT_REPLACEMENTS[map] then -- 68
-		local _list_1 = ents.FindByClass("prop_dynamic") -- 69
-		for _index_0 = 1, #_list_1 do -- 69
-			local e = _list_1[_index_0] -- 69
-			local replacement = EVIL_LOOT_REPLACEMENTS[map][e:GetModel()] -- 70
-			if replacement then -- 71
-				local sp = ents.Create(replacement) -- 72
-				sp:SetPos(e:GetPos()) -- 74
-				sp:SetAngles(e:GetAngles()) -- 75
-				e:Remove() -- 76
-				sp:Spawn() -- 77
-				sp:Activate() -- 78
-				sp:GetPhysicsObject():EnableMotion(false) -- 79
-				sp.leave_alone = true -- 80
-			end -- 71
-		end -- 80
-	end -- 68
-	return -- 81
-end -- 55
-return hook.Add("InitPostEntity", "evilrp_create_loot", create_loot) -- 83
+local EVIL_LOOT_REPLACEMENTS = { -- 69
+	["rp_liverfailure_kidneydagger"] = { -- 70
+		["models/props_junk/trashdumpster01a.mdl"] = "lootable/dumpster" -- 70
+	} -- 69
+} -- 68
+local create_loot -- 73
+create_loot = function() -- 73
+	local map = game.GetMap() -- 74
+	local _list_0 = ents.FindByClass("lootable/*") -- 75
+	for _index_0 = 1, #_list_0 do -- 75
+		local lootable = _list_0[_index_0] -- 75
+		if not lootable.leave_alone then -- 76
+			lootable:Remove() -- 76
+		end -- 76
+	end -- 76
+	if EVIL_LOOT_POSITIONS[map] then -- 77
+		local _list_1 = EVIL_LOOT_POSITIONS[map] -- 78
+		for _index_0 = 1, #_list_1 do -- 78
+			local v = _list_1[_index_0] -- 78
+			local sp = ents.Create(v.cls) -- 79
+			sp:SetPos(v.pos) -- 81
+			sp:SetAngles(v.ang) -- 82
+			sp:Spawn() -- 83
+			sp:Activate() -- 84
+			sp:GetPhysicsObject():EnableMotion(false) -- 85
+		end -- 85
+	end -- 77
+	if EVIL_LOOT_REPLACEMENTS[map] then -- 86
+		local _list_1 = ents.FindByClass("prop_dynamic") -- 87
+		for _index_0 = 1, #_list_1 do -- 87
+			local e = _list_1[_index_0] -- 87
+			local replacement = EVIL_LOOT_REPLACEMENTS[map][e:GetModel()] -- 88
+			if replacement then -- 89
+				local sp = ents.Create(replacement) -- 90
+				sp:SetPos(e:GetPos()) -- 92
+				sp:SetAngles(e:GetAngles()) -- 93
+				e:Remove() -- 94
+				sp:Spawn() -- 95
+				sp:Activate() -- 96
+				sp:GetPhysicsObject():EnableMotion(false) -- 97
+				sp.leave_alone = true -- 98
+			end -- 89
+		end -- 98
+	end -- 86
+	return -- 99
+end -- 73
+return hook.Add("InitPostEntity", "evilrp_create_loot", create_loot) -- 101
