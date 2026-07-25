@@ -1,0 +1,107 @@
+class FoodRot extends SOUND
+  sound: ["weapons/bugbait/bugbait_squeeze#{i}.wav" for i=1,3]
+  level: SNDLVL_50dB
+
+class LootSound extends SOUND
+  sound: ["npc/barnacle/barnacle_pull#{i}.wav" for i=1,4]
+
+class Loot extends ITEM -- this is for items that aren't food, drinks, or drugs, will be very generic
+  SetupDataTables: =>
+    super!
+    @NetworkVar "Bool", "Rotten"
+
+  PrintName: "Loot"
+  Model: Model"models/props_junk/garbage_plasticbottle002a.mdl"
+  Category: "EvilRP: Loot"
+  Spawnable: true
+  Interesting: true
+
+  Sound: "LootSound"
+  SubmitSound: "LootSound"
+
+  Despair: 0
+  HealthAdd: 0 -- temp until we get a new health system
+  CookTime: 0 -- time this item takes to be cooked
+
+  OnUseFinish: (ply) =>
+    super ply
+
+class SpareAmmo extends Loot
+  PrintName: "Spare Ammo"
+  Model: Model"models/items/ammobox.mdl"
+  Description: "Some spare ammunition, should be enough for a mag."
+
+  Sound: "AmmoSound"
+
+  SuccessText: {
+    "loads some ammo."
+    "puts some bullets into a magazine, dropping a couple."
+    "puts some lead in their weapon."
+  }
+
+  FailText: {
+    "spills the ammo on the ground."
+    "forgets that bullets go inside the weapon."
+    "doesn't know how to load a weapon."
+    "looks stupid, spilling bullets everywhere."
+  }
+
+  FailSay: {
+    "Whoops"
+    "MY BULLETS!"
+    "FUCK!"
+    "DUDE!"
+  }
+
+  OnUseFinish: (ply) =>
+    super ply
+    wep = ply\GetActiveWeapon!
+    ply\EmitSound"items/ammopickup.wav"
+    if not IsValid(wep) or not wep.Primary or wep.Primary.Ammo == "" or wep.Primary.ClipSize <= 0
+      ply\ConCommand"say /me #{@FailText[math.random 1, #@FailText]}"
+      fail = @FailSay[math.random 1, #@FailSay]
+      
+      timer.Simple 0.7, -> -- apparently you can't call two "say" commands quickly, must be some spam protection
+        if IsValid(ply)
+          ply\ConCommand"say #{fail}"
+
+      @Trash! if not @PersistAfterEat
+      return
+    ammo = wep\Ammo1!
+    mag_max = wep.Primary.ClipSize * 4
+    if ammo >= mag_max
+      ply\Notify"<c=200,0,0>You're full."
+      net.Start"evilrp_jumpscare"
+      net.Send ply
+      ply\AddDespair 5
+      return
+    ply\ConCommand"say /me #{@SuccessText[math.random 1, #@SuccessText]}"
+    amt = wep.Primary.ClipSize
+    if ((ammo + amt) > mag_max)
+      rem = ammo + amt
+      rem -= mag_max
+      amt -= rem
+    ply\GiveAmmo amt, wep.Primary.Ammo
+    @Trash! if not @PersistAfterEat
+
+class Rustkill extends Loot
+  PrintName: "Rustkill"
+  Model: Model"models/props_junk/metalgascan.mdl"
+  Description: "A metal can filled with a derusting solution.\nIt is still sealed."
+  Rust: -20
+
+  Sound: "LootSound"
+
+  SuccessText: {
+    "spreads some Rustkill on a machine."
+    "grabs a can of Rustkill and sprays it over something."
+    "uses Rustkill to clean some rust off a machine."
+    "sprays some Rustkill, resisting the urge to drink it."
+  }
+
+
+
+
+
+
+
