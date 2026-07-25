@@ -36,6 +36,14 @@ recipes = {
     inputs: {"item/food/drink/shake", "item/food/abortion"}
     output: "item/food/eyeballnoodles"
   }
+  {
+    inputs: {"item/food/groundribs", "item/food/slopbowl"}
+    output: "item/food/chow"
+  }
+  {
+    inputs: {"item/food/ribbone", "item/food/ribbone"}
+    output: "item/food/groundribs"
+  }
 }
 
 recipeKey = (a, b) ->
@@ -86,6 +94,39 @@ class Cooker extends ENTITY
     @SetHeat 0
     @NextHeat = 0
 
+  Use: (ply) =>
+    return if CLIENT
+    if @GetInput1! ~= "" and @GetInput2! == "" and @GetProducing! == ""
+      ply\ConCommand"say /me takes something out of the cooker."
+      ply\Notify"<c=200,0,0>Uh oh.."
+      @EmitSound"npc/barnacle/barnacle_tongue_pull1.wav"
+      sp = ents.Create @GetInput1!
+      @SetInput1 ""
+      start = @GetPos!
+      endpos = start + (@GetUp! * 128) + (@GetForward! * 24)
+      tr = util.TraceLine{
+        :start
+        :endpos
+        filter: @
+        mask: MASK_NPCWORLDSTATIC
+      }
+      with sp
+        \SetPos tr.HitPos - (@GetUp! * 60) + (@GetForward! * 38) - (@GetRight! * 2)
+        \Spawn!
+        \Activate!
+      timer.Simple 0.5, ->
+        @EmitSound"npc/antlion/attack_single1.wav"
+        ply\Notify"<c=200,0,0> OUCH!"
+        dmg = DamageInfo!
+        with dmg
+          \SetDamage 10
+          \SetDamageType DMG_SLASH
+          \SetAttacker @
+          \SetInflictor @
+          \SetDamagePosition ply\EyePos!
+        ply\TakeDamageInfo dmg
+
+
   Think: =>
     return if CLIENT
     pend = @GetProductionEnd!
@@ -124,6 +165,19 @@ class Cooker extends ENTITY
 
   Touch: (what) =>
     if SERVER
+      if what.Rust
+        @SetRust math.Clamp(@GetRust! + what.Rust, 0, 100)
+        @EmitSound"ambient/machines/machine1_hit1.wav"
+        pos = what\GetPos!
+        ed = EffectData!
+        with ed
+          \SetOrigin pos
+          \SetScale 1
+          \SetMagnitude 1
+          \SetRadius 3
+        util.Effect "Sparks", ed
+        what\Trash!
+        return
       return if @GetProductionEnd! > 0
       return unless IsInput[what\GetClass!]
       return if what.Processed
