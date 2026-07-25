@@ -260,11 +260,31 @@ class SlopBowl extends Food
     "begrudgingly eats a spoonful of slop."
     "consumes slop." }
 
+class GroundRibs extends Food
+  PrintName: "Ground Ribs"
+  Model: Model"models/props_c17/metalPot001a.mdl"
+  Hunger: -10
+  Thirst: 5
+  Despair: 15
+  HealthAdd: -5
+  Description: "Human ribs, ground up into a fibrous powder.\nIt doesn't look edible yet."
+  CookTime: 5
+
+  Price: 30
+
+  UseText: {
+    "eats some ground ribs and spits them out."
+    "bleeds from a chunk of ground ribs."
+    "munches on some ground ribs, lacerating their throat."
+    "regrets putting rib powder in their mouth." }
+
+
+
 
 class Boot extends Food
   PrintName: "Boot"
   Model: Model"models/props_junk/Shoe001a.mdl"
-  AddHealth: -4
+  HealthAdd: -4
   Hunger: -5
   Thirst: 40
   Despair: 40
@@ -286,7 +306,7 @@ class BleachedMelon extends Food
   HealthAdd: -3
   Hunger: -15
   Thirst: -4
-  Description: "This was covered in mold before, but hopefully the chlorine got rid of it."
+  Description: "This was covered in mold before, hopefully the chlorine got rid of it."
   
   CookTime: 10
   Price: 25
@@ -571,7 +591,7 @@ class Bleach extends Medicine
   Sound: "DrinkFluid"
 
   Description: "Do NOT even think about drinking this. \n Last guy who tried couldn't even finish it before falling over."
-  AddHealth: -50
+  HealthAdd: -50
   Hunger: 40
   Thirst: -40
   Despair: 
@@ -606,18 +626,39 @@ class Ambrosia extends Food
     biomass: 15
     wood: 15
     metal: 15
-  
-   
-   
 
   Eat: (ply) =>
     super ply
     return if CLIENT
     ply\AddStemCells(5)
 
+class Chow extends Food
+  PrintName: "Wasteland Chow"
+  Model: Model"models/props_junk/garbage_takeoutcarton001a.mdl"
+  Hunger: -20
+  Thirst: -6
+  Despair: 10
+  Description: "An amalgamation of entrails, bones, and rotten flesh with a side of maggots. \n Wastelanders love it!"
+  RotTime: 0
+  CookTime: 10
 
+  UseText: {
+    "begrudgingly eats some wasteland chow."
+    "puts some chow in their mouth while gagging."
+    "eats some wasteland chow, then spits out the tiny bones."
+    "chomps on some wasteland chow."
+    "forces down some wasteland chow down their throat."
+    "eats some chow, secretly enjoying it"
+  }
 
-
+  Eat: (ply) =>
+    super ply
+    return if CLIENT
+    plyJob = RPExtraTeams[ply\Team!]
+    if plyJob.category == "Wasteland"
+      ply\AddDespair(-30)
+      ply\AddHunger(-30)
+      ply\AddThirst(-10)
 
 
 class SloppyRibs extends Food

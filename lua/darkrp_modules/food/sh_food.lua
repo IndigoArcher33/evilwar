@@ -861,220 +861,225 @@ do -- 244
 	end -- 244
 	SlopBowl = _class_0 -- 244
 end -- 261
-local Boot -- 264
-do -- 264
-	local _class_0 -- 264
-	local _parent_0 = Food -- 264
-	local _base_0 = { -- 264
-		PrintName = "Boot", -- 266
-		Model = Model("models/props_junk/Shoe001a.mdl"), -- 267
-		AddHealth = -4, -- 268
-		Hunger = -5, -- 269
-		Thirst = 40, -- 270
-		Despair = 40, -- 271
-		Description = "A dirty old boot, nearly fallen apart.", -- 273
-		UseText = { -- 274
-			"chews on a nasty boot!", -- 274
-			"chokes on an old boot.", -- 275
-			"gnaws a boot to shreds.", -- 276
-			"shoves a boot in their mouth!", -- 277
-			"eats a rotten leather boot.", -- 278
-			"devours a dirty old boot!", -- 279
-			"eats a boot." -- 280
-		} -- 264
-	} -- 264
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 281
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 264
-			_base_0[_key_0] = _val_0 -- 264
-		end -- 264
-	end -- 281
-	if _base_0.__index == nil then -- 264
-		_base_0.__index = _base_0 -- 264
-	end -- 281
-	setmetatable(_base_0, _parent_0.__base) -- 264
-	_class_0 = setmetatable({ -- 264
-		__init = function(self, ...) -- 264
-			return _class_0.__parent.__init(self, ...) -- 264
-		end, -- 264
-		__base = _base_0, -- 264
-		__name = "Boot", -- 264
-		__parent = _parent_0 -- 264
-	}, { -- 264
-		__index = function(cls, name) -- 264
-			local val = rawget(_base_0, name) -- 264
-			if val == nil then -- 264
-				local parent = rawget(cls, "__parent") -- 264
-				if parent then -- 264
-					return parent[name] -- 264
-				end -- 264
-			else -- 264
-				return val -- 264
-			end -- 264
-		end, -- 264
-		__call = function(cls, ...) -- 264
-			local _self_0 = setmetatable({ }, _base_0) -- 264
-			cls.__init(_self_0, ...) -- 264
-			return _self_0 -- 264
-		end -- 264
-	}) -- 264
-	_base_0.__class = _class_0 -- 264
-	if _parent_0.__inherited then -- 264
-		_parent_0.__inherited(_parent_0, _class_0) -- 264
-	end -- 264
-	Boot = _class_0 -- 264
-end -- 281
-local BleachedMelon -- 283
-do -- 283
-	local _class_0 -- 283
-	local _parent_0 = Food -- 283
-	local _base_0 = { -- 283
-		PrintName = "Bleached Melon", -- 285
-		Model = Model("models/props_junk/watermelon01_chunk01c.mdl"), -- 286
-		HealthAdd = -3, -- 287
-		Hunger = -15, -- 288
-		Thirst = -4, -- 289
-		Description = "This was covered in mold before, but hopefully the chlorine got rid of it.", -- 291
-		CookTime = 10, -- 292
-		Price = 25, -- 294
-		UseText = { -- 295
-			"eats a melon.", -- 295
-			"devours a chunk of melon.", -- 296
-			"munches on a melon." -- 297
-		} -- 283
-	} -- 283
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 297
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 283
-			_base_0[_key_0] = _val_0 -- 283
-		end -- 283
-	end -- 297
-	if _base_0.__index == nil then -- 283
-		_base_0.__index = _base_0 -- 283
-	end -- 297
-	setmetatable(_base_0, _parent_0.__base) -- 283
-	_class_0 = setmetatable({ -- 283
-		__init = function(self, ...) -- 283
-			return _class_0.__parent.__init(self, ...) -- 283
-		end, -- 283
-		__base = _base_0, -- 283
-		__name = "BleachedMelon", -- 283
-		__parent = _parent_0 -- 283
-	}, { -- 283
-		__index = function(cls, name) -- 283
-			local val = rawget(_base_0, name) -- 283
-			if val == nil then -- 283
-				local parent = rawget(cls, "__parent") -- 283
-				if parent then -- 283
-					return parent[name] -- 283
-				end -- 283
-			else -- 283
-				return val -- 283
-			end -- 283
-		end, -- 283
-		__call = function(cls, ...) -- 283
-			local _self_0 = setmetatable({ }, _base_0) -- 283
-			cls.__init(_self_0, ...) -- 283
-			return _self_0 -- 283
-		end -- 283
-	}) -- 283
-	_base_0.__class = _class_0 -- 283
-	if _parent_0.__inherited then -- 283
-		_parent_0.__inherited(_parent_0, _class_0) -- 283
-	end -- 283
-	BleachedMelon = _class_0 -- 283
-end -- 297
-local MoldMelon -- 301
-do -- 301
-	local _class_0 -- 301
-	local _parent_0 = Food -- 301
-	local _base_0 = { -- 301
-		PrintName = "Mold Melon", -- 303
-		Model = Model("models/props_junk/watermelon01_chunk01c.mdl"), -- 304
-		HealthAdd = -10, -- 305
-		Hunger = -6, -- 306
-		Despair = 4, -- 307
-		Description = "A pithy husk of fruit, fully colonized by white mold.", -- 309
-		Price = 25, -- 311
-		UseText = { -- 312
-			"eats a moldy melon.", -- 312
-			"devours a moldy chunk of melon.", -- 313
-			"munches on a mold melon.", -- 314
-			"feasts on a fungus fruit.", -- 315
-			"tears into some mold melon.", -- 316
-			"crunches up a mold melon.", -- 317
-			"chows down on a mold melon." -- 318
-		} -- 301
-	} -- 301
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 319
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 301
-			_base_0[_key_0] = _val_0 -- 301
-		end -- 301
-	end -- 319
-	if _base_0.__index == nil then -- 301
-		_base_0.__index = _base_0 -- 301
-	end -- 319
-	setmetatable(_base_0, _parent_0.__base) -- 301
-	_class_0 = setmetatable({ -- 301
-		__init = function(self, ...) -- 301
-			return _class_0.__parent.__init(self, ...) -- 301
-		end, -- 301
-		__base = _base_0, -- 301
-		__name = "MoldMelon", -- 301
-		__parent = _parent_0 -- 301
-	}, { -- 301
-		__index = function(cls, name) -- 301
-			local val = rawget(_base_0, name) -- 301
-			if val == nil then -- 301
-				local parent = rawget(cls, "__parent") -- 301
-				if parent then -- 301
-					return parent[name] -- 301
-				end -- 301
-			else -- 301
-				return val -- 301
-			end -- 301
-		end, -- 301
-		__call = function(cls, ...) -- 301
-			local _self_0 = setmetatable({ }, _base_0) -- 301
-			cls.__init(_self_0, ...) -- 301
-			return _self_0 -- 301
-		end -- 301
-	}) -- 301
-	_base_0.__class = _class_0 -- 301
-	if _parent_0.__inherited then -- 301
-		_parent_0.__inherited(_parent_0, _class_0) -- 301
+local GroundRibs -- 263
+do -- 263
+	local _class_0 -- 263
+	local _parent_0 = Food -- 263
+	local _base_0 = { -- 263
+		PrintName = "Ground Ribs", -- 265
+		Model = Model("models/props_c17/metalPot001a.mdl"), -- 266
+		Hunger = -10, -- 267
+		Thirst = 5, -- 268
+		Despair = 15, -- 269
+		HealthAdd = -5, -- 270
+		Description = "Human ribs, ground up into a fibrous powder.\nIt doesn't look edible yet.", -- 271
+		CookTime = 5, -- 273
+		Price = 30, -- 275
+		UseText = { -- 276
+			"eats some ground ribs and spits them out.", -- 276
+			"bleeds from a chunk of ground ribs.", -- 277
+			"munches on some ground ribs, lacerating their throat.", -- 278
+			"regrets putting rib powder in their mouth." -- 279
+		} -- 263
+	} -- 263
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 279
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 263
+			_base_0[_key_0] = _val_0 -- 263
+		end -- 263
+	end -- 279
+	if _base_0.__index == nil then -- 263
+		_base_0.__index = _base_0 -- 263
+	end -- 279
+	setmetatable(_base_0, _parent_0.__base) -- 263
+	_class_0 = setmetatable({ -- 263
+		__init = function(self, ...) -- 263
+			return _class_0.__parent.__init(self, ...) -- 263
+		end, -- 263
+		__base = _base_0, -- 263
+		__name = "GroundRibs", -- 263
+		__parent = _parent_0 -- 263
+	}, { -- 263
+		__index = function(cls, name) -- 263
+			local val = rawget(_base_0, name) -- 263
+			if val == nil then -- 263
+				local parent = rawget(cls, "__parent") -- 263
+				if parent then -- 263
+					return parent[name] -- 263
+				end -- 263
+			else -- 263
+				return val -- 263
+			end -- 263
+		end, -- 263
+		__call = function(cls, ...) -- 263
+			local _self_0 = setmetatable({ }, _base_0) -- 263
+			cls.__init(_self_0, ...) -- 263
+			return _self_0 -- 263
+		end -- 263
+	}) -- 263
+	_base_0.__class = _class_0 -- 263
+	if _parent_0.__inherited then -- 263
+		_parent_0.__inherited(_parent_0, _class_0) -- 263
+	end -- 263
+	GroundRibs = _class_0 -- 263
+end -- 279
+local Boot -- 284
+do -- 284
+	local _class_0 -- 284
+	local _parent_0 = Food -- 284
+	local _base_0 = { -- 284
+		PrintName = "Boot", -- 286
+		Model = Model("models/props_junk/Shoe001a.mdl"), -- 287
+		HealthAdd = -4, -- 288
+		Hunger = -5, -- 289
+		Thirst = 40, -- 290
+		Despair = 40, -- 291
+		Description = "A dirty old boot, nearly fallen apart.", -- 293
+		UseText = { -- 294
+			"chews on a nasty boot!", -- 294
+			"chokes on an old boot.", -- 295
+			"gnaws a boot to shreds.", -- 296
+			"shoves a boot in their mouth!", -- 297
+			"eats a rotten leather boot.", -- 298
+			"devours a dirty old boot!", -- 299
+			"eats a boot." -- 300
+		} -- 284
+	} -- 284
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 301
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 284
+			_base_0[_key_0] = _val_0 -- 284
+		end -- 284
 	end -- 301
-	MoldMelon = _class_0 -- 301
-end -- 319
-local DrinkFluid -- 321
+	if _base_0.__index == nil then -- 284
+		_base_0.__index = _base_0 -- 284
+	end -- 301
+	setmetatable(_base_0, _parent_0.__base) -- 284
+	_class_0 = setmetatable({ -- 284
+		__init = function(self, ...) -- 284
+			return _class_0.__parent.__init(self, ...) -- 284
+		end, -- 284
+		__base = _base_0, -- 284
+		__name = "Boot", -- 284
+		__parent = _parent_0 -- 284
+	}, { -- 284
+		__index = function(cls, name) -- 284
+			local val = rawget(_base_0, name) -- 284
+			if val == nil then -- 284
+				local parent = rawget(cls, "__parent") -- 284
+				if parent then -- 284
+					return parent[name] -- 284
+				end -- 284
+			else -- 284
+				return val -- 284
+			end -- 284
+		end, -- 284
+		__call = function(cls, ...) -- 284
+			local _self_0 = setmetatable({ }, _base_0) -- 284
+			cls.__init(_self_0, ...) -- 284
+			return _self_0 -- 284
+		end -- 284
+	}) -- 284
+	_base_0.__class = _class_0 -- 284
+	if _parent_0.__inherited then -- 284
+		_parent_0.__inherited(_parent_0, _class_0) -- 284
+	end -- 284
+	Boot = _class_0 -- 284
+end -- 301
+local BleachedMelon -- 303
+do -- 303
+	local _class_0 -- 303
+	local _parent_0 = Food -- 303
+	local _base_0 = { -- 303
+		PrintName = "Bleached Melon", -- 305
+		Model = Model("models/props_junk/watermelon01_chunk01c.mdl"), -- 306
+		HealthAdd = -3, -- 307
+		Hunger = -15, -- 308
+		Thirst = -4, -- 309
+		Description = "This was covered in mold before, hopefully the chlorine got rid of it.", -- 311
+		CookTime = 10, -- 312
+		Price = 25, -- 314
+		UseText = { -- 315
+			"eats a melon.", -- 315
+			"devours a chunk of melon.", -- 316
+			"munches on a melon." -- 317
+		} -- 303
+	} -- 303
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 317
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 303
+			_base_0[_key_0] = _val_0 -- 303
+		end -- 303
+	end -- 317
+	if _base_0.__index == nil then -- 303
+		_base_0.__index = _base_0 -- 303
+	end -- 317
+	setmetatable(_base_0, _parent_0.__base) -- 303
+	_class_0 = setmetatable({ -- 303
+		__init = function(self, ...) -- 303
+			return _class_0.__parent.__init(self, ...) -- 303
+		end, -- 303
+		__base = _base_0, -- 303
+		__name = "BleachedMelon", -- 303
+		__parent = _parent_0 -- 303
+	}, { -- 303
+		__index = function(cls, name) -- 303
+			local val = rawget(_base_0, name) -- 303
+			if val == nil then -- 303
+				local parent = rawget(cls, "__parent") -- 303
+				if parent then -- 303
+					return parent[name] -- 303
+				end -- 303
+			else -- 303
+				return val -- 303
+			end -- 303
+		end, -- 303
+		__call = function(cls, ...) -- 303
+			local _self_0 = setmetatable({ }, _base_0) -- 303
+			cls.__init(_self_0, ...) -- 303
+			return _self_0 -- 303
+		end -- 303
+	}) -- 303
+	_base_0.__class = _class_0 -- 303
+	if _parent_0.__inherited then -- 303
+		_parent_0.__inherited(_parent_0, _class_0) -- 303
+	end -- 303
+	BleachedMelon = _class_0 -- 303
+end -- 317
+local MoldMelon -- 321
 do -- 321
 	local _class_0 -- 321
-	local _parent_0 = SOUND -- 321
+	local _parent_0 = Food -- 321
 	local _base_0 = { -- 321
-		sound = (function() -- 322
-			local _accum_0 = { } -- 322
-			local _len_0 = 1 -- 322
-			for i = 1, 2 do -- 322
-				_accum_0[_len_0] = "npc/barnacle/barnacle_gulp" .. tostring(i) .. ".wav" -- 322
-				_len_0 = _len_0 + 1 -- 322
-			end -- 322
-			return _accum_0 -- 322
-		end)(), -- 323
-		level = SNDLVL_65DB -- 321
+		PrintName = "Mold Melon", -- 323
+		Model = Model("models/props_junk/watermelon01_chunk01c.mdl"), -- 324
+		HealthAdd = -10, -- 325
+		Hunger = -6, -- 326
+		Despair = 4, -- 327
+		Description = "A pithy husk of fruit, fully colonized by white mold.", -- 329
+		Price = 25, -- 331
+		UseText = { -- 332
+			"eats a moldy melon.", -- 332
+			"devours a moldy chunk of melon.", -- 333
+			"munches on a mold melon.", -- 334
+			"feasts on a fungus fruit.", -- 335
+			"tears into some mold melon.", -- 336
+			"crunches up a mold melon.", -- 337
+			"chows down on a mold melon." -- 338
+		} -- 321
 	} -- 321
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 323
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 339
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 321
 			_base_0[_key_0] = _val_0 -- 321
 		end -- 321
-	end -- 323
+	end -- 339
 	if _base_0.__index == nil then -- 321
 		_base_0.__index = _base_0 -- 321
-	end -- 323
+	end -- 339
 	setmetatable(_base_0, _parent_0.__base) -- 321
 	_class_0 = setmetatable({ -- 321
 		__init = function(self, ...) -- 321
 			return _class_0.__parent.__init(self, ...) -- 321
 		end, -- 321
 		__base = _base_0, -- 321
-		__name = "DrinkFluid", -- 321
+		__name = "MoldMelon", -- 321
 		__parent = _parent_0 -- 321
 	}, { -- 321
 		__index = function(cls, name) -- 321
@@ -1098,1031 +1103,1161 @@ do -- 321
 	if _parent_0.__inherited then -- 321
 		_parent_0.__inherited(_parent_0, _class_0) -- 321
 	end -- 321
-	DrinkFluid = _class_0 -- 321
-end -- 323
-local Drink -- 325
-do -- 325
-	local _class_0 -- 325
-	local _parent_0 = Food -- 325
-	local _base_0 = { -- 325
-		PrintName = "Drink", -- 327
-		Sound = "DrinkFluid" -- 325
-	} -- 325
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 327
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 325
-			_base_0[_key_0] = _val_0 -- 325
-		end -- 325
-	end -- 327
-	if _base_0.__index == nil then -- 325
-		_base_0.__index = _base_0 -- 325
-	end -- 327
-	setmetatable(_base_0, _parent_0.__base) -- 325
-	_class_0 = setmetatable({ -- 325
-		__init = function(self, ...) -- 325
-			return _class_0.__parent.__init(self, ...) -- 325
-		end, -- 325
-		__base = _base_0, -- 325
-		__name = "Drink", -- 325
-		__parent = _parent_0 -- 325
-	}, { -- 325
-		__index = function(cls, name) -- 325
-			local val = rawget(_base_0, name) -- 325
-			if val == nil then -- 325
-				local parent = rawget(cls, "__parent") -- 325
-				if parent then -- 325
-					return parent[name] -- 325
-				end -- 325
-			else -- 325
-				return val -- 325
-			end -- 325
-		end, -- 325
-		__call = function(cls, ...) -- 325
-			local _self_0 = setmetatable({ }, _base_0) -- 325
-			cls.__init(_self_0, ...) -- 325
-			return _self_0 -- 325
-		end -- 325
-	}) -- 325
-	_base_0.__class = _class_0 -- 325
-	if _parent_0.__inherited then -- 325
-		_parent_0.__inherited(_parent_0, _class_0) -- 325
-	end -- 325
-	Drink = _class_0 -- 325
-end -- 327
-local FearBeer -- 329
-do -- 329
-	local _class_0 -- 329
-	local _parent_0 = Drink -- 329
-	local _base_0 = { -- 329
-		PrintName = "Fear Beer", -- 331
-		Model = Model("models/props_junk/garbage_glassbottle001a.mdl"), -- 332
-		Thirst = -12, -- 333
-		Despair = -15, -- 334
-		Description = "A bottle of foul off-yellow liquid.\n'BEER' is hand-written on the label.", -- 336
-		Price = 60, -- 338
-		TrashClass = "trash/bottle/fearbeer", -- 340
-		ImpactThreshold = 256, -- 342
-		UseText = { -- 343
-			"chugs a fear beer.", -- 343
-			"downs a bottle of piss beer.", -- 344
-			"drinks a ratty bottle of brew.", -- 345
-			"quaffs a beer and grimaces.", -- 346
-			"takes a swig of fear beer and shivers.", -- 347
-			"guzzles a fear beer.", -- 348
-			"chokes down some piss beer." -- 349
-		}, -- 352
-		Initialize = function(self) -- 352
-			_class_0.__parent.__base.Initialize(self) -- 353
-			if SERVER then -- 354
-				return self:PrecacheGibs() -- 354
-			end -- 354
-		end, -- 356
-		OnTakeDamage = function(self, dmg) -- 356
-			_class_0.__parent.__base.OnTakeDamage(self, dmg) -- 357
-			local types = DMG_CLUB + DMG_SLASH + DMG_BULLET + DMG_CRUSH -- 358
-			if dmg:GetDamage() > 10 and dmg:IsDamageType(types) then -- 359
-				self:Shatter(dmg:GetDamageForce()) -- 359
-			end -- 359
-			if attacker and IsValid(attacker) and attacker:IsPlayer() then -- 360
-				if attacker:HasOddity(ODDITY_DELINQUENCY) then -- 361
-					return attacker:AddDespair(-math.random(2, 4)) -- 362
-				end -- 361
-			end -- 360
-		end, -- 364
-		PhysicsCollide = function(self, data) -- 364
-			_class_0.__parent.__base.PhysicsCollide(self, data) -- 365
-			if CLIENT then -- 366
-				return -- 366
-			end -- 366
-			if data.Speed > self.ImpactThreshold then -- 367
-				if data.HitEntity and IsValid(data.HitEntity) then -- 368
-					local attacker = self:GetNWEntity("evilrp_submitter") -- 369
-					do -- 370
-						local dmg = DamageInfo() -- 370
-						dmg:SetDamage(25) -- 371
-						if IsValid(attacker) then -- 372
-							dmg:SetAttacker(attacker) -- 372
-						end -- 372
-						dmg:SetInflictor(self) -- 373
-						dmg:SetDamageType(DMG_SLASH) -- 374
-						dmg:SetDamagePosition(data.HitPos) -- 375
-						data.HitEntity:TakeDamageInfo(dmg) -- 376
-					end -- 370
-				end -- 368
-				local force = data.OurNewVelocity -- 377
-				return self:Shatter(force) -- 378
-			end -- 367
-		end, -- 380
-		Shatter = function(self, force) -- 380
-			if self.broken then -- 381
-				return -- 381
-			end -- 381
-			self.broken = true -- 382
-			local pos = self:GetPos() -- 383
-			local _list_0 = player.GetAll() -- 384
-			for _index_0 = 1, #_list_0 do -- 384
-				local ply = _list_0[_index_0] -- 384
-				local _continue_0 = false -- 385
-				repeat -- 385
-					if not ply:HasOddity(ODDITY_DELINQUENCY) then -- 385
-						_continue_0 = true -- 385
-						break -- 385
-					end -- 385
-					if ply:CanSee(self) and ply:LookingInDirection(pos) then -- 386
-						ply:AddDespair(-math.random(2, 4)) -- 387
-					end -- 386
-					_continue_0 = true -- 385
-				until true -- 387
-				if not _continue_0 then -- 387
-					break -- 387
-				end -- 387
+	MoldMelon = _class_0 -- 321
+end -- 339
+local DrinkFluid -- 341
+do -- 341
+	local _class_0 -- 341
+	local _parent_0 = SOUND -- 341
+	local _base_0 = { -- 341
+		sound = (function() -- 342
+			local _accum_0 = { } -- 342
+			local _len_0 = 1 -- 342
+			for i = 1, 2 do -- 342
+				_accum_0[_len_0] = "npc/barnacle/barnacle_gulp" .. tostring(i) .. ".wav" -- 342
+				_len_0 = _len_0 + 1 -- 342
+			end -- 342
+			return _accum_0 -- 342
+		end)(), -- 343
+		level = SNDLVL_65DB -- 341
+	} -- 341
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 343
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 341
+			_base_0[_key_0] = _val_0 -- 341
+		end -- 341
+	end -- 343
+	if _base_0.__index == nil then -- 341
+		_base_0.__index = _base_0 -- 341
+	end -- 343
+	setmetatable(_base_0, _parent_0.__base) -- 341
+	_class_0 = setmetatable({ -- 341
+		__init = function(self, ...) -- 341
+			return _class_0.__parent.__init(self, ...) -- 341
+		end, -- 341
+		__base = _base_0, -- 341
+		__name = "DrinkFluid", -- 341
+		__parent = _parent_0 -- 341
+	}, { -- 341
+		__index = function(cls, name) -- 341
+			local val = rawget(_base_0, name) -- 341
+			if val == nil then -- 341
+				local parent = rawget(cls, "__parent") -- 341
+				if parent then -- 341
+					return parent[name] -- 341
+				end -- 341
+			else -- 341
+				return val -- 341
+			end -- 341
+		end, -- 341
+		__call = function(cls, ...) -- 341
+			local _self_0 = setmetatable({ }, _base_0) -- 341
+			cls.__init(_self_0, ...) -- 341
+			return _self_0 -- 341
+		end -- 341
+	}) -- 341
+	_base_0.__class = _class_0 -- 341
+	if _parent_0.__inherited then -- 341
+		_parent_0.__inherited(_parent_0, _class_0) -- 341
+	end -- 341
+	DrinkFluid = _class_0 -- 341
+end -- 343
+local Drink -- 345
+do -- 345
+	local _class_0 -- 345
+	local _parent_0 = Food -- 345
+	local _base_0 = { -- 345
+		PrintName = "Drink", -- 347
+		Sound = "DrinkFluid" -- 345
+	} -- 345
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 347
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 345
+			_base_0[_key_0] = _val_0 -- 345
+		end -- 345
+	end -- 347
+	if _base_0.__index == nil then -- 345
+		_base_0.__index = _base_0 -- 345
+	end -- 347
+	setmetatable(_base_0, _parent_0.__base) -- 345
+	_class_0 = setmetatable({ -- 345
+		__init = function(self, ...) -- 345
+			return _class_0.__parent.__init(self, ...) -- 345
+		end, -- 345
+		__base = _base_0, -- 345
+		__name = "Drink", -- 345
+		__parent = _parent_0 -- 345
+	}, { -- 345
+		__index = function(cls, name) -- 345
+			local val = rawget(_base_0, name) -- 345
+			if val == nil then -- 345
+				local parent = rawget(cls, "__parent") -- 345
+				if parent then -- 345
+					return parent[name] -- 345
+				end -- 345
+			else -- 345
+				return val -- 345
+			end -- 345
+		end, -- 345
+		__call = function(cls, ...) -- 345
+			local _self_0 = setmetatable({ }, _base_0) -- 345
+			cls.__init(_self_0, ...) -- 345
+			return _self_0 -- 345
+		end -- 345
+	}) -- 345
+	_base_0.__class = _class_0 -- 345
+	if _parent_0.__inherited then -- 345
+		_parent_0.__inherited(_parent_0, _class_0) -- 345
+	end -- 345
+	Drink = _class_0 -- 345
+end -- 347
+local FearBeer -- 349
+do -- 349
+	local _class_0 -- 349
+	local _parent_0 = Drink -- 349
+	local _base_0 = { -- 349
+		PrintName = "Fear Beer", -- 351
+		Model = Model("models/props_junk/garbage_glassbottle001a.mdl"), -- 352
+		Thirst = -12, -- 353
+		Despair = -15, -- 354
+		Description = "A bottle of foul off-yellow liquid.\n'BEER' is hand-written on the label.", -- 356
+		Price = 60, -- 358
+		TrashClass = "trash/bottle/fearbeer", -- 360
+		ImpactThreshold = 256, -- 362
+		UseText = { -- 363
+			"chugs a fear beer.", -- 363
+			"downs a bottle of piss beer.", -- 364
+			"drinks a ratty bottle of brew.", -- 365
+			"quaffs a beer and grimaces.", -- 366
+			"takes a swig of fear beer and shivers.", -- 367
+			"guzzles a fear beer.", -- 368
+			"chokes down some piss beer." -- 369
+		}, -- 372
+		Initialize = function(self) -- 372
+			_class_0.__parent.__base.Initialize(self) -- 373
+			if SERVER then -- 374
+				return self:PrecacheGibs() -- 374
+			end -- 374
+		end, -- 376
+		OnTakeDamage = function(self, dmg) -- 376
+			_class_0.__parent.__base.OnTakeDamage(self, dmg) -- 377
+			local types = DMG_CLUB + DMG_SLASH + DMG_BULLET + DMG_CRUSH -- 378
+			if dmg:GetDamage() > 10 and dmg:IsDamageType(types) then -- 379
+				self:Shatter(dmg:GetDamageForce()) -- 379
+			end -- 379
+			if attacker and IsValid(attacker) and attacker:IsPlayer() then -- 380
+				if attacker:HasOddity(ODDITY_DELINQUENCY) then -- 381
+					return attacker:AddDespair(-math.random(2, 4)) -- 382
+				end -- 381
+			end -- 380
+		end, -- 384
+		PhysicsCollide = function(self, data) -- 384
+			_class_0.__parent.__base.PhysicsCollide(self, data) -- 385
+			if CLIENT then -- 386
+				return -- 386
+			end -- 386
+			if data.Speed > self.ImpactThreshold then -- 387
+				if data.HitEntity and IsValid(data.HitEntity) then -- 388
+					local attacker = self:GetNWEntity("evilrp_submitter") -- 389
+					do -- 390
+						local dmg = DamageInfo() -- 390
+						dmg:SetDamage(25) -- 391
+						if IsValid(attacker) then -- 392
+							dmg:SetAttacker(attacker) -- 392
+						end -- 392
+						dmg:SetInflictor(self) -- 393
+						dmg:SetDamageType(DMG_SLASH) -- 394
+						dmg:SetDamagePosition(data.HitPos) -- 395
+						data.HitEntity:TakeDamageInfo(dmg) -- 396
+					end -- 390
+				end -- 388
+				local force = data.OurNewVelocity -- 397
+				return self:Shatter(force) -- 398
 			end -- 387
-			do -- 388
-				local ed = EffectData() -- 388
-				ed:SetStart(pos) -- 389
-				ed:SetOrigin(pos) -- 390
-				ed:SetScale(8) -- 391
-				util.Effect("GlassImpact", ed, true, true) -- 392
-			end -- 388
-			self:EmitSound("BottleSmash") -- 393
-			self:GibBreakServer(force) -- 394
-			return self:Remove() -- 395
-		end -- 329
-	} -- 329
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 395
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 329
-			_base_0[_key_0] = _val_0 -- 329
-		end -- 329
-	end -- 395
-	if _base_0.__index == nil then -- 329
-		_base_0.__index = _base_0 -- 329
-	end -- 395
-	setmetatable(_base_0, _parent_0.__base) -- 329
-	_class_0 = setmetatable({ -- 329
-		__init = function(self, ...) -- 329
-			return _class_0.__parent.__init(self, ...) -- 329
-		end, -- 329
-		__base = _base_0, -- 329
-		__name = "FearBeer", -- 329
-		__parent = _parent_0 -- 329
-	}, { -- 329
-		__index = function(cls, name) -- 329
-			local val = rawget(_base_0, name) -- 329
-			if val == nil then -- 329
-				local parent = rawget(cls, "__parent") -- 329
-				if parent then -- 329
-					return parent[name] -- 329
-				end -- 329
-			else -- 329
-				return val -- 329
-			end -- 329
-		end, -- 329
-		__call = function(cls, ...) -- 329
-			local _self_0 = setmetatable({ }, _base_0) -- 329
-			cls.__init(_self_0, ...) -- 329
-			return _self_0 -- 329
-		end -- 329
-	}) -- 329
-	_base_0.__class = _class_0 -- 329
-	if _parent_0.__inherited then -- 329
-		_parent_0.__inherited(_parent_0, _class_0) -- 329
-	end -- 329
-	FearBeer = _class_0 -- 329
-end -- 395
-local SmearBeer -- 397
-do -- 397
-	local _class_0 -- 397
-	local _parent_0 = Drink -- 397
-	local _base_0 = { -- 397
-		PrintName = "Smear Beer", -- 399
-		Model = Model("models/props_junk/garbage_glassbottle003a.mdl"), -- 400
-		Thirst = -27, -- 401
-		Despair = -35, -- 402
-		Description = "A bottle of cloudy, greyish red booze.\nThe label is obscured with a smear of old blood.", -- 404
-		Price = 95, -- 406
-		TrashClass = "trash/bottle", -- 408
-		ImpactThreshold = 256, -- 410
-		UseText = { -- 411
-			"chugs a smear beer.", -- 411
-			"downs a bottle of red brew.", -- 412
-			"drinks a cloudy bottle of beer.", -- 413
-			"quaffs a smear beer and shivers.", -- 414
-			"takes a swig of smear beer.", -- 415
-			"guzzles a bloody beer.", -- 416
-			"nurses a bottle of blood beer." -- 417
-		}, -- 420
-		Initialize = function(self) -- 420
-			_class_0.__parent.__base.Initialize(self) -- 421
-			if SERVER then -- 422
-				return self:PrecacheGibs() -- 422
-			end -- 422
-		end, -- 424
-		OnTakeDamage = function(self, dmg) -- 424
-			_class_0.__parent.__base.OnTakeDamage(self, dmg) -- 425
-			local types = DMG_CLUB + DMG_SLASH + DMG_BULLET + DMG_CRUSH -- 426
-			if dmg:GetDamage() > 10 and dmg:IsDamageType(types) then -- 427
-				self:Shatter(dmg:GetDamageForce()) -- 427
-			end -- 427
-			if attacker and IsValid(attacker) and attacker:IsPlayer() then -- 428
-				if attacker:HasOddity(ODDITY_DELINQUENCY) then -- 429
-					return attacker:AddDespair(-math.random(2, 4)) -- 430
-				end -- 429
-			end -- 428
-		end, -- 432
-		PhysicsCollide = function(self, data) -- 432
-			_class_0.__parent.__base.PhysicsCollide(self, data) -- 433
-			if CLIENT then -- 434
-				return -- 434
-			end -- 434
-			if data.Speed > self.ImpactThreshold then -- 435
-				if data.HitEntity and IsValid(data.HitEntity) then -- 436
-					local attacker = self:GetNWEntity("evilrp_submitter") -- 437
-					do -- 438
-						local dmg = DamageInfo() -- 438
-						dmg:SetDamage(25) -- 439
-						if IsValid(attacker) then -- 440
-							dmg:SetAttacker(attacker) -- 440
-						end -- 440
-						dmg:SetInflictor(self) -- 441
-						dmg:SetDamageType(DMG_SLASH) -- 442
-						dmg:SetDamagePosition(data.HitPos) -- 443
-						data.HitEntity:TakeDamageInfo(dmg) -- 444
-					end -- 438
-				end -- 436
-				local force = data.OurNewVelocity -- 445
-				return self:Shatter(force) -- 446
-			end -- 435
-		end, -- 448
-		Shatter = function(self, force) -- 448
-			if self.broken then -- 449
-				return -- 449
-			end -- 449
-			self.broken = true -- 450
-			local pos = self:GetPos() -- 451
-			local _list_0 = player.GetAll() -- 452
-			for _index_0 = 1, #_list_0 do -- 452
-				local ply = _list_0[_index_0] -- 452
-				local _continue_0 = false -- 453
-				repeat -- 453
-					if not ply:HasOddity(ODDITY_DELINQUENCY) then -- 453
-						_continue_0 = true -- 453
-						break -- 453
-					end -- 453
-					if ply:CanSee(self) and ply:LookingInDirection(pos) then -- 454
-						ply:AddDespair(-math.random(2, 4)) -- 455
-					end -- 454
-					_continue_0 = true -- 453
-				until true -- 455
-				if not _continue_0 then -- 455
-					break -- 455
-				end -- 455
+		end, -- 400
+		Shatter = function(self, force) -- 400
+			if self.broken then -- 401
+				return -- 401
+			end -- 401
+			self.broken = true -- 402
+			local pos = self:GetPos() -- 403
+			local _list_0 = player.GetAll() -- 404
+			for _index_0 = 1, #_list_0 do -- 404
+				local ply = _list_0[_index_0] -- 404
+				local _continue_0 = false -- 405
+				repeat -- 405
+					if not ply:HasOddity(ODDITY_DELINQUENCY) then -- 405
+						_continue_0 = true -- 405
+						break -- 405
+					end -- 405
+					if ply:CanSee(self) and ply:LookingInDirection(pos) then -- 406
+						ply:AddDespair(-math.random(2, 4)) -- 407
+					end -- 406
+					_continue_0 = true -- 405
+				until true -- 407
+				if not _continue_0 then -- 407
+					break -- 407
+				end -- 407
+			end -- 407
+			do -- 408
+				local ed = EffectData() -- 408
+				ed:SetStart(pos) -- 409
+				ed:SetOrigin(pos) -- 410
+				ed:SetScale(8) -- 411
+				util.Effect("GlassImpact", ed, true, true) -- 412
+			end -- 408
+			self:EmitSound("BottleSmash") -- 413
+			self:GibBreakServer(force) -- 414
+			return self:Remove() -- 415
+		end -- 349
+	} -- 349
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 415
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 349
+			_base_0[_key_0] = _val_0 -- 349
+		end -- 349
+	end -- 415
+	if _base_0.__index == nil then -- 349
+		_base_0.__index = _base_0 -- 349
+	end -- 415
+	setmetatable(_base_0, _parent_0.__base) -- 349
+	_class_0 = setmetatable({ -- 349
+		__init = function(self, ...) -- 349
+			return _class_0.__parent.__init(self, ...) -- 349
+		end, -- 349
+		__base = _base_0, -- 349
+		__name = "FearBeer", -- 349
+		__parent = _parent_0 -- 349
+	}, { -- 349
+		__index = function(cls, name) -- 349
+			local val = rawget(_base_0, name) -- 349
+			if val == nil then -- 349
+				local parent = rawget(cls, "__parent") -- 349
+				if parent then -- 349
+					return parent[name] -- 349
+				end -- 349
+			else -- 349
+				return val -- 349
+			end -- 349
+		end, -- 349
+		__call = function(cls, ...) -- 349
+			local _self_0 = setmetatable({ }, _base_0) -- 349
+			cls.__init(_self_0, ...) -- 349
+			return _self_0 -- 349
+		end -- 349
+	}) -- 349
+	_base_0.__class = _class_0 -- 349
+	if _parent_0.__inherited then -- 349
+		_parent_0.__inherited(_parent_0, _class_0) -- 349
+	end -- 349
+	FearBeer = _class_0 -- 349
+end -- 415
+local SmearBeer -- 417
+do -- 417
+	local _class_0 -- 417
+	local _parent_0 = Drink -- 417
+	local _base_0 = { -- 417
+		PrintName = "Smear Beer", -- 419
+		Model = Model("models/props_junk/garbage_glassbottle003a.mdl"), -- 420
+		Thirst = -27, -- 421
+		Despair = -35, -- 422
+		Description = "A bottle of cloudy, greyish red booze.\nThe label is obscured with a smear of old blood.", -- 424
+		Price = 95, -- 426
+		TrashClass = "trash/bottle", -- 428
+		ImpactThreshold = 256, -- 430
+		UseText = { -- 431
+			"chugs a smear beer.", -- 431
+			"downs a bottle of red brew.", -- 432
+			"drinks a cloudy bottle of beer.", -- 433
+			"quaffs a smear beer and shivers.", -- 434
+			"takes a swig of smear beer.", -- 435
+			"guzzles a bloody beer.", -- 436
+			"nurses a bottle of blood beer." -- 437
+		}, -- 440
+		Initialize = function(self) -- 440
+			_class_0.__parent.__base.Initialize(self) -- 441
+			if SERVER then -- 442
+				return self:PrecacheGibs() -- 442
+			end -- 442
+		end, -- 444
+		OnTakeDamage = function(self, dmg) -- 444
+			_class_0.__parent.__base.OnTakeDamage(self, dmg) -- 445
+			local types = DMG_CLUB + DMG_SLASH + DMG_BULLET + DMG_CRUSH -- 446
+			if dmg:GetDamage() > 10 and dmg:IsDamageType(types) then -- 447
+				self:Shatter(dmg:GetDamageForce()) -- 447
+			end -- 447
+			if attacker and IsValid(attacker) and attacker:IsPlayer() then -- 448
+				if attacker:HasOddity(ODDITY_DELINQUENCY) then -- 449
+					return attacker:AddDespair(-math.random(2, 4)) -- 450
+				end -- 449
+			end -- 448
+		end, -- 452
+		PhysicsCollide = function(self, data) -- 452
+			_class_0.__parent.__base.PhysicsCollide(self, data) -- 453
+			if CLIENT then -- 454
+				return -- 454
+			end -- 454
+			if data.Speed > self.ImpactThreshold then -- 455
+				if data.HitEntity and IsValid(data.HitEntity) then -- 456
+					local attacker = self:GetNWEntity("evilrp_submitter") -- 457
+					do -- 458
+						local dmg = DamageInfo() -- 458
+						dmg:SetDamage(25) -- 459
+						if IsValid(attacker) then -- 460
+							dmg:SetAttacker(attacker) -- 460
+						end -- 460
+						dmg:SetInflictor(self) -- 461
+						dmg:SetDamageType(DMG_SLASH) -- 462
+						dmg:SetDamagePosition(data.HitPos) -- 463
+						data.HitEntity:TakeDamageInfo(dmg) -- 464
+					end -- 458
+				end -- 456
+				local force = data.OurNewVelocity -- 465
+				return self:Shatter(force) -- 466
 			end -- 455
-			do -- 456
-				local ed = EffectData() -- 456
-				ed:SetStart(pos) -- 457
-				ed:SetOrigin(pos) -- 458
-				ed:SetScale(8) -- 459
-				util.Effect("GlassImpact", ed, true, true) -- 460
-			end -- 456
-			self:EmitSound("BottleSmash") -- 461
-			self:GibBreakServer(force) -- 462
-			return self:Remove() -- 463
-		end -- 397
-	} -- 397
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 463
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 397
-			_base_0[_key_0] = _val_0 -- 397
-		end -- 397
-	end -- 463
-	if _base_0.__index == nil then -- 397
-		_base_0.__index = _base_0 -- 397
-	end -- 463
-	setmetatable(_base_0, _parent_0.__base) -- 397
-	_class_0 = setmetatable({ -- 397
-		__init = function(self, ...) -- 397
-			return _class_0.__parent.__init(self, ...) -- 397
-		end, -- 397
-		__base = _base_0, -- 397
-		__name = "SmearBeer", -- 397
-		__parent = _parent_0 -- 397
-	}, { -- 397
-		__index = function(cls, name) -- 397
-			local val = rawget(_base_0, name) -- 397
-			if val == nil then -- 397
-				local parent = rawget(cls, "__parent") -- 397
-				if parent then -- 397
-					return parent[name] -- 397
-				end -- 397
-			else -- 397
-				return val -- 397
-			end -- 397
-		end, -- 397
-		__call = function(cls, ...) -- 397
-			local _self_0 = setmetatable({ }, _base_0) -- 397
-			cls.__init(_self_0, ...) -- 397
-			return _self_0 -- 397
-		end -- 397
-	}) -- 397
-	_base_0.__class = _class_0 -- 397
-	if _parent_0.__inherited then -- 397
-		_parent_0.__inherited(_parent_0, _class_0) -- 397
-	end -- 397
-	SmearBeer = _class_0 -- 397
-end -- 463
-local Shake -- 465
-do -- 465
-	local _class_0 -- 465
-	local _parent_0 = Drink -- 465
-	local _base_0 = { -- 465
-		PrintName = "Soylent Shake", -- 467
-		Model = Model("models/props_junk/garbage_milkcarton001a.mdl"), -- 468
-		Thirst = -40, -- 469
-		Hunger = -40, -- 470
-		Despair = 30, -- 471
-		Description = "A jug full of partially blended human remains.\nIt's warm and chunky.", -- 473
-		Price = 120, -- 475
-		TrashClass = "trash/plastic/shake", -- 477
-		UseText = { -- 478
-			"chokes down a soylent shake.", -- 478
-			"slurps up a soylent shake.", -- 479
-			"swigs blended peoplemeat and shudders.", -- 480
-			"struggles down a jug of human sludge.", -- 481
-			"shoots back a bad protein shake.", -- 482
-			"guzzles a meat smoothie.", -- 483
-			"quaffs an entire soylent shake." -- 484
-		} -- 465
-	} -- 465
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 485
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 465
-			_base_0[_key_0] = _val_0 -- 465
-		end -- 465
+		end, -- 468
+		Shatter = function(self, force) -- 468
+			if self.broken then -- 469
+				return -- 469
+			end -- 469
+			self.broken = true -- 470
+			local pos = self:GetPos() -- 471
+			local _list_0 = player.GetAll() -- 472
+			for _index_0 = 1, #_list_0 do -- 472
+				local ply = _list_0[_index_0] -- 472
+				local _continue_0 = false -- 473
+				repeat -- 473
+					if not ply:HasOddity(ODDITY_DELINQUENCY) then -- 473
+						_continue_0 = true -- 473
+						break -- 473
+					end -- 473
+					if ply:CanSee(self) and ply:LookingInDirection(pos) then -- 474
+						ply:AddDespair(-math.random(2, 4)) -- 475
+					end -- 474
+					_continue_0 = true -- 473
+				until true -- 475
+				if not _continue_0 then -- 475
+					break -- 475
+				end -- 475
+			end -- 475
+			do -- 476
+				local ed = EffectData() -- 476
+				ed:SetStart(pos) -- 477
+				ed:SetOrigin(pos) -- 478
+				ed:SetScale(8) -- 479
+				util.Effect("GlassImpact", ed, true, true) -- 480
+			end -- 476
+			self:EmitSound("BottleSmash") -- 481
+			self:GibBreakServer(force) -- 482
+			return self:Remove() -- 483
+		end -- 417
+	} -- 417
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 483
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 417
+			_base_0[_key_0] = _val_0 -- 417
+		end -- 417
+	end -- 483
+	if _base_0.__index == nil then -- 417
+		_base_0.__index = _base_0 -- 417
+	end -- 483
+	setmetatable(_base_0, _parent_0.__base) -- 417
+	_class_0 = setmetatable({ -- 417
+		__init = function(self, ...) -- 417
+			return _class_0.__parent.__init(self, ...) -- 417
+		end, -- 417
+		__base = _base_0, -- 417
+		__name = "SmearBeer", -- 417
+		__parent = _parent_0 -- 417
+	}, { -- 417
+		__index = function(cls, name) -- 417
+			local val = rawget(_base_0, name) -- 417
+			if val == nil then -- 417
+				local parent = rawget(cls, "__parent") -- 417
+				if parent then -- 417
+					return parent[name] -- 417
+				end -- 417
+			else -- 417
+				return val -- 417
+			end -- 417
+		end, -- 417
+		__call = function(cls, ...) -- 417
+			local _self_0 = setmetatable({ }, _base_0) -- 417
+			cls.__init(_self_0, ...) -- 417
+			return _self_0 -- 417
+		end -- 417
+	}) -- 417
+	_base_0.__class = _class_0 -- 417
+	if _parent_0.__inherited then -- 417
+		_parent_0.__inherited(_parent_0, _class_0) -- 417
+	end -- 417
+	SmearBeer = _class_0 -- 417
+end -- 483
+local Shake -- 485
+do -- 485
+	local _class_0 -- 485
+	local _parent_0 = Drink -- 485
+	local _base_0 = { -- 485
+		PrintName = "Soylent Shake", -- 487
+		Model = Model("models/props_junk/garbage_milkcarton001a.mdl"), -- 488
+		Thirst = -40, -- 489
+		Hunger = -40, -- 490
+		Despair = 30, -- 491
+		Description = "A jug full of partially blended human remains.\nIt's warm and chunky.", -- 493
+		Price = 120, -- 495
+		TrashClass = "trash/plastic/shake", -- 497
+		UseText = { -- 498
+			"chokes down a soylent shake.", -- 498
+			"slurps up a soylent shake.", -- 499
+			"swigs blended peoplemeat and shudders.", -- 500
+			"struggles down a jug of human sludge.", -- 501
+			"shoots back a bad protein shake.", -- 502
+			"guzzles a meat smoothie.", -- 503
+			"quaffs an entire soylent shake." -- 504
+		} -- 485
+	} -- 485
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 505
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 485
+			_base_0[_key_0] = _val_0 -- 485
+		end -- 485
+	end -- 505
+	if _base_0.__index == nil then -- 485
+		_base_0.__index = _base_0 -- 485
+	end -- 505
+	setmetatable(_base_0, _parent_0.__base) -- 485
+	_class_0 = setmetatable({ -- 485
+		__init = function(self, ...) -- 485
+			return _class_0.__parent.__init(self, ...) -- 485
+		end, -- 485
+		__base = _base_0, -- 485
+		__name = "Shake", -- 485
+		__parent = _parent_0 -- 485
+	}, { -- 485
+		__index = function(cls, name) -- 485
+			local val = rawget(_base_0, name) -- 485
+			if val == nil then -- 485
+				local parent = rawget(cls, "__parent") -- 485
+				if parent then -- 485
+					return parent[name] -- 485
+				end -- 485
+			else -- 485
+				return val -- 485
+			end -- 485
+		end, -- 485
+		__call = function(cls, ...) -- 485
+			local _self_0 = setmetatable({ }, _base_0) -- 485
+			cls.__init(_self_0, ...) -- 485
+			return _self_0 -- 485
+		end -- 485
+	}) -- 485
+	_base_0.__class = _class_0 -- 485
+	if _parent_0.__inherited then -- 485
+		_parent_0.__inherited(_parent_0, _class_0) -- 485
 	end -- 485
-	if _base_0.__index == nil then -- 465
-		_base_0.__index = _base_0 -- 465
-	end -- 485
-	setmetatable(_base_0, _parent_0.__base) -- 465
-	_class_0 = setmetatable({ -- 465
-		__init = function(self, ...) -- 465
-			return _class_0.__parent.__init(self, ...) -- 465
-		end, -- 465
-		__base = _base_0, -- 465
-		__name = "Shake", -- 465
-		__parent = _parent_0 -- 465
-	}, { -- 465
-		__index = function(cls, name) -- 465
-			local val = rawget(_base_0, name) -- 465
-			if val == nil then -- 465
-				local parent = rawget(cls, "__parent") -- 465
-				if parent then -- 465
-					return parent[name] -- 465
-				end -- 465
-			else -- 465
-				return val -- 465
-			end -- 465
-		end, -- 465
-		__call = function(cls, ...) -- 465
-			local _self_0 = setmetatable({ }, _base_0) -- 465
-			cls.__init(_self_0, ...) -- 465
-			return _self_0 -- 465
-		end -- 465
-	}) -- 465
-	_base_0.__class = _class_0 -- 465
-	if _parent_0.__inherited then -- 465
-		_parent_0.__inherited(_parent_0, _class_0) -- 465
-	end -- 465
-	Shake = _class_0 -- 465
-end -- 485
-local Twitchel -- 487
-do -- 487
-	local _class_0 -- 487
-	local _parent_0 = Drink -- 487
-	local _base_0 = { -- 487
-		PrintName = "Twitchel", -- 489
-		Model = Model("models/props_junk/garbage_plasticbottle003a.mdl"), -- 490
-		Thirst = -44, -- 491
-		Hunger = 6, -- 492
-		Despair = 6, -- 493
-		Description = "A bottle of refreshingly lukewarm, cloudy green drink.", -- 495
-		Price = 80, -- 497
-		TrashClass = "trash/plastic/twitchel", -- 499
-		UseText = { -- 500
-			"necks a bottle of twitchel.", -- 500
-			"can't get enough of that green stuff.", -- 501
-			"sucks down a bottle of twitchel.", -- 502
-			"sips up their twitchel.", -- 503
-			"pours twitchel down their throat.", -- 504
-			"drinks a bottle of twitchel.", -- 505
-			"slurps up a green drink." -- 506
-		} -- 487
-	} -- 487
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 507
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 487
-			_base_0[_key_0] = _val_0 -- 487
-		end -- 487
+	Shake = _class_0 -- 485
+end -- 505
+local Twitchel -- 507
+do -- 507
+	local _class_0 -- 507
+	local _parent_0 = Drink -- 507
+	local _base_0 = { -- 507
+		PrintName = "Twitchel", -- 509
+		Model = Model("models/props_junk/garbage_plasticbottle003a.mdl"), -- 510
+		Thirst = -44, -- 511
+		Hunger = 6, -- 512
+		Despair = 6, -- 513
+		Description = "A bottle of refreshingly lukewarm, cloudy green drink.", -- 515
+		Price = 80, -- 517
+		TrashClass = "trash/plastic/twitchel", -- 519
+		UseText = { -- 520
+			"necks a bottle of twitchel.", -- 520
+			"can't get enough of that green stuff.", -- 521
+			"sucks down a bottle of twitchel.", -- 522
+			"sips up their twitchel.", -- 523
+			"pours twitchel down their throat.", -- 524
+			"drinks a bottle of twitchel.", -- 525
+			"slurps up a green drink." -- 526
+		} -- 507
+	} -- 507
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 527
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 507
+			_base_0[_key_0] = _val_0 -- 507
+		end -- 507
+	end -- 527
+	if _base_0.__index == nil then -- 507
+		_base_0.__index = _base_0 -- 507
+	end -- 527
+	setmetatable(_base_0, _parent_0.__base) -- 507
+	_class_0 = setmetatable({ -- 507
+		__init = function(self, ...) -- 507
+			return _class_0.__parent.__init(self, ...) -- 507
+		end, -- 507
+		__base = _base_0, -- 507
+		__name = "Twitchel", -- 507
+		__parent = _parent_0 -- 507
+	}, { -- 507
+		__index = function(cls, name) -- 507
+			local val = rawget(_base_0, name) -- 507
+			if val == nil then -- 507
+				local parent = rawget(cls, "__parent") -- 507
+				if parent then -- 507
+					return parent[name] -- 507
+				end -- 507
+			else -- 507
+				return val -- 507
+			end -- 507
+		end, -- 507
+		__call = function(cls, ...) -- 507
+			local _self_0 = setmetatable({ }, _base_0) -- 507
+			cls.__init(_self_0, ...) -- 507
+			return _self_0 -- 507
+		end -- 507
+	}) -- 507
+	_base_0.__class = _class_0 -- 507
+	if _parent_0.__inherited then -- 507
+		_parent_0.__inherited(_parent_0, _class_0) -- 507
 	end -- 507
-	if _base_0.__index == nil then -- 487
-		_base_0.__index = _base_0 -- 487
-	end -- 507
-	setmetatable(_base_0, _parent_0.__base) -- 487
-	_class_0 = setmetatable({ -- 487
-		__init = function(self, ...) -- 487
-			return _class_0.__parent.__init(self, ...) -- 487
-		end, -- 487
-		__base = _base_0, -- 487
-		__name = "Twitchel", -- 487
-		__parent = _parent_0 -- 487
-	}, { -- 487
-		__index = function(cls, name) -- 487
-			local val = rawget(_base_0, name) -- 487
-			if val == nil then -- 487
-				local parent = rawget(cls, "__parent") -- 487
-				if parent then -- 487
-					return parent[name] -- 487
-				end -- 487
-			else -- 487
-				return val -- 487
-			end -- 487
-		end, -- 487
-		__call = function(cls, ...) -- 487
-			local _self_0 = setmetatable({ }, _base_0) -- 487
-			cls.__init(_self_0, ...) -- 487
-			return _self_0 -- 487
-		end -- 487
-	}) -- 487
-	_base_0.__class = _class_0 -- 487
-	if _parent_0.__inherited then -- 487
-		_parent_0.__inherited(_parent_0, _class_0) -- 487
-	end -- 487
-	Twitchel = _class_0 -- 487
-end -- 507
-local TakeMeds -- 509
-do -- 509
-	local _class_0 -- 509
-	local _parent_0 = SOUND -- 509
-	local _base_0 = { -- 509
-		sound = (function() -- 510
-			local _accum_0 = { } -- 510
-			local _len_0 = 1 -- 510
-			for i = 1, 3 do -- 510
-				_accum_0[_len_0] = "npc/zombie/zombie_pain" .. tostring(i) .. ".wav" -- 510
-				_len_0 = _len_0 + 1 -- 510
-			end -- 510
-			return _accum_0 -- 510
-		end)() -- 509
-	} -- 509
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 510
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 509
-			_base_0[_key_0] = _val_0 -- 509
-		end -- 509
-	end -- 510
-	if _base_0.__index == nil then -- 509
-		_base_0.__index = _base_0 -- 509
-	end -- 510
-	setmetatable(_base_0, _parent_0.__base) -- 509
-	_class_0 = setmetatable({ -- 509
-		__init = function(self, ...) -- 509
-			return _class_0.__parent.__init(self, ...) -- 509
-		end, -- 509
-		__base = _base_0, -- 509
-		__name = "TakeMeds", -- 509
-		__parent = _parent_0 -- 509
-	}, { -- 509
-		__index = function(cls, name) -- 509
-			local val = rawget(_base_0, name) -- 509
-			if val == nil then -- 509
-				local parent = rawget(cls, "__parent") -- 509
-				if parent then -- 509
-					return parent[name] -- 509
-				end -- 509
-			else -- 509
-				return val -- 509
-			end -- 509
-		end, -- 509
-		__call = function(cls, ...) -- 509
-			local _self_0 = setmetatable({ }, _base_0) -- 509
-			cls.__init(_self_0, ...) -- 509
-			return _self_0 -- 509
-		end -- 509
-	}) -- 509
-	_base_0.__class = _class_0 -- 509
-	if _parent_0.__inherited then -- 509
-		_parent_0.__inherited(_parent_0, _class_0) -- 509
-	end -- 509
-	TakeMeds = _class_0 -- 509
-end -- 510
-local Medicine -- 512
-do -- 512
-	local _class_0 -- 512
-	local _parent_0 = Food -- 512
-	local _base_0 = { -- 512
-		PrintName = "Medicine", -- 514
-		Sound = "TakeMeds" -- 512
-	} -- 512
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 514
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 512
-			_base_0[_key_0] = _val_0 -- 512
-		end -- 512
-	end -- 514
-	if _base_0.__index == nil then -- 512
-		_base_0.__index = _base_0 -- 512
-	end -- 514
-	setmetatable(_base_0, _parent_0.__base) -- 512
-	_class_0 = setmetatable({ -- 512
-		__init = function(self, ...) -- 512
-			return _class_0.__parent.__init(self, ...) -- 512
-		end, -- 512
-		__base = _base_0, -- 512
-		__name = "Medicine", -- 512
-		__parent = _parent_0 -- 512
-	}, { -- 512
-		__index = function(cls, name) -- 512
-			local val = rawget(_base_0, name) -- 512
-			if val == nil then -- 512
-				local parent = rawget(cls, "__parent") -- 512
-				if parent then -- 512
-					return parent[name] -- 512
-				end -- 512
-			else -- 512
-				return val -- 512
-			end -- 512
-		end, -- 512
-		__call = function(cls, ...) -- 512
-			local _self_0 = setmetatable({ }, _base_0) -- 512
-			cls.__init(_self_0, ...) -- 512
-			return _self_0 -- 512
-		end -- 512
-	}) -- 512
-	_base_0.__class = _class_0 -- 512
-	if _parent_0.__inherited then -- 512
-		_parent_0.__inherited(_parent_0, _class_0) -- 512
-	end -- 512
-	Medicine = _class_0 -- 512
-end -- 514
-local Pills -- 516
-do -- 516
-	local _class_0 -- 516
-	local _parent_0 = Medicine -- 516
-	local _base_0 = { -- 516
-		PrintName = "Pills", -- 518
-		Model = Model("models/props_lab/jar01b.mdl"), -- 519
-		HealthAdd = function(self) -- 519
-			return math.random(-15, -30) -- 519
-		end, -- 520
-		Hunger = function(self) -- 520
-			return math.random(30, 50) -- 520
-		end, -- 521
-		Thirst = function(self) -- 521
-			return math.random(30, 60) -- 521
-		end, -- 522
-		Despair = function(self) -- 522
-			return math.random(-60, -100) -- 522
-		end, -- 524
-		Description = "A white plastic bottle, full of random pills.", -- 526
-		Price = 125, -- 528
-		TrashClass = "trash/plastic/pills", -- 530
-		UseText = { -- 531
-			"throws a mess of pills into eir mouth.", -- 531
-			"consumes the whole contents of a pill bottle.", -- 532
-			"devours handfuls of scary-looking pills.", -- 533
-			"chokes down some strange pills.", -- 534
-			"takes their medicine, like a good citizen should.", -- 535
-			"swallows a mouthful of pills.", -- 536
-			"takes an excessive dose of colorful pills.", -- 537
-			"tosses back an entire bottle of pills.", -- 538
-			"throws back a bottle of mystery pills." -- 539
-		} -- 516
-	} -- 516
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 540
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 516
-			_base_0[_key_0] = _val_0 -- 516
-		end -- 516
-	end -- 540
-	if _base_0.__index == nil then -- 516
-		_base_0.__index = _base_0 -- 516
-	end -- 540
-	setmetatable(_base_0, _parent_0.__base) -- 516
-	_class_0 = setmetatable({ -- 516
-		__init = function(self, ...) -- 516
-			return _class_0.__parent.__init(self, ...) -- 516
-		end, -- 516
-		__base = _base_0, -- 516
-		__name = "Pills", -- 516
-		__parent = _parent_0 -- 516
-	}, { -- 516
-		__index = function(cls, name) -- 516
-			local val = rawget(_base_0, name) -- 516
-			if val == nil then -- 516
-				local parent = rawget(cls, "__parent") -- 516
-				if parent then -- 516
-					return parent[name] -- 516
-				end -- 516
-			else -- 516
-				return val -- 516
-			end -- 516
-		end, -- 516
-		__call = function(cls, ...) -- 516
-			local _self_0 = setmetatable({ }, _base_0) -- 516
-			cls.__init(_self_0, ...) -- 516
-			return _self_0 -- 516
-		end -- 516
-	}) -- 516
-	_base_0.__class = _class_0 -- 516
-	if _parent_0.__inherited then -- 516
-		_parent_0.__inherited(_parent_0, _class_0) -- 516
-	end -- 516
-	Pills = _class_0 -- 516
-end -- 540
-local TimeGas -- 542
-do -- 542
-	local _class_0 -- 542
-	local _parent_0 = Medicine -- 542
-	local _base_0 = { -- 542
-		PrintName = "Time Gas", -- 544
-		Model = Model("models/props_wasteland/prison_sinkchunk001e.mdl"), -- 545
-		Sound = (function() -- 545
-			local _accum_0 = { } -- 545
-			local _len_0 = 1 -- 545
-			for i = 2, 3 do -- 545
-				_accum_0[_len_0] = "npc/fast_zombie/idle" .. tostring(i) -- 545
-				_len_0 = _len_0 + 1 -- 545
-			end -- 545
-			return _accum_0 -- 545
-		end)(), -- 546
-		AddHealth = function(self) -- 546
-			return math.random(20, 40) -- 546
-		end, -- 547
-		Hunger = function(self) -- 547
-			return math.random(10, 20) -- 547
-		end, -- 548
-		Thirst = function(self) -- 548
-			return math.random(20, 30) -- 548
-		end, -- 549
-		Despair = function(self) -- 549
-			return math.random(0, 10) -- 549
-		end, -- 551
-		Description = "An inhaler of time acceleration gas.\nSpeeds up healing, and dying.", -- 553
-		Price = 100, -- 555
-		TrashClass = "trash/inhaler", -- 557
-		UseText = { -- 558
-			"breathes in some time gas.", -- 558
-			"huffs a healing gas.", -- 559
-			"isn't yet tired of the time gas.", -- 560
-			"inhales a big cloud of time gas.", -- 561
-			"takes a deep breath of time gas.", -- 562
-			"drags in a lungful of time gas.", -- 563
-			"sniffs up a cloud of time gas.", -- 564
-			"huffs time gas from the rusty inhaler." -- 565
-		} -- 542
-	} -- 542
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 566
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 542
-			_base_0[_key_0] = _val_0 -- 542
-		end -- 542
-	end -- 566
-	if _base_0.__index == nil then -- 542
-		_base_0.__index = _base_0 -- 542
-	end -- 566
-	setmetatable(_base_0, _parent_0.__base) -- 542
-	_class_0 = setmetatable({ -- 542
-		__init = function(self, ...) -- 542
-			return _class_0.__parent.__init(self, ...) -- 542
+	Twitchel = _class_0 -- 507
+end -- 527
+local TakeMeds -- 529
+do -- 529
+	local _class_0 -- 529
+	local _parent_0 = SOUND -- 529
+	local _base_0 = { -- 529
+		sound = (function() -- 530
+			local _accum_0 = { } -- 530
+			local _len_0 = 1 -- 530
+			for i = 1, 3 do -- 530
+				_accum_0[_len_0] = "npc/zombie/zombie_pain" .. tostring(i) .. ".wav" -- 530
+				_len_0 = _len_0 + 1 -- 530
+			end -- 530
+			return _accum_0 -- 530
+		end)() -- 529
+	} -- 529
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 530
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 529
+			_base_0[_key_0] = _val_0 -- 529
+		end -- 529
+	end -- 530
+	if _base_0.__index == nil then -- 529
+		_base_0.__index = _base_0 -- 529
+	end -- 530
+	setmetatable(_base_0, _parent_0.__base) -- 529
+	_class_0 = setmetatable({ -- 529
+		__init = function(self, ...) -- 529
+			return _class_0.__parent.__init(self, ...) -- 529
+		end, -- 529
+		__base = _base_0, -- 529
+		__name = "TakeMeds", -- 529
+		__parent = _parent_0 -- 529
+	}, { -- 529
+		__index = function(cls, name) -- 529
+			local val = rawget(_base_0, name) -- 529
+			if val == nil then -- 529
+				local parent = rawget(cls, "__parent") -- 529
+				if parent then -- 529
+					return parent[name] -- 529
+				end -- 529
+			else -- 529
+				return val -- 529
+			end -- 529
+		end, -- 529
+		__call = function(cls, ...) -- 529
+			local _self_0 = setmetatable({ }, _base_0) -- 529
+			cls.__init(_self_0, ...) -- 529
+			return _self_0 -- 529
+		end -- 529
+	}) -- 529
+	_base_0.__class = _class_0 -- 529
+	if _parent_0.__inherited then -- 529
+		_parent_0.__inherited(_parent_0, _class_0) -- 529
+	end -- 529
+	TakeMeds = _class_0 -- 529
+end -- 530
+local Medicine -- 532
+do -- 532
+	local _class_0 -- 532
+	local _parent_0 = Food -- 532
+	local _base_0 = { -- 532
+		PrintName = "Medicine", -- 534
+		Sound = "TakeMeds" -- 532
+	} -- 532
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 534
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 532
+			_base_0[_key_0] = _val_0 -- 532
+		end -- 532
+	end -- 534
+	if _base_0.__index == nil then -- 532
+		_base_0.__index = _base_0 -- 532
+	end -- 534
+	setmetatable(_base_0, _parent_0.__base) -- 532
+	_class_0 = setmetatable({ -- 532
+		__init = function(self, ...) -- 532
+			return _class_0.__parent.__init(self, ...) -- 532
+		end, -- 532
+		__base = _base_0, -- 532
+		__name = "Medicine", -- 532
+		__parent = _parent_0 -- 532
+	}, { -- 532
+		__index = function(cls, name) -- 532
+			local val = rawget(_base_0, name) -- 532
+			if val == nil then -- 532
+				local parent = rawget(cls, "__parent") -- 532
+				if parent then -- 532
+					return parent[name] -- 532
+				end -- 532
+			else -- 532
+				return val -- 532
+			end -- 532
+		end, -- 532
+		__call = function(cls, ...) -- 532
+			local _self_0 = setmetatable({ }, _base_0) -- 532
+			cls.__init(_self_0, ...) -- 532
+			return _self_0 -- 532
+		end -- 532
+	}) -- 532
+	_base_0.__class = _class_0 -- 532
+	if _parent_0.__inherited then -- 532
+		_parent_0.__inherited(_parent_0, _class_0) -- 532
+	end -- 532
+	Medicine = _class_0 -- 532
+end -- 534
+local Pills -- 536
+do -- 536
+	local _class_0 -- 536
+	local _parent_0 = Medicine -- 536
+	local _base_0 = { -- 536
+		PrintName = "Pills", -- 538
+		Model = Model("models/props_lab/jar01b.mdl"), -- 539
+		HealthAdd = function(self) -- 539
+			return math.random(-15, -30) -- 539
+		end, -- 540
+		Hunger = function(self) -- 540
+			return math.random(30, 50) -- 540
+		end, -- 541
+		Thirst = function(self) -- 541
+			return math.random(30, 60) -- 541
 		end, -- 542
-		__base = _base_0, -- 542
-		__name = "TimeGas", -- 542
-		__parent = _parent_0 -- 542
-	}, { -- 542
-		__index = function(cls, name) -- 542
-			local val = rawget(_base_0, name) -- 542
-			if val == nil then -- 542
-				local parent = rawget(cls, "__parent") -- 542
-				if parent then -- 542
-					return parent[name] -- 542
-				end -- 542
-			else -- 542
-				return val -- 542
-			end -- 542
-		end, -- 542
-		__call = function(cls, ...) -- 542
-			local _self_0 = setmetatable({ }, _base_0) -- 542
-			cls.__init(_self_0, ...) -- 542
-			return _self_0 -- 542
-		end -- 542
-	}) -- 542
-	_base_0.__class = _class_0 -- 542
-	if _parent_0.__inherited then -- 542
-		_parent_0.__inherited(_parent_0, _class_0) -- 542
-	end -- 542
-	TimeGas = _class_0 -- 542
-end -- 566
-local Bleach -- 568
-do -- 568
-	local _class_0 -- 568
-	local _parent_0 = Medicine -- 568
-	local _base_0 = { -- 568
-		PrintName = "Chlorine", -- 570
-		Model = Model("models/props_junk/garbage_plasticbottle002a.mdl"), -- 571
-		Sound = "DrinkFluid", -- 573
-		Description = "Do NOT even think about drinking this. \n Last guy who tried couldn't even finish it before falling over.", -- 574
-		AddHealth = -50, -- 575
-		Hunger = 40, -- 576
-		Thirst = -40, -- 577
-		Despair = { -- 579
-			Description = "A jug full of bleach." -- 579
-		}, -- 580
-		Price = 100, -- 582
-		TrashClass = "trash/plastic/bleach", -- 584
-		UseText = { -- 585
-			"drinks bleach.", -- 585
-			"chugs an entire fucking jug of chlorine.", -- 586
-			"unscrews a jug of bleach and pours it down the hatch.", -- 587
-			"chokes down gulp after gulp of chlorine bleach." -- 588
-		} -- 568
-	} -- 568
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 589
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 568
-			_base_0[_key_0] = _val_0 -- 568
-		end -- 568
-	end -- 589
-	if _base_0.__index == nil then -- 568
-		_base_0.__index = _base_0 -- 568
-	end -- 589
-	setmetatable(_base_0, _parent_0.__base) -- 568
-	_class_0 = setmetatable({ -- 568
-		__init = function(self, ...) -- 568
-			return _class_0.__parent.__init(self, ...) -- 568
+		Despair = function(self) -- 542
+			return math.random(-60, -100) -- 542
+		end, -- 544
+		Description = "A white plastic bottle, full of random pills.", -- 546
+		Price = 125, -- 548
+		TrashClass = "trash/plastic/pills", -- 550
+		UseText = { -- 551
+			"throws a mess of pills into eir mouth.", -- 551
+			"consumes the whole contents of a pill bottle.", -- 552
+			"devours handfuls of scary-looking pills.", -- 553
+			"chokes down some strange pills.", -- 554
+			"takes their medicine, like a good citizen should.", -- 555
+			"swallows a mouthful of pills.", -- 556
+			"takes an excessive dose of colorful pills.", -- 557
+			"tosses back an entire bottle of pills.", -- 558
+			"throws back a bottle of mystery pills." -- 559
+		} -- 536
+	} -- 536
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 560
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 536
+			_base_0[_key_0] = _val_0 -- 536
+		end -- 536
+	end -- 560
+	if _base_0.__index == nil then -- 536
+		_base_0.__index = _base_0 -- 536
+	end -- 560
+	setmetatable(_base_0, _parent_0.__base) -- 536
+	_class_0 = setmetatable({ -- 536
+		__init = function(self, ...) -- 536
+			return _class_0.__parent.__init(self, ...) -- 536
+		end, -- 536
+		__base = _base_0, -- 536
+		__name = "Pills", -- 536
+		__parent = _parent_0 -- 536
+	}, { -- 536
+		__index = function(cls, name) -- 536
+			local val = rawget(_base_0, name) -- 536
+			if val == nil then -- 536
+				local parent = rawget(cls, "__parent") -- 536
+				if parent then -- 536
+					return parent[name] -- 536
+				end -- 536
+			else -- 536
+				return val -- 536
+			end -- 536
+		end, -- 536
+		__call = function(cls, ...) -- 536
+			local _self_0 = setmetatable({ }, _base_0) -- 536
+			cls.__init(_self_0, ...) -- 536
+			return _self_0 -- 536
+		end -- 536
+	}) -- 536
+	_base_0.__class = _class_0 -- 536
+	if _parent_0.__inherited then -- 536
+		_parent_0.__inherited(_parent_0, _class_0) -- 536
+	end -- 536
+	Pills = _class_0 -- 536
+end -- 560
+local TimeGas -- 562
+do -- 562
+	local _class_0 -- 562
+	local _parent_0 = Medicine -- 562
+	local _base_0 = { -- 562
+		PrintName = "Time Gas", -- 564
+		Model = Model("models/props_wasteland/prison_sinkchunk001e.mdl"), -- 565
+		Sound = (function() -- 565
+			local _accum_0 = { } -- 565
+			local _len_0 = 1 -- 565
+			for i = 2, 3 do -- 565
+				_accum_0[_len_0] = "npc/fast_zombie/idle" .. tostring(i) -- 565
+				_len_0 = _len_0 + 1 -- 565
+			end -- 565
+			return _accum_0 -- 565
+		end)(), -- 566
+		AddHealth = function(self) -- 566
+			return math.random(20, 40) -- 566
+		end, -- 567
+		Hunger = function(self) -- 567
+			return math.random(10, 20) -- 567
 		end, -- 568
-		__base = _base_0, -- 568
-		__name = "Bleach", -- 568
-		__parent = _parent_0 -- 568
-	}, { -- 568
-		__index = function(cls, name) -- 568
-			local val = rawget(_base_0, name) -- 568
-			if val == nil then -- 568
-				local parent = rawget(cls, "__parent") -- 568
-				if parent then -- 568
-					return parent[name] -- 568
-				end -- 568
-			else -- 568
-				return val -- 568
-			end -- 568
-		end, -- 568
-		__call = function(cls, ...) -- 568
-			local _self_0 = setmetatable({ }, _base_0) -- 568
-			cls.__init(_self_0, ...) -- 568
-			return _self_0 -- 568
-		end -- 568
-	}) -- 568
-	_base_0.__class = _class_0 -- 568
-	if _parent_0.__inherited then -- 568
-		_parent_0.__inherited(_parent_0, _class_0) -- 568
-	end -- 568
-	Bleach = _class_0 -- 568
-end -- 589
-local Ambrosia -- 591
-do -- 591
-	local _class_0 -- 591
-	local _parent_0 = Food -- 591
-	local _base_0 = { -- 591
-		PrintName = "Ambrosia", -- 593
-		Model = Model("models/Gibs/HGIBS.mdl"), -- 594
-		Hunger = -100, -- 595
-		Thirst = -100, -- 596
-		Despair = -100, -- 597
-		HealthAdd = 100, -- 598
-		Description = "A food made for gods.", -- 599
-		RotTime = 0, -- 601
-		UseText = { -- 602
-			"indulges in some ambrosia." -- 602
-		}, -- 605
-		Precursor = { -- 606
-			biomass = 15, -- 606
-			wood = 15, -- 607
-			metal = 15 -- 608
-		}, -- 613
-		Eat = function(self, ply) -- 613
-			_class_0.__parent.__base.Eat(self, ply) -- 614
-			if CLIENT then -- 615
-				return -- 615
-			end -- 615
-			return ply:AddStemCells(5) -- 616
-		end -- 591
-	} -- 591
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 616
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 591
-			_base_0[_key_0] = _val_0 -- 591
-		end -- 591
-	end -- 616
-	if _base_0.__index == nil then -- 591
-		_base_0.__index = _base_0 -- 591
-	end -- 616
-	setmetatable(_base_0, _parent_0.__base) -- 591
-	_class_0 = setmetatable({ -- 591
-		__init = function(self, ...) -- 591
-			return _class_0.__parent.__init(self, ...) -- 591
-		end, -- 591
-		__base = _base_0, -- 591
-		__name = "Ambrosia", -- 591
-		__parent = _parent_0 -- 591
-	}, { -- 591
-		__index = function(cls, name) -- 591
-			local val = rawget(_base_0, name) -- 591
-			if val == nil then -- 591
-				local parent = rawget(cls, "__parent") -- 591
-				if parent then -- 591
-					return parent[name] -- 591
-				end -- 591
-			else -- 591
-				return val -- 591
-			end -- 591
-		end, -- 591
-		__call = function(cls, ...) -- 591
-			local _self_0 = setmetatable({ }, _base_0) -- 591
-			cls.__init(_self_0, ...) -- 591
-			return _self_0 -- 591
-		end -- 591
-	}) -- 591
-	_base_0.__class = _class_0 -- 591
-	if _parent_0.__inherited then -- 591
-		_parent_0.__inherited(_parent_0, _class_0) -- 591
-	end -- 591
-	Ambrosia = _class_0 -- 591
-end -- 616
-local SloppyRibs -- 623
-do -- 623
-	local _class_0 -- 623
-	local _parent_0 = Food -- 623
-	local _base_0 = { -- 623
-		PrintName = "Sloppy Ribs", -- 625
-		Model = Model("models/vel/evilwar/sloppyribs.mdl"), -- 626
-		Hunger = -28, -- 627
-		Thirst = -4, -- 628
-		Despair = 5, -- 629
-		Description = "Fresh ribs from an unknown source, now glazed in slop! \n They look delicious.", -- 631
-		CookTime = 10, -- 633
-		Price = 115, -- 634
-		UseText = { -- 635
-			"devours all of the flesh and slop on the rib, then throws it away.", -- 635
-			"munches on the rib, and then licks the glaze off his hands.", -- 636
-			"gobbles down the rib, and spits out the bone." -- 637
-		} -- 623
-	} -- 623
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 637
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 623
-			_base_0[_key_0] = _val_0 -- 623
-		end -- 623
-	end -- 637
-	if _base_0.__index == nil then -- 623
-		_base_0.__index = _base_0 -- 623
-	end -- 637
-	setmetatable(_base_0, _parent_0.__base) -- 623
-	_class_0 = setmetatable({ -- 623
-		__init = function(self, ...) -- 623
-			return _class_0.__parent.__init(self, ...) -- 623
-		end, -- 623
-		__base = _base_0, -- 623
-		__name = "SloppyRibs", -- 623
-		__parent = _parent_0 -- 623
-	}, { -- 623
-		__index = function(cls, name) -- 623
-			local val = rawget(_base_0, name) -- 623
-			if val == nil then -- 623
-				local parent = rawget(cls, "__parent") -- 623
-				if parent then -- 623
-					return parent[name] -- 623
-				end -- 623
-			else -- 623
-				return val -- 623
-			end -- 623
-		end, -- 623
-		__call = function(cls, ...) -- 623
-			local _self_0 = setmetatable({ }, _base_0) -- 623
-			cls.__init(_self_0, ...) -- 623
-			return _self_0 -- 623
-		end -- 623
-	}) -- 623
-	_base_0.__class = _class_0 -- 623
-	if _parent_0.__inherited then -- 623
-		_parent_0.__inherited(_parent_0, _class_0) -- 623
-	end -- 623
-	SloppyRibs = _class_0 -- 623
-end -- 637
-local EyeballNoodles -- 640
-do -- 640
-	local _class_0 -- 640
-	local _parent_0 = Food -- 640
-	local _base_0 = { -- 640
-		PrintName = "Eyeball Noodles", -- 642
-		Model = Model("models/vel/evilwar/eyenoodle.mdl"), -- 643
-		Hunger = -50, -- 644
-		Thirst = -20, -- 645
-		Despair = 5, -- 646
-		Description = "A traditional Lymphomian dish, usually served to go. \n The texture is an acquired taste.", -- 648
-		CookTime = 8, -- 650
-		Price = 130, -- 652
-		UseText = { -- 653
-			"slurps all of the noodles.", -- 653
-			"slurps the noodles, gagging at the wet crunch of the eyeball.", -- 654
-			"eats the noodles, and then spits out the eyeball.", -- 655
-			"gags on the noodles, and then throws out the eyeball." -- 656
-		} -- 640
-	} -- 640
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 657
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 640
-			_base_0[_key_0] = _val_0 -- 640
-		end -- 640
-	end -- 657
-	if _base_0.__index == nil then -- 640
-		_base_0.__index = _base_0 -- 640
-	end -- 657
-	setmetatable(_base_0, _parent_0.__base) -- 640
-	_class_0 = setmetatable({ -- 640
-		__init = function(self, ...) -- 640
-			return _class_0.__parent.__init(self, ...) -- 640
-		end, -- 640
-		__base = _base_0, -- 640
-		__name = "EyeballNoodles", -- 640
-		__parent = _parent_0 -- 640
-	}, { -- 640
-		__index = function(cls, name) -- 640
-			local val = rawget(_base_0, name) -- 640
-			if val == nil then -- 640
-				local parent = rawget(cls, "__parent") -- 640
-				if parent then -- 640
-					return parent[name] -- 640
-				end -- 640
-			else -- 640
-				return val -- 640
-			end -- 640
-		end, -- 640
-		__call = function(cls, ...) -- 640
-			local _self_0 = setmetatable({ }, _base_0) -- 640
-			cls.__init(_self_0, ...) -- 640
-			return _self_0 -- 640
-		end -- 640
-	}) -- 640
-	_base_0.__class = _class_0 -- 640
-	if _parent_0.__inherited then -- 640
-		_parent_0.__inherited(_parent_0, _class_0) -- 640
-	end -- 640
-	EyeballNoodles = _class_0 -- 640
-end -- 657
-local PaperMache -- 659
-do -- 659
-	local _class_0 -- 659
-	local _parent_0 = Food -- 659
-	local _base_0 = { -- 659
-		PrintName = "Paper Mache", -- 661
-		Model = Model("models/props_junk/garbage_bag001a.mdl"), -- 662
-		Hunger = -10, -- 663
-		Thirst = -10, -- 664
-		Despair = 15, -- 665
-		Description = "An old crumpled paper. \n now it's watered down into a little ball.", -- 667
-		CookTime = 3, -- 669
-		Price = 30, -- 671
-		UseText = { -- 672
-			"stoves the paper mache into his mouth, gagging horribly.", -- 672
-			"forces the paper down his throat, throwing up slightly", -- 673
-			"rips apart the paper mache, eating small pieces at a time.", -- 674
-			"looks miserable trying to eat watered down paper." -- 675
-		} -- 659
-	} -- 659
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 675
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 659
-			_base_0[_key_0] = _val_0 -- 659
-		end -- 659
-	end -- 675
-	if _base_0.__index == nil then -- 659
-		_base_0.__index = _base_0 -- 659
-	end -- 675
-	setmetatable(_base_0, _parent_0.__base) -- 659
-	_class_0 = setmetatable({ -- 659
-		__init = function(self, ...) -- 659
-			return _class_0.__parent.__init(self, ...) -- 659
-		end, -- 659
-		__base = _base_0, -- 659
-		__name = "PaperMache", -- 659
-		__parent = _parent_0 -- 659
-	}, { -- 659
-		__index = function(cls, name) -- 659
-			local val = rawget(_base_0, name) -- 659
-			if val == nil then -- 659
-				local parent = rawget(cls, "__parent") -- 659
-				if parent then -- 659
-					return parent[name] -- 659
-				end -- 659
-			else -- 659
-				return val -- 659
-			end -- 659
-		end, -- 659
-		__call = function(cls, ...) -- 659
-			local _self_0 = setmetatable({ }, _base_0) -- 659
-			cls.__init(_self_0, ...) -- 659
-			return _self_0 -- 659
-		end -- 659
-	}) -- 659
-	_base_0.__class = _class_0 -- 659
-	if _parent_0.__inherited then -- 659
-		_parent_0.__inherited(_parent_0, _class_0) -- 659
-	end -- 659
-	PaperMache = _class_0 -- 659
-	return _class_0 -- 675
-end -- 675
+		Thirst = function(self) -- 568
+			return math.random(20, 30) -- 568
+		end, -- 569
+		Despair = function(self) -- 569
+			return math.random(0, 10) -- 569
+		end, -- 571
+		Description = "An inhaler of time acceleration gas.\nSpeeds up healing, and dying.", -- 573
+		Price = 100, -- 575
+		TrashClass = "trash/inhaler", -- 577
+		UseText = { -- 578
+			"breathes in some time gas.", -- 578
+			"huffs a healing gas.", -- 579
+			"isn't yet tired of the time gas.", -- 580
+			"inhales a big cloud of time gas.", -- 581
+			"takes a deep breath of time gas.", -- 582
+			"drags in a lungful of time gas.", -- 583
+			"sniffs up a cloud of time gas.", -- 584
+			"huffs time gas from the rusty inhaler." -- 585
+		} -- 562
+	} -- 562
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 586
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 562
+			_base_0[_key_0] = _val_0 -- 562
+		end -- 562
+	end -- 586
+	if _base_0.__index == nil then -- 562
+		_base_0.__index = _base_0 -- 562
+	end -- 586
+	setmetatable(_base_0, _parent_0.__base) -- 562
+	_class_0 = setmetatable({ -- 562
+		__init = function(self, ...) -- 562
+			return _class_0.__parent.__init(self, ...) -- 562
+		end, -- 562
+		__base = _base_0, -- 562
+		__name = "TimeGas", -- 562
+		__parent = _parent_0 -- 562
+	}, { -- 562
+		__index = function(cls, name) -- 562
+			local val = rawget(_base_0, name) -- 562
+			if val == nil then -- 562
+				local parent = rawget(cls, "__parent") -- 562
+				if parent then -- 562
+					return parent[name] -- 562
+				end -- 562
+			else -- 562
+				return val -- 562
+			end -- 562
+		end, -- 562
+		__call = function(cls, ...) -- 562
+			local _self_0 = setmetatable({ }, _base_0) -- 562
+			cls.__init(_self_0, ...) -- 562
+			return _self_0 -- 562
+		end -- 562
+	}) -- 562
+	_base_0.__class = _class_0 -- 562
+	if _parent_0.__inherited then -- 562
+		_parent_0.__inherited(_parent_0, _class_0) -- 562
+	end -- 562
+	TimeGas = _class_0 -- 562
+end -- 586
+local Bleach -- 588
+do -- 588
+	local _class_0 -- 588
+	local _parent_0 = Medicine -- 588
+	local _base_0 = { -- 588
+		PrintName = "Chlorine", -- 590
+		Model = Model("models/props_junk/garbage_plasticbottle002a.mdl"), -- 591
+		Sound = "DrinkFluid", -- 593
+		Description = "Do NOT even think about drinking this. \n Last guy who tried couldn't even finish it before falling over.", -- 594
+		HealthAdd = -50, -- 595
+		Hunger = 40, -- 596
+		Thirst = -40, -- 597
+		Despair = { -- 599
+			Description = "A jug full of bleach." -- 599
+		}, -- 600
+		Price = 100, -- 602
+		TrashClass = "trash/plastic/bleach", -- 604
+		UseText = { -- 605
+			"drinks bleach.", -- 605
+			"chugs an entire fucking jug of chlorine.", -- 606
+			"unscrews a jug of bleach and pours it down the hatch.", -- 607
+			"chokes down gulp after gulp of chlorine bleach." -- 608
+		} -- 588
+	} -- 588
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 609
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 588
+			_base_0[_key_0] = _val_0 -- 588
+		end -- 588
+	end -- 609
+	if _base_0.__index == nil then -- 588
+		_base_0.__index = _base_0 -- 588
+	end -- 609
+	setmetatable(_base_0, _parent_0.__base) -- 588
+	_class_0 = setmetatable({ -- 588
+		__init = function(self, ...) -- 588
+			return _class_0.__parent.__init(self, ...) -- 588
+		end, -- 588
+		__base = _base_0, -- 588
+		__name = "Bleach", -- 588
+		__parent = _parent_0 -- 588
+	}, { -- 588
+		__index = function(cls, name) -- 588
+			local val = rawget(_base_0, name) -- 588
+			if val == nil then -- 588
+				local parent = rawget(cls, "__parent") -- 588
+				if parent then -- 588
+					return parent[name] -- 588
+				end -- 588
+			else -- 588
+				return val -- 588
+			end -- 588
+		end, -- 588
+		__call = function(cls, ...) -- 588
+			local _self_0 = setmetatable({ }, _base_0) -- 588
+			cls.__init(_self_0, ...) -- 588
+			return _self_0 -- 588
+		end -- 588
+	}) -- 588
+	_base_0.__class = _class_0 -- 588
+	if _parent_0.__inherited then -- 588
+		_parent_0.__inherited(_parent_0, _class_0) -- 588
+	end -- 588
+	Bleach = _class_0 -- 588
+end -- 609
+local Ambrosia -- 611
+do -- 611
+	local _class_0 -- 611
+	local _parent_0 = Food -- 611
+	local _base_0 = { -- 611
+		PrintName = "Ambrosia", -- 613
+		Model = Model("models/Gibs/HGIBS.mdl"), -- 614
+		Hunger = -100, -- 615
+		Thirst = -100, -- 616
+		Despair = -100, -- 617
+		HealthAdd = 100, -- 618
+		Description = "A food made for gods.", -- 619
+		RotTime = 0, -- 621
+		UseText = { -- 622
+			"indulges in some ambrosia." -- 622
+		}, -- 625
+		Precursor = { -- 626
+			biomass = 15, -- 626
+			wood = 15, -- 627
+			metal = 15 -- 628
+		}, -- 630
+		Eat = function(self, ply) -- 630
+			_class_0.__parent.__base.Eat(self, ply) -- 631
+			if CLIENT then -- 632
+				return -- 632
+			end -- 632
+			return ply:AddStemCells(5) -- 633
+		end -- 611
+	} -- 611
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 633
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 611
+			_base_0[_key_0] = _val_0 -- 611
+		end -- 611
+	end -- 633
+	if _base_0.__index == nil then -- 611
+		_base_0.__index = _base_0 -- 611
+	end -- 633
+	setmetatable(_base_0, _parent_0.__base) -- 611
+	_class_0 = setmetatable({ -- 611
+		__init = function(self, ...) -- 611
+			return _class_0.__parent.__init(self, ...) -- 611
+		end, -- 611
+		__base = _base_0, -- 611
+		__name = "Ambrosia", -- 611
+		__parent = _parent_0 -- 611
+	}, { -- 611
+		__index = function(cls, name) -- 611
+			local val = rawget(_base_0, name) -- 611
+			if val == nil then -- 611
+				local parent = rawget(cls, "__parent") -- 611
+				if parent then -- 611
+					return parent[name] -- 611
+				end -- 611
+			else -- 611
+				return val -- 611
+			end -- 611
+		end, -- 611
+		__call = function(cls, ...) -- 611
+			local _self_0 = setmetatable({ }, _base_0) -- 611
+			cls.__init(_self_0, ...) -- 611
+			return _self_0 -- 611
+		end -- 611
+	}) -- 611
+	_base_0.__class = _class_0 -- 611
+	if _parent_0.__inherited then -- 611
+		_parent_0.__inherited(_parent_0, _class_0) -- 611
+	end -- 611
+	Ambrosia = _class_0 -- 611
+end -- 633
+local Chow -- 635
+do -- 635
+	local _class_0 -- 635
+	local _parent_0 = Food -- 635
+	local _base_0 = { -- 635
+		PrintName = "Wasteland Chow", -- 637
+		Model = Model("models/props_junk/garbage_takeoutcarton001a.mdl"), -- 638
+		Hunger = -20, -- 639
+		Thirst = -6, -- 640
+		Despair = 10, -- 641
+		Description = "An amalgamation of entrails, bones, and rotten flesh with a side of maggots. \n Wastelanders love it!", -- 642
+		RotTime = 0, -- 643
+		CookTime = 10, -- 645
+		UseText = { -- 646
+			"begrudgingly eats some wasteland chow.", -- 646
+			"puts some chow in their mouth while gagging.", -- 647
+			"eats some wasteland chow, then spits out the tiny bones.", -- 648
+			"chomps on some wasteland chow.", -- 649
+			"forces down some wasteland chow down their throat.", -- 650
+			"eats some chow, secretly enjoying it" -- 651
+		}, -- 654
+		Eat = function(self, ply) -- 654
+			_class_0.__parent.__base.Eat(self, ply) -- 655
+			if CLIENT then -- 656
+				return -- 656
+			end -- 656
+			local plyJob = RPExtraTeams[ply:Team()] -- 657
+			if plyJob.category == "Wasteland" then -- 658
+				ply:AddDespair(-30) -- 659
+				ply:AddHunger(-30) -- 660
+				return ply:AddThirst(-10) -- 661
+			end -- 658
+		end -- 635
+	} -- 635
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 661
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 635
+			_base_0[_key_0] = _val_0 -- 635
+		end -- 635
+	end -- 661
+	if _base_0.__index == nil then -- 635
+		_base_0.__index = _base_0 -- 635
+	end -- 661
+	setmetatable(_base_0, _parent_0.__base) -- 635
+	_class_0 = setmetatable({ -- 635
+		__init = function(self, ...) -- 635
+			return _class_0.__parent.__init(self, ...) -- 635
+		end, -- 635
+		__base = _base_0, -- 635
+		__name = "Chow", -- 635
+		__parent = _parent_0 -- 635
+	}, { -- 635
+		__index = function(cls, name) -- 635
+			local val = rawget(_base_0, name) -- 635
+			if val == nil then -- 635
+				local parent = rawget(cls, "__parent") -- 635
+				if parent then -- 635
+					return parent[name] -- 635
+				end -- 635
+			else -- 635
+				return val -- 635
+			end -- 635
+		end, -- 635
+		__call = function(cls, ...) -- 635
+			local _self_0 = setmetatable({ }, _base_0) -- 635
+			cls.__init(_self_0, ...) -- 635
+			return _self_0 -- 635
+		end -- 635
+	}) -- 635
+	_base_0.__class = _class_0 -- 635
+	if _parent_0.__inherited then -- 635
+		_parent_0.__inherited(_parent_0, _class_0) -- 635
+	end -- 635
+	Chow = _class_0 -- 635
+end -- 661
+local SloppyRibs -- 664
+do -- 664
+	local _class_0 -- 664
+	local _parent_0 = Food -- 664
+	local _base_0 = { -- 664
+		PrintName = "Sloppy Ribs", -- 666
+		Model = Model("models/vel/evilwar/sloppyribs.mdl"), -- 667
+		Hunger = -28, -- 668
+		Thirst = -4, -- 669
+		Despair = 5, -- 670
+		Description = "Fresh ribs from an unknown source, now glazed in slop! \n They look delicious.", -- 672
+		CookTime = 10, -- 674
+		Price = 115, -- 675
+		UseText = { -- 676
+			"devours all of the flesh and slop on the rib, then throws it away.", -- 676
+			"munches on the rib, and then licks the glaze off his hands.", -- 677
+			"gobbles down the rib, and spits out the bone." -- 678
+		} -- 664
+	} -- 664
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 678
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 664
+			_base_0[_key_0] = _val_0 -- 664
+		end -- 664
+	end -- 678
+	if _base_0.__index == nil then -- 664
+		_base_0.__index = _base_0 -- 664
+	end -- 678
+	setmetatable(_base_0, _parent_0.__base) -- 664
+	_class_0 = setmetatable({ -- 664
+		__init = function(self, ...) -- 664
+			return _class_0.__parent.__init(self, ...) -- 664
+		end, -- 664
+		__base = _base_0, -- 664
+		__name = "SloppyRibs", -- 664
+		__parent = _parent_0 -- 664
+	}, { -- 664
+		__index = function(cls, name) -- 664
+			local val = rawget(_base_0, name) -- 664
+			if val == nil then -- 664
+				local parent = rawget(cls, "__parent") -- 664
+				if parent then -- 664
+					return parent[name] -- 664
+				end -- 664
+			else -- 664
+				return val -- 664
+			end -- 664
+		end, -- 664
+		__call = function(cls, ...) -- 664
+			local _self_0 = setmetatable({ }, _base_0) -- 664
+			cls.__init(_self_0, ...) -- 664
+			return _self_0 -- 664
+		end -- 664
+	}) -- 664
+	_base_0.__class = _class_0 -- 664
+	if _parent_0.__inherited then -- 664
+		_parent_0.__inherited(_parent_0, _class_0) -- 664
+	end -- 664
+	SloppyRibs = _class_0 -- 664
+end -- 678
+local EyeballNoodles -- 681
+do -- 681
+	local _class_0 -- 681
+	local _parent_0 = Food -- 681
+	local _base_0 = { -- 681
+		PrintName = "Eyeball Noodles", -- 683
+		Model = Model("models/vel/evilwar/eyenoodle.mdl"), -- 684
+		Hunger = -50, -- 685
+		Thirst = -20, -- 686
+		Despair = 5, -- 687
+		Description = "A traditional Lymphomian dish, usually served to go. \n The texture is an acquired taste.", -- 689
+		CookTime = 8, -- 691
+		Price = 130, -- 693
+		UseText = { -- 694
+			"slurps all of the noodles.", -- 694
+			"slurps the noodles, gagging at the wet crunch of the eyeball.", -- 695
+			"eats the noodles, and then spits out the eyeball.", -- 696
+			"gags on the noodles, and then throws out the eyeball." -- 697
+		} -- 681
+	} -- 681
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 698
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 681
+			_base_0[_key_0] = _val_0 -- 681
+		end -- 681
+	end -- 698
+	if _base_0.__index == nil then -- 681
+		_base_0.__index = _base_0 -- 681
+	end -- 698
+	setmetatable(_base_0, _parent_0.__base) -- 681
+	_class_0 = setmetatable({ -- 681
+		__init = function(self, ...) -- 681
+			return _class_0.__parent.__init(self, ...) -- 681
+		end, -- 681
+		__base = _base_0, -- 681
+		__name = "EyeballNoodles", -- 681
+		__parent = _parent_0 -- 681
+	}, { -- 681
+		__index = function(cls, name) -- 681
+			local val = rawget(_base_0, name) -- 681
+			if val == nil then -- 681
+				local parent = rawget(cls, "__parent") -- 681
+				if parent then -- 681
+					return parent[name] -- 681
+				end -- 681
+			else -- 681
+				return val -- 681
+			end -- 681
+		end, -- 681
+		__call = function(cls, ...) -- 681
+			local _self_0 = setmetatable({ }, _base_0) -- 681
+			cls.__init(_self_0, ...) -- 681
+			return _self_0 -- 681
+		end -- 681
+	}) -- 681
+	_base_0.__class = _class_0 -- 681
+	if _parent_0.__inherited then -- 681
+		_parent_0.__inherited(_parent_0, _class_0) -- 681
+	end -- 681
+	EyeballNoodles = _class_0 -- 681
+end -- 698
+local PaperMache -- 700
+do -- 700
+	local _class_0 -- 700
+	local _parent_0 = Food -- 700
+	local _base_0 = { -- 700
+		PrintName = "Paper Mache", -- 702
+		Model = Model("models/props_junk/garbage_bag001a.mdl"), -- 703
+		Hunger = -10, -- 704
+		Thirst = -10, -- 705
+		Despair = 15, -- 706
+		Description = "An old crumpled paper. \n now it's watered down into a little ball.", -- 708
+		CookTime = 3, -- 710
+		Price = 30, -- 712
+		UseText = { -- 713
+			"stoves the paper mache into his mouth, gagging horribly.", -- 713
+			"forces the paper down his throat, throwing up slightly", -- 714
+			"rips apart the paper mache, eating small pieces at a time.", -- 715
+			"looks miserable trying to eat watered down paper." -- 716
+		} -- 700
+	} -- 700
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 716
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 700
+			_base_0[_key_0] = _val_0 -- 700
+		end -- 700
+	end -- 716
+	if _base_0.__index == nil then -- 700
+		_base_0.__index = _base_0 -- 700
+	end -- 716
+	setmetatable(_base_0, _parent_0.__base) -- 700
+	_class_0 = setmetatable({ -- 700
+		__init = function(self, ...) -- 700
+			return _class_0.__parent.__init(self, ...) -- 700
+		end, -- 700
+		__base = _base_0, -- 700
+		__name = "PaperMache", -- 700
+		__parent = _parent_0 -- 700
+	}, { -- 700
+		__index = function(cls, name) -- 700
+			local val = rawget(_base_0, name) -- 700
+			if val == nil then -- 700
+				local parent = rawget(cls, "__parent") -- 700
+				if parent then -- 700
+					return parent[name] -- 700
+				end -- 700
+			else -- 700
+				return val -- 700
+			end -- 700
+		end, -- 700
+		__call = function(cls, ...) -- 700
+			local _self_0 = setmetatable({ }, _base_0) -- 700
+			cls.__init(_self_0, ...) -- 700
+			return _self_0 -- 700
+		end -- 700
+	}) -- 700
+	_base_0.__class = _class_0 -- 700
+	if _parent_0.__inherited then -- 700
+		_parent_0.__inherited(_parent_0, _class_0) -- 700
+	end -- 700
+	PaperMache = _class_0 -- 700
+	return _class_0 -- 716
+end -- 716
