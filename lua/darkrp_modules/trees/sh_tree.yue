@@ -20,6 +20,7 @@ class Tree extends ENTITY
     
   LootTable:
     * "wood/scrap"
+    * "item/food/skin"
 
   SetupDataTables: =>
     @NetworkVar "Int", "Integrity"

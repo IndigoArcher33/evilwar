@@ -400,7 +400,7 @@ class Machine extends ENTITY
             ply.buttons_pushed += 1
             if ply.buttons_pushed % 30 == 0
               ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
-              ply\AddStemCells(1)
+              ply\AddStemCells(2)
           @NewLight(ply) if (not left) or math.random(1,100) <= 50
 
   GetNearestButton: (who) =>
@@ -557,10 +557,12 @@ class Tools extends Machine
     ["evilrp_melee/pickaxe"]: {
       precursors:
         metal: 5
+        wood: 2
       time: 20 }
     ["evilrp_melee/shovel"]: {
       precursors:
         metal: 4
+        wood: 3
       time: 20 }
     ["evilrp_melee/pot"]: {
       precursors:
@@ -608,13 +610,17 @@ class Weapons extends Machine
       precursors:
         metal: 5
       time: 20 }
+    ["evilrp_weapon/hope"]: {
+      precursors:
+        metal: 4
+      time: 20 }
     ["evilrp_weapon/greaser"]: {
       precursors:
         metal: 7
       time: 25 }
     ["evilrp_weapon/mark"]: {
       precursors:
-        metal: 4
+        metal: 2
       time: 20 }
     ["evilrp_weapon/brainpaster"]: {
       precursors:
@@ -626,6 +632,11 @@ class Weapons extends Machine
         metal: 7
         polymer: 3
       time: 25 }
+    ["evilrp_weapon/obliterator"]: {
+      precursors:
+        metal: 8
+        polymer: 4
+      time: 30 }
     ["evilrp_weapon/trooper"]: {
       precursors:
         metal: 10

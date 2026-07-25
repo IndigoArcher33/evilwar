@@ -169,16 +169,16 @@ do -- 23
 			local tags = "" -- 118
 			local col -- 119
 			local msgs -- 120
-			local roll = math.random(5) -- 121
+			local roll = math.random(4) -- 121
 			if self:GetRemaining() <= 0 then -- 122
 				roll = roll + 1 -- 122
 			end -- 122
 			local noticed_empty = false -- 123
-			if 1 == roll then -- 125
+			if 1 == roll or 2 == roll then -- 125
 				col = "0,200,0" -- 126
 				msgs = self.LootMessages.success -- 127
 				self:Loot(ply) -- 128
-			elseif 2 == roll or 3 == roll or 4 == roll then -- 129
+			elseif 3 == roll or 4 == roll then -- 129
 				col = "200,200,0" -- 130
 				msgs = self.LootMessages.failure -- 131
 				local sad = math.random(0) -- 132
@@ -189,7 +189,7 @@ do -- 23
 				if (self:GetRemaining() <= 0) and math.random(3) == 2 then -- 135
 					noticed_empty = true -- 135
 				end -- 135
-			elseif 5 == roll or 6 == roll then -- 136
+			elseif 5 == roll then -- 136
 				col = "200,0,0" -- 137
 				msgs = self.LootMessages.damage -- 138
 				local dmg = DamageInfo() -- 139
@@ -440,241 +440,142 @@ do -- 212
 	end -- 212
 	Dumpster = _class_0 -- 212
 end -- 264
-local Locker -- 267
-do -- 267
-	local _class_0 -- 267
-	local _parent_0 = Lootable -- 267
-	local _base_0 = { -- 267
-		PrintName = "Antique Locker", -- 270
-		Description = "A locker, washed up from some ancient, forgotten battle. ", -- 272
-		Model = "models/props_c17/lockers001a.mdl", -- 273
-		LootMax = 8, -- 274
-		TimeToUse = 12, -- 276
-		LootTable = { -- 277
-			"evilrp_weapon/obrez", -- 277
-			"item/food/paper", -- 278
-			"item/food/paper", -- 279
-			"evilrp_weapon/enforcer", -- 280
-			"evilrp_weapon/enforcer", -- 281
+local Crate -- 266
+do -- 266
+	local _class_0 -- 266
+	local _parent_0 = Lootable -- 266
+	local _base_0 = { -- 266
+		PrintName = "Tools Crate", -- 268
+		Model = "models/items/ammocrate_ar2.mdl", -- 270
+		Description = "A old crate that was once filled with tools, hopefully some were left behind for you.", -- 272
+		LootMax = 7, -- 273
+		TimeToUse = 6, -- 275
+		AccumulateInterval = 540, -- 277
+		LootTable = { -- 278
+			"evilrp_melee/pipe", -- 278
+			"evilrp_melee/pipe", -- 279
+			"evilrp_melee/pipe", -- 280
+			"evilrp_melee/pot", -- 281
 			"item/food/boot", -- 282
-			"item/food/boot", -- 283
-			"item/food/boot", -- 284
-			"item/drug/rotmelange", -- 285
-			"trash/bottle", -- 286
-			"trash/bottle", -- 287
-			"trash/bottle", -- 288
-			"trash/plastic/shake", -- 289
-			"trash/plastic/shake", -- 290
-			"trash/plastic/pills", -- 291
-			"trash/plastic/bleach", -- 292
-			"evilrp_weapon/greaser", -- 293
-			"item/food/slopskull", -- 294
-			"item/food/slopskull", -- 295
-			"item/food/slopskull", -- 296
-			"item/food/ribbone", -- 297
-			"item/food/ribbone", -- 298
-			"item/food/ribbone" -- 299
-		} -- 267
-	} -- 267
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 299
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 267
-			_base_0[_key_0] = _val_0 -- 267
-		end -- 267
-	end -- 299
-	if _base_0.__index == nil then -- 267
-		_base_0.__index = _base_0 -- 267
-	end -- 299
-	setmetatable(_base_0, _parent_0.__base) -- 267
-	_class_0 = setmetatable({ -- 267
-		__init = function(self, ...) -- 267
-			return _class_0.__parent.__init(self, ...) -- 267
-		end, -- 267
-		__base = _base_0, -- 267
-		__name = "Locker", -- 267
-		__parent = _parent_0 -- 267
-	}, { -- 267
-		__index = function(cls, name) -- 267
-			local val = rawget(_base_0, name) -- 267
-			if val == nil then -- 267
-				local parent = rawget(cls, "__parent") -- 267
-				if parent then -- 267
-					return parent[name] -- 267
-				end -- 267
-			else -- 267
-				return val -- 267
-			end -- 267
-		end, -- 267
-		__call = function(cls, ...) -- 267
-			local _self_0 = setmetatable({ }, _base_0) -- 267
-			cls.__init(_self_0, ...) -- 267
-			return _self_0 -- 267
-		end -- 267
-	}) -- 267
-	_base_0.__class = _class_0 -- 267
-	if _parent_0.__inherited then -- 267
-		_parent_0.__inherited(_parent_0, _class_0) -- 267
-	end -- 267
-	Locker = _class_0 -- 267
-end -- 299
-local Chest -- 302
-do -- 302
-	local _class_0 -- 302
-	local _parent_0 = Lootable -- 302
-	local _base_0 = { -- 302
-		PrintName = "Rotten Chest", -- 305
-		Description = "A wooden chest, the surface is covered with maggots.", -- 307
-		Model = "models/props_forest/footlocker01_closed.mdl", -- 308
-		LootMax = 5, -- 309
-		TimeToUse = 12, -- 311
-		LootTable = { -- 312
-			"item/food/paper", -- 312
-			"item/food/paper", -- 313
-			"item/drug/rotmelange", -- 314
-			"trash/bottle", -- 315
-			"trash/bottle", -- 316
-			"trash/bottle", -- 317
-			"trash/plastic/shake", -- 318
-			"trash/plastic/shake", -- 319
-			"trash/plastic/shake", -- 320
-			"trash/plastic/pills", -- 321
-			"trash/plastic/pills", -- 322
-			"trash/plastic/pills", -- 323
-			"trash/plastic/bleach", -- 324
-			"item/food/abortion", -- 325
-			"item/food/abortion", -- 326
-			"item/food/abortion", -- 327
-			"item/food/slopskull", -- 328
-			"item/food/slopskull", -- 329
-			"item/food/slopskull", -- 330
-			"item/food/ribbone", -- 331
-			"item/food/ribbone", -- 332
-			"item/food/ribbone", -- 333
-			"trash/bottle/fearbeer", -- 334
-			"trash/bottle/fearbeer", -- 335
-			"item/food/drink/fearbeer", -- 336
-			"item/food/drink/fearbeer", -- 337
-			"item/food/drink/smearbeer", -- 338
-			"item/food/drink/smearbeer", -- 339
-			"item/food/drink/shake", -- 340
-			"item/food/drink/shake", -- 341
-			"item/food/drink/loaf", -- 342
-			"item/food/drink/loaf", -- 343
-			"item/food/drink/loaf" -- 344
-		} -- 302
-	} -- 302
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 344
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 302
-			_base_0[_key_0] = _val_0 -- 302
-		end -- 302
-	end -- 344
-	if _base_0.__index == nil then -- 302
-		_base_0.__index = _base_0 -- 302
-	end -- 344
-	setmetatable(_base_0, _parent_0.__base) -- 302
-	_class_0 = setmetatable({ -- 302
-		__init = function(self, ...) -- 302
-			return _class_0.__parent.__init(self, ...) -- 302
-		end, -- 302
-		__base = _base_0, -- 302
-		__name = "Chest", -- 302
-		__parent = _parent_0 -- 302
-	}, { -- 302
-		__index = function(cls, name) -- 302
-			local val = rawget(_base_0, name) -- 302
-			if val == nil then -- 302
-				local parent = rawget(cls, "__parent") -- 302
-				if parent then -- 302
-					return parent[name] -- 302
-				end -- 302
-			else -- 302
-				return val -- 302
-			end -- 302
-		end, -- 302
-		__call = function(cls, ...) -- 302
-			local _self_0 = setmetatable({ }, _base_0) -- 302
-			cls.__init(_self_0, ...) -- 302
-			return _self_0 -- 302
-		end -- 302
-	}) -- 302
-	_base_0.__class = _class_0 -- 302
-	if _parent_0.__inherited then -- 302
-		_parent_0.__inherited(_parent_0, _class_0) -- 302
-	end -- 302
-	Chest = _class_0 -- 302
-end -- 344
-local Cache -- 346
-do -- 346
-	local _class_0 -- 346
-	local _parent_0 = Lootable -- 346
-	local _base_0 = { -- 346
-		PrintName = "Abandoned Cache", -- 349
-		Description = "Someone left this in a hurry, it has foreign markings.", -- 351
-		Model = "models/props/de_prodigy/ammo_can_01.mdl", -- 352
-		LootMax = 2, -- 353
-		TimeToUse = 20, -- 355
-		LootTable = { -- 356
-			"item/food/paper", -- 356
-			"item/drug/rotmelange", -- 357
-			"trash/bottle", -- 358
-			"trash/plastic/shake", -- 359
-			"trash/plastic/pills", -- 360
-			"trash/plastic/bleach", -- 361
-			"trash/bottle/fearbeer", -- 362
-			"item/food/drink/fearbeer", -- 363
-			"item/food/drink/smearbeer", -- 364
-			"item/food/drink/smearbeer", -- 365
-			"evilrp_weapon/greaser", -- 366
-			"evilrp_weapon/greaser", -- 367
-			"evilrp_weapon/prettyboy", -- 368
-			"evilrp_weapon/prettyboy", -- 369
-			"evilrp_melee/shovel", -- 370
-			"evilrp_melee/shovel", -- 371
-			"evilrp_melee/shovel", -- 372
-			"evilrp_weapon/hope", -- 373
-			"evilrp_weapon/hope", -- 374
-			"evilrp_weapon/owler", -- 375
-			"item/food/eyeballnoodles", -- 376
-			"item/food/eyeballnoodles" -- 377
-		} -- 346
-	} -- 346
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 377
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 346
-			_base_0[_key_0] = _val_0 -- 346
-		end -- 346
-	end -- 377
-	if _base_0.__index == nil then -- 346
-		_base_0.__index = _base_0 -- 346
-	end -- 377
-	setmetatable(_base_0, _parent_0.__base) -- 346
-	_class_0 = setmetatable({ -- 346
-		__init = function(self, ...) -- 346
-			return _class_0.__parent.__init(self, ...) -- 346
-		end, -- 346
-		__base = _base_0, -- 346
-		__name = "Cache", -- 346
-		__parent = _parent_0 -- 346
-	}, { -- 346
-		__index = function(cls, name) -- 346
-			local val = rawget(_base_0, name) -- 346
-			if val == nil then -- 346
-				local parent = rawget(cls, "__parent") -- 346
-				if parent then -- 346
-					return parent[name] -- 346
-				end -- 346
-			else -- 346
-				return val -- 346
-			end -- 346
-		end, -- 346
-		__call = function(cls, ...) -- 346
-			local _self_0 = setmetatable({ }, _base_0) -- 346
-			cls.__init(_self_0, ...) -- 346
-			return _self_0 -- 346
-		end -- 346
-	}) -- 346
-	_base_0.__class = _class_0 -- 346
-	if _parent_0.__inherited then -- 346
-		_parent_0.__inherited(_parent_0, _class_0) -- 346
-	end -- 346
-	Cache = _class_0 -- 346
-	return _class_0 -- 377
-end -- 377
+			"trash/bottle", -- 283
+			"trash/bottle/fearbeer", -- 284
+			"item/food/paper" -- 285
+		} -- 266
+	} -- 266
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 285
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 266
+			_base_0[_key_0] = _val_0 -- 266
+		end -- 266
+	end -- 285
+	if _base_0.__index == nil then -- 266
+		_base_0.__index = _base_0 -- 266
+	end -- 285
+	setmetatable(_base_0, _parent_0.__base) -- 266
+	_class_0 = setmetatable({ -- 266
+		__init = function(self, ...) -- 266
+			return _class_0.__parent.__init(self, ...) -- 266
+		end, -- 266
+		__base = _base_0, -- 266
+		__name = "Crate", -- 266
+		__parent = _parent_0 -- 266
+	}, { -- 266
+		__index = function(cls, name) -- 266
+			local val = rawget(_base_0, name) -- 266
+			if val == nil then -- 266
+				local parent = rawget(cls, "__parent") -- 266
+				if parent then -- 266
+					return parent[name] -- 266
+				end -- 266
+			else -- 266
+				return val -- 266
+			end -- 266
+		end, -- 266
+		__call = function(cls, ...) -- 266
+			local _self_0 = setmetatable({ }, _base_0) -- 266
+			cls.__init(_self_0, ...) -- 266
+			return _self_0 -- 266
+		end -- 266
+	}) -- 266
+	_base_0.__class = _class_0 -- 266
+	if _parent_0.__inherited then -- 266
+		_parent_0.__inherited(_parent_0, _class_0) -- 266
+	end -- 266
+	Crate = _class_0 -- 266
+end -- 285
+local Locker -- 288
+do -- 288
+	local _class_0 -- 288
+	local _parent_0 = Lootable -- 288
+	local _base_0 = { -- 288
+		PrintName = "Antique Locker", -- 291
+		Description = "A locker, washed up from some ancient, forgotten battle. ", -- 293
+		Model = "models/props_c17/lockers001a.mdl", -- 294
+		LootMax = 8, -- 295
+		TimeToUse = 12, -- 297
+		AccumulateInterval = 360, -- 299
+		LootTable = { -- 300
+			"evilrp_weapon/obrez", -- 300
+			"item/food/paper", -- 301
+			"item/food/paper", -- 302
+			"item/food/boot", -- 303
+			"item/food/boot", -- 304
+			"item/food/boot", -- 305
+			"item/drug/rotmelange", -- 306
+			"trash/bottle", -- 307
+			"trash/bottle", -- 308
+			"item/food/drink/fearbeer", -- 309
+			"item/food/drink/fearbeer", -- 310
+			"trash/plastic/shake", -- 311
+			"trash/plastic/shake", -- 312
+			"trash/plastic/pills", -- 313
+			"trash/plastic/bleach", -- 314
+			"evilrp_weapon/greaser", -- 315
+			"item/food/slopskull", -- 316
+			"item/food/slopskull", -- 317
+			"item/food/slopskull", -- 318
+			"item/food/ribbone", -- 319
+			"item/food/ribbone", -- 320
+			"item/food/ribbone" -- 321
+		} -- 288
+	} -- 288
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 321
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 288
+			_base_0[_key_0] = _val_0 -- 288
+		end -- 288
+	end -- 321
+	if _base_0.__index == nil then -- 288
+		_base_0.__index = _base_0 -- 288
+	end -- 321
+	setmetatable(_base_0, _parent_0.__base) -- 288
+	_class_0 = setmetatable({ -- 288
+		__init = function(self, ...) -- 288
+			return _class_0.__parent.__init(self, ...) -- 288
+		end, -- 288
+		__base = _base_0, -- 288
+		__name = "Locker", -- 288
+		__parent = _parent_0 -- 288
+	}, { -- 288
+		__index = function(cls, name) -- 288
+			local val = rawget(_base_0, name) -- 288
+			if val == nil then -- 288
+				local parent = rawget(cls, "__parent") -- 288
+				if parent then -- 288
+					return parent[name] -- 288
+				end -- 288
+			else -- 288
+				return val -- 288
+			end -- 288
+		end, -- 288
+		__call = function(cls, ...) -- 288
+			local _self_0 = setmetatable({ }, _base_0) -- 288
+			cls.__init(_self_0, ...) -- 288
+			return _self_0 -- 288
+		end -- 288
+	}) -- 288
+	_base_0.__class = _class_0 -- 288
+	if _parent_0.__inherited then -- 288
+		_parent_0.__inherited(_parent_0, _class_0) -- 288
+	end -- 288
+	Locker = _class_0 -- 288
+	return _class_0 -- 321
+end -- 321

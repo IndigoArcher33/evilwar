@@ -48,7 +48,7 @@ class Bodyguard extends EvilRP_Weapon
 
 class Brainpaster extends EvilRP_Weapon 
   PrintName: "Brainpaster"
-  Description: "Arrhythmia's number one wall painter."
+  Description: "Lymphoma's number one wall painter."
 
   Slot: 1
     
@@ -117,7 +117,7 @@ class Coach extends EvilRP_Weapon
     ClipSize: 2
     DefaultClip: 2
 
-    Damage: 17
+    Damage: 18
     Count: 14
     Delay: 0.4
 
@@ -171,7 +171,7 @@ class Candlewood extends EvilRP_Weapon
     ClipSize: 4
     DefaultClip: 8
 
-    Damage: 17
+    Damage: 15
     PumpAction: false -- confusingly this must be false, because the animations
                       -- are from CS:S
     Pump:
@@ -227,7 +227,7 @@ class Enforcer extends EvilRP_Weapon
     ClipSize: 6
     DefaultClip: 12
 
-    Damage: 75
+    Damage: 50
     Delay: 1.25
       
     Range: 2000
@@ -368,17 +368,17 @@ class Obrez extends EvilRP_Weapon
     ClipSize: 3
     DefaultClip: 6
 
-    Damage: 65
+    Damage: 40
     Delay: 1.25
       
     Range: 300
-    Accuracy: 12
+    Accuracy: 20
 
     RangeModifier: 0.95
 
     Recoil: {
-      MinAng: Angle(8, -6.2, 0)
-      MaxAng: Angle(16, 6.2, 0)
+      MinAng: Angle(15 -6.2, 0)
+      MaxAng: Angle(20, 6.2, 0)
       Punch: 0.95
       Ratio: 0.2
     }
@@ -635,6 +635,8 @@ class Trooper extends EvilRP_Weapon
 
   Slot: 2
     
+  Price: 5000
+
   Spawnable: true
     
   UseHands: true
@@ -732,6 +734,8 @@ class Hope extends EvilRP_Weapon
 
   Slot: 1
     
+  Price: 2000
+
   Spawnable: true
     
   UseHands: true
@@ -819,6 +823,52 @@ class Whisper extends EvilRP_Weapon
     TracerName: "Tracer"
   }
 
+class Obliterator extends EvilRP_Weapon 
+  PrintName: "Obliterator"
+  Description: "A sleek, modern firearm fit for the soldier of the future."
 
+  Slot: 2
+
+  Price: 3650
+  Spawnable: true
+
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/tnb/weapons/c_bar.mdl"
+  WorldModel: Model"models/tnb/weapons/w_bar.mdl"
+
+  HoldType: "ar2"
+  LowerHoldType: "passive"
+
+  Firemode: -1
+  Primary: {
+    Ammo: "AR2"
+
+    ClipSize: 20
+    DefaultClip: 40
+
+    Damage: 25
+    Delay: 60 / 345
+
+    Range: 900
+    Accuracy: 2
+
+    RangeModifier: 0.99
+
+    Recoil: {
+      MinAng: Angle(11.8, -0.9, 0)
+      MaxAng: Angle(14.8, 0.9, 0)
+      Punch: 0.7
+      Ratio: 0.5
+    }
+
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+
+    Sound: "tekka/weapons/weapon_k98.wav"
+    TracerName: "Tracer"
+
+  }
 
 

@@ -111,7 +111,7 @@ do -- 53
 				Damage = 15, -- 78
 				DamageType = DMG_SLASH, -- 79
 				Range = 75, -- 81
-				Delay = 0.2, -- 82
+				Delay = 0.5, -- 82
 				Act = ACT_VM_MISSCENTER, -- 84
 				Sound = { -- 86
 					"weapons/knife/knife_hit1.wav", -- 86
@@ -119,10 +119,10 @@ do -- 53
 				} -- 86
 			}, -- 77
 			Heavy = { -- 90
-				Damage = 30, -- 90
+				Damage = 25, -- 90
 				DamageType = DMG_SLASH, -- 91
 				Range = 75, -- 93
-				Delay = 0.5, -- 94
+				Delay = 0.9, -- 94
 				Act = ACT_VM_MISSCENTER, -- 96
 				Sound = { -- 98
 					"weapons/knife/knife_hit1.wav", -- 98
@@ -208,7 +208,7 @@ do -- 107
 				} -- 138
 			}, -- 129
 			Heavy = { -- 142
-				Damage = 50, -- 142
+				Damage = 40, -- 142
 				DamageType = DMG_CLUB, -- 143
 				Range = 75, -- 145
 				Delay = 1, -- 146
@@ -284,7 +284,7 @@ do -- 159
 		Primary = { -- 179
 			ChargeTime = 1, -- 179
 			Light = { -- 182
-				Damage = 45, -- 182
+				Damage = 35, -- 182
 				DamageType = DMG_CLUB, -- 183
 				Range = 80, -- 185
 				Delay = 1.2, -- 186
@@ -298,7 +298,7 @@ do -- 159
 				} -- 190
 			}, -- 181
 			Heavy = { -- 194
-				Damage = 75, -- 194
+				Damage = 55, -- 194
 				DamageType = DMG_CLUB, -- 195
 				Range = 75, -- 197
 				Delay = 3, -- 198
@@ -373,7 +373,7 @@ do -- 211
 		Primary = { -- 231
 			ChargeTime = 1, -- 231
 			Light = { -- 234
-				Damage = 20, -- 234
+				Damage = 15, -- 234
 				DamageType = DMG_CLUB, -- 235
 				Range = 75, -- 237
 				Delay = 0.5, -- 238
@@ -387,7 +387,7 @@ do -- 211
 				} -- 242
 			}, -- 233
 			Heavy = { -- 246
-				Damage = 40, -- 246
+				Damage = 35, -- 246
 				DamageType = DMG_CLUB, -- 247
 				Range = 75, -- 249
 				Delay = 1.2, -- 250
@@ -538,7 +538,7 @@ do -- 315
 	local _parent_0 = EvilRP_Melee -- 315
 	local _base_0 = { -- 315
 		PrintName = "Shovel", -- 317
-		Description = "Kidneystani partisan used to dig holes in concrete walls with these.", -- 319
+		Description = "Lymphomian partisans used to dig holes in concrete walls with these.", -- 319
 		Slot = 0, -- 321
 		Price = 400, -- 323
 		Spawnable = true, -- 324
@@ -878,7 +878,7 @@ do -- 433
 			Light = { -- 456
 				Damage = 25, -- 456
 				DamageType = DMG_SLASH, -- 457
-				Range = 75, -- 459
+				Range = 80, -- 459
 				Delay = 0.7, -- 460
 				Act = ACT_VM_MISSCENTER, -- 462
 				Sound = { -- 464

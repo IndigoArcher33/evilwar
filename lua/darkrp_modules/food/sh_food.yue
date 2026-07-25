@@ -163,10 +163,9 @@ class Abortion extends Food
 class LiveBaby extends Food
   PrintName: "Live baby"
   Model: Model"models/props_c17/doll01.mdl"
-  Hunger: -52
-  Thirst: -47
-  HealthAdd: 40
-  RotTime: 480
+  Hunger: -30
+  Thirst: -10
+  HealthAdd: 15
   Description: "An artifical baby, born paralyzed below the eyes.\nIt will know nothing but fear and pain."
 
   UseText: {
@@ -181,7 +180,7 @@ class LiveBaby extends Food
 
 class SoyLoaf extends Food
   PrintName: "Soylent Loaf"
-  Model: Model"models/leakgibs/antlion_gib_small_3.mdl"
+  Model: Model"models/gibs/antlion_gib_small_3.mdl"
   Hunger: -15
   Thirst: 3
   Despair: 5
@@ -198,6 +197,49 @@ class SoyLoaf extends Food
     "chews off a chunk from a soylent loaf."
     "eats some soylent, like a good citizen should."
   }
+
+class BootSoup extends Food
+  PrintName: "Boot n' soup"
+  Model: Model"models/props_c17/metalPot001a.mdl"
+  HealthAdd: -5
+  Hunger: -40
+  Thirst: -4
+  Despair: 25
+  Description: "Formerly only filled with slop, now comes with 'vegan-meat'!"
+  CookTime: 13
+
+  Price: 20
+
+  UseText: {
+    "drinks the soup slowly, but chokes on the 'vegan-meat' ."
+    "miserably slurps the soup, spitting out small chunks of 'vegan-meat'."
+    "struggles to eat any of the soup and 'vegan-meat'." }
+
+class MeatLoaf extends Food
+  PrintName: "Meatloaf"
+  Model: Model"models/props_junk/garbage_takeoutcarton001a.mdl"
+  Hunger: -40
+  Thirst: -9
+  Despair: 4
+  Description: "Delicious meatloaf, a favorite of many soldiers."
+  CookTime: 15
+
+  Price: 100
+
+
+  Eat: (ply) =>
+    super ply
+    return if CLIENT
+    ply\AddStemCells(1)
+
+  UseText: {
+    "Devours their meatloaf."
+    "chokes while consuming slop."
+    "struggles to eat a slop bowl."
+    "chomps on some slop."
+    "begrudgingly eats a spoonful of slop."
+    "consumes slop." }
+
 
 class SlopBowl extends Food
   PrintName: "Slop Bowl"
@@ -238,11 +280,30 @@ class Boot extends Food
     "eats a boot."
   }
 
+class BleachedMelon extends Food
+  PrintName: "Bleached Melon"
+  Model: Model "models/props_junk/watermelon01_chunk01c.mdl"
+  HealthAdd: -3
+  Hunger: -15
+  Thirst: -4
+  Description: "This was covered in mold before, but hopefully the chlorine got rid of it."
+  
+  CookTime: 10
+  Price: 25
+
+  UseText: {
+    "eats a melon."
+    "devours a chunk of melon."
+    "munches on a melon." }
+   
+  
+
 class MoldMelon extends Food
   PrintName: "Mold Melon"
-  Model: Model"models/gibs/antlionegg01_chunk01c.mdl"
-  AddHealth: 5
-  Hunger: => (math.random -10, -18)
+  Model: Model "models/props_junk/watermelon01_chunk01c.mdl"
+  HealthAdd: -10
+  Hunger: -6
+  Despair: 4 
   Description: "A pithy husk of fruit, fully colonized by white mold."
 
   Price: 25
@@ -336,7 +397,7 @@ class FearBeer extends Drink
 class SmearBeer extends Drink
   PrintName: "Smear Beer"
   Model: Model"models/props_junk/garbage_glassbottle003a.mdl"
-  Thirst: -12
+  Thirst: -27
   Despair: -35
   Description: "A bottle of cloudy, greyish red booze.\nThe label is obscured with a smear of old blood."
 
@@ -455,7 +516,7 @@ class Medicine extends Food
 class Pills extends Medicine
   PrintName: "Pills"
   Model: Model"models/props_lab/jar01b.mdl"
-  AddHealth: => (math.random -15, -30)
+  HealthAdd: => (math.random -15, -30)
   Hunger: => (math.random 30, 50)
   Thirst: => (math.random 30, 60)
   Despair: => (math.random -60, -100)
@@ -471,7 +532,7 @@ class Pills extends Medicine
     "consumes the whole contents of a pill bottle."
     "devours handfuls of scary-looking pills."
     "chokes down some strange pills."
-    "takes eir medicine, like a good citizen should."
+    "takes their medicine, like a good citizen should."
     "swallows a mouthful of pills."
     "takes an excessive dose of colorful pills."
     "tosses back an entire bottle of pills."
@@ -506,15 +567,16 @@ class TimeGas extends Medicine
 
 class Bleach extends Medicine
   PrintName: "Chlorine"
-  Model: Model"models/props_junk/garbage_plasticbottle002a"
+  Model: Model "models/props_junk/garbage_plasticbottle002a.mdl"
   Sound: "DrinkFluid"
-  AddHealth: => (math.random 75, 99)
-  Hunger: 70
-  Thirst: 70
-  Despair: 70
+
+  Description: "Do NOT even think about drinking this. \n Last guy who tried couldn't even finish it before falling over."
+  AddHealth: -50
+  Hunger: 40
+  Thirst: -40
+  Despair: 
   --Pox: -100
   Description: "A jug full of bleach."
-
   Price: 100
 
   TrashClass: "trash/plastic/bleach"
@@ -539,11 +601,23 @@ class Ambrosia extends Food
   UseText: {
     "indulges in some ambrosia."
   }
+  
+  Precursor:
+    biomass: 15
+    wood: 15
+    metal: 15
+  
+   
+   
 
   Eat: (ply) =>
     super ply
     return if CLIENT
     ply\AddStemCells(5)
+
+
+
+
 
 
 class SloppyRibs extends Food
@@ -564,23 +638,23 @@ class SloppyRibs extends Food
   
 
 class EyeballNoodles extends Food
-      PrintName: "Eyeball Noodles"
-      Model: Model"models/vel/evilwar/eyenoodle.mdl"
-      Hunger: -40
-      Thirst: -5
-      Despair: 10
-      Description: "A traditional Lymphomian dish, usually served to go. \n The texture is an acquired taste."
+  PrintName: "Eyeball Noodles"
+  Model: Model"models/vel/evilwar/eyenoodle.mdl"
+  Hunger: -50
+  Thirst: -20
+  Despair: 5
+  Description: "A traditional Lymphomian dish, usually served to go. \n The texture is an acquired taste."
 
-      CookTime: 8
+  CookTime: 8
 
-      Price: 130
+  Price: 130
 
-      UseText: {
-        "slurps all of the noodles."
-        "slurps the noodles, gagging at the wet crunch of the eyeball."
-        "eats the noodles, and then spits out the eyeball."
-        "gags on the noodles, and then throws out the eyeball."
-        }
+  UseText: {
+   "slurps all of the noodles."
+   "slurps the noodles, gagging at the wet crunch of the eyeball."
+   "eats the noodles, and then spits out the eyeball."
+   "gags on the noodles, and then throws out the eyeball."
+    }
 
 class PaperMache extends Food
  PrintName: "Paper Mache"
@@ -595,7 +669,7 @@ class PaperMache extends Food
  Price: 30
 
  UseText: {
-  "stoves the paper mache into his mouth, gagging horribly."
+   "stoves the paper mache into his mouth, gagging horribly."
    "forces the paper down his throat, throwing up slightly"
    "rips apart the paper mache, eating small pieces at a time."
    "looks miserable trying to eat watered down paper." }
