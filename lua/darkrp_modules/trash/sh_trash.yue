@@ -155,7 +155,7 @@ class Bottle extends Trash
     if data.Speed > @ImpactThreshold
       if data.HitEntity and IsValid(data.HitEntity)
         attacker = @GetNWEntity"evilrp_submitter"
-        with dmg = DamageInfo!
+        with dmg := DamageInfo!
           \SetDamage 25
           \SetAttacker attacker if IsValid(attacker)
           \SetInflictor @
@@ -173,7 +173,7 @@ class Bottle extends Trash
       continue unless ply\HasOddity(ODDITY_DELINQUENCY)
       if ply\CanSee(@) and ply\LookingInDirection(pos)
         ply\AddDespair(-math.random(2,4))
-    with ed = EffectData!
+    with ed := EffectData!
       \SetStart pos
       \SetOrigin pos
       \SetScale 8
@@ -195,6 +195,7 @@ class Plastic extends Trash
   SubmitSound: "Trash_Plastic"
 
   Refinement:
+    result: "polymer/refined"
     time: 2
     rust: 1
 
