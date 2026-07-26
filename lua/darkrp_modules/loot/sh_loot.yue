@@ -28,8 +28,8 @@ class Loot extends ITEM -- this is for items that aren't food, drinks, or drugs,
 
 class SpareAmmo extends Loot
   PrintName: "Spare Ammo"
-  Model: Model "models/Items/357ammo.mdl"
-  Description: "Some spare ammunition, should be enough for a mag."
+  Model: Model "models/Items/BoxSRounds.mdl"
+  Description: "A half-empty box of unbranded ammunition, should be enough for a mag."
 
   Sound: "AmmoSound"
 

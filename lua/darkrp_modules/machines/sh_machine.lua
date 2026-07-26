@@ -405,7 +405,7 @@ do -- 49
 						end -- 230
 					end -- 227
 					what:Remove() -- 231
-					if submitter and IsValid(submitter) and submitter:IsPlayer() and submitter:Team() == TEAM_PROLETARIAT then -- 232
+					if submitter and IsValid(submitter) and submitter:IsPlayer() and submitter:Team() == TEAM_PRIVATE then -- 232
 						submitter.precursor_supplied = submitter.precursor_supplied or 0 -- 233
 						submitter.precursor_supplied = submitter.precursor_supplied + amt -- 234
 						if submitter.precursor_supplied_difference and (submitter.precursor_supplied % 50) < submitter.precursor_supplied_difference then -- 235

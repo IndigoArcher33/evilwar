@@ -2,7 +2,7 @@
 local _obj_0 = GAMEMODE -- 1
 _obj_0.laws = _obj_0.laws or { } -- 1
 GAMEMODE.default_laws = { -- 4
-	"Liver Failure Forever." -- 4
+	"Long Live the Emperor." -- 4
 } -- 3
 GAMEMODE.Laws = function(self) -- 7
 	local _tab_0 = { } -- 7

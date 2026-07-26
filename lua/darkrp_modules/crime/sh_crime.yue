@@ -14,7 +14,7 @@ class CRIME
     for ply in *player.GetAll!
       continue if ply == who
       team = ply\Team!
-      continue unless (team == TEAM_SANITAR or team == TEAM_KOMMANDANT)
+      continue unless (team == TEAM_SANITAR or team == TEAM_EMPEROR)
       if ply\CanSee(who) and ply\LookingInDirection(who\EyePos!, 0.6)
         who\MakeWanted(@duration, @name)
         return true

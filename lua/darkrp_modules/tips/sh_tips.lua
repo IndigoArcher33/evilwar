@@ -6,7 +6,7 @@ local hints = { -- 2
 	"It's only a crime if the authorities see it.", -- 5
 	"Right click on a fallen body with empty hands in order to pick it up.", -- 6
 	"Your needs are not suggestions; maxing out any of them will kill you.", -- 7
-	"Death incurs a loss of a stem cell. Under more regrettable circumstances, you'll lose more than one.", -- 8
+	"Under some circumstances, death may incur loss of stem cells.", -- 8
 	"You can be horrible, but it can mean even more to be friendly.", -- 9
 	"Death will not lower your needs in the majority of cases.", -- 10
 	"Pressing F4 or opening the context menu (on the C key by default) can bring up multiple options for interacting with some objects.", -- 11

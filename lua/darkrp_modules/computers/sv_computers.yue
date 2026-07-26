@@ -259,7 +259,7 @@ class Tyrant extends OS
   commands: 
     [":help"]: {
       Callback: (ply, term, args) =>
-        if ply\Team! ~= TEAM_KOMMANDANT
+        if ply\Team! ~= TEAM_EMPEROR
           gterm\Broadcast term, "begone with you", GT_COL_ERR
           return
         with gterm
@@ -275,7 +275,7 @@ class Tyrant extends OS
     }
     [":broadcast"]: {
       Callback: (ply, term, args) =>
-        if ply\Team! ~= TEAM_KOMMANDANT
+        if ply\Team! ~= TEAM_EMPEROR
           gterm\Broadcast term, "begone with you", GT_COL_ERR
           return
         text = table.concat(args, " ")
@@ -296,7 +296,7 @@ class Tyrant extends OS
     }
     [":tax"]: {
       Callback: (ply, term, args) =>
-        if ply\Team! ~= TEAM_KOMMANDANT
+        if ply\Team! ~= TEAM_EMPEROR
           gterm\Broadcast term, "begone with you", GT_COL_ERR
           return
         taxes = GAMEMODE.taxes
@@ -364,7 +364,7 @@ class Tyrant extends OS
     }      
     [":cls"]: {
       Callback: (ply, term) =>
-        if ply\Team! ~= TEAM_KOMMANDANT
+        if ply\Team! ~= TEAM_EMPEROR
           gterm\Broadcast term, "begone with you", GT_COL_ERR
           return
         for i=0,term.max_lines
@@ -393,7 +393,7 @@ class Tyrant extends OS
     }  
     [":die"]: {
       Callback: (ply, term) =>
-        if ply\Team! ~= TEAM_KOMMANDANT
+        if ply\Team! ~= TEAM_EMPEROR
           gterm\Broadcast term, "begone with you", GT_COL_ERR
           return
         gterm\Broadcast term, "SHUTTING DOWN"
@@ -407,7 +407,7 @@ class Tyrant extends OS
     }
     [":law"]: {
       Callback: (ply, term, args) =>
-        if ply\Team! ~= TEAM_KOMMANDANT
+        if ply\Team! ~= TEAM_EMPEROR
           gterm\Broadcast term, "begone with you", GT_COL_ERR
           return
         laws = GAMEMODE\Laws!

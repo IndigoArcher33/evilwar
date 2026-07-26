@@ -229,7 +229,7 @@ class Machine extends ENTITY
         else
           GAMEMODE.taxes_stored.labor += reward if reward > 0
         what\Remove!
-        if submitter and IsValid(submitter) and submitter\IsPlayer! and submitter\Team! == TEAM_PROLETARIAT
+        if submitter and IsValid(submitter) and submitter\IsPlayer! and submitter\Team! == TEAM_PRIVATE
           submitter.precursor_supplied or= 0
           submitter.precursor_supplied += amt
           if submitter.precursor_supplied_difference and (submitter.precursor_supplied % 50) < submitter.precursor_supplied_difference

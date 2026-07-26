@@ -25,7 +25,7 @@ create_spawnpoints = function() -- 1
 			}, -- 12
 			{ -- 14
 				pos = Vector(403, 981, 234), -- 14
-				job = TEAM_KOMMANDANT -- 15
+				job = TEAM_EMPEROR -- 15
 			}, -- 14
 			{ -- 16
 				pos = Vector(-231, -6828, -138), -- 16
@@ -119,7 +119,7 @@ create_spawnpoints = function() -- 1
 		["rp_liverfailure_kidneydagger"] = { -- 61
 			{ -- 61
 				pos = Vector(5724, 1175, 256), -- 61
-				job = TEAM_KOMMANDANT -- 62
+				job = TEAM_EMPEROR -- 62
 			}, -- 61
 			{ -- 63
 				pos = Vector(3768, 4313, 100), -- 63

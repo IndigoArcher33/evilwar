@@ -622,7 +622,7 @@ do -- 249
 		commands = { -- 260
 			[":help"] = { -- 261
 				Callback = function(self, ply, term, args) -- 261
-					if ply:Team() ~= TEAM_KOMMANDANT then -- 262
+					if ply:Team() ~= TEAM_EMPEROR then -- 262
 						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 263
 						return -- 264
 					end -- 262
@@ -640,7 +640,7 @@ do -- 249
 			}, -- 260
 			[":broadcast"] = { -- 277
 				Callback = function(self, ply, term, args) -- 277
-					if ply:Team() ~= TEAM_KOMMANDANT then -- 278
+					if ply:Team() ~= TEAM_EMPEROR then -- 278
 						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 279
 						return -- 280
 					end -- 278
@@ -685,7 +685,7 @@ do -- 249
 			}, -- 276
 			[":tax"] = { -- 298
 				Callback = function(self, ply, term, args) -- 298
-					if ply:Team() ~= TEAM_KOMMANDANT then -- 299
+					if ply:Team() ~= TEAM_EMPEROR then -- 299
 						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 300
 						return -- 301
 					end -- 299
@@ -775,7 +775,7 @@ do -- 249
 			}, -- 297
 			[":cls"] = { -- 366
 				Callback = function(self, ply, term) -- 366
-					if ply:Team() ~= TEAM_KOMMANDANT then -- 367
+					if ply:Team() ~= TEAM_EMPEROR then -- 367
 						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 368
 						return -- 369
 					end -- 367
@@ -815,7 +815,7 @@ do -- 249
 			}, -- 377
 			[":die"] = { -- 395
 				Callback = function(self, ply, term) -- 395
-					if ply:Team() ~= TEAM_KOMMANDANT then -- 396
+					if ply:Team() ~= TEAM_EMPEROR then -- 396
 						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 397
 						return -- 398
 					end -- 396
@@ -836,7 +836,7 @@ do -- 249
 			}, -- 394
 			[":law"] = { -- 409
 				Callback = function(self, ply, term, args) -- 409
-					if ply:Team() ~= TEAM_KOMMANDANT then -- 410
+					if ply:Team() ~= TEAM_EMPEROR then -- 410
 						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 411
 						return -- 412
 					end -- 410

@@ -109,7 +109,7 @@ class Rotmelange extends Drug
   Consume: (ply) =>
     super ply
     return if CLIENT
-    if (ply\Team! ~= TEAM_KOMMANDANT) or (ply\Team! ~= TEAM_STALKER)
+    if (ply\Team! ~= TEAM_EMPEROR) or (ply\Team! ~= TEAM_STALKER)
       ply\Notify "<c=200,0,0> WHAT THE FUCK IS THIS? HOLY SHI~"
       ply\AddDespair 100
       net.Start"evilrp_jumpscare"

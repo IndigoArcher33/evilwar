@@ -5,6 +5,11 @@ death = (ply) ->
   SetGlobalInt "DEATH", deaths
   bodies = "BODIES"
   bodies = "BODY" if deaths == 1
+
+  team = RPExtraTeams[ply\Team!]
+  if team == TEAM_EMPEROR
+    ply\ConCommand("say /ad THE KOMMANDANT HAS FALLEN. LONG LIVE THE KOMMANDANT.")
+
   RunConsoleCommand "hostname", "#{string.english_number(deaths)\upper!} DEAD #{bodies} TODAY"
 
 hook.Add "DoPlayerDeath", "evilrp_death", death

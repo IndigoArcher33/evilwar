@@ -10,6 +10,10 @@ death = function(ply) -- 3
 	if deaths == 1 then -- 7
 		bodies = "BODY" -- 7
 	end -- 7
-	return RunConsoleCommand("hostname", tostring(string.english_number(deaths):upper()) .. " DEAD " .. tostring(bodies) .. " TODAY") -- 8
+	local team = RPExtraTeams[ply:Team()] -- 9
+	if team == TEAM_EMPEROR then -- 10
+		ply:ConCommand("say /ad THE KOMMANDANT HAS FALLEN. LONG LIVE THE KOMMANDANT.") -- 11
+	end -- 10
+	return RunConsoleCommand("hostname", tostring(string.english_number(deaths):upper()) .. " DEAD " .. tostring(bodies) .. " TODAY") -- 13
 end -- 3
-return hook.Add("DoPlayerDeath", "evilrp_death", death) -- 10
+return hook.Add("DoPlayerDeath", "evilrp_death", death) -- 15

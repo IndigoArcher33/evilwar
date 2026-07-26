@@ -469,7 +469,7 @@ class Broadcast extends CHAT_CMD_IC
   Process: (ply, text) => Chat.Autopretty ply, text\upper!
 
   Handle: (ply, lang, cmd, text) =>
-    unless ply\Team! == TEAM_KOMMANDANT
+    unless ply\Team! == TEAM_EMPEROR
       ply\Notify"<c=200,0,0>This power is NOT FOR YOU."
       return
     super ply, lang, cmd, text

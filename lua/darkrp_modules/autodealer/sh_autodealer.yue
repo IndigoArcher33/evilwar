@@ -60,7 +60,7 @@ elseif SERVER
     ct = CurTime!
     mach = net.ReadEntity!
     item = net.ReadString!
-    if (ply\Team! ~= TEAM_DEALER) and (ply\Team! ~= TEAM_KOMMANDANT)
+    if (ply\Team! ~= TEAM_DEALER) and (ply\Team! ~= TEAM_EMPEROR)
       net.Start"evilrp_machine_fail"
       net.WriteString"WHO THE FUCK ARE YOU?!"
       net.Send ply

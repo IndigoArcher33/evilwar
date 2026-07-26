@@ -18,7 +18,7 @@ do -- 2
 						break -- 15
 					end -- 15
 					local team = ply:Team() -- 16
-					if not (team == TEAM_SANITAR or team == TEAM_KOMMANDANT) then -- 17
+					if not (team == TEAM_SANITAR or team == TEAM_EMPEROR) then -- 17
 						_continue_0 = true -- 17
 						break -- 17
 					end -- 17

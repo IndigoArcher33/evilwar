@@ -179,8 +179,8 @@ do -- 29
 	local _parent_0 = Loot -- 29
 	local _base_0 = { -- 29
 		PrintName = "Spare Ammo", -- 31
-		Model = Model("models/Items/357ammo.mdl"), -- 32
-		Description = "Some spare ammunition, should be enough for a mag.", -- 34
+		Model = Model("models/Items/BoxSRounds.mdl"), -- 32
+		Description = "A half-empty box of unbranded ammunition, should be enough for a mag.", -- 34
 		Sound = "AmmoSound", -- 36
 		SuccessText = { -- 37
 			"loads some ammo.", -- 37
