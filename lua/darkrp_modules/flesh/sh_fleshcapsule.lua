@@ -107,7 +107,7 @@ do -- 15
 			end -- 50
 		end, -- 52
 		PhysicsCollide = function(self, data, physobj) -- 52
-			if data.Speed >= 384 then -- 53
+			if data.Speed >= 1500 then -- 53
 				if not self.can_burst_after then -- 54
 					self.can_burst_after = CurTime() -- 54
 				end -- 54

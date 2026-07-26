@@ -50,7 +50,7 @@ class Fleshcapsule extends ENTITY
       SafeRemoveEntityDelayed gib, math.random(5, 10)
 
   PhysicsCollide: (data, physobj) =>
-    if data.Speed >= 384
+    if data.Speed >= 1500
       @can_burst_after = CurTime! unless @can_burst_after
       if (not @Smashed) and (CurTime! > @can_burst_after)
         @Smashed = true

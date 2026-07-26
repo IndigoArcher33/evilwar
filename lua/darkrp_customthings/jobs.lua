@@ -515,10 +515,18 @@ TEAM_PRIVATE = DarkRP.createJob("Private", { -- 238
 		for slot, val in pairs({ -- 290
 			[0] = 0, -- 290
 			[1] = 0, -- 292
-			[2] = 0, -- 294
-			[3] = 0, -- 296
-			[4] = 0, -- 298
-			[5] = 0 -- 300
+			[3] = { -- 294
+				0, -- 294
+				6, -- 294
+				7, -- 294
+				8 -- 294
+			}, -- 294
+			[4] = { -- 296
+				0, -- 296
+				4 -- 296
+			}, -- 296
+			[5] = 0, -- 298
+			[6] = 0 -- 300
 		}) do -- 301
 			set_bodygroup(ply, slot, val) -- 288
 		end -- 288
@@ -913,9 +921,8 @@ TEAM_EMPEROR = DarkRP.createJob("Emperor", { -- 494
 		"Gaius" -- 530
 	}, -- 530
 	last_names = { -- 531
-		"", -- 531
 		"Imperator Lymphoma", -- 531
-		"Pater Patriae", -- 531
+		"Kaiser Lymphoma", -- 531
 		"Rex Lymphoma", -- 531
 		"Lymphoma Magnus" -- 531
 	}, -- 531

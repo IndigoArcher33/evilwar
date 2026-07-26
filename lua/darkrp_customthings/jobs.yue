@@ -291,13 +291,13 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
       -- vest
       [1]: 0
       -- headwear
-      [2]: 0
+      [3]: {0, 6, 7, 8}
       -- face
-      [3]: 0
+      [4]: {0, 4}
       -- pants
-      [4]: 0
-      -- hands
       [5]: 0
+      -- hands
+      [6]: 0
     }
     return false
 
@@ -528,7 +528,7 @@ TEAM_EMPEROR = DarkRP.createJob "Emperor",
     return { :text, font: "Spleen_Label_Small" }, true
   
   first_names: {"Basileus", "Agrippa", "Gnaeus", "Gaius"}
-  last_names: {"", "Imperator Lymphoma", "Pater Patriae", "Rex Lymphoma", "Lymphoma Magnus"}
+  last_names: {"Imperator Lymphoma", "Kaiser Lymphoma", "Rex Lymphoma", "Lymphoma Magnus"}
   special_name: "Which Kaiser"
   special_name_chance: 1000
   ShowSpare1: open_player_menu
