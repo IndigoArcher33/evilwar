@@ -301,6 +301,76 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
     }
     return false
 
+TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
+  color: Color(25, 170, 0)
+  model: "models/vel/evilwar/royalist.mdl"
+  description: "The fate of those who don't make the cut."
+  weapons: {"evilrp_weapon/obrez", "evilrp_melee/pipe"}
+  command: "conscript"
+  salary: 1
+  max: 5
+  cost: 1
+  hasLicense: true
+  use_machines: false
+  ammo:
+    pistol: 60
+  category: "Royalists"
+  speech_sounds: ["placenta/speech/chatter#{i}.ogg" for i=1,15]
+  hurt_sounds: ["placenta/pain/sanitar#{i}.wav" for i=1,4]
+  become_sounds: ["ambient/levels/prison/radio_random#{i}.wav" for i=1, 15]
+  crosstext: (ply) ->
+    text = "Don't panic."
+    switch lp\Team!
+      when TEAM_PRIVATE
+        text = "I could be like him!"
+      when TEAM_STALKER
+        text = "Poor bastard."
+      when TEAM_SANITAR
+        text = "A fine meat shield."
+      when TEAM_KORPSMAN
+        text = "Fodder, made to die\n Unless..."
+      when TEAM_DEALER
+        text = "A follower of mine."
+      when TEAM_EMPEROR
+        text = "Cannon fodder, splendid."
+      when TEAM_GHOST
+        text = "Definitely stupid."
+      when TEAM_BONEHEAD
+        text = "HAHAHAH."
+    return { :text, font: "Spleen_Label_Small" }, false
+  first_names: { "Fodder", "Meatshield", "Grunt", "Drone", "Conscript", "Meatbag"}
+  GenerateName: (ply) =>
+    unit_id = math.random 1, 99
+    if unit_id < 10
+      unit_id = "0#{unit_id}"
+    else
+      unit_id = tostring unit_id
+    return @first_names[math.random(1,#@first_names)] .. " #" .. unit_id
+  special_name: "private parts"
+  special_name_chance: 1000
+  ShowSpare1: open_player_menu
+  ShowSpare2: open_action_menu
+  PlayerLoadout: (ply) ->
+    ply\ClearOddities!
+    ply\AddOddity ODDITY.list[math.random(#ODDITY.list)]
+    set_bodygroup(ply, slot, val) for slot, val in pairs {
+      -- torse
+      [0]: 0
+      -- vest
+      [1]: 1
+      -- headwear
+      [3]: {0, 7, 8}
+      -- face
+      [4]: {0, 4}
+      -- pants
+      [5]: 0
+      -- hands
+      [6]: 0
+      -- gear
+      [7]: 1
+    }
+    return false
+
 TEAM_SANITAR = DarkRP.createJob "Dragoon",
   color: Color(25, 170, 0)
   model: "models/vel/evilwar/royalist.mdl"

@@ -6,6 +6,14 @@ util.AddNetworkString msg for msg in *{
   "evilrp_terminal_endtyping"
 }
 
+util.GetPlayerByName = (name) ->
+  return nil unless name and name != ""
+  name = name\lower!
+  for _, ply in pairs(player.GetAll!)
+    if ply\Nick!\lower!\match name
+        return ply
+  return nil
+
 class TerminalPowered extends SOUND
   sound: "hl1/ambience/computalk2.wav"
   pitch: {150, 200}
@@ -252,7 +260,7 @@ class Tyrant extends OS
   greeting: {
     "boot sequence now"
     "loading tyrant system 0.6.66"
-    "tyrant system loaded. greetings kommandant"
+    "tyrant system loaded. greetings emperor"
     "LIVER FAILURE FOREVER"
   }
     
@@ -272,6 +280,28 @@ class Tyrant extends OS
             \Broadcast term, "    #{v.help}"
           \Broadcast term, "  end list"
       help: "Basic usage instructions."
+    }
+    [":conscript"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_EMPEROR
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        cmd = args[1]
+        if cmd ~= ""
+          print cmd
+          cply = util.GetPlayerByName cmd
+          if not IsValid(cply)
+            gterm\Broadcast term, "that person does not exist", GT_COL_ERR
+            return
+          name = cply\Nick!
+          team = cply\Team!
+          print "conscript: #{name} (#{team})"
+          if team ~= TEAM_PRIVATE
+            gterm\Broadcast term, "#{name} is too important", GT_COL_ERR
+            return
+          gterm\Broadcast term, "new cannon fodder: #{name}", GT_COL_SUCC
+          conscript cply
+      help: "Conscript your recruits."
     }
     [":broadcast"]: {
       Callback: (ply, term, args) =>
@@ -485,7 +515,7 @@ class Public extends OS
     "boot sequence now"
     "finalizing public system"
     "greetings citizen"
-    "LIVER FAILURE FOREVER."
+    "LONG LIVE THE EMPEROR."
   }
 
   advice: {
@@ -678,3 +708,5 @@ net.Receive "evilrp_terminal_endconsole", (len, ply) ->
   gterm\Broadcast(term, finalized, GT_COL_CMD)
 
 MsgC Color(255,0,0), "INITIALIZED EVILRP TERMINALS\n"
+
+

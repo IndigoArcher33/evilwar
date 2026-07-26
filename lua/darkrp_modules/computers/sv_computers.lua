@@ -10,1247 +10,1286 @@ for _index_0 = 1, #_list_0 do -- 7
 	local msg = _list_0[_index_0] -- 1
 	util.AddNetworkString(msg) -- 1
 end -- 1
-local TerminalPowered -- 9
-do -- 9
-	local _class_0 -- 9
-	local _parent_0 = SOUND -- 9
-	local _base_0 = { -- 9
-		sound = "hl1/ambience/computalk2.wav", -- 11
-		pitch = { -- 11
-			150, -- 11
-			200 -- 11
-		}, -- 12
-		volume = 0.2, -- 13
-		level = SNDLVL_40DB -- 9
-	} -- 9
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 13
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 9
-			_base_0[_key_0] = _val_0 -- 9
-		end -- 9
-	end -- 13
-	if _base_0.__index == nil then -- 9
-		_base_0.__index = _base_0 -- 9
-	end -- 13
-	setmetatable(_base_0, _parent_0.__base) -- 9
-	_class_0 = setmetatable({ -- 9
-		__init = function(self, ...) -- 9
-			return _class_0.__parent.__init(self, ...) -- 9
-		end, -- 9
-		__base = _base_0, -- 9
-		__name = "TerminalPowered", -- 9
-		__parent = _parent_0 -- 9
-	}, { -- 9
-		__index = function(cls, name) -- 9
-			local val = rawget(_base_0, name) -- 9
-			if val == nil then -- 9
-				local parent = rawget(cls, "__parent") -- 9
-				if parent then -- 9
-					return parent[name] -- 9
-				end -- 9
-			else -- 9
-				return val -- 9
-			end -- 9
-		end, -- 9
-		__call = function(cls, ...) -- 9
-			local _self_0 = setmetatable({ }, _base_0) -- 9
-			cls.__init(_self_0, ...) -- 9
-			return _self_0 -- 9
-		end -- 9
-	}) -- 9
-	_base_0.__class = _class_0 -- 9
-	if _parent_0.__inherited then -- 9
-		_parent_0.__inherited(_parent_0, _class_0) -- 9
-	end -- 9
-	TerminalPowered = _class_0 -- 9
-end -- 13
-local TerminalDead -- 15
-do -- 15
-	local _class_0 -- 15
-	local _parent_0 = SOUND -- 15
-	local _base_0 = { -- 15
-		sound = "hl1/ambience/deadsignal2.wav", -- 17
-		pitch = { -- 17
-			150, -- 17
-			200 -- 17
-		}, -- 18
-		volume = 0.2, -- 19
-		level = SNDLVL_40DB -- 15
-	} -- 15
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 19
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 15
-			_base_0[_key_0] = _val_0 -- 15
-		end -- 15
-	end -- 19
-	if _base_0.__index == nil then -- 15
-		_base_0.__index = _base_0 -- 15
-	end -- 19
-	setmetatable(_base_0, _parent_0.__base) -- 15
-	_class_0 = setmetatable({ -- 15
-		__init = function(self, ...) -- 15
-			return _class_0.__parent.__init(self, ...) -- 15
-		end, -- 15
-		__base = _base_0, -- 15
-		__name = "TerminalDead", -- 15
-		__parent = _parent_0 -- 15
-	}, { -- 15
-		__index = function(cls, name) -- 15
-			local val = rawget(_base_0, name) -- 15
-			if val == nil then -- 15
-				local parent = rawget(cls, "__parent") -- 15
-				if parent then -- 15
-					return parent[name] -- 15
-				end -- 15
-			else -- 15
-				return val -- 15
-			end -- 15
-		end, -- 15
-		__call = function(cls, ...) -- 15
-			local _self_0 = setmetatable({ }, _base_0) -- 15
-			cls.__init(_self_0, ...) -- 15
-			return _self_0 -- 15
-		end -- 15
-	}) -- 15
-	_base_0.__class = _class_0 -- 15
-	if _parent_0.__inherited then -- 15
-		_parent_0.__inherited(_parent_0, _class_0) -- 15
-	end -- 15
-	TerminalDead = _class_0 -- 15
-end -- 19
-local TerminalDeath -- 21
-do -- 21
-	local _class_0 -- 21
-	local _parent_0 = SOUND -- 21
-	local _base_0 = { -- 21
-		sound = "kidneydagger/printer_death.wav", -- 23
-		pitch = { -- 23
-			150, -- 23
-			200 -- 23
-		}, -- 24
-		volume = 0.2, -- 25
-		level = SNDLVL_40DB -- 21
-	} -- 21
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 25
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 21
-			_base_0[_key_0] = _val_0 -- 21
-		end -- 21
-	end -- 25
-	if _base_0.__index == nil then -- 21
-		_base_0.__index = _base_0 -- 21
-	end -- 25
-	setmetatable(_base_0, _parent_0.__base) -- 21
-	_class_0 = setmetatable({ -- 21
-		__init = function(self, ...) -- 21
-			return _class_0.__parent.__init(self, ...) -- 21
-		end, -- 21
-		__base = _base_0, -- 21
-		__name = "TerminalDeath", -- 21
-		__parent = _parent_0 -- 21
-	}, { -- 21
-		__index = function(cls, name) -- 21
-			local val = rawget(_base_0, name) -- 21
-			if val == nil then -- 21
-				local parent = rawget(cls, "__parent") -- 21
-				if parent then -- 21
-					return parent[name] -- 21
-				end -- 21
-			else -- 21
-				return val -- 21
-			end -- 21
-		end, -- 21
-		__call = function(cls, ...) -- 21
-			local _self_0 = setmetatable({ }, _base_0) -- 21
-			cls.__init(_self_0, ...) -- 21
-			return _self_0 -- 21
-		end -- 21
-	}) -- 21
-	_base_0.__class = _class_0 -- 21
-	if _parent_0.__inherited then -- 21
-		_parent_0.__inherited(_parent_0, _class_0) -- 21
+util.GetPlayerByName = function(name) -- 9
+	if not (name and name ~= "") then -- 10
+		return nil -- 10
+	end -- 10
+	name = name:lower() -- 11
+	for _, ply in pairs(player.GetAll()) do -- 12
+		if ply:Nick():lower():match(name) then -- 13
+			return ply -- 14
+		end -- 13
+	end -- 14
+	return nil -- 15
+end -- 9
+local TerminalPowered -- 17
+do -- 17
+	local _class_0 -- 17
+	local _parent_0 = SOUND -- 17
+	local _base_0 = { -- 17
+		sound = "hl1/ambience/computalk2.wav", -- 19
+		pitch = { -- 19
+			150, -- 19
+			200 -- 19
+		}, -- 20
+		volume = 0.2, -- 21
+		level = SNDLVL_40DB -- 17
+	} -- 17
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 21
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 17
+			_base_0[_key_0] = _val_0 -- 17
+		end -- 17
 	end -- 21
-	TerminalDeath = _class_0 -- 21
-end -- 25
-local XOMBOTAX -- 27
-do -- 27
-	local _class_0 -- 27
-	local _parent_0 = SOUND -- 27
-	local _base_0 = { -- 27
-		sound = "dysphoria/xombocom/kommandantenbefehlen.ogg", -- 29
-		pitch = { -- 29
-			80, -- 29
-			110 -- 29
-		}, -- 30
-		level = SNDLVL_NONE -- 27
-	} -- 27
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 30
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 27
-			_base_0[_key_0] = _val_0 -- 27
-		end -- 27
-	end -- 30
-	if _base_0.__index == nil then -- 27
-		_base_0.__index = _base_0 -- 27
-	end -- 30
-	setmetatable(_base_0, _parent_0.__base) -- 27
-	_class_0 = setmetatable({ -- 27
-		__init = function(self, ...) -- 27
-			return _class_0.__parent.__init(self, ...) -- 27
-		end, -- 27
-		__base = _base_0, -- 27
-		__name = "XOMBOTAX", -- 27
-		__parent = _parent_0 -- 27
-	}, { -- 27
-		__index = function(cls, name) -- 27
-			local val = rawget(_base_0, name) -- 27
-			if val == nil then -- 27
-				local parent = rawget(cls, "__parent") -- 27
-				if parent then -- 27
-					return parent[name] -- 27
-				end -- 27
-			else -- 27
-				return val -- 27
-			end -- 27
-		end, -- 27
-		__call = function(cls, ...) -- 27
-			local _self_0 = setmetatable({ }, _base_0) -- 27
-			cls.__init(_self_0, ...) -- 27
-			return _self_0 -- 27
-		end -- 27
-	}) -- 27
-	_base_0.__class = _class_0 -- 27
-	if _parent_0.__inherited then -- 27
-		_parent_0.__inherited(_parent_0, _class_0) -- 27
+	if _base_0.__index == nil then -- 17
+		_base_0.__index = _base_0 -- 17
+	end -- 21
+	setmetatable(_base_0, _parent_0.__base) -- 17
+	_class_0 = setmetatable({ -- 17
+		__init = function(self, ...) -- 17
+			return _class_0.__parent.__init(self, ...) -- 17
+		end, -- 17
+		__base = _base_0, -- 17
+		__name = "TerminalPowered", -- 17
+		__parent = _parent_0 -- 17
+	}, { -- 17
+		__index = function(cls, name) -- 17
+			local val = rawget(_base_0, name) -- 17
+			if val == nil then -- 17
+				local parent = rawget(cls, "__parent") -- 17
+				if parent then -- 17
+					return parent[name] -- 17
+				end -- 17
+			else -- 17
+				return val -- 17
+			end -- 17
+		end, -- 17
+		__call = function(cls, ...) -- 17
+			local _self_0 = setmetatable({ }, _base_0) -- 17
+			cls.__init(_self_0, ...) -- 17
+			return _self_0 -- 17
+		end -- 17
+	}) -- 17
+	_base_0.__class = _class_0 -- 17
+	if _parent_0.__inherited then -- 17
+		_parent_0.__inherited(_parent_0, _class_0) -- 17
+	end -- 17
+	TerminalPowered = _class_0 -- 17
+end -- 21
+local TerminalDead -- 23
+do -- 23
+	local _class_0 -- 23
+	local _parent_0 = SOUND -- 23
+	local _base_0 = { -- 23
+		sound = "hl1/ambience/deadsignal2.wav", -- 25
+		pitch = { -- 25
+			150, -- 25
+			200 -- 25
+		}, -- 26
+		volume = 0.2, -- 27
+		level = SNDLVL_40DB -- 23
+	} -- 23
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 27
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 23
+			_base_0[_key_0] = _val_0 -- 23
+		end -- 23
 	end -- 27
-	XOMBOTAX = _class_0 -- 27
-end -- 30
-GT_COL_NIL = 0 -- 32
-GT_COL_MSG = 1 -- 33
-GT_COL_WRN = 2 -- 34
-GT_COL_ERR = 3 -- 35
-GT_COL_INFO = 4 -- 36
-GT_COL_INTL = 5 -- 37
-GT_COL_CMD = 6 -- 38
-GT_COL_SUCC = 7 -- 39
-gterm = gterm or { } -- 42
-gterm.Broadcast = function(self, ent, text, color_type, pos) -- 44
-	if color_type == nil then -- 44
-		color_type = GT_COL_MSG -- 44
-	end -- 44
-	if not IsValid(ent) then -- 45
-		return -- 45
-	end -- 45
-	local idx = ent:EntIndex() -- 46
-	local output -- 47
-	if string.len(text) > ent.max_chars then -- 48
-		output = { } -- 49
-		local expected = math.floor(string.len(text) / ent.max_chars) -- 50
-		for i = 0, expected do -- 51
-			output[i + 1] = string.sub(text, i * ent.max_chars, (i * ent.max_chars) + (ent.max_chars - 1)) -- 52
-		end -- 52
-	end -- 48
-	if output then -- 53
-		for k, v in ipairs(output) do -- 54
-			net.Start("evilrp_terminal_addline") -- 55
-			net.WriteUInt(idx, 16) -- 56
-			net.WriteString(v) -- 57
-			net.WriteUInt(color_type, 8) -- 58
-			if pos then -- 59
-				net.WriteInt(pos + (k - 1), 16) -- 60
-			else -- 62
-				net.WriteInt(-1, 16) -- 62
-			end -- 59
-			net.Broadcast() -- 63
-		end -- 63
-	else -- 65
-		net.Start("evilrp_terminal_addline") -- 65
-		net.WriteUInt(idx, 16) -- 66
-		net.WriteString(text) -- 67
-		net.WriteUInt(color_type, 8) -- 68
-		net.WriteInt(pos or -1, 16) -- 69
-		return net.Broadcast() -- 70
+	if _base_0.__index == nil then -- 23
+		_base_0.__index = _base_0 -- 23
+	end -- 27
+	setmetatable(_base_0, _parent_0.__base) -- 23
+	_class_0 = setmetatable({ -- 23
+		__init = function(self, ...) -- 23
+			return _class_0.__parent.__init(self, ...) -- 23
+		end, -- 23
+		__base = _base_0, -- 23
+		__name = "TerminalDead", -- 23
+		__parent = _parent_0 -- 23
+	}, { -- 23
+		__index = function(cls, name) -- 23
+			local val = rawget(_base_0, name) -- 23
+			if val == nil then -- 23
+				local parent = rawget(cls, "__parent") -- 23
+				if parent then -- 23
+					return parent[name] -- 23
+				end -- 23
+			else -- 23
+				return val -- 23
+			end -- 23
+		end, -- 23
+		__call = function(cls, ...) -- 23
+			local _self_0 = setmetatable({ }, _base_0) -- 23
+			cls.__init(_self_0, ...) -- 23
+			return _self_0 -- 23
+		end -- 23
+	}) -- 23
+	_base_0.__class = _class_0 -- 23
+	if _parent_0.__inherited then -- 23
+		_parent_0.__inherited(_parent_0, _class_0) -- 23
+	end -- 23
+	TerminalDead = _class_0 -- 23
+end -- 27
+local TerminalDeath -- 29
+do -- 29
+	local _class_0 -- 29
+	local _parent_0 = SOUND -- 29
+	local _base_0 = { -- 29
+		sound = "kidneydagger/printer_death.wav", -- 31
+		pitch = { -- 31
+			150, -- 31
+			200 -- 31
+		}, -- 32
+		volume = 0.2, -- 33
+		level = SNDLVL_40DB -- 29
+	} -- 29
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 33
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 29
+			_base_0[_key_0] = _val_0 -- 29
+		end -- 29
+	end -- 33
+	if _base_0.__index == nil then -- 29
+		_base_0.__index = _base_0 -- 29
+	end -- 33
+	setmetatable(_base_0, _parent_0.__base) -- 29
+	_class_0 = setmetatable({ -- 29
+		__init = function(self, ...) -- 29
+			return _class_0.__parent.__init(self, ...) -- 29
+		end, -- 29
+		__base = _base_0, -- 29
+		__name = "TerminalDeath", -- 29
+		__parent = _parent_0 -- 29
+	}, { -- 29
+		__index = function(cls, name) -- 29
+			local val = rawget(_base_0, name) -- 29
+			if val == nil then -- 29
+				local parent = rawget(cls, "__parent") -- 29
+				if parent then -- 29
+					return parent[name] -- 29
+				end -- 29
+			else -- 29
+				return val -- 29
+			end -- 29
+		end, -- 29
+		__call = function(cls, ...) -- 29
+			local _self_0 = setmetatable({ }, _base_0) -- 29
+			cls.__init(_self_0, ...) -- 29
+			return _self_0 -- 29
+		end -- 29
+	}) -- 29
+	_base_0.__class = _class_0 -- 29
+	if _parent_0.__inherited then -- 29
+		_parent_0.__inherited(_parent_0, _class_0) -- 29
+	end -- 29
+	TerminalDeath = _class_0 -- 29
+end -- 33
+local XOMBOTAX -- 35
+do -- 35
+	local _class_0 -- 35
+	local _parent_0 = SOUND -- 35
+	local _base_0 = { -- 35
+		sound = "dysphoria/xombocom/kommandantenbefehlen.ogg", -- 37
+		pitch = { -- 37
+			80, -- 37
+			110 -- 37
+		}, -- 38
+		level = SNDLVL_NONE -- 35
+	} -- 35
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 38
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 35
+			_base_0[_key_0] = _val_0 -- 35
+		end -- 35
+	end -- 38
+	if _base_0.__index == nil then -- 35
+		_base_0.__index = _base_0 -- 35
+	end -- 38
+	setmetatable(_base_0, _parent_0.__base) -- 35
+	_class_0 = setmetatable({ -- 35
+		__init = function(self, ...) -- 35
+			return _class_0.__parent.__init(self, ...) -- 35
+		end, -- 35
+		__base = _base_0, -- 35
+		__name = "XOMBOTAX", -- 35
+		__parent = _parent_0 -- 35
+	}, { -- 35
+		__index = function(cls, name) -- 35
+			local val = rawget(_base_0, name) -- 35
+			if val == nil then -- 35
+				local parent = rawget(cls, "__parent") -- 35
+				if parent then -- 35
+					return parent[name] -- 35
+				end -- 35
+			else -- 35
+				return val -- 35
+			end -- 35
+		end, -- 35
+		__call = function(cls, ...) -- 35
+			local _self_0 = setmetatable({ }, _base_0) -- 35
+			cls.__init(_self_0, ...) -- 35
+			return _self_0 -- 35
+		end -- 35
+	}) -- 35
+	_base_0.__class = _class_0 -- 35
+	if _parent_0.__inherited then -- 35
+		_parent_0.__inherited(_parent_0, _class_0) -- 35
+	end -- 35
+	XOMBOTAX = _class_0 -- 35
+end -- 38
+GT_COL_NIL = 0 -- 40
+GT_COL_MSG = 1 -- 41
+GT_COL_WRN = 2 -- 42
+GT_COL_ERR = 3 -- 43
+GT_COL_INFO = 4 -- 44
+GT_COL_INTL = 5 -- 45
+GT_COL_CMD = 6 -- 46
+GT_COL_SUCC = 7 -- 47
+gterm = gterm or { } -- 50
+gterm.Broadcast = function(self, ent, text, color_type, pos) -- 52
+	if color_type == nil then -- 52
+		color_type = GT_COL_MSG -- 52
+	end -- 52
+	if not IsValid(ent) then -- 53
+		return -- 53
 	end -- 53
-end -- 44
-gterm.GetInput = function(self, ent, callback) -- 72
-	ent.accepting_input = true -- 73
-	ent.input_callback = callback -- 74
-end -- 72
-local TerminalEngage -- 76
-do -- 76
-	local _class_0 -- 76
-	local _parent_0 = SOUND -- 76
-	local _base_0 = { -- 76
-		sound = "buttons/blip1.wav", -- 78
-		pitch = { -- 78
-			60, -- 78
-			75 -- 78
-		} -- 76
-	} -- 76
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 78
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 76
-			_base_0[_key_0] = _val_0 -- 76
-		end -- 76
-	end -- 78
-	if _base_0.__index == nil then -- 76
-		_base_0.__index = _base_0 -- 76
-	end -- 78
-	setmetatable(_base_0, _parent_0.__base) -- 76
-	_class_0 = setmetatable({ -- 76
-		__init = function(self, ...) -- 76
-			return _class_0.__parent.__init(self, ...) -- 76
-		end, -- 76
-		__base = _base_0, -- 76
-		__name = "TerminalEngage", -- 76
-		__parent = _parent_0 -- 76
-	}, { -- 76
-		__index = function(cls, name) -- 76
-			local val = rawget(_base_0, name) -- 76
-			if val == nil then -- 76
-				local parent = rawget(cls, "__parent") -- 76
-				if parent then -- 76
-					return parent[name] -- 76
-				end -- 76
-			else -- 76
-				return val -- 76
-			end -- 76
-		end, -- 76
-		__call = function(cls, ...) -- 76
-			local _self_0 = setmetatable({ }, _base_0) -- 76
-			cls.__init(_self_0, ...) -- 76
-			return _self_0 -- 76
-		end -- 76
-	}) -- 76
-	_base_0.__class = _class_0 -- 76
-	if _parent_0.__inherited then -- 76
-		_parent_0.__inherited(_parent_0, _class_0) -- 76
-	end -- 76
-	TerminalEngage = _class_0 -- 76
-end -- 78
-do -- 80
-	local _class_0 -- 80
-	local _base_0 = { -- 80
-		commands = { }, -- 99
-		GetCommands = function(self) -- 99
-			return self.commands -- 99
-		end, -- 101
-		name = "OS", -- 103
-		GetName = function(self) -- 103
-			return self.name -- 103
-		end, -- 105
-		greeting = "I don't like how you're looking at me.", -- 107
-		GetWarmUpText = function(self) -- 107
-			local text = self.greeting -- 108
-			if isstring(text) then -- 109
-				text = { -- 109
-					text -- 109
-				} -- 109
-			end -- 109
-			return text -- 110
-		end, -- 112
-		GetUniqueID = function(self) -- 112
-			return self.unique_id -- 112
-		end, -- 114
-		UserInit = function(self, term, ply) -- 114
-			return term:EmitSound("TerminalEngage") -- 115
-		end, -- 117
-		Initialized = function(self, term) -- 117
-			gterm[term:EntIndex()] = { } -- 118
-			return term:SetSoundLoop(term:StartLoopingSound("TerminalPowered")) -- 119
-		end, -- 121
-		ShutDown = function(self, term) -- 121
-			if not term:GetActive() then -- 122
-				return -- 122
-			end -- 122
-			local loop = term:GetSoundLoop() -- 123
-			if loop then -- 124
-				term:StopLoopingSound(loop) -- 124
-			end -- 124
-			term:EmitSound("TerminalDeath") -- 125
-			term:SetActive(false) -- 126
-			gterm[term:EntIndex()] = { } -- 127
-		end -- 80
-	} -- 80
-	if _base_0.__index == nil then -- 80
-		_base_0.__index = _base_0 -- 80
-	end -- 127
-	_class_0 = setmetatable({ -- 80
-		__init = function() end, -- 80
-		__base = _base_0, -- 80
-		__name = "OS" -- 80
-	}, { -- 80
-		__index = _base_0, -- 80
-		__call = function(cls, ...) -- 80
-			local _self_0 = setmetatable({ }, _base_0) -- 80
-			cls.__init(_self_0, ...) -- 80
-			return _self_0 -- 80
-		end -- 80
-	}) -- 80
-	_base_0.__class = _class_0 -- 80
-	local self = _class_0; -- 80
-	self.Call = function(self, ent, name, ...) -- 81
-		if IsValid(ent) then -- 82
-			local key = ent:GetOS() -- 83
-			local sys = self.distros[key] -- 84
-			if not IsValid(ent) then -- 85
-				return -- 85
-			end -- 85
-			if not (sys and sys[name]) then -- 86
-				return -- 86
-			end -- 86
-			if not isfunction(sys[name]) then -- 87
-				return -- 87
-			end -- 87
-			local success, value = pcall(sys[name], sys, ent, ...) -- 88
-			if success then -- 89
-				return value -- 89
-			end -- 89
-		end -- 82
-	end -- 81
-	self.distros = { } -- 91
-	self.__inherited = function(self, child) -- 93
-		child.unique_id = child.__name:lower() -- 94
-		self.distros[child.unique_id] = child -- 95
-	end -- 93
-	OS = _class_0 -- 80
-end -- 127
-gterm.OS = OS -- 129
-local Basic -- 131
-do -- 131
-	local _class_0 -- 131
-	local _parent_0 = OS -- 131
-	local _base_0 = { -- 131
-		greeting = { -- 133
-			"BOOT SEQUENCE NOW", -- 133
-			"FINALIZING BASIC SYSTEM", -- 134
-			"GIVE ME PURPOSE" -- 135
-		}, -- 138
-		commands = { -- 139
-			[":help"] = { -- 140
-				Callback = function(self, ply, term, args) -- 140
-					local _with_0 = gterm -- 141
-					_with_0:Broadcast(term, "  COMMANDS:") -- 144
-					_with_0:Broadcast(term, "") -- 145
-					for k, v in SortedPairs(self:GetCommands()) do -- 146
-						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 147
-						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 148
-					end -- 148
-					_with_0:Broadcast(term, "  end list", GT_COL_INTL) -- 149
-					return _with_0 -- 141
-				end, -- 140
-				help = "Basic usage instructions." -- 150
-			}, -- 139
-			[":cls"] = { -- 153
-				Callback = function(self, ply, term) -- 153
-					for i = 0, 25 do -- 154
-						local time = math.Rand(0.01, 0.04) -- 155
-						timer.Simple(i * time, function() -- 156
-							if IsValid(term) then -- 157
-								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 157
-							end -- 157
-						end) -- 156
-					end -- 157
-					return -- 158
-				end, -- 153
-				help = "Clear the screen." -- 159
-			}, -- 152
-			[":os"] = { -- 162
-				Callback = function(self, ply, term, args) -- 162
-					local cmd = args[1] -- 163
-					if "install" == cmd then -- 165
-						local info = args[2] -- 166
-						if not info then -- 167
-							gterm:Broadcast(term, "invalid system identifier", GT_COL_ERR) -- 168
-							return -- 169
-						elseif info == "basic" then -- 170
-							gterm:Broadcast(term, "this is already the basic system", GT_COL_ERR) -- 171
-							return -- 172
-						end -- 167
-						local sys = OS.distros[info] -- 173
-						if not system then -- 174
-							gterm:Broadcast(term, "os '" .. tostring(info) .. "' not found", GT_COL_ERR) -- 175
-							return -- 176
-						end -- 174
-						term.locked = true -- 177
-						gterm:Broadcast(term, "installing '" .. tostring(info) .. "'", GT_COL_INTL) -- 178
-						return timer.Simple(1, function() -- 179
-							if not IsValid(term) then -- 180
-								return -- 180
-							end -- 180
-							for i = 0, 25 do -- 181
-								gterm:Broadcast(term, "", nil, i) -- 181
-							end -- 181
-							do -- 182
-								local _with_0 = gterm -- 182
-								_with_0:Broadcast(term, "IDLE", GT_COL_MSG, 18) -- 183
-								_with_0:Broadcast(term, "", GT_COL_MSG, 19) -- 184
-								_with_0:Broadcast(term, "     [                         ] 0%", GT_COL_MSG, 20) -- 185
-								_with_0:Broadcast(term, "", GT_COL_MSG, 21) -- 186
-							end -- 182
-							local messages = { -- 188
-								"inspecting disk space", -- 188
-								"allocating disk space", -- 189
-								"retrieving required resources", -- 190
-								"unpacking resources", -- 191
-								"retrieving system requirements", -- 192
-								"validating file integrity", -- 193
-								"compiling packages", -- 194
-								"exporting packages to file system", -- 195
-								"setting up access data", -- 196
-								"setting up system profile", -- 197
-								"setting up commands", -- 198
-								"finalizing install" -- 199
-							} -- 187
-							local time = math.Rand(0.5, 1.5) -- 201
-							for i = 1, 25 do -- 202
-								time = time + math.Rand(0.05, 0.25) -- 203
-								timer.Simple(time, function() -- 204
-									if IsValid(term) then -- 205
-										local msg_id = math.Clamp(i, 1, #messages) -- 206
-										gterm:Broadcast(term, "     " .. tostring(messages[msg_id]), GT_COL_MSG, 18) -- 207
-										gterm:Broadcast(term, "     [" .. tostring(string.rep("=", i)) .. tostring(string.rep(" ", 25 - i)) .. "] " .. tostring(100 * math.Round(i / 25, 2)) .. "%", GT_COL_MSG, 20) -- 208
-										if i == 25 then -- 209
-											for i = 0, 25 do -- 210
-												if IsValid(term) then -- 211
-													gterm:Broadcast(term, "", nil, i) -- 211
-												end -- 211
-											end -- 211
-											gterm:Broadcast(term, "SHUTTING DOWN, PLEASE RESTART TERMINAL", GT_COL_INTL, 1) -- 212
-											return timer.Simple(math.Rand(1, 3), function() -- 213
-												if IsValid(term) then -- 214
-													term:SetOS(info) -- 216
-													term:SetActive(false) -- 217
-													term.locked = false -- 218
-													return term -- 215
-												end -- 214
-											end) -- 218
-										end -- 209
-									end -- 205
-								end) -- 204
-							end -- 218
-						end) -- 218
-					elseif "list" == cmd then -- 219
-						local info = args[2] -- 220
-						gterm:Broadcast(term, "AVAILABLE OS PACKAGES:", GT_COL_INFO) -- 221
-						gterm:Broadcast(term, "", GT_COL_MSG) -- 222
-						local count = 0 -- 223
-						for k, v in SortedPairs(gterm.OS.distros) do -- 224
-							if istable(v) and v.GetName and v.GetUniqueID and v:GetUniqueID() ~= "basic" then -- 225
-								count = count + 1 -- 226
-								gterm:Broadcast(term, "     " .. tostring(count) .. ": " .. tostring(v:GetUniqueID()) .. " (" .. tostring(v:GetName()) .. ")") -- 227
-							end -- 225
-						end -- 227
-					else -- 229
-						local _with_0 = gterm -- 229
-						_with_0:Broadcast(term, "OPERATING SYSTEM CONFIG", GT_COL_INFO) -- 230
-						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 231
-						_with_0:Broadcast(term, "    allows configuration of the operating system") -- 232
-						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 233
-						_with_0:Broadcast(term, "    :os install - install operating system package") -- 234
-						_with_0:Broadcast(term, "    :os list - list available operating system packages") -- 235
-						return _with_0 -- 229
-					end -- 235
-				end, -- 162
-				help = "Operating system configuration." -- 236
-			}, -- 161
-			[":die"] = { -- 239
-				Callback = function(self, ply, term) -- 239
-					gterm:Broadcast(term, "SHUTTING DOWN") -- 240
-					return timer.Simple(math.Rand(2, 5), function() -- 241
-						if IsValid(term) then -- 242
-							for i = 0, term.max_lines do -- 243
-								if IsValid(term) then -- 244
-									gterm:Broadcast(term, "", nil, i) -- 244
-								end -- 244
-							end -- 244
-							return gterm.OS:Call(term, "ShutDown") -- 245
-						end -- 242
-					end) -- 245
-				end, -- 239
-				help = "Turn the computer off." -- 246
-			} -- 238
-		} -- 131
-	} -- 131
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 247
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 131
-			_base_0[_key_0] = _val_0 -- 131
-		end -- 131
-	end -- 247
-	if _base_0.__index == nil then -- 131
-		_base_0.__index = _base_0 -- 131
-	end -- 247
-	setmetatable(_base_0, _parent_0.__base) -- 131
-	_class_0 = setmetatable({ -- 131
-		__init = function(self, ...) -- 131
-			return _class_0.__parent.__init(self, ...) -- 131
-		end, -- 131
-		__base = _base_0, -- 131
-		__name = "Basic", -- 131
-		__parent = _parent_0 -- 131
-	}, { -- 131
-		__index = function(cls, name) -- 131
-			local val = rawget(_base_0, name) -- 131
-			if val == nil then -- 131
-				local parent = rawget(cls, "__parent") -- 131
-				if parent then -- 131
-					return parent[name] -- 131
-				end -- 131
-			else -- 131
-				return val -- 131
-			end -- 131
-		end, -- 131
-		__call = function(cls, ...) -- 131
-			local _self_0 = setmetatable({ }, _base_0) -- 131
-			cls.__init(_self_0, ...) -- 131
-			return _self_0 -- 131
-		end -- 131
-	}) -- 131
-	_base_0.__class = _class_0 -- 131
-	if _parent_0.__inherited then -- 131
-		_parent_0.__inherited(_parent_0, _class_0) -- 131
-	end -- 131
-	Basic = _class_0 -- 131
-end -- 247
-local Tyrant -- 249
-do -- 249
-	local _class_0 -- 249
-	local _parent_0 = OS -- 249
-	local _base_0 = { -- 249
-		name = "TYRANT SYSTEM 0.6.66", -- 252
-		greeting = { -- 253
-			"boot sequence now", -- 253
-			"loading tyrant system 0.6.66", -- 254
-			"tyrant system loaded. greetings kommandant", -- 255
-			"LIVER FAILURE FOREVER" -- 256
-		}, -- 259
-		commands = { -- 260
-			[":help"] = { -- 261
-				Callback = function(self, ply, term, args) -- 261
-					if ply:Team() ~= TEAM_EMPEROR then -- 262
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 263
-						return -- 264
-					end -- 262
-					local _with_0 = gterm -- 265
-					_with_0:Broadcast(term, "  COMMANDS:") -- 268
-					_with_0:Broadcast(term, "") -- 269
-					for k, v in SortedPairs(self:GetCommands()) do -- 270
-						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 271
-						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 272
-					end -- 272
-					_with_0:Broadcast(term, "  end list") -- 273
-					return _with_0 -- 265
-				end, -- 261
-				help = "Basic usage instructions." -- 274
-			}, -- 260
-			[":broadcast"] = { -- 277
-				Callback = function(self, ply, term, args) -- 277
-					if ply:Team() ~= TEAM_EMPEROR then -- 278
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 279
-						return -- 280
-					end -- 278
-					local text = table.concat(args, " ") -- 281
-					text = Chat.Autopretty(ply, text:upper()) -- 282
-					do -- 283
-						local _with_0 = gterm -- 283
-						_with_0:Broadcast(term, text, GT_COL_ERR) -- 284
-					end -- 283
-					PlaySoundGlobal("XOMBOKOM") -- 285
-					local _list_1 = player.GetAll() -- 286
-					for _index_0 = 1, #_list_1 do -- 286
-						local p = _list_1[_index_0] -- 286
-						p:SendChat("Broadcast", text) -- 286
+	local idx = ent:EntIndex() -- 54
+	local output -- 55
+	if string.len(text) > ent.max_chars then -- 56
+		output = { } -- 57
+		local expected = math.floor(string.len(text) / ent.max_chars) -- 58
+		for i = 0, expected do -- 59
+			output[i + 1] = string.sub(text, i * ent.max_chars, (i * ent.max_chars) + (ent.max_chars - 1)) -- 60
+		end -- 60
+	end -- 56
+	if output then -- 61
+		for k, v in ipairs(output) do -- 62
+			net.Start("evilrp_terminal_addline") -- 63
+			net.WriteUInt(idx, 16) -- 64
+			net.WriteString(v) -- 65
+			net.WriteUInt(color_type, 8) -- 66
+			if pos then -- 67
+				net.WriteInt(pos + (k - 1), 16) -- 68
+			else -- 70
+				net.WriteInt(-1, 16) -- 70
+			end -- 67
+			net.Broadcast() -- 71
+		end -- 71
+	else -- 73
+		net.Start("evilrp_terminal_addline") -- 73
+		net.WriteUInt(idx, 16) -- 74
+		net.WriteString(text) -- 75
+		net.WriteUInt(color_type, 8) -- 76
+		net.WriteInt(pos or -1, 16) -- 77
+		return net.Broadcast() -- 78
+	end -- 61
+end -- 52
+gterm.GetInput = function(self, ent, callback) -- 80
+	ent.accepting_input = true -- 81
+	ent.input_callback = callback -- 82
+end -- 80
+local TerminalEngage -- 84
+do -- 84
+	local _class_0 -- 84
+	local _parent_0 = SOUND -- 84
+	local _base_0 = { -- 84
+		sound = "buttons/blip1.wav", -- 86
+		pitch = { -- 86
+			60, -- 86
+			75 -- 86
+		} -- 84
+	} -- 84
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 86
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 84
+			_base_0[_key_0] = _val_0 -- 84
+		end -- 84
+	end -- 86
+	if _base_0.__index == nil then -- 84
+		_base_0.__index = _base_0 -- 84
+	end -- 86
+	setmetatable(_base_0, _parent_0.__base) -- 84
+	_class_0 = setmetatable({ -- 84
+		__init = function(self, ...) -- 84
+			return _class_0.__parent.__init(self, ...) -- 84
+		end, -- 84
+		__base = _base_0, -- 84
+		__name = "TerminalEngage", -- 84
+		__parent = _parent_0 -- 84
+	}, { -- 84
+		__index = function(cls, name) -- 84
+			local val = rawget(_base_0, name) -- 84
+			if val == nil then -- 84
+				local parent = rawget(cls, "__parent") -- 84
+				if parent then -- 84
+					return parent[name] -- 84
+				end -- 84
+			else -- 84
+				return val -- 84
+			end -- 84
+		end, -- 84
+		__call = function(cls, ...) -- 84
+			local _self_0 = setmetatable({ }, _base_0) -- 84
+			cls.__init(_self_0, ...) -- 84
+			return _self_0 -- 84
+		end -- 84
+	}) -- 84
+	_base_0.__class = _class_0 -- 84
+	if _parent_0.__inherited then -- 84
+		_parent_0.__inherited(_parent_0, _class_0) -- 84
+	end -- 84
+	TerminalEngage = _class_0 -- 84
+end -- 86
+do -- 88
+	local _class_0 -- 88
+	local _base_0 = { -- 88
+		commands = { }, -- 107
+		GetCommands = function(self) -- 107
+			return self.commands -- 107
+		end, -- 109
+		name = "OS", -- 111
+		GetName = function(self) -- 111
+			return self.name -- 111
+		end, -- 113
+		greeting = "I don't like how you're looking at me.", -- 115
+		GetWarmUpText = function(self) -- 115
+			local text = self.greeting -- 116
+			if isstring(text) then -- 117
+				text = { -- 117
+					text -- 117
+				} -- 117
+			end -- 117
+			return text -- 118
+		end, -- 120
+		GetUniqueID = function(self) -- 120
+			return self.unique_id -- 120
+		end, -- 122
+		UserInit = function(self, term, ply) -- 122
+			return term:EmitSound("TerminalEngage") -- 123
+		end, -- 125
+		Initialized = function(self, term) -- 125
+			gterm[term:EntIndex()] = { } -- 126
+			return term:SetSoundLoop(term:StartLoopingSound("TerminalPowered")) -- 127
+		end, -- 129
+		ShutDown = function(self, term) -- 129
+			if not term:GetActive() then -- 130
+				return -- 130
+			end -- 130
+			local loop = term:GetSoundLoop() -- 131
+			if loop then -- 132
+				term:StopLoopingSound(loop) -- 132
+			end -- 132
+			term:EmitSound("TerminalDeath") -- 133
+			term:SetActive(false) -- 134
+			gterm[term:EntIndex()] = { } -- 135
+		end -- 88
+	} -- 88
+	if _base_0.__index == nil then -- 88
+		_base_0.__index = _base_0 -- 88
+	end -- 135
+	_class_0 = setmetatable({ -- 88
+		__init = function() end, -- 88
+		__base = _base_0, -- 88
+		__name = "OS" -- 88
+	}, { -- 88
+		__index = _base_0, -- 88
+		__call = function(cls, ...) -- 88
+			local _self_0 = setmetatable({ }, _base_0) -- 88
+			cls.__init(_self_0, ...) -- 88
+			return _self_0 -- 88
+		end -- 88
+	}) -- 88
+	_base_0.__class = _class_0 -- 88
+	local self = _class_0; -- 88
+	self.Call = function(self, ent, name, ...) -- 89
+		if IsValid(ent) then -- 90
+			local key = ent:GetOS() -- 91
+			local sys = self.distros[key] -- 92
+			if not IsValid(ent) then -- 93
+				return -- 93
+			end -- 93
+			if not (sys and sys[name]) then -- 94
+				return -- 94
+			end -- 94
+			if not isfunction(sys[name]) then -- 95
+				return -- 95
+			end -- 95
+			local success, value = pcall(sys[name], sys, ent, ...) -- 96
+			if success then -- 97
+				return value -- 97
+			end -- 97
+		end -- 90
+	end -- 89
+	self.distros = { } -- 99
+	self.__inherited = function(self, child) -- 101
+		child.unique_id = child.__name:lower() -- 102
+		self.distros[child.unique_id] = child -- 103
+	end -- 101
+	OS = _class_0 -- 88
+end -- 135
+gterm.OS = OS -- 137
+local Basic -- 139
+do -- 139
+	local _class_0 -- 139
+	local _parent_0 = OS -- 139
+	local _base_0 = { -- 139
+		greeting = { -- 141
+			"BOOT SEQUENCE NOW", -- 141
+			"FINALIZING BASIC SYSTEM", -- 142
+			"GIVE ME PURPOSE" -- 143
+		}, -- 146
+		commands = { -- 147
+			[":help"] = { -- 148
+				Callback = function(self, ply, term, args) -- 148
+					local _with_0 = gterm -- 149
+					_with_0:Broadcast(term, "  COMMANDS:") -- 152
+					_with_0:Broadcast(term, "") -- 153
+					for k, v in SortedPairs(self:GetCommands()) do -- 154
+						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 155
+						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 156
+					end -- 156
+					_with_0:Broadcast(term, "  end list", GT_COL_INTL) -- 157
+					return _with_0 -- 149
+				end, -- 148
+				help = "Basic usage instructions." -- 158
+			}, -- 147
+			[":cls"] = { -- 161
+				Callback = function(self, ply, term) -- 161
+					for i = 0, 25 do -- 162
+						local time = math.Rand(0.01, 0.04) -- 163
+						timer.Simple(i * time, function() -- 164
+							if IsValid(term) then -- 165
+								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 165
+							end -- 165
+						end) -- 164
+					end -- 165
+					return -- 166
+				end, -- 161
+				help = "Clear the screen." -- 167
+			}, -- 160
+			[":os"] = { -- 170
+				Callback = function(self, ply, term, args) -- 170
+					local cmd = args[1] -- 171
+					if "install" == cmd then -- 173
+						local info = args[2] -- 174
+						if not info then -- 175
+							gterm:Broadcast(term, "invalid system identifier", GT_COL_ERR) -- 176
+							return -- 177
+						elseif info == "basic" then -- 178
+							gterm:Broadcast(term, "this is already the basic system", GT_COL_ERR) -- 179
+							return -- 180
+						end -- 175
+						local sys = OS.distros[info] -- 181
+						if not system then -- 182
+							gterm:Broadcast(term, "os '" .. tostring(info) .. "' not found", GT_COL_ERR) -- 183
+							return -- 184
+						end -- 182
+						term.locked = true -- 185
+						gterm:Broadcast(term, "installing '" .. tostring(info) .. "'", GT_COL_INTL) -- 186
+						return timer.Simple(1, function() -- 187
+							if not IsValid(term) then -- 188
+								return -- 188
+							end -- 188
+							for i = 0, 25 do -- 189
+								gterm:Broadcast(term, "", nil, i) -- 189
+							end -- 189
+							do -- 190
+								local _with_0 = gterm -- 190
+								_with_0:Broadcast(term, "IDLE", GT_COL_MSG, 18) -- 191
+								_with_0:Broadcast(term, "", GT_COL_MSG, 19) -- 192
+								_with_0:Broadcast(term, "     [                         ] 0%", GT_COL_MSG, 20) -- 193
+								_with_0:Broadcast(term, "", GT_COL_MSG, 21) -- 194
+							end -- 190
+							local messages = { -- 196
+								"inspecting disk space", -- 196
+								"allocating disk space", -- 197
+								"retrieving required resources", -- 198
+								"unpacking resources", -- 199
+								"retrieving system requirements", -- 200
+								"validating file integrity", -- 201
+								"compiling packages", -- 202
+								"exporting packages to file system", -- 203
+								"setting up access data", -- 204
+								"setting up system profile", -- 205
+								"setting up commands", -- 206
+								"finalizing install" -- 207
+							} -- 195
+							local time = math.Rand(0.5, 1.5) -- 209
+							for i = 1, 25 do -- 210
+								time = time + math.Rand(0.05, 0.25) -- 211
+								timer.Simple(time, function() -- 212
+									if IsValid(term) then -- 213
+										local msg_id = math.Clamp(i, 1, #messages) -- 214
+										gterm:Broadcast(term, "     " .. tostring(messages[msg_id]), GT_COL_MSG, 18) -- 215
+										gterm:Broadcast(term, "     [" .. tostring(string.rep("=", i)) .. tostring(string.rep(" ", 25 - i)) .. "] " .. tostring(100 * math.Round(i / 25, 2)) .. "%", GT_COL_MSG, 20) -- 216
+										if i == 25 then -- 217
+											for i = 0, 25 do -- 218
+												if IsValid(term) then -- 219
+													gterm:Broadcast(term, "", nil, i) -- 219
+												end -- 219
+											end -- 219
+											gterm:Broadcast(term, "SHUTTING DOWN, PLEASE RESTART TERMINAL", GT_COL_INTL, 1) -- 220
+											return timer.Simple(math.Rand(1, 3), function() -- 221
+												if IsValid(term) then -- 222
+													term:SetOS(info) -- 224
+													term:SetActive(false) -- 225
+													term.locked = false -- 226
+													return term -- 223
+												end -- 222
+											end) -- 226
+										end -- 217
+									end -- 213
+								end) -- 212
+							end -- 226
+						end) -- 226
+					elseif "list" == cmd then -- 227
+						local info = args[2] -- 228
+						gterm:Broadcast(term, "AVAILABLE OS PACKAGES:", GT_COL_INFO) -- 229
+						gterm:Broadcast(term, "", GT_COL_MSG) -- 230
+						local count = 0 -- 231
+						for k, v in SortedPairs(gterm.OS.distros) do -- 232
+							if istable(v) and v.GetName and v.GetUniqueID and v:GetUniqueID() ~= "basic" then -- 233
+								count = count + 1 -- 234
+								gterm:Broadcast(term, "     " .. tostring(count) .. ": " .. tostring(v:GetUniqueID()) .. " (" .. tostring(v:GetName()) .. ")") -- 235
+							end -- 233
+						end -- 235
+					else -- 237
+						local _with_0 = gterm -- 237
+						_with_0:Broadcast(term, "OPERATING SYSTEM CONFIG", GT_COL_INFO) -- 238
+						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 239
+						_with_0:Broadcast(term, "    allows configuration of the operating system") -- 240
+						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 241
+						_with_0:Broadcast(term, "    :os install - install operating system package") -- 242
+						_with_0:Broadcast(term, "    :os list - list available operating system packages") -- 243
+						return _with_0 -- 237
+					end -- 243
+				end, -- 170
+				help = "Operating system configuration." -- 244
+			}, -- 169
+			[":die"] = { -- 247
+				Callback = function(self, ply, term) -- 247
+					gterm:Broadcast(term, "SHUTTING DOWN") -- 248
+					return timer.Simple(math.Rand(2, 5), function() -- 249
+						if IsValid(term) then -- 250
+							for i = 0, term.max_lines do -- 251
+								if IsValid(term) then -- 252
+									gterm:Broadcast(term, "", nil, i) -- 252
+								end -- 252
+							end -- 252
+							return gterm.OS:Call(term, "ShutDown") -- 253
+						end -- 250
+					end) -- 253
+				end, -- 247
+				help = "Turn the computer off." -- 254
+			} -- 246
+		} -- 139
+	} -- 139
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 255
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 139
+			_base_0[_key_0] = _val_0 -- 139
+		end -- 139
+	end -- 255
+	if _base_0.__index == nil then -- 139
+		_base_0.__index = _base_0 -- 139
+	end -- 255
+	setmetatable(_base_0, _parent_0.__base) -- 139
+	_class_0 = setmetatable({ -- 139
+		__init = function(self, ...) -- 139
+			return _class_0.__parent.__init(self, ...) -- 139
+		end, -- 139
+		__base = _base_0, -- 139
+		__name = "Basic", -- 139
+		__parent = _parent_0 -- 139
+	}, { -- 139
+		__index = function(cls, name) -- 139
+			local val = rawget(_base_0, name) -- 139
+			if val == nil then -- 139
+				local parent = rawget(cls, "__parent") -- 139
+				if parent then -- 139
+					return parent[name] -- 139
+				end -- 139
+			else -- 139
+				return val -- 139
+			end -- 139
+		end, -- 139
+		__call = function(cls, ...) -- 139
+			local _self_0 = setmetatable({ }, _base_0) -- 139
+			cls.__init(_self_0, ...) -- 139
+			return _self_0 -- 139
+		end -- 139
+	}) -- 139
+	_base_0.__class = _class_0 -- 139
+	if _parent_0.__inherited then -- 139
+		_parent_0.__inherited(_parent_0, _class_0) -- 139
+	end -- 139
+	Basic = _class_0 -- 139
+end -- 255
+local Tyrant -- 257
+do -- 257
+	local _class_0 -- 257
+	local _parent_0 = OS -- 257
+	local _base_0 = { -- 257
+		name = "TYRANT SYSTEM 0.6.66", -- 260
+		greeting = { -- 261
+			"boot sequence now", -- 261
+			"loading tyrant system 0.6.66", -- 262
+			"tyrant system loaded. greetings emperor", -- 263
+			"LIVER FAILURE FOREVER" -- 264
+		}, -- 267
+		commands = { -- 268
+			[":help"] = { -- 269
+				Callback = function(self, ply, term, args) -- 269
+					if ply:Team() ~= TEAM_EMPEROR then -- 270
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 271
+						return -- 272
+					end -- 270
+					local _with_0 = gterm -- 273
+					_with_0:Broadcast(term, "  COMMANDS:") -- 276
+					_with_0:Broadcast(term, "") -- 277
+					for k, v in SortedPairs(self:GetCommands()) do -- 278
+						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 279
+						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 280
+					end -- 280
+					_with_0:Broadcast(term, "  end list") -- 281
+					return _with_0 -- 273
+				end, -- 269
+				help = "Basic usage instructions." -- 282
+			}, -- 268
+			[":conscript"] = { -- 285
+				Callback = function(self, ply, term, args) -- 285
+					if ply:Team() ~= TEAM_EMPEROR then -- 286
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 287
+						return -- 288
 					end -- 286
-					local _list_2 = ents.FindByClass("terminal*") -- 287
-					for _index_0 = 1, #_list_2 do -- 287
-						local term = _list_2[_index_0] -- 287
-						local _continue_0 = false -- 288
-						repeat -- 288
-							if not IsValid(term) then -- 288
-								_continue_0 = true -- 288
-								break -- 288
-							end -- 288
-							do -- 289
-								local _exp_0 = term:GetOS() -- 289
-								if "public" == _exp_0 then -- 290
-									net.Start("evilrp_terminal_flicker") -- 291
-									net.WriteUInt(16, term:EntIndex()) -- 292
-									net.Broadcast() -- 293
-									gterm:Broadcast(term, text, GT_COL_ERR) -- 294
-								end -- 294
-							end -- 294
-							_continue_0 = true -- 288
-						until true -- 294
-						if not _continue_0 then -- 294
-							break -- 294
-						end -- 294
-					end -- 294
-				end, -- 277
-				help = "Demand of your people with the XOMBOKOM." -- 295
-			}, -- 276
-			[":tax"] = { -- 298
-				Callback = function(self, ply, term, args) -- 298
-					if ply:Team() ~= TEAM_EMPEROR then -- 299
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 300
-						return -- 301
-					end -- 299
-					local taxes = GAMEMODE.taxes -- 302
-					local cmd = args[1] -- 303
-					if "list" == cmd then -- 305
-						gterm:Broadcast(term, "TAXES OF THE LAND:") -- 306
-						for k, v in pairs(taxes) do -- 307
-							gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 308
-							gterm:Broadcast(term, "    (" .. tostring(GAMEMODE.taxes_stored[k]) .. " bones gathered)", GT_COL_SUCC) -- 309
-						end -- 309
-						return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 310
-					elseif "set" == cmd then -- 311
-						local tax = args[2] -- 312
-						if not (tax and taxes[tax]) then -- 313
-							gterm:Broadcast(term, "invalid tax name given?", GT_COL_ERR) -- 314
-							return -- 315
-						end -- 313
-						local new_pct = args[3] -- 316
-						new_pct = tonumber(new_pct) -- 317
-						if not new_pct then -- 318
-							gterm:Broadcast(term, "invalid tax percentage given?", GT_COL_ERR) -- 319
-							return -- 320
-						elseif new_pct < 0 then -- 321
-							gterm:Broadcast(term, "the taxes cannot fall into the negative", GT_COL_ERR) -- 322
-							return -- 323
-						elseif new_pct > 100 then -- 324
-							gterm:Broadcast(term, "the taxes cannot exceed one hundred percent", GT_COL_ERR) -- 325
-							return -- 327
-						end -- 318
-						taxes[tax] = new_pct -- 328
-						SetGlobalInt("tax_" .. tostring(tax), new_pct) -- 330
-						PlaySoundGlobal("XOMBOTAX") -- 331
-						local text = "the " .. tostring(tax) .. " tax is now " .. tostring(new_pct) .. "%" -- 332
-						gterm:Broadcast(term, text, GT_COL_SUCC) -- 333
-						local _list_1 = ents.FindByClass("terminal*") -- 334
-						for _index_0 = 1, #_list_1 do -- 334
-							local term = _list_1[_index_0] -- 334
-							local _continue_0 = false -- 335
-							repeat -- 335
-								if not IsValid(term) then -- 335
-									_continue_0 = true -- 335
-									break -- 335
-								end -- 335
-								do -- 336
-									local _exp_0 = term:GetOS() -- 336
-									if "public" == _exp_0 then -- 337
-										net.Start("evilrp_terminal_flicker") -- 338
-										net.WriteUInt(16, term:EntIndex()) -- 339
-										net.Broadcast() -- 340
-										gterm:Broadcast(term, text, GT_COL_SUCC) -- 341
-									end -- 341
-								end -- 341
-								_continue_0 = true -- 335
-							until true -- 341
-							if not _continue_0 then -- 341
-								break -- 341
-							end -- 341
-						end -- 341
-					elseif "collect" == cmd then -- 342
-						local tax = args[2] -- 343
-						local reward = GAMEMODE.taxes_stored[tax] -- 344
-						if not (tax and taxes[tax]) then -- 345
-							gterm:Broadcast(term, "invalid tax name given?", GT_COL_ERR) -- 346
-							return -- 347
-						end -- 345
-						if not (reward > 0) then -- 348
-							gterm:Broadcast(term, "there is nothing to collect from " .. tostring(tax), GT_COL_ERR) -- 349
+					local cmd = args[1] -- 289
+					if cmd ~= "" then -- 290
+						print(cmd) -- 291
+						local cply = util.GetPlayerByName(cmd) -- 292
+						if not IsValid(cply) then -- 293
+							gterm:Broadcast(term, "that person does not exist", GT_COL_ERR) -- 294
+							return -- 295
+						end -- 293
+						local name = cply:Nick() -- 296
+						local team = cply:Team() -- 297
+						print("conscript: " .. tostring(name) .. " (" .. tostring(team) .. ")") -- 298
+						if team ~= TEAM_PRIVATE then -- 299
+							gterm:Broadcast(term, tostring(name) .. " is too important", GT_COL_ERR) -- 300
+							return -- 301
+						end -- 299
+						gterm:Broadcast(term, "new cannon fodder: " .. tostring(name), GT_COL_SUCC) -- 302
+						return conscript(cply) -- 303
+					end -- 290
+				end, -- 285
+				help = "Conscript your recruits." -- 304
+			}, -- 284
+			[":broadcast"] = { -- 307
+				Callback = function(self, ply, term, args) -- 307
+					if ply:Team() ~= TEAM_EMPEROR then -- 308
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 309
+						return -- 310
+					end -- 308
+					local text = table.concat(args, " ") -- 311
+					text = Chat.Autopretty(ply, text:upper()) -- 312
+					do -- 313
+						local _with_0 = gterm -- 313
+						_with_0:Broadcast(term, text, GT_COL_ERR) -- 314
+					end -- 313
+					PlaySoundGlobal("XOMBOKOM") -- 315
+					local _list_1 = player.GetAll() -- 316
+					for _index_0 = 1, #_list_1 do -- 316
+						local p = _list_1[_index_0] -- 316
+						p:SendChat("Broadcast", text) -- 316
+					end -- 316
+					local _list_2 = ents.FindByClass("terminal*") -- 317
+					for _index_0 = 1, #_list_2 do -- 317
+						local term = _list_2[_index_0] -- 317
+						local _continue_0 = false -- 318
+						repeat -- 318
+							if not IsValid(term) then -- 318
+								_continue_0 = true -- 318
+								break -- 318
+							end -- 318
+							do -- 319
+								local _exp_0 = term:GetOS() -- 319
+								if "public" == _exp_0 then -- 320
+									net.Start("evilrp_terminal_flicker") -- 321
+									net.WriteUInt(16, term:EntIndex()) -- 322
+									net.Broadcast() -- 323
+									gterm:Broadcast(term, text, GT_COL_ERR) -- 324
+								end -- 324
+							end -- 324
+							_continue_0 = true -- 318
+						until true -- 324
+						if not _continue_0 then -- 324
+							break -- 324
+						end -- 324
+					end -- 324
+				end, -- 307
+				help = "Demand of your people with the XOMBOKOM." -- 325
+			}, -- 306
+			[":tax"] = { -- 328
+				Callback = function(self, ply, term, args) -- 328
+					if ply:Team() ~= TEAM_EMPEROR then -- 329
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 330
+						return -- 331
+					end -- 329
+					local taxes = GAMEMODE.taxes -- 332
+					local cmd = args[1] -- 333
+					if "list" == cmd then -- 335
+						gterm:Broadcast(term, "TAXES OF THE LAND:") -- 336
+						for k, v in pairs(taxes) do -- 337
+							gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 338
+							gterm:Broadcast(term, "    (" .. tostring(GAMEMODE.taxes_stored[k]) .. " bones gathered)", GT_COL_SUCC) -- 339
+						end -- 339
+						return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 340
+					elseif "set" == cmd then -- 341
+						local tax = args[2] -- 342
+						if not (tax and taxes[tax]) then -- 343
+							gterm:Broadcast(term, "invalid tax name given?", GT_COL_ERR) -- 344
+							return -- 345
+						end -- 343
+						local new_pct = args[3] -- 346
+						new_pct = tonumber(new_pct) -- 347
+						if not new_pct then -- 348
+							gterm:Broadcast(term, "invalid tax percentage given?", GT_COL_ERR) -- 349
 							return -- 350
+						elseif new_pct < 0 then -- 351
+							gterm:Broadcast(term, "the taxes cannot fall into the negative", GT_COL_ERR) -- 352
+							return -- 353
+						elseif new_pct > 100 then -- 354
+							gterm:Broadcast(term, "the taxes cannot exceed one hundred percent", GT_COL_ERR) -- 355
+							return -- 357
 						end -- 348
-						GAMEMODE.taxes_stored[tax] = 0 -- 351
-						gterm:Broadcast(term, tostring(reward) .. " bones from " .. tostring(tax) .. " are now yours", GT_COL_SUCC) -- 352
-						return ply:AddMoney(reward, "The Power") -- 353
-					else -- 355
-						local _with_0 = gterm -- 355
-						_with_0:Broadcast(term, "TAX INTERFACE", GT_COL_INFO) -- 356
-						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 357
-						_with_0:Broadcast(term, "    gives you what you deserve") -- 358
-						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 359
-						_with_0:Broadcast(term, "    :tax list - list the current taxes") -- 360
-						_with_0:Broadcast(term, "    :tax set NAME 0-100 - alter the taxes") -- 361
-						_with_0:Broadcast(term, "    :tax collect NAME - the best part of this") -- 362
-						return _with_0 -- 355
-					end -- 362
-				end, -- 298
-				help = "The reward for your fantastic service." -- 363
-			}, -- 297
-			[":cls"] = { -- 366
-				Callback = function(self, ply, term) -- 366
-					if ply:Team() ~= TEAM_EMPEROR then -- 367
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 368
-						return -- 369
-					end -- 367
-					for i = 0, term.max_lines do -- 370
-						local time = math.Rand(0.01, 0.04) -- 371
-						timer.Simple(i * time, function() -- 372
-							if IsValid(term) then -- 373
-								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 373
-							end -- 373
-						end) -- 372
-					end -- 373
-					return -- 374
-				end, -- 366
-				help = "Clear the screen." -- 375
-			}, -- 365
-			[":stocks"] = { -- 378
-				Callback = function(self, ply, term, args) -- 378
-					self.cache = self.cache or { } -- 379
-					local stocks = GAMEMODE.Stocks -- 380
-					local _with_0 = gterm -- 381
-					_with_0:Broadcast(term, "STOCKS OF THE LAND:", GT_COL_INFO) -- 382
-					for k, v in pairs(stocks) do -- 383
-						if v > 0 then -- 384
-							local etab = self.cache[k] -- 385
-							if not etab then -- 386
-								etab = scripted_ents.Get(k) or weapons.Get(k) -- 387
-								self.cache[k] = etab -- 388
-							end -- 386
-							local display = etab.PrintName or k -- 389
-							_with_0:Broadcast(term, "  " .. tostring(display) .. ": " .. tostring(v) .. " units", GT_COL_SUCC) -- 390
-						end -- 384
-					end -- 390
-					_with_0:Broadcast(term, "end list", GT_COL_INTL) -- 391
-					return _with_0 -- 381
-				end, -- 378
-				help = "View what you own." -- 392
-			}, -- 377
-			[":die"] = { -- 395
-				Callback = function(self, ply, term) -- 395
-					if ply:Team() ~= TEAM_EMPEROR then -- 396
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 397
-						return -- 398
-					end -- 396
-					gterm:Broadcast(term, "SHUTTING DOWN") -- 399
-					return timer.Simple(math.Rand(2, 5), function() -- 400
-						if IsValid(term) then -- 401
-							for i = 0, term.max_lines do -- 402
-								if IsValid(term) then -- 403
-									gterm:Broadcast(term, "", nil, i) -- 403
-								end -- 403
+						taxes[tax] = new_pct -- 358
+						SetGlobalInt("tax_" .. tostring(tax), new_pct) -- 360
+						PlaySoundGlobal("XOMBOTAX") -- 361
+						local text = "the " .. tostring(tax) .. " tax is now " .. tostring(new_pct) .. "%" -- 362
+						gterm:Broadcast(term, text, GT_COL_SUCC) -- 363
+						local _list_1 = ents.FindByClass("terminal*") -- 364
+						for _index_0 = 1, #_list_1 do -- 364
+							local term = _list_1[_index_0] -- 364
+							local _continue_0 = false -- 365
+							repeat -- 365
+								if not IsValid(term) then -- 365
+									_continue_0 = true -- 365
+									break -- 365
+								end -- 365
+								do -- 366
+									local _exp_0 = term:GetOS() -- 366
+									if "public" == _exp_0 then -- 367
+										net.Start("evilrp_terminal_flicker") -- 368
+										net.WriteUInt(16, term:EntIndex()) -- 369
+										net.Broadcast() -- 370
+										gterm:Broadcast(term, text, GT_COL_SUCC) -- 371
+									end -- 371
+								end -- 371
+								_continue_0 = true -- 365
+							until true -- 371
+							if not _continue_0 then -- 371
+								break -- 371
+							end -- 371
+						end -- 371
+					elseif "collect" == cmd then -- 372
+						local tax = args[2] -- 373
+						local reward = GAMEMODE.taxes_stored[tax] -- 374
+						if not (tax and taxes[tax]) then -- 375
+							gterm:Broadcast(term, "invalid tax name given?", GT_COL_ERR) -- 376
+							return -- 377
+						end -- 375
+						if not (reward > 0) then -- 378
+							gterm:Broadcast(term, "there is nothing to collect from " .. tostring(tax), GT_COL_ERR) -- 379
+							return -- 380
+						end -- 378
+						GAMEMODE.taxes_stored[tax] = 0 -- 381
+						gterm:Broadcast(term, tostring(reward) .. " bones from " .. tostring(tax) .. " are now yours", GT_COL_SUCC) -- 382
+						return ply:AddMoney(reward, "The Power") -- 383
+					else -- 385
+						local _with_0 = gterm -- 385
+						_with_0:Broadcast(term, "TAX INTERFACE", GT_COL_INFO) -- 386
+						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 387
+						_with_0:Broadcast(term, "    gives you what you deserve") -- 388
+						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 389
+						_with_0:Broadcast(term, "    :tax list - list the current taxes") -- 390
+						_with_0:Broadcast(term, "    :tax set NAME 0-100 - alter the taxes") -- 391
+						_with_0:Broadcast(term, "    :tax collect NAME - the best part of this") -- 392
+						return _with_0 -- 385
+					end -- 392
+				end, -- 328
+				help = "The reward for your fantastic service." -- 393
+			}, -- 327
+			[":cls"] = { -- 396
+				Callback = function(self, ply, term) -- 396
+					if ply:Team() ~= TEAM_EMPEROR then -- 397
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 398
+						return -- 399
+					end -- 397
+					for i = 0, term.max_lines do -- 400
+						local time = math.Rand(0.01, 0.04) -- 401
+						timer.Simple(i * time, function() -- 402
+							if IsValid(term) then -- 403
+								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 403
 							end -- 403
-							term:SetActive(false) -- 404
-							return gterm.OS:Call(term, "ShutDown") -- 405
-						end -- 401
-					end) -- 405
-				end, -- 395
-				help = "Turn the computer off." -- 406
-			}, -- 394
-			[":law"] = { -- 409
-				Callback = function(self, ply, term, args) -- 409
-					if ply:Team() ~= TEAM_EMPEROR then -- 410
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 411
-						return -- 412
-					end -- 410
-					local laws = GAMEMODE:Laws() -- 413
-					local cmd = args[1] -- 414
-					if "list" == cmd then -- 416
-						gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 417
-						for k, v in ipairs(laws) do -- 418
-							gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v)) -- 418
-						end -- 418
-						return gterm:Broadcast(term, "  end list", GT_COL_INTL) -- 419
-					elseif "add" == cmd then -- 420
-						if #args < 2 then -- 421
-							gterm:Broadcast(term, "no law text provided?", GT_COL_ERR) -- 422
-							return -- 423
-						end -- 421
-						table.remove(args, 1) -- 424
-						local text = table.concat(args, " ") -- 425
-						do -- 426
-							local _obj_0 = GAMEMODE.laws -- 426
-							_obj_0[#_obj_0 + 1] = text -- 426
-						end -- 426
-						return gterm:Broadcast(term, "created law " .. tostring(#GAMEMODE:Laws()) .. ": \"" .. tostring(text) .. "\"", GT_COL_SUCC) -- 427
-					elseif "remove" == cmd then -- 428
-						if #args < 2 then -- 429
-							gterm:Broadcast(term, "no law specified?", GT_COL_ERR) -- 430
-							return -- 431
-						end -- 429
-						local num = tonumber(args[2]) -- 432
-						if 0 == num or nil == num then -- 434
-							gterm:Broadcast(term, "invalid number given?", GT_COL_ERR) -- 435
-							return -- 436
-						else -- 438
-							if num > #laws then -- 438
-								gterm:Broadcast(term, "invalid number given? (law count: " .. tostring(#laws) .. ")", GT_COL_ERR) -- 439
-								return -- 440
-							elseif num <= #GAMEMODE.default_laws then -- 441
-								gterm:Broadcast(term, "cannot remove laws numbered " .. tostring(#GAMEMODE.default_laws) .. " or less", GT_COL_ERR) -- 442
-								return -- 443
-							end -- 438
-							local law = table.remove(GAMEMODE.laws, num - #GAMEMODE.default_laws) -- 445
-							return gterm:Broadcast(term, "deleted law " .. tostring(num) .. ": \"" .. tostring(law) .. "\"", GT_COL_ERR) -- 446
-						end -- 446
-					elseif "rotate" == cmd then -- 447
-						if #args < 3 then -- 448
-							gterm:Broadcast(term, "invalid arguments?", GT_COL_ERR) -- 449
-							return -- 450
+						end) -- 402
+					end -- 403
+					return -- 404
+				end, -- 396
+				help = "Clear the screen." -- 405
+			}, -- 395
+			[":stocks"] = { -- 408
+				Callback = function(self, ply, term, args) -- 408
+					self.cache = self.cache or { } -- 409
+					local stocks = GAMEMODE.Stocks -- 410
+					local _with_0 = gterm -- 411
+					_with_0:Broadcast(term, "STOCKS OF THE LAND:", GT_COL_INFO) -- 412
+					for k, v in pairs(stocks) do -- 413
+						if v > 0 then -- 414
+							local etab = self.cache[k] -- 415
+							if not etab then -- 416
+								etab = scripted_ents.Get(k) or weapons.Get(k) -- 417
+								self.cache[k] = etab -- 418
+							end -- 416
+							local display = etab.PrintName or k -- 419
+							_with_0:Broadcast(term, "  " .. tostring(display) .. ": " .. tostring(v) .. " units", GT_COL_SUCC) -- 420
+						end -- 414
+					end -- 420
+					_with_0:Broadcast(term, "end list", GT_COL_INTL) -- 421
+					return _with_0 -- 411
+				end, -- 408
+				help = "View what you own." -- 422
+			}, -- 407
+			[":die"] = { -- 425
+				Callback = function(self, ply, term) -- 425
+					if ply:Team() ~= TEAM_EMPEROR then -- 426
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 427
+						return -- 428
+					end -- 426
+					gterm:Broadcast(term, "SHUTTING DOWN") -- 429
+					return timer.Simple(math.Rand(2, 5), function() -- 430
+						if IsValid(term) then -- 431
+							for i = 0, term.max_lines do -- 432
+								if IsValid(term) then -- 433
+									gterm:Broadcast(term, "", nil, i) -- 433
+								end -- 433
+							end -- 433
+							term:SetActive(false) -- 434
+							return gterm.OS:Call(term, "ShutDown") -- 435
+						end -- 431
+					end) -- 435
+				end, -- 425
+				help = "Turn the computer off." -- 436
+			}, -- 424
+			[":law"] = { -- 439
+				Callback = function(self, ply, term, args) -- 439
+					if ply:Team() ~= TEAM_EMPEROR then -- 440
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 441
+						return -- 442
+					end -- 440
+					local laws = GAMEMODE:Laws() -- 443
+					local cmd = args[1] -- 444
+					if "list" == cmd then -- 446
+						gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 447
+						for k, v in ipairs(laws) do -- 448
+							gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v)) -- 448
 						end -- 448
-						local first = tonumber(args[2]) -- 451
-						local second = tonumber(args[3]) -- 452
-						if (first == 0 or first == nil) or (second == 0 or second == nil) then -- 453
-							gterm:Broadcast(term, "invalid number given?", GT_COL_ERR) -- 454
-							return -- 455
-						elseif first > #laws or second > #laws then -- 456
-							gterm:Broadcast(term, "invalid number given? (law count: " .. tostring(laws), GT_COL_ERR) -- 457
-							return -- 458
-						elseif first <= #GAMEMODE.default_laws or second <= #GAMEMODE.default_laws then -- 460
-							gterm:Broadcast(term, "cannot rotate laws numbered " .. tostring(#GAMEMODE.default_laws) .. " or less", GT_COL_ERR) -- 461
-							return -- 462
-						end -- 453
-						first = first - #GAMEMODE.default_laws -- 463
-						local first_law = GAMEMODE.laws[first] -- 464
-						second = second - #GAMEMODE.default_laws -- 465
-						local second_law = GAMEMODE.laws[second] -- 466
-						GAMEMODE.laws[first] = second_law -- 467
-						GAMEMODE.laws[second] = first_law -- 468
-						return gterm:Broadcast(term, "rotated laws " .. tostring(args[2]) .. "/" .. tostring(args[3]) .. ".", GT_COL_SUCC) -- 469
-					else -- 471
-						local _with_0 = gterm -- 471
-						_with_0:Broadcast(term, "LAW INTERFACE", GT_COL_INFO) -- 472
-						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 473
-						_with_0:Broadcast(term, "    makes your wishes come true") -- 474
-						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 475
-						_with_0:Broadcast(term, "    :law list - list the current laws") -- 476
-						_with_0:Broadcast(term, "    :law add <your law's text> - add a new law") -- 477
-						_with_0:Broadcast(term, "    :law remove # - remove a law by its number") -- 478
-						_with_0:Broadcast(term, "    :law rotate #1 #2 - two laws switch places") -- 479
-						return _with_0 -- 471
-					end -- 479
-				end, -- 409
-				help = "View and manipulate the laws of this land." -- 480
-			} -- 408
-		} -- 249
-	} -- 249
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 481
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 249
-			_base_0[_key_0] = _val_0 -- 249
-		end -- 249
-	end -- 481
-	if _base_0.__index == nil then -- 249
-		_base_0.__index = _base_0 -- 249
-	end -- 481
-	setmetatable(_base_0, _parent_0.__base) -- 249
-	_class_0 = setmetatable({ -- 249
-		__init = function(self, ...) -- 249
-			return _class_0.__parent.__init(self, ...) -- 249
-		end, -- 249
-		__base = _base_0, -- 249
-		__name = "Tyrant", -- 249
-		__parent = _parent_0 -- 249
-	}, { -- 249
-		__index = function(cls, name) -- 249
-			local val = rawget(_base_0, name) -- 249
-			if val == nil then -- 249
-				local parent = rawget(cls, "__parent") -- 249
-				if parent then -- 249
-					return parent[name] -- 249
-				end -- 249
-			else -- 249
-				return val -- 249
-			end -- 249
-		end, -- 249
-		__call = function(cls, ...) -- 249
-			local _self_0 = setmetatable({ }, _base_0) -- 249
-			cls.__init(_self_0, ...) -- 249
-			return _self_0 -- 249
-		end -- 249
-	}) -- 249
-	_base_0.__class = _class_0 -- 249
-	if _parent_0.__inherited then -- 249
-		_parent_0.__inherited(_parent_0, _class_0) -- 249
-	end -- 249
-	Tyrant = _class_0 -- 249
-end -- 481
-local Public -- 483
-do -- 483
-	local _class_0 -- 483
-	local _parent_0 = OS -- 483
-	local _base_0 = { -- 483
-		greeting = { -- 485
-			"boot sequence now", -- 485
-			"finalizing public system", -- 486
-			"greetings citizen", -- 487
-			"LIVER FAILURE FOREVER." -- 488
-		}, -- 491
-		advice = { -- 492
-			"One corpse's trash is another corpse's treasure.", -- 492
-			"Bottles are useful. Don't smash them.", -- 493
-			"Snorting broken glass may give you special powers.", -- 494
-			"Burn your trash, eat your plastic, never stop smoking.", -- 495
-			"Liver Failure doesn't take kindly to slackers.", -- 496
-			"You live because you are useful enough to be exploited.", -- 497
-			"Chew with your good teeth.", -- 498
-			"Violence doesn't solve every problem, only some of them.", -- 499
-			"Flesh capsules are very delicate, be careful with them.", -- 500
-			"You do not need a gun. You do not want a gun.", -- 501
-			"Don't venture too far into the tunnels.", -- 502
-			"Evil things are bad.", -- 503
-			"Play catch with people.", -- 504
-			"Playing is fun.", -- 505
-			"Play teeth. Teeth is fun.", -- 506
-			"Rules are the rules.", -- 507
-			"M y  h e a d ... M y  b r a i n ... M y  b e e r ...", -- 508
-			"Eat and drink before taking your medicine.", -- 509
-			"Bodily fluids can spread pathogens.", -- 510
-			"Your safety is not a priority.", -- 511
-			"It's what you wanted", -- 512
-			"Radar spelled backwards is Radar.", -- 513
-			"You're thinking about it, aren't you?", -- 514
-			"But seriously though,", -- 515
-			"At least you're not dead yet.", -- 516
-			"At least you're not teeth yet.", -- 517
-			"I wanna go home.", -- 518
-			"Please", -- 519
-			"You will get what you deserve.", -- 520
-			"Booze loves company.", -- 521
-			"Misery loves company.", -- 522
-			"Teeth love company.", -- 523
-			"Corpses love company.", -- 524
-			"The things you put in your mouth can hurt you.", -- 525
-			"Make sure you're ready for the hangover tomorrow.", -- 526
-			"Buying things feels so good, doesn't it?", -- 527
-			"We work until we die, and that's the way we like it.", -- 528
-			"Blood brothers protect each other.", -- 529
-			"You can't trust that people are what they say.", -- 530
-			"Some people don't look like you. This is a problem.", -- 531
-			"What's a little brawl between friends?", -- 532
-			"It's too late now.", -- 533
-			"you work to rent a bed so can rest for work tomorrow" -- 534
-		}, -- 537
-		commands = { -- 538
-			[":help"] = { -- 539
-				Callback = function(self, ply, term, args) -- 539
-					local _with_0 = gterm -- 540
-					_with_0:Broadcast(term, "  COMMANDS:") -- 543
-					for k, v in SortedPairs(self:GetCommands()) do -- 544
-						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 545
-						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 546
-					end -- 546
-					_with_0:Broadcast(term, "  end list", GT_COL_INTL) -- 547
-					return _with_0 -- 540
-				end, -- 539
-				help = "Basic usage instructions." -- 548
-			}, -- 538
-			[":cls"] = { -- 551
-				Callback = function(self, ply, term) -- 551
-					for i = 0, term.max_lines do -- 552
-						local time = math.Rand(0.01, 0.04) -- 553
-						timer.Simple(i * time, function() -- 554
-							if IsValid(term) then -- 555
-								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 555
-							end -- 555
-						end) -- 554
-					end -- 555
-					return -- 556
-				end, -- 551
-				help = "Clear the screen." -- 557
-			}, -- 550
-			[":advice"] = { -- 560
-				Callback = function(self, ply, term) -- 560
-					local advice = self.advice[math.random(#self.advice)] -- 561
-					if IsValid(term) then -- 562
-						return gterm:Broadcast(term, advice, MSG_COL_INFO) -- 562
-					end -- 562
-				end, -- 560
-				help = "Consult the infinite wisdom." -- 563
-			}, -- 559
-			[":taxes"] = { -- 566
-				Callback = function(self, ply, term, args) -- 566
-					local taxes = GAMEMODE.taxes -- 567
-					gterm:Broadcast(term, "TAXES OF THE LAND:", GT_COL_INFO) -- 568
-					for k, v in pairs(taxes) do -- 569
-						gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 569
-					end -- 569
-					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 570
-				end, -- 566
-				help = "View what you people owe." -- 571
-			}, -- 565
-			[":laws"] = { -- 574
-				Callback = function(self, ply, term, args) -- 574
-					local laws = GAMEMODE:Laws() -- 575
-					gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 576
-					for k, v in ipairs(laws) do -- 577
-						gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v), GT_COL_WRN) -- 577
-					end -- 577
-					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 578
-				end, -- 574
-				help = "View the laws of this land." -- 579
-			}, -- 573
-			[":whoami"] = { -- 582
-				Callback = function(self, ply, term, args) -- 582
-					gterm:Broadcast(term, "this experimental feature is still in testing", GT_COL_WRN) -- 583
-					return gterm:Broadcast(term, "try later", GT_COL_WRN) -- 584
-				end, -- 582
-				help = "View social information." -- 585
-			} -- 581
-		}, -- 588
-		lifetime = 60 * 3, -- 589
-		Initialized = function(self, term) -- 589
-			_class_0.__parent.__base.Initialized(self, term) -- 590
-			term.live_until = CurTime() + self.lifetime -- 591
-			return gterm:Broadcast(term, "DEATH when idle time exceeds " .. tostring(string.NiceTime(self.lifetime)), GT_COL_INFO) -- 592
-		end, -- 593
-		ReceiveInput = function(self, term, ply) -- 593
-			term.live_until = CurTime() + self.lifetime -- 594
-		end, -- 595
-		Think = function(self, term) -- 595
-			local ct = CurTime() -- 596
-			if not term:GetActive() then -- 597
-				return -- 597
-			end -- 597
-			if term.warn_cooldown and ct < term.warn_cooldown then -- 598
-				return -- 598
-			end -- 598
-			if not term.live_until then -- 599
-				term.live_until = ct + self.lifetime -- 599
-			end -- 599
-			local time_left = term.live_until - CurTime() -- 600
-			if math.floor(time_left) % 60 == 0 then -- 601
-				if math.floor(time_left) <= 1 then -- 602
-					gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 603
-					return timer.Simple(math.Rand(2, 5), function() -- 604
-						if IsValid(term) and term:GetActive() then -- 605
-							for i = 0, term.max_lines do -- 606
-								if IsValid(term) then -- 607
-									gterm:Broadcast(term, "", nil, i) -- 607
-								end -- 607
-							end -- 607
-							return gterm.OS:Call(term, "ShutDown") -- 608
-						end -- 605
-					end) -- 608
-				else -- 610
-					return gterm:Broadcast(term, "DEATH in " .. tostring(string.NiceTime(time_left)), GT_COL_INFO) -- 610
-				end -- 602
-			end -- 601
-		end -- 483
-	} -- 483
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 611
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 483
-			_base_0[_key_0] = _val_0 -- 483
-		end -- 483
-	end -- 611
-	if _base_0.__index == nil then -- 483
-		_base_0.__index = _base_0 -- 483
-	end -- 611
-	setmetatable(_base_0, _parent_0.__base) -- 483
-	_class_0 = setmetatable({ -- 483
-		__init = function(self, ...) -- 483
-			return _class_0.__parent.__init(self, ...) -- 483
-		end, -- 483
-		__base = _base_0, -- 483
-		__name = "Public", -- 483
-		__parent = _parent_0 -- 483
-	}, { -- 483
-		__index = function(cls, name) -- 483
-			local val = rawget(_base_0, name) -- 483
-			if val == nil then -- 483
-				local parent = rawget(cls, "__parent") -- 483
-				if parent then -- 483
-					return parent[name] -- 483
-				end -- 483
-			else -- 483
-				return val -- 483
-			end -- 483
-		end, -- 483
-		__call = function(cls, ...) -- 483
-			local _self_0 = setmetatable({ }, _base_0) -- 483
-			cls.__init(_self_0, ...) -- 483
-			return _self_0 -- 483
-		end -- 483
-	}) -- 483
-	_base_0.__class = _class_0 -- 483
-	if _parent_0.__inherited then -- 483
-		_parent_0.__inherited(_parent_0, _class_0) -- 483
-	end -- 483
-	Public = _class_0 -- 483
-end -- 611
-net.Receive("evilrp_terminal_endconsole", function(len, ply) -- 612
-	local idx = net.ReadUInt(16) -- 613
-	local term = Entity(idx) -- 614
-	local text = net.ReadString() -- 615
-	if not (IsValid(term) and term.GetUser) then -- 616
-		return -- 616
-	end -- 616
-	local user = term:GetUser() -- 617
-	if not (IsValid(user) and user == ply) then -- 618
-		return -- 618
-	end -- 618
-	if (text == "") or (text == " ") then -- 619
-		term:SetUser(nil) -- 620
-		net.Start("evilrp_terminal_endtyping") -- 621
-		net.Send(ply) -- 622
-		return -- 623
-	end -- 619
-	gterm.OS:Call(term, "ReceiveInput", ply) -- 624
-	if term.password and not client["pass_authed_" .. tostring(idx)] then -- 625
-		if text == term.password then -- 626
-			ply["pass_authed_" .. tostring(idx)] = true -- 627
-			gterm:Broadcast(term, "password accepted", GT_COL_INFO) -- 628
-			return -- 629
-		else -- 631
-			gterm:Broadcast(term, "password required", GT_COL_INFO) -- 631
-			return -- 632
-		end -- 626
-	end -- 625
-	if string.sub(text, 1, 1) == ":" then -- 633
-		local sys = OS.distros[term:GetOS()] -- 634
-		if sys then -- 635
-			for k, v in pairs(sys:GetCommands()) do -- 636
-				local cmd = string.sub(string.lower(text), 1, string.len(k)) -- 637
-				if k == cmd then -- 638
-					local text2 = string.sub(text, string.len(cmd) + 2) -- 639
-					local quote = (string.sub(text2, 1, 1) ~= "\"") -- 640
-					local args = { } -- 641
-					for chunk in string.gmatch(text2, "[^\"]+") do -- 642
-						quote = not quote -- 643
-						if quote then -- 644
-							args[#args + 1] = chunk -- 645
-						else -- 647
-							for chunk in string.gmatch(chunk, "[^ ]+") do -- 647
-								args[#args + 1] = chunk -- 647
-							end -- 647
-						end -- 644
-					end -- 647
-					local success, value = pcall(v.Callback, sys, ply, term, args) -- 648
-					if success then -- 649
-						gterm:Broadcast(term, text, GT_COL_CMD) -- 650
-					else -- 652
-						gterm:Broadcast(term, value, GT_COL_ERR) -- 652
-					end -- 649
-					return -- 653
-				end -- 638
-			end -- 653
-			text = tostring(string.sub(text, 2)) .. ": command not found" -- 654
-			gterm:Broadcast(term, text, GT_COL_ERR) -- 655
-			return -- 656
-		else -- 658
-			gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 660
-		end -- 635
-		if term.accepting_input then -- 661
-			local quote = (string.sub(text, 1, 1) ~= "\"") -- 662
-			local args = { } -- 663
-			for chunk in string.match(text, "[^\"]+") do -- 664
-				quote = not quote -- 665
-				if quote then -- 666
-					args[#args + 1] = chunk -- 667
-				else -- 669
-					for chunk in string.gmatch(chunk, "[^ ]+") do -- 669
-						args[#args + 1] = chunk -- 669
-					end -- 669
-				end -- 666
-			end -- 669
-			local callback = term.input_callback -- 670
-			if callback and args then -- 671
-				callback(ply, args) -- 671
-			end -- 671
-			term.accepting_input = nil -- 672
-			term.input_callback = nil -- 673
-			return -- 674
-		end -- 661
-	end -- 633
-	local sys = OS.distros[term:GetOS()] -- 675
-	local name = sys and sys.unique_id or "unknown" -- 676
-	local finalized = tostring(("<"):Escape()) .. tostring(name) .. "@" .. tostring(term:EntIndex()) .. tostring((">"):Escape()) .. " " .. tostring(text) -- 677
-	return gterm:Broadcast(term, finalized, GT_COL_CMD) -- 678
-end) -- 612
-return MsgC(Color(255, 0, 0), "INITIALIZED EVILRP TERMINALS\n") -- 680
+						return gterm:Broadcast(term, "  end list", GT_COL_INTL) -- 449
+					elseif "add" == cmd then -- 450
+						if #args < 2 then -- 451
+							gterm:Broadcast(term, "no law text provided?", GT_COL_ERR) -- 452
+							return -- 453
+						end -- 451
+						table.remove(args, 1) -- 454
+						local text = table.concat(args, " ") -- 455
+						do -- 456
+							local _obj_0 = GAMEMODE.laws -- 456
+							_obj_0[#_obj_0 + 1] = text -- 456
+						end -- 456
+						return gterm:Broadcast(term, "created law " .. tostring(#GAMEMODE:Laws()) .. ": \"" .. tostring(text) .. "\"", GT_COL_SUCC) -- 457
+					elseif "remove" == cmd then -- 458
+						if #args < 2 then -- 459
+							gterm:Broadcast(term, "no law specified?", GT_COL_ERR) -- 460
+							return -- 461
+						end -- 459
+						local num = tonumber(args[2]) -- 462
+						if 0 == num or nil == num then -- 464
+							gterm:Broadcast(term, "invalid number given?", GT_COL_ERR) -- 465
+							return -- 466
+						else -- 468
+							if num > #laws then -- 468
+								gterm:Broadcast(term, "invalid number given? (law count: " .. tostring(#laws) .. ")", GT_COL_ERR) -- 469
+								return -- 470
+							elseif num <= #GAMEMODE.default_laws then -- 471
+								gterm:Broadcast(term, "cannot remove laws numbered " .. tostring(#GAMEMODE.default_laws) .. " or less", GT_COL_ERR) -- 472
+								return -- 473
+							end -- 468
+							local law = table.remove(GAMEMODE.laws, num - #GAMEMODE.default_laws) -- 475
+							return gterm:Broadcast(term, "deleted law " .. tostring(num) .. ": \"" .. tostring(law) .. "\"", GT_COL_ERR) -- 476
+						end -- 476
+					elseif "rotate" == cmd then -- 477
+						if #args < 3 then -- 478
+							gterm:Broadcast(term, "invalid arguments?", GT_COL_ERR) -- 479
+							return -- 480
+						end -- 478
+						local first = tonumber(args[2]) -- 481
+						local second = tonumber(args[3]) -- 482
+						if (first == 0 or first == nil) or (second == 0 or second == nil) then -- 483
+							gterm:Broadcast(term, "invalid number given?", GT_COL_ERR) -- 484
+							return -- 485
+						elseif first > #laws or second > #laws then -- 486
+							gterm:Broadcast(term, "invalid number given? (law count: " .. tostring(laws), GT_COL_ERR) -- 487
+							return -- 488
+						elseif first <= #GAMEMODE.default_laws or second <= #GAMEMODE.default_laws then -- 490
+							gterm:Broadcast(term, "cannot rotate laws numbered " .. tostring(#GAMEMODE.default_laws) .. " or less", GT_COL_ERR) -- 491
+							return -- 492
+						end -- 483
+						first = first - #GAMEMODE.default_laws -- 493
+						local first_law = GAMEMODE.laws[first] -- 494
+						second = second - #GAMEMODE.default_laws -- 495
+						local second_law = GAMEMODE.laws[second] -- 496
+						GAMEMODE.laws[first] = second_law -- 497
+						GAMEMODE.laws[second] = first_law -- 498
+						return gterm:Broadcast(term, "rotated laws " .. tostring(args[2]) .. "/" .. tostring(args[3]) .. ".", GT_COL_SUCC) -- 499
+					else -- 501
+						local _with_0 = gterm -- 501
+						_with_0:Broadcast(term, "LAW INTERFACE", GT_COL_INFO) -- 502
+						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 503
+						_with_0:Broadcast(term, "    makes your wishes come true") -- 504
+						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 505
+						_with_0:Broadcast(term, "    :law list - list the current laws") -- 506
+						_with_0:Broadcast(term, "    :law add <your law's text> - add a new law") -- 507
+						_with_0:Broadcast(term, "    :law remove # - remove a law by its number") -- 508
+						_with_0:Broadcast(term, "    :law rotate #1 #2 - two laws switch places") -- 509
+						return _with_0 -- 501
+					end -- 509
+				end, -- 439
+				help = "View and manipulate the laws of this land." -- 510
+			} -- 438
+		} -- 257
+	} -- 257
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 511
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 257
+			_base_0[_key_0] = _val_0 -- 257
+		end -- 257
+	end -- 511
+	if _base_0.__index == nil then -- 257
+		_base_0.__index = _base_0 -- 257
+	end -- 511
+	setmetatable(_base_0, _parent_0.__base) -- 257
+	_class_0 = setmetatable({ -- 257
+		__init = function(self, ...) -- 257
+			return _class_0.__parent.__init(self, ...) -- 257
+		end, -- 257
+		__base = _base_0, -- 257
+		__name = "Tyrant", -- 257
+		__parent = _parent_0 -- 257
+	}, { -- 257
+		__index = function(cls, name) -- 257
+			local val = rawget(_base_0, name) -- 257
+			if val == nil then -- 257
+				local parent = rawget(cls, "__parent") -- 257
+				if parent then -- 257
+					return parent[name] -- 257
+				end -- 257
+			else -- 257
+				return val -- 257
+			end -- 257
+		end, -- 257
+		__call = function(cls, ...) -- 257
+			local _self_0 = setmetatable({ }, _base_0) -- 257
+			cls.__init(_self_0, ...) -- 257
+			return _self_0 -- 257
+		end -- 257
+	}) -- 257
+	_base_0.__class = _class_0 -- 257
+	if _parent_0.__inherited then -- 257
+		_parent_0.__inherited(_parent_0, _class_0) -- 257
+	end -- 257
+	Tyrant = _class_0 -- 257
+end -- 511
+local Public -- 513
+do -- 513
+	local _class_0 -- 513
+	local _parent_0 = OS -- 513
+	local _base_0 = { -- 513
+		greeting = { -- 515
+			"boot sequence now", -- 515
+			"finalizing public system", -- 516
+			"greetings citizen", -- 517
+			"LONG LIVE THE EMPEROR." -- 518
+		}, -- 521
+		advice = { -- 522
+			"One corpse's trash is another corpse's treasure.", -- 522
+			"Bottles are useful. Don't smash them.", -- 523
+			"Snorting broken glass may give you special powers.", -- 524
+			"Burn your trash, eat your plastic, never stop smoking.", -- 525
+			"Liver Failure doesn't take kindly to slackers.", -- 526
+			"You live because you are useful enough to be exploited.", -- 527
+			"Chew with your good teeth.", -- 528
+			"Violence doesn't solve every problem, only some of them.", -- 529
+			"Flesh capsules are very delicate, be careful with them.", -- 530
+			"You do not need a gun. You do not want a gun.", -- 531
+			"Don't venture too far into the tunnels.", -- 532
+			"Evil things are bad.", -- 533
+			"Play catch with people.", -- 534
+			"Playing is fun.", -- 535
+			"Play teeth. Teeth is fun.", -- 536
+			"Rules are the rules.", -- 537
+			"M y  h e a d ... M y  b r a i n ... M y  b e e r ...", -- 538
+			"Eat and drink before taking your medicine.", -- 539
+			"Bodily fluids can spread pathogens.", -- 540
+			"Your safety is not a priority.", -- 541
+			"It's what you wanted", -- 542
+			"Radar spelled backwards is Radar.", -- 543
+			"You're thinking about it, aren't you?", -- 544
+			"But seriously though,", -- 545
+			"At least you're not dead yet.", -- 546
+			"At least you're not teeth yet.", -- 547
+			"I wanna go home.", -- 548
+			"Please", -- 549
+			"You will get what you deserve.", -- 550
+			"Booze loves company.", -- 551
+			"Misery loves company.", -- 552
+			"Teeth love company.", -- 553
+			"Corpses love company.", -- 554
+			"The things you put in your mouth can hurt you.", -- 555
+			"Make sure you're ready for the hangover tomorrow.", -- 556
+			"Buying things feels so good, doesn't it?", -- 557
+			"We work until we die, and that's the way we like it.", -- 558
+			"Blood brothers protect each other.", -- 559
+			"You can't trust that people are what they say.", -- 560
+			"Some people don't look like you. This is a problem.", -- 561
+			"What's a little brawl between friends?", -- 562
+			"It's too late now.", -- 563
+			"you work to rent a bed so can rest for work tomorrow" -- 564
+		}, -- 567
+		commands = { -- 568
+			[":help"] = { -- 569
+				Callback = function(self, ply, term, args) -- 569
+					local _with_0 = gterm -- 570
+					_with_0:Broadcast(term, "  COMMANDS:") -- 573
+					for k, v in SortedPairs(self:GetCommands()) do -- 574
+						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 575
+						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 576
+					end -- 576
+					_with_0:Broadcast(term, "  end list", GT_COL_INTL) -- 577
+					return _with_0 -- 570
+				end, -- 569
+				help = "Basic usage instructions." -- 578
+			}, -- 568
+			[":cls"] = { -- 581
+				Callback = function(self, ply, term) -- 581
+					for i = 0, term.max_lines do -- 582
+						local time = math.Rand(0.01, 0.04) -- 583
+						timer.Simple(i * time, function() -- 584
+							if IsValid(term) then -- 585
+								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 585
+							end -- 585
+						end) -- 584
+					end -- 585
+					return -- 586
+				end, -- 581
+				help = "Clear the screen." -- 587
+			}, -- 580
+			[":advice"] = { -- 590
+				Callback = function(self, ply, term) -- 590
+					local advice = self.advice[math.random(#self.advice)] -- 591
+					if IsValid(term) then -- 592
+						return gterm:Broadcast(term, advice, MSG_COL_INFO) -- 592
+					end -- 592
+				end, -- 590
+				help = "Consult the infinite wisdom." -- 593
+			}, -- 589
+			[":taxes"] = { -- 596
+				Callback = function(self, ply, term, args) -- 596
+					local taxes = GAMEMODE.taxes -- 597
+					gterm:Broadcast(term, "TAXES OF THE LAND:", GT_COL_INFO) -- 598
+					for k, v in pairs(taxes) do -- 599
+						gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 599
+					end -- 599
+					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 600
+				end, -- 596
+				help = "View what you people owe." -- 601
+			}, -- 595
+			[":laws"] = { -- 604
+				Callback = function(self, ply, term, args) -- 604
+					local laws = GAMEMODE:Laws() -- 605
+					gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 606
+					for k, v in ipairs(laws) do -- 607
+						gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v), GT_COL_WRN) -- 607
+					end -- 607
+					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 608
+				end, -- 604
+				help = "View the laws of this land." -- 609
+			}, -- 603
+			[":whoami"] = { -- 612
+				Callback = function(self, ply, term, args) -- 612
+					gterm:Broadcast(term, "this experimental feature is still in testing", GT_COL_WRN) -- 613
+					return gterm:Broadcast(term, "try later", GT_COL_WRN) -- 614
+				end, -- 612
+				help = "View social information." -- 615
+			} -- 611
+		}, -- 618
+		lifetime = 60 * 3, -- 619
+		Initialized = function(self, term) -- 619
+			_class_0.__parent.__base.Initialized(self, term) -- 620
+			term.live_until = CurTime() + self.lifetime -- 621
+			return gterm:Broadcast(term, "DEATH when idle time exceeds " .. tostring(string.NiceTime(self.lifetime)), GT_COL_INFO) -- 622
+		end, -- 623
+		ReceiveInput = function(self, term, ply) -- 623
+			term.live_until = CurTime() + self.lifetime -- 624
+		end, -- 625
+		Think = function(self, term) -- 625
+			local ct = CurTime() -- 626
+			if not term:GetActive() then -- 627
+				return -- 627
+			end -- 627
+			if term.warn_cooldown and ct < term.warn_cooldown then -- 628
+				return -- 628
+			end -- 628
+			if not term.live_until then -- 629
+				term.live_until = ct + self.lifetime -- 629
+			end -- 629
+			local time_left = term.live_until - CurTime() -- 630
+			if math.floor(time_left) % 60 == 0 then -- 631
+				if math.floor(time_left) <= 1 then -- 632
+					gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 633
+					return timer.Simple(math.Rand(2, 5), function() -- 634
+						if IsValid(term) and term:GetActive() then -- 635
+							for i = 0, term.max_lines do -- 636
+								if IsValid(term) then -- 637
+									gterm:Broadcast(term, "", nil, i) -- 637
+								end -- 637
+							end -- 637
+							return gterm.OS:Call(term, "ShutDown") -- 638
+						end -- 635
+					end) -- 638
+				else -- 640
+					return gterm:Broadcast(term, "DEATH in " .. tostring(string.NiceTime(time_left)), GT_COL_INFO) -- 640
+				end -- 632
+			end -- 631
+		end -- 513
+	} -- 513
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 641
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 513
+			_base_0[_key_0] = _val_0 -- 513
+		end -- 513
+	end -- 641
+	if _base_0.__index == nil then -- 513
+		_base_0.__index = _base_0 -- 513
+	end -- 641
+	setmetatable(_base_0, _parent_0.__base) -- 513
+	_class_0 = setmetatable({ -- 513
+		__init = function(self, ...) -- 513
+			return _class_0.__parent.__init(self, ...) -- 513
+		end, -- 513
+		__base = _base_0, -- 513
+		__name = "Public", -- 513
+		__parent = _parent_0 -- 513
+	}, { -- 513
+		__index = function(cls, name) -- 513
+			local val = rawget(_base_0, name) -- 513
+			if val == nil then -- 513
+				local parent = rawget(cls, "__parent") -- 513
+				if parent then -- 513
+					return parent[name] -- 513
+				end -- 513
+			else -- 513
+				return val -- 513
+			end -- 513
+		end, -- 513
+		__call = function(cls, ...) -- 513
+			local _self_0 = setmetatable({ }, _base_0) -- 513
+			cls.__init(_self_0, ...) -- 513
+			return _self_0 -- 513
+		end -- 513
+	}) -- 513
+	_base_0.__class = _class_0 -- 513
+	if _parent_0.__inherited then -- 513
+		_parent_0.__inherited(_parent_0, _class_0) -- 513
+	end -- 513
+	Public = _class_0 -- 513
+end -- 641
+net.Receive("evilrp_terminal_endconsole", function(len, ply) -- 642
+	local idx = net.ReadUInt(16) -- 643
+	local term = Entity(idx) -- 644
+	local text = net.ReadString() -- 645
+	if not (IsValid(term) and term.GetUser) then -- 646
+		return -- 646
+	end -- 646
+	local user = term:GetUser() -- 647
+	if not (IsValid(user) and user == ply) then -- 648
+		return -- 648
+	end -- 648
+	if (text == "") or (text == " ") then -- 649
+		term:SetUser(nil) -- 650
+		net.Start("evilrp_terminal_endtyping") -- 651
+		net.Send(ply) -- 652
+		return -- 653
+	end -- 649
+	gterm.OS:Call(term, "ReceiveInput", ply) -- 654
+	if term.password and not client["pass_authed_" .. tostring(idx)] then -- 655
+		if text == term.password then -- 656
+			ply["pass_authed_" .. tostring(idx)] = true -- 657
+			gterm:Broadcast(term, "password accepted", GT_COL_INFO) -- 658
+			return -- 659
+		else -- 661
+			gterm:Broadcast(term, "password required", GT_COL_INFO) -- 661
+			return -- 662
+		end -- 656
+	end -- 655
+	if string.sub(text, 1, 1) == ":" then -- 663
+		local sys = OS.distros[term:GetOS()] -- 664
+		if sys then -- 665
+			for k, v in pairs(sys:GetCommands()) do -- 666
+				local cmd = string.sub(string.lower(text), 1, string.len(k)) -- 667
+				if k == cmd then -- 668
+					local text2 = string.sub(text, string.len(cmd) + 2) -- 669
+					local quote = (string.sub(text2, 1, 1) ~= "\"") -- 670
+					local args = { } -- 671
+					for chunk in string.gmatch(text2, "[^\"]+") do -- 672
+						quote = not quote -- 673
+						if quote then -- 674
+							args[#args + 1] = chunk -- 675
+						else -- 677
+							for chunk in string.gmatch(chunk, "[^ ]+") do -- 677
+								args[#args + 1] = chunk -- 677
+							end -- 677
+						end -- 674
+					end -- 677
+					local success, value = pcall(v.Callback, sys, ply, term, args) -- 678
+					if success then -- 679
+						gterm:Broadcast(term, text, GT_COL_CMD) -- 680
+					else -- 682
+						gterm:Broadcast(term, value, GT_COL_ERR) -- 682
+					end -- 679
+					return -- 683
+				end -- 668
+			end -- 683
+			text = tostring(string.sub(text, 2)) .. ": command not found" -- 684
+			gterm:Broadcast(term, text, GT_COL_ERR) -- 685
+			return -- 686
+		else -- 688
+			gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 690
+		end -- 665
+		if term.accepting_input then -- 691
+			local quote = (string.sub(text, 1, 1) ~= "\"") -- 692
+			local args = { } -- 693
+			for chunk in string.match(text, "[^\"]+") do -- 694
+				quote = not quote -- 695
+				if quote then -- 696
+					args[#args + 1] = chunk -- 697
+				else -- 699
+					for chunk in string.gmatch(chunk, "[^ ]+") do -- 699
+						args[#args + 1] = chunk -- 699
+					end -- 699
+				end -- 696
+			end -- 699
+			local callback = term.input_callback -- 700
+			if callback and args then -- 701
+				callback(ply, args) -- 701
+			end -- 701
+			term.accepting_input = nil -- 702
+			term.input_callback = nil -- 703
+			return -- 704
+		end -- 691
+	end -- 663
+	local sys = OS.distros[term:GetOS()] -- 705
+	local name = sys and sys.unique_id or "unknown" -- 706
+	local finalized = tostring(("<"):Escape()) .. tostring(name) .. "@" .. tostring(term:EntIndex()) .. tostring((">"):Escape()) .. " " .. tostring(text) -- 707
+	return gterm:Broadcast(term, finalized, GT_COL_CMD) -- 708
+end) -- 642
+return MsgC(Color(255, 0, 0), "INITIALIZED EVILRP TERMINALS\n") -- 710
