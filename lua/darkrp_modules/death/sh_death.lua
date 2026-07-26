@@ -12,7 +12,7 @@ death = function(ply) -- 3
 	end -- 7
 	local team = RPExtraTeams[ply:Team()] -- 9
 	if team == TEAM_EMPEROR then -- 10
-		ply:ConCommand("say /ad THE KOMMANDANT HAS FALLEN. LONG LIVE THE KOMMANDANT.") -- 11
+		ply:ConCommand("say /ad THE EMPEROR HAS FALLEN. LONG LIVE THE EMPEROR.") -- 11
 	end -- 10
 	return RunConsoleCommand("hostname", tostring(string.english_number(deaths):upper()) .. " DEAD " .. tostring(bodies) .. " TODAY") -- 13
 end -- 3

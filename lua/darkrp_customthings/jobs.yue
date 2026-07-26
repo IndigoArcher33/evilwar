@@ -89,12 +89,12 @@ TEAM_GHOST = DarkRP.createJob "Ghost",
 TEAM_STALKER = DarkRP.createJob "Stalker",
   color: Color(20, 150, 20)
   model: "models/liver_failure/wastelander/wastelander.mdl"
-  description: "A soul with no allegiance, destined to plunder the wasteland. \n This fate costs 4 stem cells."
+  description: "A soul with no allegiance, destined to plunder the wasteland."
   weapons: {"evilrp_weapon/whisper", "evilrp_melee/axe"}
   category: "Wasteland"
   command: "stalker"
   salary: 1
-  max: 2
+  max: 3
   cost: 4
   hasLicense: false
   candemote: false
@@ -116,7 +116,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
         text = "Why is he here?"
       when TEAM_DEALER
         text = "Keep the armaments locked up."
-      when TEAM_KOMMANDANT
+      when TEAM_EMPEROR
         text = "He might be of use to me."
       when TEAM_GHOST
         text = "He has a noble pursuit."
@@ -188,7 +188,7 @@ TEAM_BONEHEAD = DarkRP.createJob "Bonehead",
         text = "Oh no! It happened again!"
       when TEAM_DEALER
         text = "Free ribs to feed the troops."
-      when TEAM_KOMMANDANT
+      when TEAM_EMPEROR
         text = "Ha. It happened again."
       when TEAM_GHOST
         text = "Lookin' good."
@@ -263,14 +263,14 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
         text = "Smelly and stupid."
       when TEAM_DEALER
         text = "Prove your place, worm.\nOnly then will you be decorated."
-      when TEAM_KOMMANDANT
+      when TEAM_EMPEROR
         text = "Is he working hard enough?"
       when TEAM_GHOST
         text = "Sad, but funny."
       when TEAM_BONEHEAD
         text = "SKIN...!"
     return { :text, font: "Spleen_Label_Small" }, false
-  first_names: { "Private", "PVT.", "Recruit", "Enlisted", "Grunt", "Fodder", "Cadet", "CDT.", "Rookie"}
+  first_names: { "Private", "PVT.", "Recruit", "Enlistee", "Grunt", "Fodder", "Cadet", "CDT.", "Rookie"}
   GenerateName: (ply) =>
     unit_id = math.random 1, 99
     if unit_id < 10
@@ -304,7 +304,7 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
 TEAM_SANITAR = DarkRP.createJob "Dragoon",
   color: Color(25, 170, 0)
   model: "models/vel/evilwar/royalist.mdl"
-  description: "The right hands of the Kommandant.\nRespected by their peers, feared by their enemies. \n This fate costs 3 stem cells."
+  description: "The right hand of the Emperor.\nRespected by his peers,\nfeared by his enemies."
   weapons: {"evilrp_weapon/hope", "evilrp_melee/sabre"}
   command: "ss"
   salary: 1
@@ -331,7 +331,7 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
         text = "Is that enemy blood?\nNo of course not."
       when TEAM_DEALER
         text = "A follower of mine."
-      when TEAM_KOMMANDANT
+      when TEAM_EMPEROR
         text = "A tentacle of mine."
       when TEAM_GHOST
         text = "Evil, stupid,\n maybe both."
@@ -367,7 +367,7 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
 TEAM_DEALER = DarkRP.createJob "Quartermaster",
   color: Color(255, 140, 0)
   model: "models/vel/evilwar/royalist.mdl"
-  description: "The left hand of the Kommandant. Manage the goods and keep your men armed. \n This fate costs 3 stem cells."
+  description: "The left hand of the Emperor.\nManage the goods and keep your men armed."
   weapons: {}
   command: "dealer"
   salary: 1
@@ -392,7 +392,7 @@ TEAM_DEALER = DarkRP.createJob "Quartermaster",
         text = "A reminder of the power of\nKapitalism."
       when TEAM_DEALER
         text = "I'm seeing double!"
-      when TEAM_KOMMANDANT
+      when TEAM_EMPEROR
         text = "My brother in arms.\nIf he fails, I'll cut his off."
       when TEAM_GHOST
         text = "Glorified accountant."
@@ -429,7 +429,7 @@ TEAM_DEALER = DarkRP.createJob "Quartermaster",
 TEAM_KORPSMAN = DarkRP.createJob "Sanitäter",
   color: Color(79, 150, 150)
   model: "models/vel/evilwar/royalist.mdl"
-  description: "You keep people alive in this terrible place. Fill the blood and empty the rust. \n This fate costs 2 stem cells."
+  description: "You keep people alive in this terrible place.\nFill the blood and empty the rust."
   weapons: {"evilrp/medkit"}
   command: "medic"
   salary: 1
@@ -455,7 +455,7 @@ TEAM_KORPSMAN = DarkRP.createJob "Sanitäter",
         text = "Something to\nbe happy about."
       when TEAM_DEALER
         text = "Keep them busy.\nWe need their blood and sweat."
-      when TEAM_KOMMANDANT
+      when TEAM_EMPEROR
         text = "What a strange,\nselfless thing."
       when TEAM_GHOST
         text = "A respectable mortal."
@@ -490,11 +490,11 @@ TEAM_KORPSMAN = DarkRP.createJob "Sanitäter",
     }
     return false
 
-TEAM_KOMMANDANT = DarkRP.createJob "Kommandant",
+TEAM_EMPEROR = DarkRP.createJob "Emperor",
   color: Color(150, 20, 20)
   model: "models/vel/evilwar/royalist.mdl"
-  description: "Rule with an iron fist. \n This fate costs 5 stem cells."
-  command: "kommandant"
+  description: "Rule with an iron fist."
+  command: "emperor"
   salary: 1
   weapons: {"evilrp_weapon/novoluger"}
   max: 1
@@ -512,22 +512,24 @@ TEAM_KOMMANDANT = DarkRP.createJob "Kommandant",
       when TEAM_PRIVATE
         text = "Listen carefully."
       when TEAM_STALKER
-        text = "Oh your magesty!"
+        text = "Oh, your majesty!"
       when TEAM_SANITAR
         text = "Hail, hail!"
       when TEAM_KORPSMAN
         text = "Is he feeling okay?"
       when TEAM_DEALER
         text = "Glorious leader.\nI'm nothing without him."
-      when TEAM_KOMMANDANT
+      when TEAM_EMPEROR
         text = "Our strength\nshall prevail."
       when TEAM_GHOST
         text = "So full of lies."
       when TEAM_BONEHEAD
         text = "THERE HE IS!!"
     return { :text, font: "Spleen_Label_Small" }, true
-  first_names: ("Kommandant")
-  special_name: "Kamdonot"
+  
+  first_names: {"Basileus", "Agrippa", "Gnaeus", "Gaius"}
+  last_names: {"", "Imperator Lymphoma", "Pater Patriae", "Rex Lymphoma", "Lymphoma Magnus"}
+  special_name: "Which Kaiser"
   special_name_chance: 1000
   ShowSpare1: open_player_menu
   ShowSpare2: open_action_menu
@@ -558,6 +560,6 @@ TEAM_KOMMANDANT = DarkRP.createJob "Kommandant",
 GAMEMODE.CivilProtection =
   [TEAM_PRIVATE]: true
   [TEAM_SANITAR]: true
-  [TEAM_KOMMANDANT]: true
+  [TEAM_EMPEROR]: true
 
 GAMEMODE.DefaultTeam = TEAM_GHOST

@@ -116,7 +116,7 @@ TEAM_GHOST = DarkRP.createJob("Ghost", { -- 29
 TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 	color = Color(20, 150, 20), -- 90
 	model = "models/liver_failure/wastelander/wastelander.mdl", -- 91
-	description = "A soul with no allegiance, destined to plunder the wasteland. \n This fate costs 4 stem cells.", -- 92
+	description = "A soul with no allegiance, destined to plunder the wasteland.", -- 92
 	weapons = { -- 93
 		"evilrp_weapon/whisper", -- 93
 		"evilrp_melee/axe" -- 93
@@ -124,7 +124,7 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 	category = "Wasteland", -- 94
 	command = "stalker", -- 95
 	salary = 1, -- 96
-	max = 2, -- 97
+	max = 3, -- 97
 	cost = 4, -- 98
 	hasLicense = false, -- 99
 	candemote = false, -- 100
@@ -179,7 +179,7 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 				text = "Why is he here?" -- 116
 			elseif TEAM_DEALER == _exp_0 then -- 117
 				text = "Keep the armaments locked up." -- 118
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 119
+			elseif TEAM_EMPEROR == _exp_0 then -- 119
 				text = "He might be of use to me." -- 120
 			elseif TEAM_GHOST == _exp_0 then -- 121
 				text = "He has a noble pursuit." -- 122
@@ -343,7 +343,7 @@ TEAM_BONEHEAD = DarkRP.createJob("Bonehead", { -- 168
 				text = "Oh no! It happened again!" -- 188
 			elseif TEAM_DEALER == _exp_0 then -- 189
 				text = "Free ribs to feed the troops." -- 190
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 191
+			elseif TEAM_EMPEROR == _exp_0 then -- 191
 				text = "Ha. It happened again." -- 192
 			elseif TEAM_GHOST == _exp_0 then -- 193
 				text = "Lookin' good." -- 194
@@ -472,7 +472,7 @@ TEAM_PRIVATE = DarkRP.createJob("Private", { -- 238
 				text = "Smelly and stupid." -- 263
 			elseif TEAM_DEALER == _exp_0 then -- 264
 				text = "Prove your place, worm.\nOnly then will you be decorated." -- 265
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 266
+			elseif TEAM_EMPEROR == _exp_0 then -- 266
 				text = "Is he working hard enough?" -- 267
 			elseif TEAM_GHOST == _exp_0 then -- 268
 				text = "Sad, but funny." -- 269
@@ -489,7 +489,7 @@ TEAM_PRIVATE = DarkRP.createJob("Private", { -- 238
 		"Private", -- 273
 		"PVT.", -- 273
 		"Recruit", -- 273
-		"Enlisted", -- 273
+		"Enlistee", -- 273
 		"Grunt", -- 273
 		"Fodder", -- 273
 		"Cadet", -- 273
@@ -528,7 +528,7 @@ TEAM_PRIVATE = DarkRP.createJob("Private", { -- 238
 TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 305
 	color = Color(25, 170, 0), -- 305
 	model = "models/vel/evilwar/royalist.mdl", -- 306
-	description = "The right hands of the Kommandant.\nRespected by their peers, feared by their enemies. \n This fate costs 3 stem cells.", -- 307
+	description = "The right hand of the Emperor.\nRespected by his peers,\nfeared by his enemies.", -- 307
 	weapons = { -- 308
 		"evilrp_weapon/hope", -- 308
 		"evilrp_melee/sabre" -- 308
@@ -584,7 +584,7 @@ TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 305
 				text = "Is that enemy blood?\nNo of course not." -- 331
 			elseif TEAM_DEALER == _exp_0 then -- 332
 				text = "A follower of mine." -- 333
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 334
+			elseif TEAM_EMPEROR == _exp_0 then -- 334
 				text = "A tentacle of mine." -- 335
 			elseif TEAM_GHOST == _exp_0 then -- 336
 				text = "Evil, stupid,\n maybe both." -- 337
@@ -636,7 +636,7 @@ TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 305
 TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 368
 	color = Color(255, 140, 0), -- 368
 	model = "models/vel/evilwar/royalist.mdl", -- 369
-	description = "The left hand of the Kommandant. Manage the goods and keep your men armed. \n This fate costs 3 stem cells.", -- 370
+	description = "The left hand of the Emperor.\nManage the goods and keep your men armed.", -- 370
 	weapons = { }, -- 371
 	command = "dealer", -- 372
 	salary = 1, -- 373
@@ -686,7 +686,7 @@ TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 368
 				text = "A reminder of the power of\nKapitalism." -- 392
 			elseif TEAM_DEALER == _exp_0 then -- 393
 				text = "I'm seeing double!" -- 394
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 395
+			elseif TEAM_EMPEROR == _exp_0 then -- 395
 				text = "My brother in arms.\nIf he fails, I'll cut his off." -- 396
 			elseif TEAM_GHOST == _exp_0 then -- 397
 				text = "Glorified accountant." -- 398
@@ -732,7 +732,7 @@ TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 368
 TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 430
 	color = Color(79, 150, 150), -- 430
 	model = "models/vel/evilwar/royalist.mdl", -- 431
-	description = "You keep people alive in this terrible place. Fill the blood and empty the rust. \n This fate costs 2 stem cells.", -- 432
+	description = "You keep people alive in this terrible place.\nFill the blood and empty the rust.", -- 432
 	weapons = { -- 433
 		"evilrp/medkit" -- 433
 	}, -- 433
@@ -779,7 +779,7 @@ TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 430
 				text = "Something to\nbe happy about." -- 455
 			elseif TEAM_DEALER == _exp_0 then -- 456
 				text = "Keep them busy.\nWe need their blood and sweat." -- 457
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 458
+			elseif TEAM_EMPEROR == _exp_0 then -- 458
 				text = "What a strange,\nselfless thing." -- 459
 			elseif TEAM_GHOST == _exp_0 then -- 460
 				text = "A respectable mortal." -- 461
@@ -851,11 +851,11 @@ TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 430
 		return false -- 491
 	end -- 473
 }) -- 429
-TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", { -- 494
+TEAM_EMPEROR = DarkRP.createJob("Emperor", { -- 494
 	color = Color(150, 20, 20), -- 494
 	model = "models/vel/evilwar/royalist.mdl", -- 495
-	description = "Rule with an iron fist. \n This fate costs 5 stem cells.", -- 496
-	command = "kommandant", -- 497
+	description = "Rule with an iron fist.", -- 496
+	command = "emperor", -- 497
 	salary = 1, -- 498
 	weapons = { -- 499
 		"evilrp_weapon/novoluger" -- 499
@@ -886,14 +886,14 @@ TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", { -- 494
 			if TEAM_PRIVATE == _exp_0 then -- 512
 				text = "Listen carefully." -- 513
 			elseif TEAM_STALKER == _exp_0 then -- 514
-				text = "Oh your magesty!" -- 515
+				text = "Oh, your majesty!" -- 515
 			elseif TEAM_SANITAR == _exp_0 then -- 516
 				text = "Hail, hail!" -- 517
 			elseif TEAM_KORPSMAN == _exp_0 then -- 518
 				text = "Is he feeling okay?" -- 519
 			elseif TEAM_DEALER == _exp_0 then -- 520
 				text = "Glorious leader.\nI'm nothing without him." -- 521
-			elseif TEAM_KOMMANDANT == _exp_0 then -- 522
+			elseif TEAM_EMPEROR == _exp_0 then -- 522
 				text = "Our strength\nshall prevail." -- 523
 			elseif TEAM_GHOST == _exp_0 then -- 524
 				text = "So full of lies." -- 525
@@ -906,47 +906,59 @@ TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", { -- 494
 			font = "Spleen_Label_Small" -- 528
 		}, true -- 528
 	end, -- 509
-	first_names = ("Kommandant"), -- 529
-	special_name = "Kamdonot", -- 530
-	special_name_chance = 1000, -- 531
-	ShowSpare1 = open_player_menu, -- 532
-	ShowSpare2 = open_action_menu, -- 533
-	bar_names = { -- 535
-		health = "PRIDE" -- 535
-	}, -- 534
-	PlayerLoadout = function(ply) -- 536
-		ply:ClearOddities() -- 537
-		local oddities -- 538
-		do -- 538
-			local _accum_0 = { } -- 538
-			local _len_0 = 1 -- 538
-			for k, v in pairs(ODDITY.list) do -- 538
-				if v ~= ODDITY_ILLITERACY then -- 538
-					_accum_0[_len_0] = v -- 538
-					_len_0 = _len_0 + 1 -- 538
-				end -- 538
-			end -- 538
-			oddities = _accum_0 -- 538
-		end -- 538
-		ply:AddOddity(oddities[math.random(#oddities)]) -- 539
-		for slot, val in pairs({ -- 542
-			[0] = 1, -- 542
-			[1] = 2, -- 544
-			[2] = 0, -- 546
-			[3] = 1, -- 548
-			[4] = 2, -- 550
-			[5] = 0 -- 552
-		}) do -- 553
-			set_bodygroup(ply, slot, val) -- 540
+	first_names = { -- 530
+		"Basileus", -- 530
+		"Agrippa", -- 530
+		"Gnaeus", -- 530
+		"Gaius" -- 530
+	}, -- 530
+	last_names = { -- 531
+		"", -- 531
+		"Imperator Lymphoma", -- 531
+		"Pater Patriae", -- 531
+		"Rex Lymphoma", -- 531
+		"Lymphoma Magnus" -- 531
+	}, -- 531
+	special_name = "Which Kaiser", -- 532
+	special_name_chance = 1000, -- 533
+	ShowSpare1 = open_player_menu, -- 534
+	ShowSpare2 = open_action_menu, -- 535
+	bar_names = { -- 537
+		health = "PRIDE" -- 537
+	}, -- 536
+	PlayerLoadout = function(ply) -- 538
+		ply:ClearOddities() -- 539
+		local oddities -- 540
+		do -- 540
+			local _accum_0 = { } -- 540
+			local _len_0 = 1 -- 540
+			for k, v in pairs(ODDITY.list) do -- 540
+				if v ~= ODDITY_ILLITERACY then -- 540
+					_accum_0[_len_0] = v -- 540
+					_len_0 = _len_0 + 1 -- 540
+				end -- 540
+			end -- 540
+			oddities = _accum_0 -- 540
 		end -- 540
-		ply:SetNWInt("evilrp_gasmask", 4) -- 554
-		ply:Give("evilrp_weapon/novoluger") -- 555
-		return false -- 556
-	end -- 536
+		ply:AddOddity(oddities[math.random(#oddities)]) -- 541
+		for slot, val in pairs({ -- 544
+			[0] = 1, -- 544
+			[1] = 2, -- 546
+			[2] = 0, -- 548
+			[3] = 1, -- 550
+			[4] = 2, -- 552
+			[5] = 0 -- 554
+		}) do -- 555
+			set_bodygroup(ply, slot, val) -- 542
+		end -- 542
+		ply:SetNWInt("evilrp_gasmask", 4) -- 556
+		ply:Give("evilrp_weapon/novoluger") -- 557
+		return false -- 558
+	end -- 538
 }) -- 493
-GAMEMODE.CivilProtection = { -- 559
-	[TEAM_PRIVATE] = true, -- 559
-	[TEAM_SANITAR] = true, -- 560
-	[TEAM_KOMMANDANT] = true -- 561
-} -- 558
-GAMEMODE.DefaultTeam = TEAM_GHOST -- 563
+GAMEMODE.CivilProtection = { -- 561
+	[TEAM_PRIVATE] = true, -- 561
+	[TEAM_SANITAR] = true, -- 562
+	[TEAM_EMPEROR] = true -- 563
+} -- 560
+GAMEMODE.DefaultTeam = TEAM_GHOST -- 565
