@@ -646,7 +646,7 @@ class Bleach extends Medicine
 
 class Ambrosia extends Food
   PrintName: "Ambrosia"
-  Model: Model"models/Gibs/HGIBS.mdl"
+  Model: Model"models/props_lab/cactus.mdl"
   Hunger: -100
   Thirst: -100
   Despair: -100
@@ -659,9 +659,10 @@ class Ambrosia extends Food
   }
   
   Precursor:
-    biomass: 15
-    wood: 15
-    metal: 15
+    biomass: 20
+    wood: 20
+    metal: 20
+    polymer: 20
 
   Eat: (ply) =>
     super ply

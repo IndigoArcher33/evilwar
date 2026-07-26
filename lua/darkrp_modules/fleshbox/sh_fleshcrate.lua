@@ -75,139 +75,134 @@ local weapons = { -- 6
 	"evilrp_weapon/owler", -- 23
 	"evilrp_weapon/owler", -- 24
 	"evilrp_weapon/owler", -- 25
-	"evilrp_weapon/trooper", -- 26
-	"evilrp_weapon/enforcer", -- 27
-	"evilrp_weapon/enforcer", -- 28
-	"evilrp_weapon/enforcer", -- 29
-	"evilrp_weapon/subjugator", -- 30
-	"evilrp_weapon/subjugator" -- 31
+	"evilrp_weapon/enforcer" -- 26
 } -- 5
-local Crate -- 34
-do -- 34
-	local _class_0 -- 34
-	local _parent_0 = ITEM -- 34
-	local _base_0 = { -- 34
-		Spawnable = true, -- 38
-		Pocketable = true, -- 40
-		PrintName = "Crate", -- 41
-		Model = Model("models/props_junk/garbage_plasticbottle002a.mdl"), -- 42
-		Material = Material("models/gibs/humans/brain_gib"), -- 43
-		Category = "EvilWar: Precursor", -- 44
-		Spawnable = true, -- 45
-		Interesting = true, -- 47
-		Sound = "npc/barnacle/neck_snap" .. tostring(math.random(1, 2)) .. ".wav", -- 49
-		SubmitSound = "Submit_Crate", -- 51
-		Submitted = function(self) -- 51
-			local pos = self:GetPos() -- 52
-			local ed = EffectData() -- 53
-			ed:SetOrigin(pos) -- 55
-			ed:SetScale(1) -- 56
-			ed:SetMagnitude(1) -- 57
-			ed:SetRadius(3) -- 58
-			return util.Effect("Sparks", ed) -- 59
-		end, -- 61
-		OnlyInventoryUse = false -- 34
-	} -- 34
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 61
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 34
-			_base_0[_key_0] = _val_0 -- 34
-		end -- 34
-	end -- 61
-	if _base_0.__index == nil then -- 34
-		_base_0.__index = _base_0 -- 34
-	end -- 61
-	setmetatable(_base_0, _parent_0.__base) -- 34
-	_class_0 = setmetatable({ -- 34
-		__init = function(self, ...) -- 34
-			return _class_0.__parent.__init(self, ...) -- 34
-		end, -- 34
-		__base = _base_0, -- 34
-		__name = "Crate", -- 34
-		__parent = _parent_0 -- 34
-	}, { -- 34
-		__index = function(cls, name) -- 34
-			local val = rawget(_base_0, name) -- 34
-			if val == nil then -- 34
-				local parent = rawget(cls, "__parent") -- 34
-				if parent then -- 34
-					return parent[name] -- 34
-				end -- 34
-			else -- 34
-				return val -- 34
-			end -- 34
-		end, -- 34
-		__call = function(cls, ...) -- 34
-			local _self_0 = setmetatable({ }, _base_0) -- 34
-			cls.__init(_self_0, ...) -- 34
-			return _self_0 -- 34
-		end -- 34
-	}) -- 34
-	_base_0.__class = _class_0 -- 34
-	local self = _class_0; -- 34
-	self.__entity = "crate" -- 35
-	if _parent_0.__inherited then -- 34
-		_parent_0.__inherited(_parent_0, _class_0) -- 34
-	end -- 34
-	Crate = _class_0 -- 34
-end -- 61
-local Fleshcrate -- 64
-do -- 64
-	local _class_0 -- 64
-	local _parent_0 = Crate -- 64
-	local _base_0 = { -- 64
-		Model = Model("models/props/de_prodigy/ammo_can_02.mdl"), -- 66
-		Material = Material("models/gibs/humans/brain_gib"), -- 68
-		PrintName = "Flesh Crate", -- 69
-		Description = "A crate held shut by decayed flesh.\nCan be opened in a Refinery.", -- 70
-		UseText = { -- 71
-			"%s can't get it open.", -- 71
-			"%s struggles to crack open the crate.", -- 72
-			"%s looks like an idiot." -- 73
-		}, -- 76
-		BiteDamage = 34, -- 78
-		Refinement = { -- 79
-			result = weapons[math.random(1, #weapons)], -- 79
-			time = 6 -- 80
-		} -- 64
-	} -- 64
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 80
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 64
-			_base_0[_key_0] = _val_0 -- 64
-		end -- 64
-	end -- 80
-	if _base_0.__index == nil then -- 64
-		_base_0.__index = _base_0 -- 64
-	end -- 80
-	setmetatable(_base_0, _parent_0.__base) -- 64
-	_class_0 = setmetatable({ -- 64
-		__init = function(self, ...) -- 64
-			return _class_0.__parent.__init(self, ...) -- 64
-		end, -- 64
-		__base = _base_0, -- 64
-		__name = "Fleshcrate", -- 64
-		__parent = _parent_0 -- 64
-	}, { -- 64
-		__index = function(cls, name) -- 64
-			local val = rawget(_base_0, name) -- 64
-			if val == nil then -- 64
-				local parent = rawget(cls, "__parent") -- 64
-				if parent then -- 64
-					return parent[name] -- 64
-				end -- 64
-			else -- 64
-				return val -- 64
-			end -- 64
-		end, -- 64
-		__call = function(cls, ...) -- 64
-			local _self_0 = setmetatable({ }, _base_0) -- 64
-			cls.__init(_self_0, ...) -- 64
-			return _self_0 -- 64
-		end -- 64
-	}) -- 64
-	_base_0.__class = _class_0 -- 64
-	if _parent_0.__inherited then -- 64
-		_parent_0.__inherited(_parent_0, _class_0) -- 64
-	end -- 64
-	Fleshcrate = _class_0 -- 64
-	return _class_0 -- 80
-end -- 80
+local Crate -- 29
+do -- 29
+	local _class_0 -- 29
+	local _parent_0 = ITEM -- 29
+	local _base_0 = { -- 29
+		Spawnable = true, -- 33
+		Pocketable = true, -- 35
+		PrintName = "Crate", -- 36
+		Model = Model("models/props_junk/garbage_plasticbottle002a.mdl"), -- 37
+		Material = Material("models/gibs/humans/brain_gib"), -- 38
+		Category = "EvilWar: Precursor", -- 39
+		Spawnable = true, -- 40
+		Interesting = true, -- 42
+		Sound = "npc/barnacle/neck_snap" .. tostring(math.random(1, 2)) .. ".wav", -- 44
+		SubmitSound = "Submit_Crate", -- 46
+		Submitted = function(self) -- 46
+			local pos = self:GetPos() -- 47
+			local ed = EffectData() -- 48
+			ed:SetOrigin(pos) -- 50
+			ed:SetScale(1) -- 51
+			ed:SetMagnitude(1) -- 52
+			ed:SetRadius(3) -- 53
+			return util.Effect("Sparks", ed) -- 54
+		end, -- 56
+		OnlyInventoryUse = false -- 29
+	} -- 29
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 56
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 29
+			_base_0[_key_0] = _val_0 -- 29
+		end -- 29
+	end -- 56
+	if _base_0.__index == nil then -- 29
+		_base_0.__index = _base_0 -- 29
+	end -- 56
+	setmetatable(_base_0, _parent_0.__base) -- 29
+	_class_0 = setmetatable({ -- 29
+		__init = function(self, ...) -- 29
+			return _class_0.__parent.__init(self, ...) -- 29
+		end, -- 29
+		__base = _base_0, -- 29
+		__name = "Crate", -- 29
+		__parent = _parent_0 -- 29
+	}, { -- 29
+		__index = function(cls, name) -- 29
+			local val = rawget(_base_0, name) -- 29
+			if val == nil then -- 29
+				local parent = rawget(cls, "__parent") -- 29
+				if parent then -- 29
+					return parent[name] -- 29
+				end -- 29
+			else -- 29
+				return val -- 29
+			end -- 29
+		end, -- 29
+		__call = function(cls, ...) -- 29
+			local _self_0 = setmetatable({ }, _base_0) -- 29
+			cls.__init(_self_0, ...) -- 29
+			return _self_0 -- 29
+		end -- 29
+	}) -- 29
+	_base_0.__class = _class_0 -- 29
+	local self = _class_0; -- 29
+	self.__entity = "crate" -- 30
+	if _parent_0.__inherited then -- 29
+		_parent_0.__inherited(_parent_0, _class_0) -- 29
+	end -- 29
+	Crate = _class_0 -- 29
+end -- 56
+local Fleshcrate -- 59
+do -- 59
+	local _class_0 -- 59
+	local _parent_0 = Crate -- 59
+	local _base_0 = { -- 59
+		Model = Model("models/props/de_prodigy/ammo_can_02.mdl"), -- 61
+		Material = Material("models/gibs/humans/brain_gib"), -- 63
+		PrintName = "Flesh Crate", -- 64
+		Description = "A crate held shut by decayed flesh.\nCan be opened in a Refinery.", -- 65
+		UseText = { -- 66
+			"%s can't get it open.", -- 66
+			"%s struggles to crack open the crate.", -- 67
+			"%s looks like an idiot." -- 68
+		}, -- 71
+		BiteDamage = 34, -- 73
+		Refinement = { -- 74
+			result = weapons[math.random(1, #weapons)], -- 74
+			time = 6 -- 75
+		} -- 59
+	} -- 59
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 75
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 59
+			_base_0[_key_0] = _val_0 -- 59
+		end -- 59
+	end -- 75
+	if _base_0.__index == nil then -- 59
+		_base_0.__index = _base_0 -- 59
+	end -- 75
+	setmetatable(_base_0, _parent_0.__base) -- 59
+	_class_0 = setmetatable({ -- 59
+		__init = function(self, ...) -- 59
+			return _class_0.__parent.__init(self, ...) -- 59
+		end, -- 59
+		__base = _base_0, -- 59
+		__name = "Fleshcrate", -- 59
+		__parent = _parent_0 -- 59
+	}, { -- 59
+		__index = function(cls, name) -- 59
+			local val = rawget(_base_0, name) -- 59
+			if val == nil then -- 59
+				local parent = rawget(cls, "__parent") -- 59
+				if parent then -- 59
+					return parent[name] -- 59
+				end -- 59
+			else -- 59
+				return val -- 59
+			end -- 59
+		end, -- 59
+		__call = function(cls, ...) -- 59
+			local _self_0 = setmetatable({ }, _base_0) -- 59
+			cls.__init(_self_0, ...) -- 59
+			return _self_0 -- 59
+		end -- 59
+	}) -- 59
+	_base_0.__class = _class_0 -- 59
+	if _parent_0.__inherited then -- 59
+		_parent_0.__inherited(_parent_0, _class_0) -- 59
+	end -- 59
+	Fleshcrate = _class_0 -- 59
+	return _class_0 -- 75
+end -- 75

@@ -23,12 +23,7 @@ weapons = {
   "evilrp_weapon/owler"
   "evilrp_weapon/owler"
   "evilrp_weapon/owler"
-  "evilrp_weapon/trooper"
   "evilrp_weapon/enforcer"
-  "evilrp_weapon/enforcer"
-  "evilrp_weapon/enforcer"
-  "evilrp_weapon/subjugator"
-  "evilrp_weapon/subjugator"
 }
 
 class Crate extends ITEM

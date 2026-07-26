@@ -622,10 +622,6 @@ class Weapons extends Machine
       precursors:
         metal: 7
       time: 25 }
-    ["evilrp_weapon/mark"]: {
-      precursors:
-        metal: 2
-      time: 20 }
     ["evilrp_weapon/brainpaster"]: {
       precursors:
         metal: 5

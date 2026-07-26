@@ -331,7 +331,6 @@ Chat.BadWords = { -- 260
 	"fag", -- 260
 	"fgt", -- 260
 	"libtard", -- 260
-	"retard", -- 260
 	"gmyza", -- 260
 	"poggers", -- 260
 	"pogchamp", -- 260
@@ -382,7 +381,6 @@ Chat.BadWords = { -- 260
 	"impostor among us", -- 260
 	"imposter among us", -- 260
 	"ligma", -- 260
-	"trolled", -- 260
 	"deez", -- 260
 	"swag", -- 260
 	"font", -- 260
