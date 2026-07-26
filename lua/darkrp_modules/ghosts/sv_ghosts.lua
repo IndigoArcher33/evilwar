@@ -1,12 +1,12 @@
 -- [yue]: darkrp_modules\ghosts\sv_ghosts.yue
 local ghostpoints = { -- 2
 	["rp_lymphoma"] = { -- 3
-		Vector(6, 758, 1), -- 3
-		Vector(729, 773, 1), -- 4
-		Vector(-1156, 938, 1), -- 5
-		Vector(-1265, -1809, -735), -- 6
-		Vector(-26, 2307, 1), -- 7
-		Vector(416, -683, 137) -- 8
+		Vector(-16, 1166, 99), -- 3
+		Vector(396, -184, 292), -- 4
+		Vector(-351, 852, 137), -- 5
+		Vector(-264, -6726, -123), -- 6
+		Vector(-1121, 808, 88), -- 7
+		Vector(846, 722, 65) -- 8
 	} -- 2
 } -- 1
 local ghost_reload -- 12

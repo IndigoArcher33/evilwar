@@ -1,11 +1,11 @@
 ghostpoints = {
   ["rp_lymphoma"]: {
-    Vector( 6, 758, 1 )
-    Vector( 729, 773, 1 )
-    Vector( -1156, 938, 1 )
-    Vector( -1265, -1809, -735 )
-    Vector( -26, 2307, 1 )
-    Vector( 416, -683, 137 )
+     Vector( -16, 1166, 99 )
+    Vector( 396, -184, 292 )
+    Vector( -351, 852, 137 )
+    Vector( -264, -6726, -123 )
+    Vector( -1121, 808, 88 )
+    Vector( 846, 722, 65)
   }
 }
   

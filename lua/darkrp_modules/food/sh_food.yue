@@ -77,6 +77,7 @@ class SlopSkull extends Food
   PrintName: "Slop Skull"
   Model: Model"models/Gibs/HGIBS.mdl"
   Hunger: -10
+  Despair: 35
   Description: "A bloody, festering human skull.\nThe brain is still largely intact."
   RotTime: 120
 
@@ -164,7 +165,7 @@ class LiveBaby extends Food
   PrintName: "Live baby"
   Model: Model"models/props_c17/doll01.mdl"
   Hunger: -30
-  Thirst: -10
+  Thirst: -22
   HealthAdd: 15
   Description: "An artifical baby, born paralyzed below the eyes.\nIt will know nothing but fear and pain."
 
@@ -349,8 +350,8 @@ class Drink extends Food
 class FearBeer extends Drink
   PrintName: "Fear Beer"
   Model: Model"models/props_junk/garbage_glassbottle001a.mdl"
-  Thirst: -25
-  Despair: -30
+  Thirst: -20
+  Despair: -25
   Description: "A bottle of foul off-yellow liquid.\n'BEER' is hand-written on the label."
 
   Price: 60
@@ -388,7 +389,7 @@ class FearBeer extends Drink
       if data.HitEntity and IsValid(data.HitEntity)
         attacker = @GetNWEntity"evilrp_submitter"
         with dmg = DamageInfo!
-          \SetDamage 25
+          \SetDamage 10
           \SetAttacker attacker if IsValid(attacker)
           \SetInflictor @
           \SetDamageType DMG_SLASH
@@ -417,8 +418,8 @@ class FearBeer extends Drink
 class SmearBeer extends Drink
   PrintName: "Smear Beer"
   Model: Model"models/props_junk/garbage_glassbottle003a.mdl"
-  Thirst: -45
-  Despair: -50
+  Thirst: -25
+  Despair: -35
   Description: "A bottle of cloudy, greyish red booze.\nThe label is obscured with a smear of old blood."
 
   Price: 95
@@ -456,7 +457,7 @@ class SmearBeer extends Drink
       if data.HitEntity and IsValid(data.HitEntity)
         attacker = @GetNWEntity"evilrp_submitter"
         with dmg = DamageInfo!
-          \SetDamage 25
+          \SetDamage 10
           \SetAttacker attacker if IsValid(attacker)
           \SetInflictor @
           \SetDamageType DMG_SLASH
@@ -503,6 +504,41 @@ class Shake extends Drink
     "guzzles a meat smoothie."
     "quaffs an entire soylent shake."
   }
+
+class BootLeg extends Drink
+  PrintName: "Bootleg"
+  Model: Model "models/props_junk/garbage_plasticbottle003a.mdl"
+  Thirst: -40
+  Hunger: -5
+  Despair: -45
+  HealthAdd: -18
+  Description: "An old bootleg of a wasteland wine recipe that has been lost to time. \n Tales say that the wastelander with the original recipe burned it and killed himself."
+  Price: 250
+  
+  CookTime: 15
+
+  TrashClass: "trash/plastic/twitchel"
+
+
+  UseText: {
+    "takes small swigs of the bootlegged wine, wincing in pain as the strong liquor trickles down and burns his scabbed and cut skin."
+    "tries to drink all of the bootlegged wine, before gasping heavily."
+    "breathes in before taking a massive swig of the bootlegged wine, grimacing upon burning his mouth." }
+ 
+ 
+  Eat: (ply) =>
+    super ply
+    return if CLIENT
+    plyJob = RPExtraTeams[ply\Team!]
+    if plyJob.category == "Wasteland"
+      ply\AddDespair(-55)
+      ply\AddHunger(-15)
+      ply\AddThirst(-48)
+      ply\TakeDamage(-5)
+ 
+ 
+ 
+  
 
 class Twitchel extends Drink
   PrintName: "Twitchel"

@@ -610,11 +610,15 @@ class Weapons extends Machine
       precursors:
         metal: 5
       time: 20 }
+    ["evilrp_weapon/coach"]: {
+      precursors:
+        metal: 7
+      time: 20 }
     ["evilrp_weapon/hope"]: {
       precursors:
         metal: 4
       time: 20 }
-    ["evilrp_weapon/greaser"]: {
+    ["evilrp_weapon/enforcer"]: {
       precursors:
         metal: 7
       time: 25 }
@@ -631,6 +635,16 @@ class Weapons extends Machine
       precursors:
         metal: 7
         polymer: 3
+      time: 25 }
+    ["evilrp_weapon/painkiller"]: {
+      precursors:
+        metal: 4
+        polymer: 2
+      time: 20 }
+    ["evilrp_weapon/candlewood"]: {
+      precursors:
+        metal: 4
+        polymer: 4
       time: 25 }
     ["evilrp_weapon/obliterator"]: {
       precursors:

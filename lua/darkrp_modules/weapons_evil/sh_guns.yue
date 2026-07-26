@@ -14,7 +14,7 @@ class Bodyguard extends EvilRP_Weapon
   HoldType: "revolver"
   LowerHoldType: "normal"
 
-  Price: 1873
+  Price: 1400
     
   Firemode: 0
   Primary: {
@@ -23,7 +23,7 @@ class Bodyguard extends EvilRP_Weapon
     ClipSize: 5
     DefaultClip: 10
 
-    Damage: 55
+    Damage: 35
     Delay: 60 / 120
 
     Range: 400
@@ -50,10 +50,12 @@ class Brainpaster extends EvilRP_Weapon
   PrintName: "Brainpaster"
   Description: "Lymphoma's number one wall painter."
 
+  Price: 1900
+
   Slot: 1
     
   Spawnable: true
-    
+  
   UseHands: true
   ViewModelTargetFOV: 54
   ViewModel: Model"models/weapons/c_brainpaster.mdl"
@@ -100,7 +102,7 @@ class Coach extends EvilRP_Weapon
     
   Spawnable: true
 
-  Price: 2468
+  Price: 2000
     
   UseHands: true
   ViewModelTargetFOV: 54
@@ -154,12 +156,14 @@ class Candlewood extends EvilRP_Weapon
 
   Slot: 1
     
+  Price: 2400
+
   Spawnable: true
     
   UseHands: true
   ViewModelTargetFOV: 54
-  ViewModel: Model"models/weapons/c_candlewood.mdl"
-  WorldModel: Model"models/weapons/w_candlewood.mdl"
+  ViewModel: Model"models/tnb/weapons/c_mossberg.mdl"
+  WorldModel: Model"models/tnb/weapons/w_mossberg.mdl"
     
   HoldType: "shotgun"
   LowerHoldType: "passive"
@@ -212,10 +216,12 @@ class Enforcer extends EvilRP_Weapon
     
   Spawnable: true
     
+  Price: 2900
+
   UseHands: true
   ViewModelTargetFOV: 54
-  ViewModel: Model"models/weapons/c_livermann.mdl"
-  WorldModel: Model"models/weapons/w_livermann.mdl"
+  ViewModel: Model"models/tnb/weapons/c_k98.mdl"
+  WorldModel: Model"models/tnb/weapons/w_k98.mdl"
     
   HoldType: "ar2"
   LowerHoldType: "passive"
@@ -263,8 +269,8 @@ class Greaser extends EvilRP_Weapon
     
   UseHands: true
   ViewModelTargetFOV: 54
-  ViewModel: Model"models/weapons/c_greaser.mdl"
-  WorldModel: Model"models/weapons/w_greaser.mdl"
+  ViewModel: Model"models/tnb/weapons/c_tec9.mdl"
+  WorldModel: Model"models/tnb/weapons/w_tec9.mdl"
     
   HoldType: "pistol"
   LowerHoldType: "normal"
@@ -351,6 +357,8 @@ class Obrez extends EvilRP_Weapon
 
   Slot: 2
     
+  Price: 1000
+
   Spawnable: true
     
   UseHands: true
@@ -444,11 +452,14 @@ class Pacifier extends EvilRP_Weapon
   Slot: 1
     
   Spawnable: true
-    
+  
+
+  Price: 1750
+
   UseHands: true
   ViewModelTargetFOV: 54
-  ViewModel: Model"models/weapons/c_pacifier.mdl"
-  WorldModel: Model"models/weapons/w_pacifier.mdl"
+  ViewModel: Model"models/tnb/weapons/c_usp.mdl"
+  WorldModel: Model"models/tnb/weapons/w_usp.mdl"
     
   HoldType: "pistol"
   LowerHoldType: "normal"
@@ -495,11 +506,13 @@ class Painkiller extends EvilRP_Weapon
   Slot: 1
     
   Spawnable: true
-    
+  
+  Price: 2500
+
   UseHands: true
   ViewModelTargetFOV: 54
-  ViewModel: Model"models/weapons/c_painkiller.mdl"
-  WorldModel: Model"models/weapons/w_painkiller.mdl"
+  ViewModel: Model"models/tnb/weapons/c_magnum.mdl"
+  WorldModel: Model"models/tnb/weapons/w_magnum.mdl"
     
   HoldType: "pistol"
   LowerHoldType: "normal"
@@ -540,7 +553,7 @@ class Prettyboy extends EvilRP_Weapon
   Description: "It's named after its most common users."
 
   Slot: 1
-    
+
   Spawnable: true
     
   UseHands: true
@@ -589,7 +602,9 @@ class Subjugator extends EvilRP_Weapon
   Slot: 2
     
   Spawnable: true
-    
+  
+  Price: 3600
+
   UseHands: true
   ViewModelTargetFOV: 54
   ViewModel: Model"models/weapons/c_subjugator.mdl"
@@ -635,7 +650,7 @@ class Trooper extends EvilRP_Weapon
 
   Slot: 2
     
-  Price: 5000
+  Price: 6000
 
   Spawnable: true
     
@@ -682,7 +697,7 @@ class Mark extends EvilRP_Weapon
   PrintName: "The Mark"
   Description: "A rusty scrap pistol, rigged to fire one massive bullet."
 
-  Price: 1666
+  Price: 400
     
   Slot: 1
     
@@ -734,7 +749,7 @@ class Hope extends EvilRP_Weapon
 
   Slot: 1
     
-  Price: 2000
+  Price: 1500
 
   Spawnable: true
     
@@ -829,7 +844,7 @@ class Obliterator extends EvilRP_Weapon
 
   Slot: 2
 
-  Price: 3650
+  Price: 5000
   Spawnable: true
 
   UseHands: true

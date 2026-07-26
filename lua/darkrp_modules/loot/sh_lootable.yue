@@ -129,7 +129,9 @@ class Lootable extends ENTITY_LONGUSE
       when 3, 4
         col = "200,200,0" -- yellow
         msgs = @LootMessages.failure
-        sad = math.random(0)
+        sad = math.random(1,2)
+        plyJob = RPExtraTeams[ply\Team!]
+        sad *= 0 if plyJob.category == "Wasteland"
         sad *= 2 if ply\HasOddity(ODDITY_DEPRESSION)
         ply\AddDespair(sad)
         noticed_empty = true if (@GetRemaining! <= 0) and math.random(3) == 2
@@ -280,7 +282,7 @@ class Crate extends Lootable -- this is for workers to get tools at the beginnin
 
   Description: "A old crate that was once filled with tools, hopefully some were left behind for you."
 
-  LootMax: 1
+  LootMax: 2
   TimeToUse: 6
 
   AccumulateInterval: 540
@@ -295,8 +297,6 @@ class Crate extends Lootable -- this is for workers to get tools at the beginnin
     * "evilrp_melee/pot"
     * "evilrp_melee/pot"
     * "evilrp_melee/pan"
-    * "evilrp_melee/axe"
-    * "item/food/boot"
     * "item/food/boot"
     * "item/food/boot"
     * "trash/bottle"
@@ -323,10 +323,8 @@ class Locker extends Lootable -- for the outsiders to loot to use against or sel
 
   LootTable:
     * "evilrp_weapon/obrez"
+    * "evilrp_weapon/obrez"
     * "item/food/paper"
-    * "item/food/paper"
-    * "item/food/boot"
-    * "item/food/boot"
     * "item/food/boot"
     * "item/drug/rotmelange"
     * "trash/bottle"
@@ -334,8 +332,8 @@ class Locker extends Lootable -- for the outsiders to loot to use against or sel
     * "item/food/drink/fearbeer"
     * "item/food/drink/fearbeer"
     * "trash/plastic/shake"
-    * "trash/plastic/shake"
-    * "trash/plastic/pills"
+    * "evilrp_weapon/prettyboy"
+    * "evilrp_weapon/prettyboy"
     * "trash/plastic/bleach"
     * "evilrp_weapon/greaser"
     * "item/food/slopskull"

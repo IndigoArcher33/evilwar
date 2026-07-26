@@ -554,7 +554,7 @@ do -- 315
 				Damage = 45, -- 338
 				DamageType = DMG_CLUB, -- 339
 				Range = 120, -- 341
-				Delay = 0.8, -- 342
+				Delay = 1.2, -- 342
 				Act = { -- 344
 					ACT_VM_MISSCENTER, -- 344
 					ACT_VM_MISSCENTER -- 344
@@ -568,7 +568,7 @@ do -- 315
 				Damage = 60, -- 350
 				DamageType = DMG_CLUB, -- 351
 				Range = 120, -- 353
-				Delay = 1, -- 354
+				Delay = 1.8, -- 354
 				Act = ACT_VM_MISSCENTER, -- 356
 				Sound = { -- 358
 					"Weapon_Crowbar.Melee_Hit", -- 358

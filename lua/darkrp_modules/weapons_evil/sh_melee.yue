@@ -339,7 +339,7 @@ class Shovel extends EvilRP_Melee
       DamageType: DMG_CLUB
 
       Range: 120
-      Delay: 0.8
+      Delay: 1.2
 
       Act: {ACT_VM_MISSCENTER, ACT_VM_MISSCENTER}
 
@@ -351,7 +351,7 @@ class Shovel extends EvilRP_Melee
       DamageType: DMG_CLUB
 
       Range: 120
-      Delay: 1
+      Delay: 1.8
 
       Act: ACT_VM_MISSCENTER
 

@@ -12,16 +12,16 @@ do -- 1
 				_len_0 = _len_0 + 1 -- 2
 			end -- 2
 			return _accum_0 -- 2
-		end)() -- 2
+		end)() -- 1
 	} -- 1
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 1
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 2
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 1
 			_base_0[_key_0] = _val_0 -- 1
 		end -- 1
-	end -- 1
+	end -- 2
 	if _base_0.__index == nil then -- 1
 		_base_0.__index = _base_0 -- 1
-	end -- 1
+	end -- 2
 	setmetatable(_base_0, _parent_0.__base) -- 1
 	_class_0 = setmetatable({ -- 1
 		__init = function(self, ...) -- 1
@@ -53,7 +53,7 @@ do -- 1
 		_parent_0.__inherited(_parent_0, _class_0) -- 1
 	end -- 1
 	Trash_Cardboard = _class_0 -- 1
-end -- 1
+end -- 2
 local Trash_Metal -- 4
 do -- 4
 	local _class_0 -- 4
@@ -67,16 +67,16 @@ do -- 4
 				_len_0 = _len_0 + 1 -- 5
 			end -- 5
 			return _accum_0 -- 5
-		end)() -- 5
+		end)() -- 4
 	} -- 4
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 4
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 5
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 4
 			_base_0[_key_0] = _val_0 -- 4
 		end -- 4
-	end -- 4
+	end -- 5
 	if _base_0.__index == nil then -- 4
 		_base_0.__index = _base_0 -- 4
-	end -- 4
+	end -- 5
 	setmetatable(_base_0, _parent_0.__base) -- 4
 	_class_0 = setmetatable({ -- 4
 		__init = function(self, ...) -- 4
@@ -108,7 +108,7 @@ do -- 4
 		_parent_0.__inherited(_parent_0, _class_0) -- 4
 	end -- 4
 	Trash_Metal = _class_0 -- 4
-end -- 4
+end -- 5
 local Trash_Glass -- 7
 do -- 7
 	local _class_0 -- 7
@@ -122,16 +122,16 @@ do -- 7
 				_len_0 = _len_0 + 1 -- 8
 			end -- 8
 			return _accum_0 -- 8
-		end)() -- 8
+		end)() -- 7
 	} -- 7
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 7
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 8
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 7
 			_base_0[_key_0] = _val_0 -- 7
 		end -- 7
-	end -- 7
+	end -- 8
 	if _base_0.__index == nil then -- 7
 		_base_0.__index = _base_0 -- 7
-	end -- 7
+	end -- 8
 	setmetatable(_base_0, _parent_0.__base) -- 7
 	_class_0 = setmetatable({ -- 7
 		__init = function(self, ...) -- 7
@@ -163,7 +163,7 @@ do -- 7
 		_parent_0.__inherited(_parent_0, _class_0) -- 7
 	end -- 7
 	Trash_Glass = _class_0 -- 7
-end -- 7
+end -- 8
 local Trash_Plastic -- 10
 do -- 10
 	local _class_0 -- 10
@@ -177,16 +177,16 @@ do -- 10
 				_len_0 = _len_0 + 1 -- 11
 			end -- 11
 			return _accum_0 -- 11
-		end)() -- 11
+		end)() -- 10
 	} -- 10
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 10
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 11
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 10
 			_base_0[_key_0] = _val_0 -- 10
 		end -- 10
-	end -- 10
+	end -- 11
 	if _base_0.__index == nil then -- 10
 		_base_0.__index = _base_0 -- 10
-	end -- 10
+	end -- 11
 	setmetatable(_base_0, _parent_0.__base) -- 10
 	_class_0 = setmetatable({ -- 10
 		__init = function(self, ...) -- 10
@@ -218,23 +218,23 @@ do -- 10
 		_parent_0.__inherited(_parent_0, _class_0) -- 10
 	end -- 10
 	Trash_Plastic = _class_0 -- 10
-end -- 10
+end -- 11
 local Trash -- 13
 do -- 13
 	local _class_0 -- 13
 	local _parent_0 = ENTITY -- 13
 	local _base_0 = { -- 13
-		Base = "base_anim", -- 14
-		Type = "anim", -- 15
-		Spawnable = true, -- 17
-		AdminSpawnable = true, -- 18
-		Category = "EvilRP: Trash", -- 20
-		Interesting = true, -- 22
-		PrintName = "Trash", -- 24
-		Description = "It no longer serves its intended purpose.\nIts corpse could be recycled at a Refinery.", -- 26
+		Base = "base_anim", -- 15
+		Type = "anim", -- 17
+		Spawnable = true, -- 18
+		AdminSpawnable = true, -- 20
+		Category = "EvilRP: Trash", -- 22
+		Interesting = true, -- 24
+		PrintName = "Trash", -- 26
+		Description = "It no longer serves its intended purpose.\nIts corpse could be recycled at a Refinery.", -- 28
 		OnTakeDamage = function(self, dmg) -- 28
 			return self:TakePhysicsDamage(dmg) -- 29
-		end, -- 28
+		end, -- 31
 		PhysicsCollide = function(self, data, physobj) -- 31
 			local prop1 = util.GetSurfaceData(data.OurSurfaceProps) -- 32
 			local prop2 = util.GetSurfaceData(data.TheirSurfaceProps) -- 33
@@ -249,8 +249,8 @@ do -- 13
 						snd = self.ImpactSound -- 40
 					elseif "nil" == _exp_0 then -- 41
 						snd = prop1.impactHardSound -- 42
-					end -- 36
-				end -- 36
+					end -- 42
+				end -- 42
 				return self:EmitSound(snd) -- 43
 			elseif data.Speed >= 25 and ((self.LastImpact or 0) + 0.1 < CurTime()) then -- 45
 				self.LastImpact = CurTime() -- 46
@@ -263,12 +263,12 @@ do -- 13
 						snd = self.ImpactSound -- 51
 					elseif "nil" == _exp_0 then -- 52
 						snd = prop1.impactSoftSound -- 53
-					end -- 47
-				end -- 47
+					end -- 53
+				end -- 53
 				return self:EmitSound(snd) -- 54
 			end -- 34
-		end, -- 31
-		SubmitSound = "Trash_Cardboard", -- 56
+		end, -- 56
+		SubmitSound = "Trash_Cardboard", -- 58
 		Initialize = function(self) -- 58
 			self:SetModel(self.Model) -- 59
 			if SERVER then -- 60
@@ -278,7 +278,7 @@ do -- 13
 				self:SetUseType(SIMPLE_USE) -- 64
 				return self:PhysWake() -- 65
 			end -- 60
-		end, -- 58
+		end, -- 67
 		Use = function(self, ply) -- 67
 			if self:IsPlayerHolding() and ply == self.ply then -- 68
 				return ply:DropObject() -- 69
@@ -287,7 +287,7 @@ do -- 13
 				ply:PickupObject(self) -- 72
 				return self:SetNWEntity("evilrp_submitter", ply) -- 73
 			end -- 68
-		end, -- 67
+		end, -- 75
 		PMRender = function(item) -- 75
 			local ct = { } -- 76
 			local wt = scripted_ents.Get(item.class) -- 77
@@ -300,7 +300,7 @@ do -- 13
 				} -- 81
 			end -- 79
 			return ct -- 82
-		end, -- 75
+		end, -- 84
 		HUDRender = function(self) -- 84
 			local ct = { } -- 85
 			ct[#ct + 1] = self.PrintName -- 86
@@ -312,7 +312,7 @@ do -- 13
 				} -- 89
 			end -- 87
 			return ct -- 90
-		end, -- 84
+		end, -- 92
 		Interactions = function(self, ply) -- 92
 			local actions = { } -- 93
 			if (self.Pocketable ~= false) then -- 94
@@ -324,16 +324,16 @@ do -- 13
 				} -- 95
 			end -- 94
 			return actions -- 96
-		end -- 92
+		end -- 13
 	} -- 13
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 13
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 96
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 13
 			_base_0[_key_0] = _val_0 -- 13
 		end -- 13
-	end -- 13
+	end -- 96
 	if _base_0.__index == nil then -- 13
 		_base_0.__index = _base_0 -- 13
-	end -- 13
+	end -- 96
 	setmetatable(_base_0, _parent_0.__base) -- 13
 	_class_0 = setmetatable({ -- 13
 		__init = function(self, ...) -- 13
@@ -365,29 +365,29 @@ do -- 13
 		_parent_0.__inherited(_parent_0, _class_0) -- 13
 	end -- 13
 	Trash = _class_0 -- 13
-end -- 13
+end -- 96
 local Fuel -- 99
 do -- 99
 	local _class_0 -- 99
 	local _parent_0 = Trash -- 99
 	local _base_0 = { -- 99
-		PrintName = "Empty Jerrycan", -- 100
-		Model = Model("models/props_junk/metalgascan.mdl"), -- 102
-		SubmitSound = "Trash_Metal", -- 103
+		PrintName = "Empty Jerrycan", -- 102
+		Model = Model("models/props_junk/metalgascan.mdl"), -- 103
+		SubmitSound = "Trash_Metal", -- 104
 		Refinement = { -- 105
 			result = "metal/scrap", -- 105
 			time = 5, -- 106
 			rust = 3 -- 107
-		} -- 104
+		} -- 99
 	} -- 99
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 99
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 107
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 99
 			_base_0[_key_0] = _val_0 -- 99
 		end -- 99
-	end -- 99
+	end -- 107
 	if _base_0.__index == nil then -- 99
 		_base_0.__index = _base_0 -- 99
-	end -- 99
+	end -- 107
 	setmetatable(_base_0, _parent_0.__base) -- 99
 	_class_0 = setmetatable({ -- 99
 		__init = function(self, ...) -- 99
@@ -419,29 +419,29 @@ do -- 99
 		_parent_0.__inherited(_parent_0, _class_0) -- 99
 	end -- 99
 	Fuel = _class_0 -- 99
-end -- 99
+end -- 107
 local Inhaler -- 109
 do -- 109
 	local _class_0 -- 109
 	local _parent_0 = Trash -- 109
 	local _base_0 = { -- 109
-		PrintName = "Dead Inhaler", -- 110
-		Model = Model("models/props_wasteland/prison_sinkchunk001e.mdl"), -- 112
-		SubmitSound = "Trash_Metal", -- 114
+		PrintName = "Dead Inhaler", -- 112
+		Model = Model("models/props_wasteland/prison_sinkchunk001e.mdl"), -- 114
+		SubmitSound = "Trash_Metal", -- 116
 		Refinement = { -- 117
 			result = "metal/scrap", -- 117
 			time = 5, -- 118
 			rust = 3 -- 119
-		} -- 116
+		} -- 109
 	} -- 109
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 109
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 119
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 109
 			_base_0[_key_0] = _val_0 -- 109
 		end -- 109
-	end -- 109
+	end -- 119
 	if _base_0.__index == nil then -- 109
 		_base_0.__index = _base_0 -- 109
-	end -- 109
+	end -- 119
 	setmetatable(_base_0, _parent_0.__base) -- 109
 	_class_0 = setmetatable({ -- 109
 		__init = function(self, ...) -- 109
@@ -473,22 +473,22 @@ do -- 109
 		_parent_0.__inherited(_parent_0, _class_0) -- 109
 	end -- 109
 	Inhaler = _class_0 -- 109
-end -- 109
+end -- 119
 local BottleSmash -- 121
 do -- 121
 	local _class_0 -- 121
 	local _parent_0 = SOUND -- 121
 	local _base_0 = { -- 121
-		sound = "placenta/weapons/bottle_break.wav" -- 122
+		sound = "placenta/weapons/bottle_break.wav" -- 121
 	} -- 121
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 121
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 122
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 121
 			_base_0[_key_0] = _val_0 -- 121
 		end -- 121
-	end -- 121
+	end -- 122
 	if _base_0.__index == nil then -- 121
 		_base_0.__index = _base_0 -- 121
-	end -- 121
+	end -- 122
 	setmetatable(_base_0, _parent_0.__base) -- 121
 	_class_0 = setmetatable({ -- 121
 		__init = function(self, ...) -- 121
@@ -520,27 +520,27 @@ do -- 121
 		_parent_0.__inherited(_parent_0, _class_0) -- 121
 	end -- 121
 	BottleSmash = _class_0 -- 121
-end -- 121
+end -- 122
 local Bottle -- 124
 do -- 124
 	local _class_0 -- 124
 	local _parent_0 = Trash -- 124
 	local _base_0 = { -- 124
-		PrintName = "Empty Bottle", -- 125
-		Model = Model("models/props_junk/garbage_glassbottle003a.mdl"), -- 127
-		Description = "Where's the booze?", -- 129
-		SubmitSound = "Trash_Glass", -- 131
+		PrintName = "Empty Bottle", -- 127
+		Model = Model("models/props_junk/garbage_glassbottle003a.mdl"), -- 129
+		Description = "Where's the booze?", -- 131
+		SubmitSound = "Trash_Glass", -- 133
 		Refinement = { -- 134
 			time = 2, -- 134
 			rust = 1 -- 135
-		}, -- 133
-		ImpactThreshold = 256, -- 137
+		}, -- 137
+		ImpactThreshold = 256, -- 139
 		Initialize = function(self) -- 139
 			_class_0.__parent.__base.Initialize(self) -- 140
 			if SERVER then -- 141
 				return self:PrecacheGibs() -- 141
 			end -- 141
-		end, -- 139
+		end, -- 143
 		OnTakeDamage = function(self, dmg) -- 143
 			_class_0.__parent.__base.OnTakeDamage(self, dmg) -- 144
 			local types = DMG_CLUB + DMG_SLASH + DMG_BULLET + DMG_CRUSH -- 145
@@ -553,7 +553,7 @@ do -- 124
 					return attacker:AddDespair(-math.random(2, 4)) -- 150
 				end -- 149
 			end -- 148
-		end, -- 143
+		end, -- 152
 		PhysicsCollide = function(self, data) -- 152
 			_class_0.__parent.__base.PhysicsCollide(self, data) -- 153
 			if CLIENT then -- 154
@@ -562,20 +562,22 @@ do -- 124
 			if data.Speed > self.ImpactThreshold then -- 155
 				if data.HitEntity and IsValid(data.HitEntity) then -- 156
 					local attacker = self:GetNWEntity("evilrp_submitter") -- 157
-					local dmg = DamageInfo() -- 158
-					dmg:SetDamage(25) -- 159
-					if IsValid(attacker) then -- 160
-						dmg:SetAttacker(attacker) -- 160
-					end -- 160
-					dmg:SetInflictor(self) -- 161
-					dmg:SetDamageType(DMG_SLASH) -- 162
-					dmg:SetDamagePosition(data.HitPos) -- 163
-					data.HitEntity:TakeDamageInfo(dmg) -- 164
+					do -- 158
+						local dmg = DamageInfo() -- 158
+						dmg:SetDamage(10) -- 159
+						if IsValid(attacker) then -- 160
+							dmg:SetAttacker(attacker) -- 160
+						end -- 160
+						dmg:SetInflictor(self) -- 161
+						dmg:SetDamageType(DMG_SLASH) -- 162
+						dmg:SetDamagePosition(data.HitPos) -- 163
+						data.HitEntity:TakeDamageInfo(dmg) -- 164
+					end -- 158
 				end -- 156
 				local force = data.OurNewVelocity -- 165
 				return self:Shatter(force) -- 166
 			end -- 155
-		end, -- 152
+		end, -- 168
 		Shatter = function(self, force, attacker) -- 168
 			if attacker == nil then -- 168
 				attacker = self:GetNWEntity("evilrp_submitter") -- 168
@@ -598,11 +600,11 @@ do -- 124
 						ply:AddDespair(-math.random(2, 4)) -- 175
 					end -- 174
 					_continue_0 = true -- 173
-				until true -- 173
-				if not _continue_0 then -- 173
-					break -- 173
-				end -- 173
-			end -- 172
+				until true -- 175
+				if not _continue_0 then -- 175
+					break -- 175
+				end -- 175
+			end -- 175
 			do -- 176
 				local ed = EffectData() -- 176
 				ed:SetStart(pos) -- 177
@@ -615,16 +617,16 @@ do -- 124
 				self:GibBreakServer(force) -- 182
 			end -- 182
 			return self:Remove() -- 183
-		end -- 168
+		end -- 124
 	} -- 124
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 124
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 184
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 124
 			_base_0[_key_0] = _val_0 -- 124
 		end -- 124
-	end -- 124
+	end -- 184
 	if _base_0.__index == nil then -- 124
 		_base_0.__index = _base_0 -- 124
-	end -- 124
+	end -- 184
 	setmetatable(_base_0, _parent_0.__base) -- 124
 	_class_0 = setmetatable({ -- 124
 		__init = function(self, ...) -- 124
@@ -656,22 +658,22 @@ do -- 124
 		_parent_0.__inherited(_parent_0, _class_0) -- 124
 	end -- 124
 	Bottle = _class_0 -- 124
-end -- 124
+end -- 184
 local FearBeer -- 185
 do -- 185
 	local _class_0 -- 185
 	local _parent_0 = Bottle -- 185
 	local _base_0 = { -- 185
-		Model = Model("models/props_junk/garbage_glassbottle001a.mdl") -- 186
+		Model = Model("models/props_junk/garbage_glassbottle001a.mdl") -- 185
 	} -- 185
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 185
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 186
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 185
 			_base_0[_key_0] = _val_0 -- 185
 		end -- 185
-	end -- 185
+	end -- 186
 	if _base_0.__index == nil then -- 185
 		_base_0.__index = _base_0 -- 185
-	end -- 185
+	end -- 186
 	setmetatable(_base_0, _parent_0.__base) -- 185
 	_class_0 = setmetatable({ -- 185
 		__init = function(self, ...) -- 185
@@ -703,30 +705,30 @@ do -- 185
 		_parent_0.__inherited(_parent_0, _class_0) -- 185
 	end -- 185
 	FearBeer = _class_0 -- 185
-end -- 185
+end -- 186
 local Plastic -- 188
 do -- 188
 	local _class_0 -- 188
 	local _parent_0 = Trash -- 188
 	local _base_0 = { -- 188
-		PrintName = "Macroplastics", -- 189
-		Model = Model("models/props_junk/garbage_bag001a"), -- 191
-		Description = "Plastic waste, dead to the world.\nRecycle in a refinery, or dispose of it properly in a nearby river.", -- 193
-		SubmitSound = "Trash_Plastic", -- 195
+		PrintName = "Macroplastics", -- 191
+		Model = Model("models/props_junk/garbage_bag001a"), -- 193
+		Description = "Plastic waste, dead to the world.\nRecycle in a refinery, or dispose of it properly in a nearby river.", -- 195
+		SubmitSound = "Trash_Plastic", -- 197
 		Refinement = { -- 198
 			result = "polymer/refined", -- 198
 			time = 2, -- 199
 			rust = 1 -- 200
-		} -- 197
+		} -- 188
 	} -- 188
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 188
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 200
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 188
 			_base_0[_key_0] = _val_0 -- 188
 		end -- 188
-	end -- 188
+	end -- 200
 	if _base_0.__index == nil then -- 188
 		_base_0.__index = _base_0 -- 188
-	end -- 188
+	end -- 200
 	setmetatable(_base_0, _parent_0.__base) -- 188
 	_class_0 = setmetatable({ -- 188
 		__init = function(self, ...) -- 188
@@ -758,22 +760,22 @@ do -- 188
 		_parent_0.__inherited(_parent_0, _class_0) -- 188
 	end -- 188
 	Plastic = _class_0 -- 188
-end -- 188
+end -- 200
 local Twitchel -- 202
 do -- 202
 	local _class_0 -- 202
 	local _parent_0 = Plastic -- 202
 	local _base_0 = { -- 202
-		Model = Model("models/props_junk/garbage_plasticbottle003a.mdl") -- 203
+		Model = Model("models/props_junk/garbage_plasticbottle003a.mdl") -- 202
 	} -- 202
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 202
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 203
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 202
 			_base_0[_key_0] = _val_0 -- 202
 		end -- 202
-	end -- 202
+	end -- 203
 	if _base_0.__index == nil then -- 202
 		_base_0.__index = _base_0 -- 202
-	end -- 202
+	end -- 203
 	setmetatable(_base_0, _parent_0.__base) -- 202
 	_class_0 = setmetatable({ -- 202
 		__init = function(self, ...) -- 202
@@ -805,22 +807,22 @@ do -- 202
 		_parent_0.__inherited(_parent_0, _class_0) -- 202
 	end -- 202
 	Twitchel = _class_0 -- 202
-end -- 202
+end -- 203
 local Shake -- 205
 do -- 205
 	local _class_0 -- 205
 	local _parent_0 = Plastic -- 205
 	local _base_0 = { -- 205
-		Model = Model("models/props_junk/garbage_milkcarton001a.mdl") -- 206
+		Model = Model("models/props_junk/garbage_milkcarton001a.mdl") -- 205
 	} -- 205
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 205
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 206
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 205
 			_base_0[_key_0] = _val_0 -- 205
 		end -- 205
-	end -- 205
+	end -- 206
 	if _base_0.__index == nil then -- 205
 		_base_0.__index = _base_0 -- 205
-	end -- 205
+	end -- 206
 	setmetatable(_base_0, _parent_0.__base) -- 205
 	_class_0 = setmetatable({ -- 205
 		__init = function(self, ...) -- 205
@@ -852,22 +854,22 @@ do -- 205
 		_parent_0.__inherited(_parent_0, _class_0) -- 205
 	end -- 205
 	Shake = _class_0 -- 205
-end -- 205
+end -- 206
 local Pills -- 208
 do -- 208
 	local _class_0 -- 208
 	local _parent_0 = Plastic -- 208
 	local _base_0 = { -- 208
-		Model = Model("models/props_lab/jar01b.mdl") -- 209
+		Model = Model("models/props_lab/jar01b.mdl") -- 208
 	} -- 208
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 208
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 209
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 208
 			_base_0[_key_0] = _val_0 -- 208
 		end -- 208
-	end -- 208
+	end -- 209
 	if _base_0.__index == nil then -- 208
 		_base_0.__index = _base_0 -- 208
-	end -- 208
+	end -- 209
 	setmetatable(_base_0, _parent_0.__base) -- 208
 	_class_0 = setmetatable({ -- 208
 		__init = function(self, ...) -- 208
@@ -899,50 +901,52 @@ do -- 208
 		_parent_0.__inherited(_parent_0, _class_0) -- 208
 	end -- 208
 	Pills = _class_0 -- 208
-end -- 208
+end -- 209
 local Bleach -- 211
-local _class_0 -- 211
-local _parent_0 = Plastic -- 211
-local _base_0 = { -- 211
-	Model = Model("models/props_junk/garbage_plasticbottle001a.mdl") -- 212
-} -- 211
-for _key_0, _val_0 in pairs(_parent_0.__base) do -- 211
-	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 211
-		_base_0[_key_0] = _val_0 -- 211
-	end -- 211
-end -- 211
-if _base_0.__index == nil then -- 211
-	_base_0.__index = _base_0 -- 211
-end -- 211
-setmetatable(_base_0, _parent_0.__base) -- 211
-_class_0 = setmetatable({ -- 211
-	__init = function(self, ...) -- 211
-		return _class_0.__parent.__init(self, ...) -- 211
-	end, -- 211
-	__base = _base_0, -- 211
-	__name = "Bleach", -- 211
-	__parent = _parent_0 -- 211
-}, { -- 211
-	__index = function(cls, name) -- 211
-		local val = rawget(_base_0, name) -- 211
-		if val == nil then -- 211
-			local parent = rawget(cls, "__parent") -- 211
-			if parent then -- 211
-				return parent[name] -- 211
-			end -- 211
-		else -- 211
-			return val -- 211
+do -- 211
+	local _class_0 -- 211
+	local _parent_0 = Plastic -- 211
+	local _base_0 = { -- 211
+		Model = Model("models/props_junk/garbage_plasticbottle001a.mdl") -- 211
+	} -- 211
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 212
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 211
+			_base_0[_key_0] = _val_0 -- 211
 		end -- 211
-	end, -- 211
-	__call = function(cls, ...) -- 211
-		local _self_0 = setmetatable({ }, _base_0) -- 211
-		cls.__init(_self_0, ...) -- 211
-		return _self_0 -- 211
+	end -- 212
+	if _base_0.__index == nil then -- 211
+		_base_0.__index = _base_0 -- 211
+	end -- 212
+	setmetatable(_base_0, _parent_0.__base) -- 211
+	_class_0 = setmetatable({ -- 211
+		__init = function(self, ...) -- 211
+			return _class_0.__parent.__init(self, ...) -- 211
+		end, -- 211
+		__base = _base_0, -- 211
+		__name = "Bleach", -- 211
+		__parent = _parent_0 -- 211
+	}, { -- 211
+		__index = function(cls, name) -- 211
+			local val = rawget(_base_0, name) -- 211
+			if val == nil then -- 211
+				local parent = rawget(cls, "__parent") -- 211
+				if parent then -- 211
+					return parent[name] -- 211
+				end -- 211
+			else -- 211
+				return val -- 211
+			end -- 211
+		end, -- 211
+		__call = function(cls, ...) -- 211
+			local _self_0 = setmetatable({ }, _base_0) -- 211
+			cls.__init(_self_0, ...) -- 211
+			return _self_0 -- 211
+		end -- 211
+	}) -- 211
+	_base_0.__class = _class_0 -- 211
+	if _parent_0.__inherited then -- 211
+		_parent_0.__inherited(_parent_0, _class_0) -- 211
 	end -- 211
-}) -- 211
-_base_0.__class = _class_0 -- 211
-if _parent_0.__inherited then -- 211
-	_parent_0.__inherited(_parent_0, _class_0) -- 211
-end -- 211
-Bleach = _class_0 -- 211
-return _class_0 -- 211
+	Bleach = _class_0 -- 211
+	return _class_0 -- 212
+end -- 212

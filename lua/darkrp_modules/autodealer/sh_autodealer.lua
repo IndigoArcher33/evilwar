@@ -90,7 +90,7 @@ elseif SERVER then -- 10
 				util.ParticleTracerEx("vortigaunt_beam", tr.StartPos, tr.HitPos, false, mach:EntIndex(), 3) -- 74
 				mach:EmitSound("beams/beamstart5.wav") -- 75
 				local dmg = DamageInfo() -- 76
-				dmg:SetDamage(65) -- 78
+				dmg:SetDamage(35) -- 78
 				dmg:SetDamageType(DMG_SHOCK) -- 79
 				dmg:SetAttacker(mach) -- 80
 				dmg:SetInflictor(mach) -- 81

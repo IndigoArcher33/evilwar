@@ -116,7 +116,7 @@ TEAM_GHOST = DarkRP.createJob("Ghost", { -- 29
 TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 	color = Color(20, 150, 20), -- 90
 	model = "models/liver_failure/wastelander/wastelander.mdl", -- 91
-	description = "A soul with no allegiance, destined to plunder the wasteland.", -- 92
+	description = "A soul with no allegiance, destined to plunder the wasteland. \n This fate costs 4 stem cells.", -- 92
 	weapons = { -- 93
 		"evilrp_weapon/whisper", -- 93
 		"evilrp_melee/axe" -- 93
@@ -124,7 +124,7 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 	category = "Wasteland", -- 94
 	command = "stalker", -- 95
 	salary = 1, -- 96
-	max = 3, -- 97
+	max = 2, -- 97
 	cost = 4, -- 98
 	hasLicense = false, -- 99
 	candemote = false, -- 100
@@ -528,7 +528,7 @@ TEAM_PRIVATE = DarkRP.createJob("Private", { -- 238
 TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 305
 	color = Color(25, 170, 0), -- 305
 	model = "models/vel/evilwar/royalist.mdl", -- 306
-	description = "The right hand of the Kommandant.\nRespected by his peers,\nfeared by his enemies.", -- 307
+	description = "The right hands of the Kommandant.\nRespected by their peers, feared by their enemies. \n This fate costs 3 stem cells.", -- 307
 	weapons = { -- 308
 		"evilrp_weapon/hope", -- 308
 		"evilrp_melee/sabre" -- 308
@@ -636,7 +636,7 @@ TEAM_SANITAR = DarkRP.createJob("Dragoon", { -- 305
 TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 368
 	color = Color(255, 140, 0), -- 368
 	model = "models/vel/evilwar/royalist.mdl", -- 369
-	description = "The left hand of the Kommandant.\nManage the goods and keep your men armed.", -- 370
+	description = "The left hand of the Kommandant. Manage the goods and keep your men armed. \n This fate costs 3 stem cells.", -- 370
 	weapons = { }, -- 371
 	command = "dealer", -- 372
 	salary = 1, -- 373
@@ -732,7 +732,7 @@ TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 368
 TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 430
 	color = Color(79, 150, 150), -- 430
 	model = "models/vel/evilwar/royalist.mdl", -- 431
-	description = "You keep people alive in this terrible place.\nFill the blood and empty the rust.", -- 432
+	description = "You keep people alive in this terrible place. Fill the blood and empty the rust. \n This fate costs 2 stem cells.", -- 432
 	weapons = { -- 433
 		"evilrp/medkit" -- 433
 	}, -- 433
@@ -854,7 +854,7 @@ TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 430
 TEAM_KOMMANDANT = DarkRP.createJob("Kommandant", { -- 494
 	color = Color(150, 20, 20), -- 494
 	model = "models/vel/evilwar/royalist.mdl", -- 495
-	description = "Rule with an iron fist.", -- 496
+	description = "Rule with an iron fist. \n This fate costs 5 stem cells.", -- 496
 	command = "kommandant", -- 497
 	salary = 1, -- 498
 	weapons = { -- 499

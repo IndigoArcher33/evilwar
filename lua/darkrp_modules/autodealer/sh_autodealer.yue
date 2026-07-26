@@ -75,7 +75,7 @@ elseif SERVER
         mach\EmitSound"beams/beamstart5.wav"
         dmg = DamageInfo!
         with dmg
-          \SetDamage 65
+          \SetDamage 35
           \SetDamageType DMG_SHOCK
           \SetAttacker mach
           \SetInflictor mach
