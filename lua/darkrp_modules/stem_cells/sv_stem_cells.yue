@@ -33,6 +33,9 @@ reward_stem_cells_on_kill = (ply, attacker, dmg) ->
   attackerJob = RPExtraTeams[attacker\Team!]
   plyJob = RPExtraTeams[ply\Team!]
   if attackerJob.category == plyJob.category
+    if attacker\Team! == TEAM_EMPEROR
+      attacker\Notify"<c=0,200,0>Bad dogs must be put down."
+      return
     amount = -2
     attacker\AddStemCells(amount)
     attacker\Notify"<c=200,0,0>I HAVE KILLED MY OWN BROTHER."
