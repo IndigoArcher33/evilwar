@@ -6,7 +6,7 @@ util.AddNetworkString msg for msg in *{
   "evilrp_terminal_endtyping"
 }
 
-util.GetPlayerByName = (name) ->
+global GetPlayerByName = (name) ->
   return nil unless name and name != ""
   name = name\lower!
   for _, ply in pairs(player.GetAll!)
@@ -286,6 +286,8 @@ class Tyrant extends OS
         if ply\Team! ~= TEAM_EMPEROR
           gterm\Broadcast term, "begone with you", GT_COL_ERR
           return
+        money = ply\getDarkRPVar("money")
+        cost = 500
         cmd = args[1]
         if cmd ~= ""
           print cmd
@@ -299,8 +301,13 @@ class Tyrant extends OS
           if team ~= TEAM_PRIVATE
             gterm\Broadcast term, "#{name} is too important", GT_COL_ERR
             return
-          gterm\Broadcast term, "new cannon fodder: #{name}", GT_COL_SUCC
+          if money < cost
+            gterm\Broadcast term, "you cannot afford to conscript #{name}", GT_COL_ERR
+            return
+          ply\AddMoney -cost, "The State"
           conscript cply
+          name = cply\Nick! --getting the new name
+          gterm\Broadcast term, "new cannon fodder: #{name}", GT_COL_SUCC
       help: "Conscript your recruits."
     }
     [":broadcast"]: {

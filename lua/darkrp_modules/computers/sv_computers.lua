@@ -10,7 +10,7 @@ for _index_0 = 1, #_list_0 do -- 7
 	local msg = _list_0[_index_0] -- 1
 	util.AddNetworkString(msg) -- 1
 end -- 1
-util.GetPlayerByName = function(name) -- 9
+GetPlayerByName = function(name) -- 9
 	if not (name and name ~= "") then -- 10
 		return nil -- 10
 	end -- 10
@@ -656,318 +656,326 @@ do -- 257
 						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 287
 						return -- 288
 					end -- 286
-					local cmd = args[1] -- 289
-					if cmd ~= "" then -- 290
-						print(cmd) -- 291
-						local cply = util.GetPlayerByName(cmd) -- 292
-						if not IsValid(cply) then -- 293
-							gterm:Broadcast(term, "that person does not exist", GT_COL_ERR) -- 294
-							return -- 295
-						end -- 293
-						local name = cply:Nick() -- 296
-						local team = cply:Team() -- 297
-						print("conscript: " .. tostring(name) .. " (" .. tostring(team) .. ")") -- 298
-						if team ~= TEAM_PRIVATE then -- 299
-							gterm:Broadcast(term, tostring(name) .. " is too important", GT_COL_ERR) -- 300
-							return -- 301
-						end -- 299
-						gterm:Broadcast(term, "new cannon fodder: " .. tostring(name), GT_COL_SUCC) -- 302
-						return conscript(cply) -- 303
-					end -- 290
+					local money = ply:getDarkRPVar("money") -- 289
+					local cost = 500 -- 290
+					local cmd = args[1] -- 291
+					if cmd ~= "" then -- 292
+						print(cmd) -- 293
+						local cply = util.GetPlayerByName(cmd) -- 294
+						if not IsValid(cply) then -- 295
+							gterm:Broadcast(term, "that person does not exist", GT_COL_ERR) -- 296
+							return -- 297
+						end -- 295
+						local name = cply:Nick() -- 298
+						local team = cply:Team() -- 299
+						print("conscript: " .. tostring(name) .. " (" .. tostring(team) .. ")") -- 300
+						if team ~= TEAM_PRIVATE then -- 301
+							gterm:Broadcast(term, tostring(name) .. " is too important", GT_COL_ERR) -- 302
+							return -- 303
+						end -- 301
+						if money < cost then -- 304
+							gterm:Broadcast(term, "you cannot afford to conscript " .. tostring(name), GT_COL_ERR) -- 305
+							return -- 306
+						end -- 304
+						ply:AddMoney(-cost, "The State") -- 307
+						conscript(cply) -- 308
+						name = cply:Nick() -- 309
+						return gterm:Broadcast(term, "new cannon fodder: " .. tostring(name), GT_COL_SUCC) -- 310
+					end -- 292
 				end, -- 285
-				help = "Conscript your recruits." -- 304
+				help = "Conscript your recruits." -- 311
 			}, -- 284
-			[":broadcast"] = { -- 307
-				Callback = function(self, ply, term, args) -- 307
-					if ply:Team() ~= TEAM_EMPEROR then -- 308
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 309
-						return -- 310
-					end -- 308
-					local text = table.concat(args, " ") -- 311
-					text = Chat.Autopretty(ply, text:upper()) -- 312
-					do -- 313
-						local _with_0 = gterm -- 313
-						_with_0:Broadcast(term, text, GT_COL_ERR) -- 314
-					end -- 313
-					PlaySoundGlobal("XOMBOKOM") -- 315
-					local _list_1 = player.GetAll() -- 316
-					for _index_0 = 1, #_list_1 do -- 316
-						local p = _list_1[_index_0] -- 316
-						p:SendChat("Broadcast", text) -- 316
-					end -- 316
-					local _list_2 = ents.FindByClass("terminal*") -- 317
-					for _index_0 = 1, #_list_2 do -- 317
-						local term = _list_2[_index_0] -- 317
-						local _continue_0 = false -- 318
-						repeat -- 318
-							if not IsValid(term) then -- 318
-								_continue_0 = true -- 318
-								break -- 318
-							end -- 318
-							do -- 319
-								local _exp_0 = term:GetOS() -- 319
-								if "public" == _exp_0 then -- 320
-									net.Start("evilrp_terminal_flicker") -- 321
-									net.WriteUInt(16, term:EntIndex()) -- 322
-									net.Broadcast() -- 323
-									gterm:Broadcast(term, text, GT_COL_ERR) -- 324
-								end -- 324
-							end -- 324
-							_continue_0 = true -- 318
-						until true -- 324
-						if not _continue_0 then -- 324
-							break -- 324
-						end -- 324
-					end -- 324
-				end, -- 307
-				help = "Demand of your people with the XOMBOKOM." -- 325
-			}, -- 306
-			[":tax"] = { -- 328
-				Callback = function(self, ply, term, args) -- 328
-					if ply:Team() ~= TEAM_EMPEROR then -- 329
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 330
-						return -- 331
-					end -- 329
-					local taxes = GAMEMODE.taxes -- 332
-					local cmd = args[1] -- 333
-					if "list" == cmd then -- 335
-						gterm:Broadcast(term, "TAXES OF THE LAND:") -- 336
-						for k, v in pairs(taxes) do -- 337
-							gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 338
-							gterm:Broadcast(term, "    (" .. tostring(GAMEMODE.taxes_stored[k]) .. " bones gathered)", GT_COL_SUCC) -- 339
-						end -- 339
-						return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 340
-					elseif "set" == cmd then -- 341
-						local tax = args[2] -- 342
-						if not (tax and taxes[tax]) then -- 343
-							gterm:Broadcast(term, "invalid tax name given?", GT_COL_ERR) -- 344
-							return -- 345
-						end -- 343
-						local new_pct = args[3] -- 346
-						new_pct = tonumber(new_pct) -- 347
-						if not new_pct then -- 348
-							gterm:Broadcast(term, "invalid tax percentage given?", GT_COL_ERR) -- 349
-							return -- 350
-						elseif new_pct < 0 then -- 351
-							gterm:Broadcast(term, "the taxes cannot fall into the negative", GT_COL_ERR) -- 352
-							return -- 353
-						elseif new_pct > 100 then -- 354
-							gterm:Broadcast(term, "the taxes cannot exceed one hundred percent", GT_COL_ERR) -- 355
+			[":broadcast"] = { -- 314
+				Callback = function(self, ply, term, args) -- 314
+					if ply:Team() ~= TEAM_EMPEROR then -- 315
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 316
+						return -- 317
+					end -- 315
+					local text = table.concat(args, " ") -- 318
+					text = Chat.Autopretty(ply, text:upper()) -- 319
+					do -- 320
+						local _with_0 = gterm -- 320
+						_with_0:Broadcast(term, text, GT_COL_ERR) -- 321
+					end -- 320
+					PlaySoundGlobal("XOMBOKOM") -- 322
+					local _list_1 = player.GetAll() -- 323
+					for _index_0 = 1, #_list_1 do -- 323
+						local p = _list_1[_index_0] -- 323
+						p:SendChat("Broadcast", text) -- 323
+					end -- 323
+					local _list_2 = ents.FindByClass("terminal*") -- 324
+					for _index_0 = 1, #_list_2 do -- 324
+						local term = _list_2[_index_0] -- 324
+						local _continue_0 = false -- 325
+						repeat -- 325
+							if not IsValid(term) then -- 325
+								_continue_0 = true -- 325
+								break -- 325
+							end -- 325
+							do -- 326
+								local _exp_0 = term:GetOS() -- 326
+								if "public" == _exp_0 then -- 327
+									net.Start("evilrp_terminal_flicker") -- 328
+									net.WriteUInt(16, term:EntIndex()) -- 329
+									net.Broadcast() -- 330
+									gterm:Broadcast(term, text, GT_COL_ERR) -- 331
+								end -- 331
+							end -- 331
+							_continue_0 = true -- 325
+						until true -- 331
+						if not _continue_0 then -- 331
+							break -- 331
+						end -- 331
+					end -- 331
+				end, -- 314
+				help = "Demand of your people with the XOMBOKOM." -- 332
+			}, -- 313
+			[":tax"] = { -- 335
+				Callback = function(self, ply, term, args) -- 335
+					if ply:Team() ~= TEAM_EMPEROR then -- 336
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 337
+						return -- 338
+					end -- 336
+					local taxes = GAMEMODE.taxes -- 339
+					local cmd = args[1] -- 340
+					if "list" == cmd then -- 342
+						gterm:Broadcast(term, "TAXES OF THE LAND:") -- 343
+						for k, v in pairs(taxes) do -- 344
+							gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 345
+							gterm:Broadcast(term, "    (" .. tostring(GAMEMODE.taxes_stored[k]) .. " bones gathered)", GT_COL_SUCC) -- 346
+						end -- 346
+						return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 347
+					elseif "set" == cmd then -- 348
+						local tax = args[2] -- 349
+						if not (tax and taxes[tax]) then -- 350
+							gterm:Broadcast(term, "invalid tax name given?", GT_COL_ERR) -- 351
+							return -- 352
+						end -- 350
+						local new_pct = args[3] -- 353
+						new_pct = tonumber(new_pct) -- 354
+						if not new_pct then -- 355
+							gterm:Broadcast(term, "invalid tax percentage given?", GT_COL_ERR) -- 356
 							return -- 357
-						end -- 348
-						taxes[tax] = new_pct -- 358
-						SetGlobalInt("tax_" .. tostring(tax), new_pct) -- 360
-						PlaySoundGlobal("XOMBOTAX") -- 361
-						local text = "the " .. tostring(tax) .. " tax is now " .. tostring(new_pct) .. "%" -- 362
-						gterm:Broadcast(term, text, GT_COL_SUCC) -- 363
-						local _list_1 = ents.FindByClass("terminal*") -- 364
-						for _index_0 = 1, #_list_1 do -- 364
-							local term = _list_1[_index_0] -- 364
-							local _continue_0 = false -- 365
-							repeat -- 365
-								if not IsValid(term) then -- 365
-									_continue_0 = true -- 365
-									break -- 365
-								end -- 365
-								do -- 366
-									local _exp_0 = term:GetOS() -- 366
-									if "public" == _exp_0 then -- 367
-										net.Start("evilrp_terminal_flicker") -- 368
-										net.WriteUInt(16, term:EntIndex()) -- 369
-										net.Broadcast() -- 370
-										gterm:Broadcast(term, text, GT_COL_SUCC) -- 371
-									end -- 371
-								end -- 371
-								_continue_0 = true -- 365
-							until true -- 371
-							if not _continue_0 then -- 371
-								break -- 371
-							end -- 371
-						end -- 371
-					elseif "collect" == cmd then -- 372
-						local tax = args[2] -- 373
-						local reward = GAMEMODE.taxes_stored[tax] -- 374
-						if not (tax and taxes[tax]) then -- 375
-							gterm:Broadcast(term, "invalid tax name given?", GT_COL_ERR) -- 376
-							return -- 377
-						end -- 375
-						if not (reward > 0) then -- 378
-							gterm:Broadcast(term, "there is nothing to collect from " .. tostring(tax), GT_COL_ERR) -- 379
-							return -- 380
+						elseif new_pct < 0 then -- 358
+							gterm:Broadcast(term, "the taxes cannot fall into the negative", GT_COL_ERR) -- 359
+							return -- 360
+						elseif new_pct > 100 then -- 361
+							gterm:Broadcast(term, "the taxes cannot exceed one hundred percent", GT_COL_ERR) -- 362
+							return -- 364
+						end -- 355
+						taxes[tax] = new_pct -- 365
+						SetGlobalInt("tax_" .. tostring(tax), new_pct) -- 367
+						PlaySoundGlobal("XOMBOTAX") -- 368
+						local text = "the " .. tostring(tax) .. " tax is now " .. tostring(new_pct) .. "%" -- 369
+						gterm:Broadcast(term, text, GT_COL_SUCC) -- 370
+						local _list_1 = ents.FindByClass("terminal*") -- 371
+						for _index_0 = 1, #_list_1 do -- 371
+							local term = _list_1[_index_0] -- 371
+							local _continue_0 = false -- 372
+							repeat -- 372
+								if not IsValid(term) then -- 372
+									_continue_0 = true -- 372
+									break -- 372
+								end -- 372
+								do -- 373
+									local _exp_0 = term:GetOS() -- 373
+									if "public" == _exp_0 then -- 374
+										net.Start("evilrp_terminal_flicker") -- 375
+										net.WriteUInt(16, term:EntIndex()) -- 376
+										net.Broadcast() -- 377
+										gterm:Broadcast(term, text, GT_COL_SUCC) -- 378
+									end -- 378
+								end -- 378
+								_continue_0 = true -- 372
+							until true -- 378
+							if not _continue_0 then -- 378
+								break -- 378
+							end -- 378
 						end -- 378
-						GAMEMODE.taxes_stored[tax] = 0 -- 381
-						gterm:Broadcast(term, tostring(reward) .. " bones from " .. tostring(tax) .. " are now yours", GT_COL_SUCC) -- 382
-						return ply:AddMoney(reward, "The Power") -- 383
-					else -- 385
-						local _with_0 = gterm -- 385
-						_with_0:Broadcast(term, "TAX INTERFACE", GT_COL_INFO) -- 386
-						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 387
-						_with_0:Broadcast(term, "    gives you what you deserve") -- 388
-						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 389
-						_with_0:Broadcast(term, "    :tax list - list the current taxes") -- 390
-						_with_0:Broadcast(term, "    :tax set NAME 0-100 - alter the taxes") -- 391
-						_with_0:Broadcast(term, "    :tax collect NAME - the best part of this") -- 392
-						return _with_0 -- 385
-					end -- 392
-				end, -- 328
-				help = "The reward for your fantastic service." -- 393
-			}, -- 327
-			[":cls"] = { -- 396
-				Callback = function(self, ply, term) -- 396
-					if ply:Team() ~= TEAM_EMPEROR then -- 397
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 398
-						return -- 399
-					end -- 397
-					for i = 0, term.max_lines do -- 400
-						local time = math.Rand(0.01, 0.04) -- 401
-						timer.Simple(i * time, function() -- 402
-							if IsValid(term) then -- 403
-								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 403
-							end -- 403
-						end) -- 402
-					end -- 403
-					return -- 404
-				end, -- 396
-				help = "Clear the screen." -- 405
-			}, -- 395
-			[":stocks"] = { -- 408
-				Callback = function(self, ply, term, args) -- 408
-					self.cache = self.cache or { } -- 409
-					local stocks = GAMEMODE.Stocks -- 410
-					local _with_0 = gterm -- 411
-					_with_0:Broadcast(term, "STOCKS OF THE LAND:", GT_COL_INFO) -- 412
-					for k, v in pairs(stocks) do -- 413
-						if v > 0 then -- 414
-							local etab = self.cache[k] -- 415
-							if not etab then -- 416
-								etab = scripted_ents.Get(k) or weapons.Get(k) -- 417
-								self.cache[k] = etab -- 418
-							end -- 416
-							local display = etab.PrintName or k -- 419
-							_with_0:Broadcast(term, "  " .. tostring(display) .. ": " .. tostring(v) .. " units", GT_COL_SUCC) -- 420
-						end -- 414
-					end -- 420
-					_with_0:Broadcast(term, "end list", GT_COL_INTL) -- 421
-					return _with_0 -- 411
-				end, -- 408
-				help = "View what you own." -- 422
-			}, -- 407
-			[":die"] = { -- 425
-				Callback = function(self, ply, term) -- 425
-					if ply:Team() ~= TEAM_EMPEROR then -- 426
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 427
-						return -- 428
-					end -- 426
-					gterm:Broadcast(term, "SHUTTING DOWN") -- 429
-					return timer.Simple(math.Rand(2, 5), function() -- 430
-						if IsValid(term) then -- 431
-							for i = 0, term.max_lines do -- 432
-								if IsValid(term) then -- 433
-									gterm:Broadcast(term, "", nil, i) -- 433
-								end -- 433
-							end -- 433
-							term:SetActive(false) -- 434
-							return gterm.OS:Call(term, "ShutDown") -- 435
-						end -- 431
-					end) -- 435
-				end, -- 425
-				help = "Turn the computer off." -- 436
-			}, -- 424
-			[":law"] = { -- 439
-				Callback = function(self, ply, term, args) -- 439
-					if ply:Team() ~= TEAM_EMPEROR then -- 440
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 441
-						return -- 442
-					end -- 440
-					local laws = GAMEMODE:Laws() -- 443
-					local cmd = args[1] -- 444
-					if "list" == cmd then -- 446
-						gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 447
-						for k, v in ipairs(laws) do -- 448
-							gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v)) -- 448
-						end -- 448
-						return gterm:Broadcast(term, "  end list", GT_COL_INTL) -- 449
-					elseif "add" == cmd then -- 450
-						if #args < 2 then -- 451
-							gterm:Broadcast(term, "no law text provided?", GT_COL_ERR) -- 452
-							return -- 453
-						end -- 451
-						table.remove(args, 1) -- 454
-						local text = table.concat(args, " ") -- 455
-						do -- 456
-							local _obj_0 = GAMEMODE.laws -- 456
-							_obj_0[#_obj_0 + 1] = text -- 456
-						end -- 456
-						return gterm:Broadcast(term, "created law " .. tostring(#GAMEMODE:Laws()) .. ": \"" .. tostring(text) .. "\"", GT_COL_SUCC) -- 457
-					elseif "remove" == cmd then -- 458
-						if #args < 2 then -- 459
-							gterm:Broadcast(term, "no law specified?", GT_COL_ERR) -- 460
-							return -- 461
-						end -- 459
-						local num = tonumber(args[2]) -- 462
-						if 0 == num or nil == num then -- 464
-							gterm:Broadcast(term, "invalid number given?", GT_COL_ERR) -- 465
-							return -- 466
-						else -- 468
-							if num > #laws then -- 468
-								gterm:Broadcast(term, "invalid number given? (law count: " .. tostring(#laws) .. ")", GT_COL_ERR) -- 469
-								return -- 470
-							elseif num <= #GAMEMODE.default_laws then -- 471
-								gterm:Broadcast(term, "cannot remove laws numbered " .. tostring(#GAMEMODE.default_laws) .. " or less", GT_COL_ERR) -- 472
-								return -- 473
-							end -- 468
-							local law = table.remove(GAMEMODE.laws, num - #GAMEMODE.default_laws) -- 475
-							return gterm:Broadcast(term, "deleted law " .. tostring(num) .. ": \"" .. tostring(law) .. "\"", GT_COL_ERR) -- 476
-						end -- 476
-					elseif "rotate" == cmd then -- 477
-						if #args < 3 then -- 478
-							gterm:Broadcast(term, "invalid arguments?", GT_COL_ERR) -- 479
-							return -- 480
-						end -- 478
-						local first = tonumber(args[2]) -- 481
-						local second = tonumber(args[3]) -- 482
-						if (first == 0 or first == nil) or (second == 0 or second == nil) then -- 483
-							gterm:Broadcast(term, "invalid number given?", GT_COL_ERR) -- 484
-							return -- 485
-						elseif first > #laws or second > #laws then -- 486
-							gterm:Broadcast(term, "invalid number given? (law count: " .. tostring(laws), GT_COL_ERR) -- 487
-							return -- 488
-						elseif first <= #GAMEMODE.default_laws or second <= #GAMEMODE.default_laws then -- 490
-							gterm:Broadcast(term, "cannot rotate laws numbered " .. tostring(#GAMEMODE.default_laws) .. " or less", GT_COL_ERR) -- 491
-							return -- 492
+					elseif "collect" == cmd then -- 379
+						local tax = args[2] -- 380
+						local reward = GAMEMODE.taxes_stored[tax] -- 381
+						if not (tax and taxes[tax]) then -- 382
+							gterm:Broadcast(term, "invalid tax name given?", GT_COL_ERR) -- 383
+							return -- 384
+						end -- 382
+						if not (reward > 0) then -- 385
+							gterm:Broadcast(term, "there is nothing to collect from " .. tostring(tax), GT_COL_ERR) -- 386
+							return -- 387
+						end -- 385
+						GAMEMODE.taxes_stored[tax] = 0 -- 388
+						gterm:Broadcast(term, tostring(reward) .. " bones from " .. tostring(tax) .. " are now yours", GT_COL_SUCC) -- 389
+						return ply:AddMoney(reward, "The Power") -- 390
+					else -- 392
+						local _with_0 = gterm -- 392
+						_with_0:Broadcast(term, "TAX INTERFACE", GT_COL_INFO) -- 393
+						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 394
+						_with_0:Broadcast(term, "    gives you what you deserve") -- 395
+						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 396
+						_with_0:Broadcast(term, "    :tax list - list the current taxes") -- 397
+						_with_0:Broadcast(term, "    :tax set NAME 0-100 - alter the taxes") -- 398
+						_with_0:Broadcast(term, "    :tax collect NAME - the best part of this") -- 399
+						return _with_0 -- 392
+					end -- 399
+				end, -- 335
+				help = "The reward for your fantastic service." -- 400
+			}, -- 334
+			[":cls"] = { -- 403
+				Callback = function(self, ply, term) -- 403
+					if ply:Team() ~= TEAM_EMPEROR then -- 404
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 405
+						return -- 406
+					end -- 404
+					for i = 0, term.max_lines do -- 407
+						local time = math.Rand(0.01, 0.04) -- 408
+						timer.Simple(i * time, function() -- 409
+							if IsValid(term) then -- 410
+								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 410
+							end -- 410
+						end) -- 409
+					end -- 410
+					return -- 411
+				end, -- 403
+				help = "Clear the screen." -- 412
+			}, -- 402
+			[":stocks"] = { -- 415
+				Callback = function(self, ply, term, args) -- 415
+					self.cache = self.cache or { } -- 416
+					local stocks = GAMEMODE.Stocks -- 417
+					local _with_0 = gterm -- 418
+					_with_0:Broadcast(term, "STOCKS OF THE LAND:", GT_COL_INFO) -- 419
+					for k, v in pairs(stocks) do -- 420
+						if v > 0 then -- 421
+							local etab = self.cache[k] -- 422
+							if not etab then -- 423
+								etab = scripted_ents.Get(k) or weapons.Get(k) -- 424
+								self.cache[k] = etab -- 425
+							end -- 423
+							local display = etab.PrintName or k -- 426
+							_with_0:Broadcast(term, "  " .. tostring(display) .. ": " .. tostring(v) .. " units", GT_COL_SUCC) -- 427
+						end -- 421
+					end -- 427
+					_with_0:Broadcast(term, "end list", GT_COL_INTL) -- 428
+					return _with_0 -- 418
+				end, -- 415
+				help = "View what you own." -- 429
+			}, -- 414
+			[":die"] = { -- 432
+				Callback = function(self, ply, term) -- 432
+					if ply:Team() ~= TEAM_EMPEROR then -- 433
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 434
+						return -- 435
+					end -- 433
+					gterm:Broadcast(term, "SHUTTING DOWN") -- 436
+					return timer.Simple(math.Rand(2, 5), function() -- 437
+						if IsValid(term) then -- 438
+							for i = 0, term.max_lines do -- 439
+								if IsValid(term) then -- 440
+									gterm:Broadcast(term, "", nil, i) -- 440
+								end -- 440
+							end -- 440
+							term:SetActive(false) -- 441
+							return gterm.OS:Call(term, "ShutDown") -- 442
+						end -- 438
+					end) -- 442
+				end, -- 432
+				help = "Turn the computer off." -- 443
+			}, -- 431
+			[":law"] = { -- 446
+				Callback = function(self, ply, term, args) -- 446
+					if ply:Team() ~= TEAM_EMPEROR then -- 447
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 448
+						return -- 449
+					end -- 447
+					local laws = GAMEMODE:Laws() -- 450
+					local cmd = args[1] -- 451
+					if "list" == cmd then -- 453
+						gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 454
+						for k, v in ipairs(laws) do -- 455
+							gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v)) -- 455
+						end -- 455
+						return gterm:Broadcast(term, "  end list", GT_COL_INTL) -- 456
+					elseif "add" == cmd then -- 457
+						if #args < 2 then -- 458
+							gterm:Broadcast(term, "no law text provided?", GT_COL_ERR) -- 459
+							return -- 460
+						end -- 458
+						table.remove(args, 1) -- 461
+						local text = table.concat(args, " ") -- 462
+						do -- 463
+							local _obj_0 = GAMEMODE.laws -- 463
+							_obj_0[#_obj_0 + 1] = text -- 463
+						end -- 463
+						return gterm:Broadcast(term, "created law " .. tostring(#GAMEMODE:Laws()) .. ": \"" .. tostring(text) .. "\"", GT_COL_SUCC) -- 464
+					elseif "remove" == cmd then -- 465
+						if #args < 2 then -- 466
+							gterm:Broadcast(term, "no law specified?", GT_COL_ERR) -- 467
+							return -- 468
+						end -- 466
+						local num = tonumber(args[2]) -- 469
+						if 0 == num or nil == num then -- 471
+							gterm:Broadcast(term, "invalid number given?", GT_COL_ERR) -- 472
+							return -- 473
+						else -- 475
+							if num > #laws then -- 475
+								gterm:Broadcast(term, "invalid number given? (law count: " .. tostring(#laws) .. ")", GT_COL_ERR) -- 476
+								return -- 477
+							elseif num <= #GAMEMODE.default_laws then -- 478
+								gterm:Broadcast(term, "cannot remove laws numbered " .. tostring(#GAMEMODE.default_laws) .. " or less", GT_COL_ERR) -- 479
+								return -- 480
+							end -- 475
+							local law = table.remove(GAMEMODE.laws, num - #GAMEMODE.default_laws) -- 482
+							return gterm:Broadcast(term, "deleted law " .. tostring(num) .. ": \"" .. tostring(law) .. "\"", GT_COL_ERR) -- 483
 						end -- 483
-						first = first - #GAMEMODE.default_laws -- 493
-						local first_law = GAMEMODE.laws[first] -- 494
-						second = second - #GAMEMODE.default_laws -- 495
-						local second_law = GAMEMODE.laws[second] -- 496
-						GAMEMODE.laws[first] = second_law -- 497
-						GAMEMODE.laws[second] = first_law -- 498
-						return gterm:Broadcast(term, "rotated laws " .. tostring(args[2]) .. "/" .. tostring(args[3]) .. ".", GT_COL_SUCC) -- 499
-					else -- 501
-						local _with_0 = gterm -- 501
-						_with_0:Broadcast(term, "LAW INTERFACE", GT_COL_INFO) -- 502
-						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 503
-						_with_0:Broadcast(term, "    makes your wishes come true") -- 504
-						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 505
-						_with_0:Broadcast(term, "    :law list - list the current laws") -- 506
-						_with_0:Broadcast(term, "    :law add <your law's text> - add a new law") -- 507
-						_with_0:Broadcast(term, "    :law remove # - remove a law by its number") -- 508
-						_with_0:Broadcast(term, "    :law rotate #1 #2 - two laws switch places") -- 509
-						return _with_0 -- 501
-					end -- 509
-				end, -- 439
-				help = "View and manipulate the laws of this land." -- 510
-			} -- 438
+					elseif "rotate" == cmd then -- 484
+						if #args < 3 then -- 485
+							gterm:Broadcast(term, "invalid arguments?", GT_COL_ERR) -- 486
+							return -- 487
+						end -- 485
+						local first = tonumber(args[2]) -- 488
+						local second = tonumber(args[3]) -- 489
+						if (first == 0 or first == nil) or (second == 0 or second == nil) then -- 490
+							gterm:Broadcast(term, "invalid number given?", GT_COL_ERR) -- 491
+							return -- 492
+						elseif first > #laws or second > #laws then -- 493
+							gterm:Broadcast(term, "invalid number given? (law count: " .. tostring(laws), GT_COL_ERR) -- 494
+							return -- 495
+						elseif first <= #GAMEMODE.default_laws or second <= #GAMEMODE.default_laws then -- 497
+							gterm:Broadcast(term, "cannot rotate laws numbered " .. tostring(#GAMEMODE.default_laws) .. " or less", GT_COL_ERR) -- 498
+							return -- 499
+						end -- 490
+						first = first - #GAMEMODE.default_laws -- 500
+						local first_law = GAMEMODE.laws[first] -- 501
+						second = second - #GAMEMODE.default_laws -- 502
+						local second_law = GAMEMODE.laws[second] -- 503
+						GAMEMODE.laws[first] = second_law -- 504
+						GAMEMODE.laws[second] = first_law -- 505
+						return gterm:Broadcast(term, "rotated laws " .. tostring(args[2]) .. "/" .. tostring(args[3]) .. ".", GT_COL_SUCC) -- 506
+					else -- 508
+						local _with_0 = gterm -- 508
+						_with_0:Broadcast(term, "LAW INTERFACE", GT_COL_INFO) -- 509
+						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 510
+						_with_0:Broadcast(term, "    makes your wishes come true") -- 511
+						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 512
+						_with_0:Broadcast(term, "    :law list - list the current laws") -- 513
+						_with_0:Broadcast(term, "    :law add <your law's text> - add a new law") -- 514
+						_with_0:Broadcast(term, "    :law remove # - remove a law by its number") -- 515
+						_with_0:Broadcast(term, "    :law rotate #1 #2 - two laws switch places") -- 516
+						return _with_0 -- 508
+					end -- 516
+				end, -- 446
+				help = "View and manipulate the laws of this land." -- 517
+			} -- 445
 		} -- 257
 	} -- 257
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 511
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 518
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 257
 			_base_0[_key_0] = _val_0 -- 257
 		end -- 257
-	end -- 511
+	end -- 518
 	if _base_0.__index == nil then -- 257
 		_base_0.__index = _base_0 -- 257
-	end -- 511
+	end -- 518
 	setmetatable(_base_0, _parent_0.__base) -- 257
 	_class_0 = setmetatable({ -- 257
 		__init = function(self, ...) -- 257
@@ -999,297 +1007,297 @@ do -- 257
 		_parent_0.__inherited(_parent_0, _class_0) -- 257
 	end -- 257
 	Tyrant = _class_0 -- 257
-end -- 511
-local Public -- 513
-do -- 513
-	local _class_0 -- 513
-	local _parent_0 = OS -- 513
-	local _base_0 = { -- 513
-		greeting = { -- 515
-			"boot sequence now", -- 515
-			"finalizing public system", -- 516
-			"greetings citizen", -- 517
-			"LONG LIVE THE EMPEROR." -- 518
-		}, -- 521
-		advice = { -- 522
-			"One corpse's trash is another corpse's treasure.", -- 522
-			"Bottles are useful. Don't smash them.", -- 523
-			"Snorting broken glass may give you special powers.", -- 524
-			"Burn your trash, eat your plastic, never stop smoking.", -- 525
-			"Liver Failure doesn't take kindly to slackers.", -- 526
-			"You live because you are useful enough to be exploited.", -- 527
-			"Chew with your good teeth.", -- 528
-			"Violence doesn't solve every problem, only some of them.", -- 529
-			"Flesh capsules are very delicate, be careful with them.", -- 530
-			"You do not need a gun. You do not want a gun.", -- 531
-			"Don't venture too far into the tunnels.", -- 532
-			"Evil things are bad.", -- 533
-			"Play catch with people.", -- 534
-			"Playing is fun.", -- 535
-			"Play teeth. Teeth is fun.", -- 536
-			"Rules are the rules.", -- 537
-			"M y  h e a d ... M y  b r a i n ... M y  b e e r ...", -- 538
-			"Eat and drink before taking your medicine.", -- 539
-			"Bodily fluids can spread pathogens.", -- 540
-			"Your safety is not a priority.", -- 541
-			"It's what you wanted", -- 542
-			"Radar spelled backwards is Radar.", -- 543
-			"You're thinking about it, aren't you?", -- 544
-			"But seriously though,", -- 545
-			"At least you're not dead yet.", -- 546
-			"At least you're not teeth yet.", -- 547
-			"I wanna go home.", -- 548
-			"Please", -- 549
-			"You will get what you deserve.", -- 550
-			"Booze loves company.", -- 551
-			"Misery loves company.", -- 552
-			"Teeth love company.", -- 553
-			"Corpses love company.", -- 554
-			"The things you put in your mouth can hurt you.", -- 555
-			"Make sure you're ready for the hangover tomorrow.", -- 556
-			"Buying things feels so good, doesn't it?", -- 557
-			"We work until we die, and that's the way we like it.", -- 558
-			"Blood brothers protect each other.", -- 559
-			"You can't trust that people are what they say.", -- 560
-			"Some people don't look like you. This is a problem.", -- 561
-			"What's a little brawl between friends?", -- 562
-			"It's too late now.", -- 563
-			"you work to rent a bed so can rest for work tomorrow" -- 564
-		}, -- 567
-		commands = { -- 568
-			[":help"] = { -- 569
-				Callback = function(self, ply, term, args) -- 569
-					local _with_0 = gterm -- 570
-					_with_0:Broadcast(term, "  COMMANDS:") -- 573
-					for k, v in SortedPairs(self:GetCommands()) do -- 574
-						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 575
-						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 576
-					end -- 576
-					_with_0:Broadcast(term, "  end list", GT_COL_INTL) -- 577
-					return _with_0 -- 570
-				end, -- 569
-				help = "Basic usage instructions." -- 578
-			}, -- 568
-			[":cls"] = { -- 581
-				Callback = function(self, ply, term) -- 581
-					for i = 0, term.max_lines do -- 582
-						local time = math.Rand(0.01, 0.04) -- 583
-						timer.Simple(i * time, function() -- 584
-							if IsValid(term) then -- 585
-								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 585
-							end -- 585
-						end) -- 584
-					end -- 585
-					return -- 586
-				end, -- 581
-				help = "Clear the screen." -- 587
-			}, -- 580
-			[":advice"] = { -- 590
-				Callback = function(self, ply, term) -- 590
-					local advice = self.advice[math.random(#self.advice)] -- 591
-					if IsValid(term) then -- 592
-						return gterm:Broadcast(term, advice, MSG_COL_INFO) -- 592
+end -- 518
+local Public -- 520
+do -- 520
+	local _class_0 -- 520
+	local _parent_0 = OS -- 520
+	local _base_0 = { -- 520
+		greeting = { -- 522
+			"boot sequence now", -- 522
+			"finalizing public system", -- 523
+			"greetings citizen", -- 524
+			"LONG LIVE THE EMPEROR." -- 525
+		}, -- 528
+		advice = { -- 529
+			"One corpse's trash is another corpse's treasure.", -- 529
+			"Bottles are useful. Don't smash them.", -- 530
+			"Snorting broken glass may give you special powers.", -- 531
+			"Burn your trash, eat your plastic, never stop smoking.", -- 532
+			"Liver Failure doesn't take kindly to slackers.", -- 533
+			"You live because you are useful enough to be exploited.", -- 534
+			"Chew with your good teeth.", -- 535
+			"Violence doesn't solve every problem, only some of them.", -- 536
+			"Flesh capsules are very delicate, be careful with them.", -- 537
+			"You do not need a gun. You do not want a gun.", -- 538
+			"Don't venture too far into the tunnels.", -- 539
+			"Evil things are bad.", -- 540
+			"Play catch with people.", -- 541
+			"Playing is fun.", -- 542
+			"Play teeth. Teeth is fun.", -- 543
+			"Rules are the rules.", -- 544
+			"M y  h e a d ... M y  b r a i n ... M y  b e e r ...", -- 545
+			"Eat and drink before taking your medicine.", -- 546
+			"Bodily fluids can spread pathogens.", -- 547
+			"Your safety is not a priority.", -- 548
+			"It's what you wanted", -- 549
+			"Radar spelled backwards is Radar.", -- 550
+			"You're thinking about it, aren't you?", -- 551
+			"But seriously though,", -- 552
+			"At least you're not dead yet.", -- 553
+			"At least you're not teeth yet.", -- 554
+			"I wanna go home.", -- 555
+			"Please", -- 556
+			"You will get what you deserve.", -- 557
+			"Booze loves company.", -- 558
+			"Misery loves company.", -- 559
+			"Teeth love company.", -- 560
+			"Corpses love company.", -- 561
+			"The things you put in your mouth can hurt you.", -- 562
+			"Make sure you're ready for the hangover tomorrow.", -- 563
+			"Buying things feels so good, doesn't it?", -- 564
+			"We work until we die, and that's the way we like it.", -- 565
+			"Blood brothers protect each other.", -- 566
+			"You can't trust that people are what they say.", -- 567
+			"Some people don't look like you. This is a problem.", -- 568
+			"What's a little brawl between friends?", -- 569
+			"It's too late now.", -- 570
+			"you work to rent a bed so can rest for work tomorrow" -- 571
+		}, -- 574
+		commands = { -- 575
+			[":help"] = { -- 576
+				Callback = function(self, ply, term, args) -- 576
+					local _with_0 = gterm -- 577
+					_with_0:Broadcast(term, "  COMMANDS:") -- 580
+					for k, v in SortedPairs(self:GetCommands()) do -- 581
+						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 582
+						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 583
+					end -- 583
+					_with_0:Broadcast(term, "  end list", GT_COL_INTL) -- 584
+					return _with_0 -- 577
+				end, -- 576
+				help = "Basic usage instructions." -- 585
+			}, -- 575
+			[":cls"] = { -- 588
+				Callback = function(self, ply, term) -- 588
+					for i = 0, term.max_lines do -- 589
+						local time = math.Rand(0.01, 0.04) -- 590
+						timer.Simple(i * time, function() -- 591
+							if IsValid(term) then -- 592
+								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 592
+							end -- 592
+						end) -- 591
 					end -- 592
-				end, -- 590
-				help = "Consult the infinite wisdom." -- 593
-			}, -- 589
-			[":taxes"] = { -- 596
-				Callback = function(self, ply, term, args) -- 596
-					local taxes = GAMEMODE.taxes -- 597
-					gterm:Broadcast(term, "TAXES OF THE LAND:", GT_COL_INFO) -- 598
-					for k, v in pairs(taxes) do -- 599
-						gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 599
+					return -- 593
+				end, -- 588
+				help = "Clear the screen." -- 594
+			}, -- 587
+			[":advice"] = { -- 597
+				Callback = function(self, ply, term) -- 597
+					local advice = self.advice[math.random(#self.advice)] -- 598
+					if IsValid(term) then -- 599
+						return gterm:Broadcast(term, advice, MSG_COL_INFO) -- 599
 					end -- 599
-					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 600
-				end, -- 596
-				help = "View what you people owe." -- 601
-			}, -- 595
-			[":laws"] = { -- 604
-				Callback = function(self, ply, term, args) -- 604
-					local laws = GAMEMODE:Laws() -- 605
-					gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 606
-					for k, v in ipairs(laws) do -- 607
-						gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v), GT_COL_WRN) -- 607
-					end -- 607
-					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 608
-				end, -- 604
-				help = "View the laws of this land." -- 609
-			}, -- 603
-			[":whoami"] = { -- 612
-				Callback = function(self, ply, term, args) -- 612
-					gterm:Broadcast(term, "this experimental feature is still in testing", GT_COL_WRN) -- 613
-					return gterm:Broadcast(term, "try later", GT_COL_WRN) -- 614
-				end, -- 612
-				help = "View social information." -- 615
-			} -- 611
-		}, -- 618
-		lifetime = 60 * 3, -- 619
-		Initialized = function(self, term) -- 619
-			_class_0.__parent.__base.Initialized(self, term) -- 620
-			term.live_until = CurTime() + self.lifetime -- 621
-			return gterm:Broadcast(term, "DEATH when idle time exceeds " .. tostring(string.NiceTime(self.lifetime)), GT_COL_INFO) -- 622
-		end, -- 623
-		ReceiveInput = function(self, term, ply) -- 623
-			term.live_until = CurTime() + self.lifetime -- 624
-		end, -- 625
-		Think = function(self, term) -- 625
-			local ct = CurTime() -- 626
-			if not term:GetActive() then -- 627
-				return -- 627
-			end -- 627
-			if term.warn_cooldown and ct < term.warn_cooldown then -- 628
-				return -- 628
-			end -- 628
-			if not term.live_until then -- 629
-				term.live_until = ct + self.lifetime -- 629
-			end -- 629
-			local time_left = term.live_until - CurTime() -- 630
-			if math.floor(time_left) % 60 == 0 then -- 631
-				if math.floor(time_left) <= 1 then -- 632
-					gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 633
-					return timer.Simple(math.Rand(2, 5), function() -- 634
-						if IsValid(term) and term:GetActive() then -- 635
-							for i = 0, term.max_lines do -- 636
-								if IsValid(term) then -- 637
-									gterm:Broadcast(term, "", nil, i) -- 637
-								end -- 637
-							end -- 637
-							return gterm.OS:Call(term, "ShutDown") -- 638
-						end -- 635
-					end) -- 638
-				else -- 640
-					return gterm:Broadcast(term, "DEATH in " .. tostring(string.NiceTime(time_left)), GT_COL_INFO) -- 640
-				end -- 632
-			end -- 631
-		end -- 513
-	} -- 513
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 641
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 513
-			_base_0[_key_0] = _val_0 -- 513
-		end -- 513
-	end -- 641
-	if _base_0.__index == nil then -- 513
-		_base_0.__index = _base_0 -- 513
-	end -- 641
-	setmetatable(_base_0, _parent_0.__base) -- 513
-	_class_0 = setmetatable({ -- 513
-		__init = function(self, ...) -- 513
-			return _class_0.__parent.__init(self, ...) -- 513
-		end, -- 513
-		__base = _base_0, -- 513
-		__name = "Public", -- 513
-		__parent = _parent_0 -- 513
-	}, { -- 513
-		__index = function(cls, name) -- 513
-			local val = rawget(_base_0, name) -- 513
-			if val == nil then -- 513
-				local parent = rawget(cls, "__parent") -- 513
-				if parent then -- 513
-					return parent[name] -- 513
-				end -- 513
-			else -- 513
-				return val -- 513
-			end -- 513
-		end, -- 513
-		__call = function(cls, ...) -- 513
-			local _self_0 = setmetatable({ }, _base_0) -- 513
-			cls.__init(_self_0, ...) -- 513
-			return _self_0 -- 513
-		end -- 513
-	}) -- 513
-	_base_0.__class = _class_0 -- 513
-	if _parent_0.__inherited then -- 513
-		_parent_0.__inherited(_parent_0, _class_0) -- 513
-	end -- 513
-	Public = _class_0 -- 513
-end -- 641
-net.Receive("evilrp_terminal_endconsole", function(len, ply) -- 642
-	local idx = net.ReadUInt(16) -- 643
-	local term = Entity(idx) -- 644
-	local text = net.ReadString() -- 645
-	if not (IsValid(term) and term.GetUser) then -- 646
-		return -- 646
-	end -- 646
-	local user = term:GetUser() -- 647
-	if not (IsValid(user) and user == ply) then -- 648
-		return -- 648
+				end, -- 597
+				help = "Consult the infinite wisdom." -- 600
+			}, -- 596
+			[":taxes"] = { -- 603
+				Callback = function(self, ply, term, args) -- 603
+					local taxes = GAMEMODE.taxes -- 604
+					gterm:Broadcast(term, "TAXES OF THE LAND:", GT_COL_INFO) -- 605
+					for k, v in pairs(taxes) do -- 606
+						gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 606
+					end -- 606
+					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 607
+				end, -- 603
+				help = "View what you people owe." -- 608
+			}, -- 602
+			[":laws"] = { -- 611
+				Callback = function(self, ply, term, args) -- 611
+					local laws = GAMEMODE:Laws() -- 612
+					gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 613
+					for k, v in ipairs(laws) do -- 614
+						gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v), GT_COL_WRN) -- 614
+					end -- 614
+					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 615
+				end, -- 611
+				help = "View the laws of this land." -- 616
+			}, -- 610
+			[":whoami"] = { -- 619
+				Callback = function(self, ply, term, args) -- 619
+					gterm:Broadcast(term, "this experimental feature is still in testing", GT_COL_WRN) -- 620
+					return gterm:Broadcast(term, "try later", GT_COL_WRN) -- 621
+				end, -- 619
+				help = "View social information." -- 622
+			} -- 618
+		}, -- 625
+		lifetime = 60 * 3, -- 626
+		Initialized = function(self, term) -- 626
+			_class_0.__parent.__base.Initialized(self, term) -- 627
+			term.live_until = CurTime() + self.lifetime -- 628
+			return gterm:Broadcast(term, "DEATH when idle time exceeds " .. tostring(string.NiceTime(self.lifetime)), GT_COL_INFO) -- 629
+		end, -- 630
+		ReceiveInput = function(self, term, ply) -- 630
+			term.live_until = CurTime() + self.lifetime -- 631
+		end, -- 632
+		Think = function(self, term) -- 632
+			local ct = CurTime() -- 633
+			if not term:GetActive() then -- 634
+				return -- 634
+			end -- 634
+			if term.warn_cooldown and ct < term.warn_cooldown then -- 635
+				return -- 635
+			end -- 635
+			if not term.live_until then -- 636
+				term.live_until = ct + self.lifetime -- 636
+			end -- 636
+			local time_left = term.live_until - CurTime() -- 637
+			if math.floor(time_left) % 60 == 0 then -- 638
+				if math.floor(time_left) <= 1 then -- 639
+					gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 640
+					return timer.Simple(math.Rand(2, 5), function() -- 641
+						if IsValid(term) and term:GetActive() then -- 642
+							for i = 0, term.max_lines do -- 643
+								if IsValid(term) then -- 644
+									gterm:Broadcast(term, "", nil, i) -- 644
+								end -- 644
+							end -- 644
+							return gterm.OS:Call(term, "ShutDown") -- 645
+						end -- 642
+					end) -- 645
+				else -- 647
+					return gterm:Broadcast(term, "DEATH in " .. tostring(string.NiceTime(time_left)), GT_COL_INFO) -- 647
+				end -- 639
+			end -- 638
+		end -- 520
+	} -- 520
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 648
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 520
+			_base_0[_key_0] = _val_0 -- 520
+		end -- 520
 	end -- 648
-	if (text == "") or (text == " ") then -- 649
-		term:SetUser(nil) -- 650
-		net.Start("evilrp_terminal_endtyping") -- 651
-		net.Send(ply) -- 652
+	if _base_0.__index == nil then -- 520
+		_base_0.__index = _base_0 -- 520
+	end -- 648
+	setmetatable(_base_0, _parent_0.__base) -- 520
+	_class_0 = setmetatable({ -- 520
+		__init = function(self, ...) -- 520
+			return _class_0.__parent.__init(self, ...) -- 520
+		end, -- 520
+		__base = _base_0, -- 520
+		__name = "Public", -- 520
+		__parent = _parent_0 -- 520
+	}, { -- 520
+		__index = function(cls, name) -- 520
+			local val = rawget(_base_0, name) -- 520
+			if val == nil then -- 520
+				local parent = rawget(cls, "__parent") -- 520
+				if parent then -- 520
+					return parent[name] -- 520
+				end -- 520
+			else -- 520
+				return val -- 520
+			end -- 520
+		end, -- 520
+		__call = function(cls, ...) -- 520
+			local _self_0 = setmetatable({ }, _base_0) -- 520
+			cls.__init(_self_0, ...) -- 520
+			return _self_0 -- 520
+		end -- 520
+	}) -- 520
+	_base_0.__class = _class_0 -- 520
+	if _parent_0.__inherited then -- 520
+		_parent_0.__inherited(_parent_0, _class_0) -- 520
+	end -- 520
+	Public = _class_0 -- 520
+end -- 648
+net.Receive("evilrp_terminal_endconsole", function(len, ply) -- 649
+	local idx = net.ReadUInt(16) -- 650
+	local term = Entity(idx) -- 651
+	local text = net.ReadString() -- 652
+	if not (IsValid(term) and term.GetUser) then -- 653
 		return -- 653
-	end -- 649
-	gterm.OS:Call(term, "ReceiveInput", ply) -- 654
-	if term.password and not client["pass_authed_" .. tostring(idx)] then -- 655
-		if text == term.password then -- 656
-			ply["pass_authed_" .. tostring(idx)] = true -- 657
-			gterm:Broadcast(term, "password accepted", GT_COL_INFO) -- 658
-			return -- 659
-		else -- 661
-			gterm:Broadcast(term, "password required", GT_COL_INFO) -- 661
-			return -- 662
-		end -- 656
+	end -- 653
+	local user = term:GetUser() -- 654
+	if not (IsValid(user) and user == ply) then -- 655
+		return -- 655
 	end -- 655
-	if string.sub(text, 1, 1) == ":" then -- 663
-		local sys = OS.distros[term:GetOS()] -- 664
-		if sys then -- 665
-			for k, v in pairs(sys:GetCommands()) do -- 666
-				local cmd = string.sub(string.lower(text), 1, string.len(k)) -- 667
-				if k == cmd then -- 668
-					local text2 = string.sub(text, string.len(cmd) + 2) -- 669
-					local quote = (string.sub(text2, 1, 1) ~= "\"") -- 670
-					local args = { } -- 671
-					for chunk in string.gmatch(text2, "[^\"]+") do -- 672
-						quote = not quote -- 673
-						if quote then -- 674
-							args[#args + 1] = chunk -- 675
-						else -- 677
-							for chunk in string.gmatch(chunk, "[^ ]+") do -- 677
-								args[#args + 1] = chunk -- 677
-							end -- 677
-						end -- 674
-					end -- 677
-					local success, value = pcall(v.Callback, sys, ply, term, args) -- 678
-					if success then -- 679
-						gterm:Broadcast(term, text, GT_COL_CMD) -- 680
-					else -- 682
-						gterm:Broadcast(term, value, GT_COL_ERR) -- 682
-					end -- 679
-					return -- 683
-				end -- 668
-			end -- 683
-			text = tostring(string.sub(text, 2)) .. ": command not found" -- 684
-			gterm:Broadcast(term, text, GT_COL_ERR) -- 685
-			return -- 686
-		else -- 688
-			gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 690
-		end -- 665
-		if term.accepting_input then -- 691
-			local quote = (string.sub(text, 1, 1) ~= "\"") -- 692
-			local args = { } -- 693
-			for chunk in string.match(text, "[^\"]+") do -- 694
-				quote = not quote -- 695
-				if quote then -- 696
-					args[#args + 1] = chunk -- 697
-				else -- 699
-					for chunk in string.gmatch(chunk, "[^ ]+") do -- 699
-						args[#args + 1] = chunk -- 699
-					end -- 699
-				end -- 696
-			end -- 699
-			local callback = term.input_callback -- 700
-			if callback and args then -- 701
-				callback(ply, args) -- 701
-			end -- 701
-			term.accepting_input = nil -- 702
-			term.input_callback = nil -- 703
-			return -- 704
-		end -- 691
-	end -- 663
-	local sys = OS.distros[term:GetOS()] -- 705
-	local name = sys and sys.unique_id or "unknown" -- 706
-	local finalized = tostring(("<"):Escape()) .. tostring(name) .. "@" .. tostring(term:EntIndex()) .. tostring((">"):Escape()) .. " " .. tostring(text) -- 707
-	return gterm:Broadcast(term, finalized, GT_COL_CMD) -- 708
-end) -- 642
-return MsgC(Color(255, 0, 0), "INITIALIZED EVILRP TERMINALS\n") -- 710
+	if (text == "") or (text == " ") then -- 656
+		term:SetUser(nil) -- 657
+		net.Start("evilrp_terminal_endtyping") -- 658
+		net.Send(ply) -- 659
+		return -- 660
+	end -- 656
+	gterm.OS:Call(term, "ReceiveInput", ply) -- 661
+	if term.password and not client["pass_authed_" .. tostring(idx)] then -- 662
+		if text == term.password then -- 663
+			ply["pass_authed_" .. tostring(idx)] = true -- 664
+			gterm:Broadcast(term, "password accepted", GT_COL_INFO) -- 665
+			return -- 666
+		else -- 668
+			gterm:Broadcast(term, "password required", GT_COL_INFO) -- 668
+			return -- 669
+		end -- 663
+	end -- 662
+	if string.sub(text, 1, 1) == ":" then -- 670
+		local sys = OS.distros[term:GetOS()] -- 671
+		if sys then -- 672
+			for k, v in pairs(sys:GetCommands()) do -- 673
+				local cmd = string.sub(string.lower(text), 1, string.len(k)) -- 674
+				if k == cmd then -- 675
+					local text2 = string.sub(text, string.len(cmd) + 2) -- 676
+					local quote = (string.sub(text2, 1, 1) ~= "\"") -- 677
+					local args = { } -- 678
+					for chunk in string.gmatch(text2, "[^\"]+") do -- 679
+						quote = not quote -- 680
+						if quote then -- 681
+							args[#args + 1] = chunk -- 682
+						else -- 684
+							for chunk in string.gmatch(chunk, "[^ ]+") do -- 684
+								args[#args + 1] = chunk -- 684
+							end -- 684
+						end -- 681
+					end -- 684
+					local success, value = pcall(v.Callback, sys, ply, term, args) -- 685
+					if success then -- 686
+						gterm:Broadcast(term, text, GT_COL_CMD) -- 687
+					else -- 689
+						gterm:Broadcast(term, value, GT_COL_ERR) -- 689
+					end -- 686
+					return -- 690
+				end -- 675
+			end -- 690
+			text = tostring(string.sub(text, 2)) .. ": command not found" -- 691
+			gterm:Broadcast(term, text, GT_COL_ERR) -- 692
+			return -- 693
+		else -- 695
+			gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 697
+		end -- 672
+		if term.accepting_input then -- 698
+			local quote = (string.sub(text, 1, 1) ~= "\"") -- 699
+			local args = { } -- 700
+			for chunk in string.match(text, "[^\"]+") do -- 701
+				quote = not quote -- 702
+				if quote then -- 703
+					args[#args + 1] = chunk -- 704
+				else -- 706
+					for chunk in string.gmatch(chunk, "[^ ]+") do -- 706
+						args[#args + 1] = chunk -- 706
+					end -- 706
+				end -- 703
+			end -- 706
+			local callback = term.input_callback -- 707
+			if callback and args then -- 708
+				callback(ply, args) -- 708
+			end -- 708
+			term.accepting_input = nil -- 709
+			term.input_callback = nil -- 710
+			return -- 711
+		end -- 698
+	end -- 670
+	local sys = OS.distros[term:GetOS()] -- 712
+	local name = sys and sys.unique_id or "unknown" -- 713
+	local finalized = tostring(("<"):Escape()) .. tostring(name) .. "@" .. tostring(term:EntIndex()) .. tostring((">"):Escape()) .. " " .. tostring(text) -- 714
+	return gterm:Broadcast(term, finalized, GT_COL_CMD) -- 715
+end) -- 649
+return MsgC(Color(255, 0, 0), "INITIALIZED EVILRP TERMINALS\n") -- 717
