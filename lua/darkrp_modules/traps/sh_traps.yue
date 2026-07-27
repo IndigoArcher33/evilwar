@@ -1,0 +1,355 @@
+-- original addon inspiration: Poly's Booby Traps by Polymorphic Trap
+-- completely rewritten and expanded by Vel
+import random from math
+
+class DefuseSound extends SOUND
+  sound: {
+    "physics/plastic/plastic_barrel_break1.wav"
+    "physics/plastic/plastic_barrel_break2.wav"
+    "physics/plastic/plastic_box_break1.wav"
+    "physics/plastic/plastic_box_break2.wav"
+    "physics/plaster/ceilingtile_break1.wav"
+    "physics/plaster/ceilingtile_break2.wav"
+    "physics/cardboard/cardboard_box_break1.wav"
+    "physics/cardboard/cardboard_box_break2.wav"
+    "physics/cardboard/cardboard_box_break3.wav"
+  }
+
+class Trap extends ENTITY_LONGUSE
+  PrintName: "Trap"
+  Description: "Neither friend nor foe, it's a trap!"
+  Spawnable: true
+  AdminSpawnable: true
+  Model: "models/props_c17/tv_monitor01.mdl"
+  Interesting: true
+
+  Category: "EvilWar: Traps"
+  TimeToUse: 5
+
+  Power: 15
+
+  FuseMessages:
+    fused:
+      * "Ready."
+      * "Armed."
+      * "Primed."
+    defuse:
+      * "Disarmed."
+      * "Fuse removed."
+      * "Safe."
+      * "Phew"
+    success:
+      * "Got it?."
+      * "C'mon."
+      * "Fuck, c'mon."
+      * "Sharp!."
+      * "Careful."
+    failure:
+      * "FUCK."
+      * "OH NO"
+      * "SHIT"
+      * "HUH?"
+      * "CAREFUL"
+      * "IT'S GONNA BLOW"
+    refusal:
+      * "Fuck that!."
+      * "My life's worth more than this."
+      * "I'm not touching that."
+      * "There are better ways to die."
+  
+  SetupDataTables: =>
+    super!
+    @NetworkVar "Bool", "Primed"
+
+  Initialize: =>
+    return if CLIENT
+    @SetModel @Model
+    @SetUseType SIMPLE_USE
+    @PhysicsInit SOLID_VPHYSICS
+    @SetMoveType MOVETYPE_VPHYSICS
+    @SetSolid SOLID_VPHYSICS  
+    phys = @GetPhysicsObject!
+    phys\Wake! if phys and phys\IsValid!
+    @SetPrimed false
+    @SetupTrap!
+
+  OnUseStart: (ply) =>
+    desp = ply\GetDespair!
+    plyJob = RPExtraTeams[ply\Team!]
+    if desp < 50 and @GetPrimed!
+      return true if plyJob.category == "Wasteland"
+      msgs = @FuseMessages.refusal
+      ply\Notify("<c=200,0,0>#{msgs[math.random(#msgs)]}")
+      net.Start"evilrp_frighten"
+      net.Send ply
+      return false
+
+  AttemptFuse: (ply) =>
+    return unless SERVER
+    tags = ""
+    local col
+    local msgs
+    roll = math.random(4)
+    roll = 0 if not @GetPrimed!
+    switch roll
+      when 0
+        col = "0,200,0" -- green            
+        msgs = @FuseMessages.fused
+        @SetPrimed true
+        @SetUser NULL
+        @SetEndTime 0
+        @PartialUse = 0
+      when 1, 2, 3
+        rolldefuse = math.random(3)
+        happy = math.random(5,10)
+        if rolldefuse == 1
+          col = "0,200,0" -- green
+          msgs = @FuseMessages.defuse
+          @SetPrimed false
+          @SetUser NULL
+          @SetEndTime 0
+          @PartialUse = 0
+        else
+          col = "200,200,0" -- yellow
+          msgs = @FuseMessages.success
+          happy = math.random(2,6)
+        ply\AddDespair(-happy)
+      when 4, 5 
+        col = "200,0,0" -- red
+        msgs = @FuseMessages.failure
+        sad = math.random(3,8)
+        plyJob = RPExtraTeams[ply\Team!]
+        sad *= 0 if plyJob.category == "Wasteland"
+        sad *= 2 if ply\HasOddity(ODDITY_DEPRESSION)
+        ply\AddDespair(sad)
+        rollexplode = math.random(3)
+        rollexplode = 0 if plyJob.category == "Wasteland"
+        if rollexplode == 1
+          @SetUser NULL
+          @SetEndTime 0
+          @PartialUse = 0
+          @Explode!
+    ply\PlaySignal(ACT_GMOD_GESTURE_RANGE_FRENZY, true)
+    @EmitSound"DefuseSound"    
+    ply\Notify"#{tags}<c=#{col}>#{msgs[math.random(#msgs)]}"
+
+  PartialUses:
+    * prog: 20
+      func: (ply) => @AttemptFuse(ply)
+    * prog: 40
+      func: (ply) => @AttemptFuse(ply)
+    * prog: 60
+      func: (ply) => @AttemptFuse(ply)
+    * prog: 80
+      func: (ply) => @AttemptFuse(ply)
+    * prog: 100
+      func: (ply) => @AttemptFuse(ply)
+
+  SetupTrap: =>
+    return if CLIENT
+    
+    -- trap-specific code goes here, this may be too diverse for a parent class
+
+  OnUseFinish: (ply) =>
+    if ply\IsPlayer!
+      if not @GetPrimed!
+        ply\Notify"UH OH, IT'S PRIMED."
+        @SetPrimed true
+  
+  Think: =>
+    super!
+    ct = CurTime!
+    if @GetPrimed!
+      -- @Explode!
+
+  Explode: =>
+    return if @exploding
+    @exploding = true
+    util.ScreenShake @GetPos!, 25, 150, 1, 750
+    explo = ents.Create"env_explosion"
+    with explo
+      \SetOwner @
+      \SetPos(@GetPos!)
+      \SetKeyValue("iMagnitude", @Power * 2.5)
+      \SetKeyValue("iRadiusOverride", math.min( 400, @Power * 1.5) )
+      \Spawn()
+      \Activate()
+      \Fire("Explode")
+    fire_ent = ents.Create"env_fire"
+    with fire_ent
+      \SetPos(@GetPos!)
+      \SetKeyValue("spawnflags", "1")
+      \SetKeyValue("attack", tostring(math.random(10, 15)))
+      \SetKeyValue("firesize", tostring(math.random(100, 150)))
+      \Spawn!
+      \Activate!
+      \Fire("Enable", "", del)
+      \Fire("StartFire", "", del)
+      SafeRemoveEntityDelayed(fire_ent, math.random(60, 70))
+    victims = ents.FindInSphere @GetPos!, @Power * 6
+    for victim in *victims
+      ignition = false
+      ignition = true if victim\IsPlayer! and victim\Alive!
+      ignition = true if victim\GetClass! == "prop_physics"
+      victim\Ignite math.random(5,10) if ignition
+    @Remove!
+    return
+
+  Draw: => @DrawModel!
+
+  HUDRender: =>
+    ct = {}
+    ct[] = @PrintName
+    if @Description
+      ct[] = ""
+      ct[] = { text: @Description, font: "Spleen_Label_Small" }
+      if @GetPrimed!
+        ct[] = { text: "IT'S ARMED.", font: "Spleen_Label_Small" }
+      else
+        ct[] = { text: "Seems like a dud.", font: "Spleen_Label_Small" }
+    return ct
+
+  Interactions:
+    * { desc: "Huh?", func: (-> lp\SendChat("GENERIC", "This is a trap, watch out or you'll blow your head smooth off.")) }
+
+class WireTrap extends Trap
+  PrintName: "Wire Trap"
+  Description: "A trap hooked up to a tripwire."
+  Model: "models/Items/grenadeAmmo.mdl"
+  Power: 10
+
+  Initialize: =>
+    super!
+    return if CLIENT
+    @SetWired false
+
+  SetupDataTables: =>
+    super!
+    @NetworkVar "Bool", "Wired"
+
+  AttemptFuse: (ply) =>
+    return unless SERVER
+    tags = ""
+    local col
+    local msgs
+    roll = math.random(4)
+    if not @GetWired!
+      roll = -1
+    elseif not @GetPrimed!
+      roll = 0
+    switch roll
+      when -1
+        col = "0,200,0" -- green            
+        msgs = {"Wired."}
+        @Wire!
+        @SetUser NULL
+        @SetEndTime 0
+        @PartialUse = 0
+      when 0
+        col = "0,200,0" -- green            
+        msgs = @FuseMessages.fused
+        @SetPrimed true
+        @SetUser NULL
+        @SetEndTime 0
+        @PartialUse = 0
+      when 1, 2, 3
+        rolldefuse = math.random(3)
+        happy = math.random(5,10)
+        if rolldefuse == 1
+          col = "0,200,0" -- green
+          msgs = @FuseMessages.defuse
+          @SetPrimed false
+          @SetUser NULL
+          @SetEndTime 0
+          @PartialUse = 0
+        else
+          col = "200,200,0" -- yellow
+          msgs = @FuseMessages.success
+          happy = math.random(2,6)
+        ply\AddDespair(-happy)
+      when 4, 5 
+        col = "200,0,0" -- red
+        msgs = @FuseMessages.failure
+        sad = math.random(3,8)
+        plyJob = RPExtraTeams[ply\Team!]
+        sad *= 0 if plyJob.category == "Wasteland"
+        sad *= 2 if ply\HasOddity(ODDITY_DEPRESSION)
+        ply\AddDespair(sad)
+        rollexplode = math.random(3)
+        rollexplode = 0 if plyJob.category == "Wasteland"
+        if rollexplode == 1
+          @SetUser NULL
+          @SetEndTime 0
+          @PartialUse = 0
+          @Explode!
+    ply\PlaySignal(ACT_GMOD_GESTURE_RANGE_FRENZY, true)
+    @EmitSound"DefuseSound"    
+    ply\Notify"#{tags}<c=#{col}>#{msgs[math.random(#msgs)]}"
+
+  Touch: (what) =>
+    return if CLIENT
+    return if not what\IsPlayer!
+    return if not @GetPrimed!
+    @Explode!
+
+  Wire: =>
+    ropelength = (@LocalToWorld(@wire.LPos1) - @stick\LocalToWorld(@wire.LPos2))\Length!
+    if ropelength then
+      @wire\Remove!
+      @wire = constraint.Rope(@,@stick,0,0,Vector(0,0,0),Vector(1.5,0,-2.8),ropelength,5,10,0.05,"cable/cable2",false)
+      @SetWired true
+
+  Think: =>
+    super!
+    return if CLIENT
+    if not IsValid(@wire) and not @broken and @GetPrimed!
+      @broken = true
+      @EmitSound "Padlock.Break"
+      @Explode! if IsValid(@)
+      return
+      
+    if IsValid(@wire) and not @broken and @GetPrimed! and @GetWired!
+      trace = 
+        start: @LocalToWorld(@wire.LPos1)
+        endpos: @stick\GetPos! + Vector(0, 0, 2)
+        filter: { @, @stick }
+        
+      tr = util.TraceLine trace
+      if tr.Hit 
+        @wire\Remove!
+
+  SetupTrap: =>
+    super!
+    @stick = ents.Create"prop_physics"
+    with @stick
+      \SetPos(@GetPos! + Vector(0, 0, 30))
+      \SetModel"models/props_wasteland/prison_throwswitchbase001.mdl"
+      \Spawn!
+
+    @DeleteOnRemove(@stick)
+    
+    @wire = constraint.Rope(@,@stick,0,0,Vector(0,0,0),Vector(1.5,0,-2.8),200,0,10,0.05,"cable/cable2",false)
+
+class IED extends Trap
+  PrintName: "IED"
+  Description: "An explosive device, disguised as a pile of trash."
+  Model: "models/props_junk/garbage128_composite001b.mdl"
+  Power: 25
+
+  Touch: (what) =>
+    return if CLIENT
+    return if not what\IsPlayer!
+    return if not @GetPrimed!
+    @Explode!
+
+  HUDRender: =>
+    return if @GetPrimed!
+    ct = {}
+    ct[] = @PrintName
+    if @Description
+      ct[] = ""
+      ct[] = { text: @Description, font: "Spleen_Label_Small" }
+      ct[] = { text: "Seems like a dud.", font: "Spleen_Label_Small" }
+    return ct
+
+
