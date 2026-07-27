@@ -333,6 +333,8 @@ TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
         text = "A follower of mine."
       when TEAM_EMPEROR
         text = "Cannon fodder, splendid."
+      when TEAM_CONSCRIPT
+        text = "United in blood."
       when TEAM_GHOST
         text = "Definitely stupid."
       when TEAM_BONEHEAD
@@ -357,9 +359,9 @@ TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
       -- torse
       [0]: 0
       -- vest
-      [1]: 1
+      [2]: 0
       -- headwear
-      [3]: {0, 7, 8}
+      [3]: {7, 8}
       -- face
       [4]: {0, 4}
       -- pants
