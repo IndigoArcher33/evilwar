@@ -53,7 +53,7 @@ class Fleshbox extends ENTITY
       font: "Spleen_Label_Small"
     }
     ct[] = {
-      text: "It seems to have something inside. DMG: #{@GetDamageFilter!}"
+      text: "It seems to have something inside."
       font: "Spleen_Label_Small"
     }
     return ct
@@ -66,6 +66,8 @@ class Fleshbox extends ENTITY
     inflictor = dmg\GetInflictor!
     dmg_int *= inflictor.TreeBonus if inflictor.TreeBonus
     pos = dmg\GetDamagePosition!
+    if pos == Vector(0, 0, 0)
+      pos = @GetPos! + Vector(0, 0, 15)
     with edata = EffectData!
       \SetOrigin pos
       \SetScale 60

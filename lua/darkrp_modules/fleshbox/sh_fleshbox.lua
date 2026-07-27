@@ -206,7 +206,7 @@ do -- 19
 				font = "Spleen_Label_Small" -- 53
 			} -- 51
 			ct[#ct + 1] = { -- 56
-				text = "It seems to have something inside. DMG: " .. tostring(self:GetDamageFilter()), -- 56
+				text = "It seems to have something inside.", -- 56
 				font = "Spleen_Label_Small" -- 57
 			} -- 55
 			return ct -- 59
@@ -222,40 +222,43 @@ do -- 19
 				dmg_int = dmg_int * inflictor.TreeBonus -- 67
 			end -- 67
 			local pos = dmg:GetDamagePosition() -- 68
-			do -- 69
-				local edata = EffectData() -- 69
-				edata:SetOrigin(pos) -- 70
-				edata:SetScale(60) -- 71
-				util.Effect("BloodImpact", edata) -- 72
+			if pos == Vector(0, 0, 0) then -- 69
+				pos = self:GetPos() + Vector(0, 0, 15) -- 70
 			end -- 69
-			self:SetIntegrity(self:GetIntegrity() - dmg_int) -- 74
-			self.NextSound = self.NextSound or CurTime() -- 75
-			if CurTime() >= self.NextSound then -- 76
-				self.NextSound = CurTime() + 0.3 -- 77
-				self:EmitSound("BoxHurt") -- 78
-			end -- 76
-			if (self:GetIntegrity() <= 0) and not self.Breaking then -- 79
-				self.Breaking = true -- 80
-				self:EmitSound("BoxDeath") -- 81
-				for i = 1, math.random(1, 3) do -- 82
-					local cls = self.LootTable[math.random(1, #self.LootTable)] -- 83
-					local loot = ents.Create(cls) -- 84
-					loot:Spawn() -- 86
-					loot:Activate() -- 87
-					loot:SetPos(pos) -- 88
-				end -- 88
-				return self:Remove() -- 89
-			end -- 79
+			do -- 71
+				local edata = EffectData() -- 71
+				edata:SetOrigin(pos) -- 72
+				edata:SetScale(60) -- 73
+				util.Effect("BloodImpact", edata) -- 74
+			end -- 71
+			self:SetIntegrity(self:GetIntegrity() - dmg_int) -- 76
+			self.NextSound = self.NextSound or CurTime() -- 77
+			if CurTime() >= self.NextSound then -- 78
+				self.NextSound = CurTime() + 0.3 -- 79
+				self:EmitSound("BoxHurt") -- 80
+			end -- 78
+			if (self:GetIntegrity() <= 0) and not self.Breaking then -- 81
+				self.Breaking = true -- 82
+				self:EmitSound("BoxDeath") -- 83
+				for i = 1, math.random(1, 3) do -- 84
+					local cls = self.LootTable[math.random(1, #self.LootTable)] -- 85
+					local loot = ents.Create(cls) -- 86
+					loot:Spawn() -- 88
+					loot:Activate() -- 89
+					loot:SetPos(pos) -- 90
+				end -- 90
+				return self:Remove() -- 91
+			end -- 81
 		end -- 19
 	} -- 19
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 89
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 91
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 19
 			_base_0[_key_0] = _val_0 -- 19
 		end -- 19
-	end -- 89
+	end -- 91
 	if _base_0.__index == nil then -- 19
 		_base_0.__index = _base_0 -- 19
-	end -- 89
+	end -- 91
 	setmetatable(_base_0, _parent_0.__base) -- 19
 	_class_0 = setmetatable({ -- 19
 		__init = function(self, ...) -- 19
@@ -287,5 +290,5 @@ do -- 19
 		_parent_0.__inherited(_parent_0, _class_0) -- 19
 	end -- 19
 	Fleshbox = _class_0 -- 19
-	return _class_0 -- 89
-end -- 89
+	return _class_0 -- 91
+end -- 91
