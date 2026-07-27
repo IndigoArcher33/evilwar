@@ -1569,7 +1569,7 @@ do -- 508
 		CookTime = 15, -- 520
 		TrashClass = "trash/plastic/twitchel", -- 523
 		UseText = { -- 524
-			"takes small swigs of the bootlegged wine, wincing in pain as the strong liquor trickles down and burns his scabbed and cut skin.", -- 524
+			"Takes a swig of the bootlegged wine, wincing as the strong liquor trickles down and burns his scabbed and cut skin.", -- 524
 			"tries to drink all of the bootlegged wine, before gasping heavily.", -- 525
 			"breathes in before taking a massive swig of the bootlegged wine, grimacing upon burning his mouth." -- 526
 		}, -- 529

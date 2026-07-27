@@ -310,1131 +310,1131 @@ Chat.StupidMistakes = { -- 153
 	["mother of god"] = "mother of Sotla", -- 254
 	["brother in christ"] = "brother in Sotla", -- 255
 	["mfer"] = "friend of mine", -- 256
-	["bro"] = "brother" -- 257
+	["bro"] = "brother", -- 257
+	["alr"] = "alright" -- 258
 } -- 152
-Chat.BadWords = { -- 260
-	"tuff", -- 260
-	"larp", -- 260
-	"huzz", -- 260
-	"bruzz", -- 260
-	"kirk", -- 260
-	"chud", -- 260
-	"nigger", -- 260
-	"tranny", -- 260
-	"nigga", -- 260
-	"kike", -- 260
-	"autism", -- 260
-	"autistic", -- 260
-	"autist", -- 260
-	"trannies", -- 260
-	"faggot", -- 260
-	"fag", -- 260
-	"fgt", -- 260
-	"libtard", -- 260
-	"gmyza", -- 260
-	"poggers", -- 260
-	"pogchamp", -- 260
-	"prole gaming", -- 260
-	"omegalol", -- 260
-	"kekw", -- 260
-	"trihard7", -- 260
-	"ur mom", -- 260
-	"ur mum", -- 260
-	"bri-ish", -- 260
-	"bri'ish", -- 260
-	"nword", -- 260
-	"rdm", -- 260
-	"nlr", -- 260
-	"failrp", -- 260
-	"chad", -- 260
-	"hoes mad", -- 260
-	"yeet", -- 260
-	"corpsed", -- 260
-	"kek", -- 260
-	"chungus", -- 260
-	"pog", -- 260
-	"fortnite", -- 260
-	"skinwalk", -- 260
-	"skinshift", -- 260
-	"skin walk", -- 260
-	"skin shift", -- 260
-	"unbindall", -- 260
-	"white walking", -- 260
-	"weeb", -- 260
-	"weeaboo", -- 260
-	"amogus", -- 260
-	"amog us", -- 260
-	"pretty cringe", -- 260
-	"that's cringe", -- 260
-	"redpilled", -- 260
-	"tradcath", -- 260
-	"zoomer", -- 260
-	"boomer", -- 260
-	"doomer", -- 260
-	"groyper", -- 260
-	"bluepill", -- 260
-	"redpill", -- 260
-	"tradwife", -- 260
-	"blackpill", -- 260
-	"big chungus", -- 260
-	"spongebob", -- 260
-	"impostor among us", -- 260
-	"imposter among us", -- 260
-	"ligma", -- 260
-	"deez", -- 260
-	"swag", -- 260
-	"font", -- 260
-	"bussin", -- 260
-	"sussy", -- 260
-	"bussy", -- 260
-	"meme", -- 260
-	"koom", -- 260
-	"niglet", -- 260
-	"stem cell meat", -- 260
-	"make me butcher", -- 260
-	"nlgger", -- 260
-	"nlgga", -- 260
-	"nlg", -- 260
-	"bruh", -- 260
-	"allah", -- 260
-	"akbar", -- 260
-	"alahu", -- 260
-	"ackbar", -- 260
-	"lifeweb", -- 260
-	"cuck", -- 260
-	"coom", -- 260
-	"tryhard", -- 260
-	"morbius", -- 260
-	"morbin", -- 260
-	"/advert", -- 260
-	"skibidi", -- 260
-	"rizz", -- 260
-	"gyatt", -- 260
-	"solta" -- 260
-} -- 260
-do -- 262
-	local _class_0 -- 262
-	local _parent_0 = CHAT_CMD -- 262
-	local _base_0 = { -- 262
-		name = "GENERIC", -- 264
-		color = Color(200, 200, 200), -- 265
-		font = "Spleen_Label", -- 266
-		OnReceive = function(self, data) -- 266
-			return string.format("<font=%s><c=%s>%s", self.font, self.color, data.text) -- 266
-		end -- 262
-	} -- 262
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 266
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 262
-			_base_0[_key_0] = _val_0 -- 262
-		end -- 262
-	end -- 266
-	if _base_0.__index == nil then -- 262
-		_base_0.__index = _base_0 -- 262
-	end -- 266
-	setmetatable(_base_0, _parent_0.__base) -- 262
-	_class_0 = setmetatable({ -- 262
-		__init = function(self, ...) -- 262
-			return _class_0.__parent.__init(self, ...) -- 262
-		end, -- 262
-		__base = _base_0, -- 262
-		__parent = _parent_0 -- 262
-	}, { -- 262
-		__index = function(cls, name) -- 262
-			local val = rawget(_base_0, name) -- 262
-			if val == nil then -- 262
-				local parent = rawget(cls, "__parent") -- 262
-				if parent then -- 262
-					return parent[name] -- 262
-				end -- 262
-			else -- 262
-				return val -- 262
-			end -- 262
-		end, -- 262
-		__call = function(cls, ...) -- 262
-			local _self_0 = setmetatable({ }, _base_0) -- 262
-			cls.__init(_self_0, ...) -- 262
-			return _self_0 -- 262
-		end -- 262
-	}) -- 262
-	_base_0.__class = _class_0 -- 262
-	if _parent_0.__inherited then -- 262
-		_parent_0.__inherited(_parent_0, _class_0) -- 262
-	end -- 262
-end -- 266
-do -- 268
-	local _class_0 -- 268
-	local _parent_0 = CHAT_CMD -- 268
-	local _base_0 = { -- 268
-		name = "NOTICE", -- 270
-		color = Color(229, 201, 98), -- 271
-		font = "Spleen_Chat", -- 272
-		OnReceive = function(self, data) -- 272
-			return string.format("<font=%s><c=%s>%s", self.font, self.color, data.text) -- 272
-		end -- 268
-	} -- 268
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 272
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 268
-			_base_0[_key_0] = _val_0 -- 268
-		end -- 268
-	end -- 272
-	if _base_0.__index == nil then -- 268
-		_base_0.__index = _base_0 -- 268
-	end -- 272
-	setmetatable(_base_0, _parent_0.__base) -- 268
-	_class_0 = setmetatable({ -- 268
-		__init = function(self, ...) -- 268
-			return _class_0.__parent.__init(self, ...) -- 268
-		end, -- 268
-		__base = _base_0, -- 268
-		__parent = _parent_0 -- 268
-	}, { -- 268
-		__index = function(cls, name) -- 268
-			local val = rawget(_base_0, name) -- 268
-			if val == nil then -- 268
-				local parent = rawget(cls, "__parent") -- 268
-				if parent then -- 268
-					return parent[name] -- 268
-				end -- 268
-			else -- 268
-				return val -- 268
-			end -- 268
-		end, -- 268
-		__call = function(cls, ...) -- 268
-			local _self_0 = setmetatable({ }, _base_0) -- 268
-			cls.__init(_self_0, ...) -- 268
-			return _self_0 -- 268
-		end -- 268
-	}) -- 268
-	_base_0.__class = _class_0 -- 268
-	if _parent_0.__inherited then -- 268
-		_parent_0.__inherited(_parent_0, _class_0) -- 268
-	end -- 268
-end -- 272
-do -- 274
-	local _class_0 -- 274
-	local _parent_0 = CHAT_CMD -- 274
-	local _base_0 = { -- 274
-		name = "ERROR", -- 276
-		color = Color(200, 0, 0), -- 277
-		color_console = Color(255, 90, 90), -- 278
-		font = "Spleen_Chat", -- 279
-		OnReceive = function(self, data) -- 279
-			return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">ERROR: " .. tostring(data.text), "<c=" .. tostring(self.color_console) .. ">ERROR: " .. tostring(data.text) -- 279
-		end -- 274
-	} -- 274
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 279
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 274
-			_base_0[_key_0] = _val_0 -- 274
-		end -- 274
-	end -- 279
-	if _base_0.__index == nil then -- 274
-		_base_0.__index = _base_0 -- 274
-	end -- 279
-	setmetatable(_base_0, _parent_0.__base) -- 274
-	_class_0 = setmetatable({ -- 274
-		__init = function(self, ...) -- 274
-			return _class_0.__parent.__init(self, ...) -- 274
-		end, -- 274
-		__base = _base_0, -- 274
-		__parent = _parent_0 -- 274
-	}, { -- 274
-		__index = function(cls, name) -- 274
-			local val = rawget(_base_0, name) -- 274
-			if val == nil then -- 274
-				local parent = rawget(cls, "__parent") -- 274
-				if parent then -- 274
-					return parent[name] -- 274
-				end -- 274
-			else -- 274
-				return val -- 274
-			end -- 274
-		end, -- 274
-		__call = function(cls, ...) -- 274
-			local _self_0 = setmetatable({ }, _base_0) -- 274
-			cls.__init(_self_0, ...) -- 274
-			return _self_0 -- 274
-		end -- 274
-	}) -- 274
-	_base_0.__class = _class_0 -- 274
-	if _parent_0.__inherited then -- 274
-		_parent_0.__inherited(_parent_0, _class_0) -- 274
-	end -- 274
-end -- 279
-do -- 281
-	local _class_0 -- 281
-	local _parent_0 = CHAT_CMD -- 281
-	local _base_0 = { -- 281
-		tabs = TAB_IC, -- 283
-		log_category = "ic", -- 285
-		Handle = function(self, ply, lang, cmd, text) -- 285
-			if not ply:Alive() then -- 286
-				ply:SendChat("ERROR", "You're DEAD.") -- 287
-				return -- 288
-			end -- 286
-			return _class_0.__parent.__base.Handle(self, ply, lang, cmd, text) -- 289
-		end -- 281
-	} -- 281
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 289
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 281
-			_base_0[_key_0] = _val_0 -- 281
-		end -- 281
-	end -- 289
-	if _base_0.__index == nil then -- 281
-		_base_0.__index = _base_0 -- 281
-	end -- 289
-	setmetatable(_base_0, _parent_0.__base) -- 281
-	_class_0 = setmetatable({ -- 281
-		__init = function(self, ...) -- 281
-			return _class_0.__parent.__init(self, ...) -- 281
-		end, -- 281
-		__base = _base_0, -- 281
-		__name = "CHAT_CMD_IC", -- 281
-		__parent = _parent_0 -- 281
-	}, { -- 281
-		__index = function(cls, name) -- 281
-			local val = rawget(_base_0, name) -- 281
-			if val == nil then -- 281
-				local parent = rawget(cls, "__parent") -- 281
-				if parent then -- 281
-					return parent[name] -- 281
-				end -- 281
-			else -- 281
-				return val -- 281
-			end -- 281
-		end, -- 281
-		__call = function(cls, ...) -- 281
-			local _self_0 = setmetatable({ }, _base_0) -- 281
-			cls.__init(_self_0, ...) -- 281
-			return _self_0 -- 281
-		end -- 281
-	}) -- 281
-	_base_0.__class = _class_0 -- 281
-	if _parent_0.__inherited then -- 281
-		_parent_0.__inherited(_parent_0, _class_0) -- 281
-	end -- 281
-	CHAT_CMD_IC = _class_0 -- 281
-end -- 289
-local Action -- 291
-do -- 291
-	local _class_0 -- 291
-	local _parent_0 = CHAT_CMD_IC -- 291
-	local _base_0 = { -- 291
-		name = "Action", -- 293
-		desc = "Do something.", -- 294
-		typing = "Performing...", -- 296
-		commands = { -- 296
-			"me", -- 296
-			"em" -- 296
-		}, -- 297
-		aliases = { -- 297
-			":", -- 297
-			"*" -- 297
-		}, -- 299
-		range = 400, -- 300
-		range_muffled = 0, -- 302
-		font = "Spleen_Chat" -- 291
-	} -- 291
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 302
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 291
-			_base_0[_key_0] = _val_0 -- 291
-		end -- 291
-	end -- 302
-	if _base_0.__index == nil then -- 291
-		_base_0.__index = _base_0 -- 291
-	end -- 302
-	setmetatable(_base_0, _parent_0.__base) -- 291
-	_class_0 = setmetatable({ -- 291
-		__init = function(self, ...) -- 291
-			return _class_0.__parent.__init(self, ...) -- 291
-		end, -- 291
-		__base = _base_0, -- 291
-		__name = "Action", -- 291
-		__parent = _parent_0 -- 291
-	}, { -- 291
-		__index = function(cls, name) -- 291
-			local val = rawget(_base_0, name) -- 291
-			if val == nil then -- 291
-				local parent = rawget(cls, "__parent") -- 291
-				if parent then -- 291
-					return parent[name] -- 291
-				end -- 291
-			else -- 291
-				return val -- 291
-			end -- 291
-		end, -- 291
-		__call = function(cls, ...) -- 291
-			local _self_0 = setmetatable({ }, _base_0) -- 291
-			cls.__init(_self_0, ...) -- 291
-			return _self_0 -- 291
-		end -- 291
-	}) -- 291
-	_base_0.__class = _class_0 -- 291
-	if _parent_0.__inherited then -- 291
-		_parent_0.__inherited(_parent_0, _class_0) -- 291
-	end -- 291
-	Action = _class_0 -- 291
-end -- 302
-if CLIENT then -- 304
-	Action.OnReceive = function(self, data) -- 305
-		local text = data.text -- 306
-		if not string.match(text, "^[,.']") then -- 307
-			text = " " .. tostring(text) -- 307
-		end -- 307
-		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(data.color) .. ">** " .. tostring(data.name) .. tostring(text) -- 308
-	end -- 305
-end -- 304
-if SERVER then -- 310
-	Action.Parse = function(self, ply, lang, cmd, text) -- 311
-		return { -- 312
-			name = ply:Name(), -- 312
-			color = ply:getJobTable().color, -- 312
-			text = text -- 312
-		} -- 312
-	end -- 311
-end -- 310
-local Say -- 314
-do -- 314
-	local _class_0 -- 314
-	local _parent_0 = CHAT_CMD_IC -- 314
-	local _base_0 = { -- 314
-		name = "Say", -- 316
-		desc = "Speak out to those around you.", -- 317
-		typing = "Lying...", -- 318
-		tense = "said", -- 320
-		commands = { -- 320
-			"say" -- 320
-		}, -- 322
-		use_language = true, -- 323
-		hearable = true, -- 325
-		range = 400, -- 326
-		range_muffled = 150, -- 328
-		font = "Spleen_Chat", -- 330
-		color = Color(91, 166, 221), -- 331
-		color_lang = Color(255, 167, 73), -- 333
-		Process = function(self, ply, text) -- 333
-			return Chat.Autopretty(ply, text) -- 333
-		end -- 314
-	} -- 314
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 333
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 314
-			_base_0[_key_0] = _val_0 -- 314
-		end -- 314
-	end -- 333
-	if _base_0.__index == nil then -- 314
-		_base_0.__index = _base_0 -- 314
-	end -- 333
-	setmetatable(_base_0, _parent_0.__base) -- 314
-	_class_0 = setmetatable({ -- 314
-		__init = function(self, ...) -- 314
-			return _class_0.__parent.__init(self, ...) -- 314
-		end, -- 314
-		__base = _base_0, -- 314
-		__name = "Say", -- 314
-		__parent = _parent_0 -- 314
-	}, { -- 314
-		__index = function(cls, name) -- 314
-			local val = rawget(_base_0, name) -- 314
-			if val == nil then -- 314
-				local parent = rawget(cls, "__parent") -- 314
-				if parent then -- 314
-					return parent[name] -- 314
-				end -- 314
-			else -- 314
-				return val -- 314
-			end -- 314
-		end, -- 314
-		__call = function(cls, ...) -- 314
-			local _self_0 = setmetatable({ }, _base_0) -- 314
-			cls.__init(_self_0, ...) -- 314
-			return _self_0 -- 314
-		end -- 314
-	}) -- 314
-	_base_0.__class = _class_0 -- 314
-	if _parent_0.__inherited then -- 314
-		_parent_0.__inherited(_parent_0, _class_0) -- 314
-	end -- 314
-	Say = _class_0 -- 314
-end -- 333
-if CLIENT then -- 335
-	Say.OnReceive = function(self, data) -- 336
-		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(data.name_color) .. ">" .. tostring(data.name) .. " <c=" .. tostring(Color(255, 255, 255)) .. ">" .. tostring(self.tense) .. ", <c=" .. tostring(self.color) .. ">\"" .. tostring(data.text) .. "\"" -- 336
-	end -- 336
-end -- 335
-if SERVER then -- 347
-	Say.Parse = function(self, ply, lang, cmd, text) -- 348
-		local targets = self:GetTargets(ply) -- 349
-		local valid = { } -- 350
-		local invalid = { } -- 351
-		for _index_0 = 1, #targets do -- 352
-			local target = targets[_index_0] -- 352
-			if target == ply or true then -- 354
-				valid[#valid + 1] = target -- 355
-			else -- 357
-				invalid[#invalid + 1] = target -- 357
-			end -- 354
-		end -- 357
-		local name_color = ply:getJobTable().color -- 360
-		text = self:Process(ply, text) -- 361
-		if not self.silent then -- 362
-			ply:PlaySpeechSound(text, SNDLVL_65DB) -- 362
-		end -- 362
-		return Chat.Send(self.name, { -- 364
-			name = ply:Name(), -- 364
-			name_color = name_color, -- 365
-			lang = lang, -- 366
-			text = text -- 367
-		}, valid) -- 368
-	end -- 348
-end -- 347
-local Yell -- 371
-do -- 371
-	local _class_0 -- 371
-	local _parent_0 = Say -- 371
-	local _base_0 = { -- 371
-		name = "Yell", -- 373
-		desc = "Yell something at the top of your lungs.", -- 374
-		typing = "Yelling...", -- 375
-		tense = "shouted", -- 377
-		commands = { -- 377
-			"yell", -- 377
-			"y" -- 377
-		}, -- 379
-		range = 800, -- 380
-		range_muffled = 400, -- 382
-		color = Color(255, 50, 50), -- 383
-		color_lang = Color(255, 167, 73), -- 385
-		Process = function(self, ply, text) -- 385
-			text = _class_0.__parent.__base.Process(self, ply, text) -- 386
-			text = string.upper(text) -- 387
-			local punc = string.sub(text, string.len(text)) -- 388
-			if "." == punc then -- 390
-				text = tostring(string.sub(text, 1, -2)) .. "!" -- 391
-			elseif "?" == punc then -- 392
-				text = text .. "!" -- 393
-			else -- 395
-				text = text .. "!" -- 395
-			end -- 395
-			return "<wiggle=2>" .. tostring(text) .. "</wiggle>" -- 396
-		end -- 371
-	} -- 371
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 396
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 371
-			_base_0[_key_0] = _val_0 -- 371
-		end -- 371
-	end -- 396
-	if _base_0.__index == nil then -- 371
-		_base_0.__index = _base_0 -- 371
-	end -- 396
-	setmetatable(_base_0, _parent_0.__base) -- 371
-	_class_0 = setmetatable({ -- 371
-		__init = function(self, ...) -- 371
-			return _class_0.__parent.__init(self, ...) -- 371
-		end, -- 371
-		__base = _base_0, -- 371
-		__name = "Yell", -- 371
-		__parent = _parent_0 -- 371
-	}, { -- 371
-		__index = function(cls, name) -- 371
-			local val = rawget(_base_0, name) -- 371
-			if val == nil then -- 371
-				local parent = rawget(cls, "__parent") -- 371
-				if parent then -- 371
-					return parent[name] -- 371
-				end -- 371
-			else -- 371
-				return val -- 371
-			end -- 371
-		end, -- 371
-		__call = function(cls, ...) -- 371
-			local _self_0 = setmetatable({ }, _base_0) -- 371
-			cls.__init(_self_0, ...) -- 371
-			return _self_0 -- 371
-		end -- 371
-	}) -- 371
-	_base_0.__class = _class_0 -- 371
-	if _parent_0.__inherited then -- 371
-		_parent_0.__inherited(_parent_0, _class_0) -- 371
-	end -- 371
-	Yell = _class_0 -- 371
-end -- 396
-local Whisper -- 398
-do -- 398
-	local _class_0 -- 398
-	local _parent_0 = Say -- 398
-	local _base_0 = { -- 398
-		name = "Whisper", -- 400
-		desc = "Quietly transmit your secrets to your close ones.", -- 401
-		typing = "Whispering...", -- 402
-		tense = "whispered", -- 404
-		silent = true, -- 406
-		font = "Spleen_Chat_Small", -- 408
-		commands = { -- 408
-			"whisper", -- 408
-			"w" -- 408
-		}, -- 410
-		range = 150, -- 411
-		range_muffled = 0, -- 413
-		color = Color(151, 151, 151), -- 414
-		color_lang = Color(255, 167, 73) -- 398
-	} -- 398
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 414
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 398
-			_base_0[_key_0] = _val_0 -- 398
-		end -- 398
-	end -- 414
-	if _base_0.__index == nil then -- 398
-		_base_0.__index = _base_0 -- 398
-	end -- 414
-	setmetatable(_base_0, _parent_0.__base) -- 398
-	_class_0 = setmetatable({ -- 398
-		__init = function(self, ...) -- 398
-			return _class_0.__parent.__init(self, ...) -- 398
-		end, -- 398
-		__base = _base_0, -- 398
-		__name = "Whisper", -- 398
-		__parent = _parent_0 -- 398
-	}, { -- 398
-		__index = function(cls, name) -- 398
-			local val = rawget(_base_0, name) -- 398
-			if val == nil then -- 398
-				local parent = rawget(cls, "__parent") -- 398
-				if parent then -- 398
-					return parent[name] -- 398
-				end -- 398
-			else -- 398
-				return val -- 398
-			end -- 398
-		end, -- 398
-		__call = function(cls, ...) -- 398
-			local _self_0 = setmetatable({ }, _base_0) -- 398
-			cls.__init(_self_0, ...) -- 398
-			return _self_0 -- 398
-		end -- 398
-	}) -- 398
-	_base_0.__class = _class_0 -- 398
-	if _parent_0.__inherited then -- 398
-		_parent_0.__inherited(_parent_0, _class_0) -- 398
-	end -- 398
-	Whisper = _class_0 -- 398
-end -- 414
-local Radio -- 416
-do -- 416
-	local _class_0 -- 416
-	local _parent_0 = Say -- 416
-	local _base_0 = { -- 416
-		name = "Radio", -- 418
-		desc = "Call your squad.", -- 419
-		typing = "Chattering...", -- 420
-		tense = "called", -- 422
-		silent = true, -- 424
-		font = "Spleen_Chat_Small", -- 426
-		commands = { -- 426
-			"radio", -- 426
-			"r" -- 426
-		}, -- 428
-		tabs = TAB_RADIO, -- 429
-		log_category = "radio", -- 431
-		range = 1500, -- 432
-		range_muffled = 0, -- 434
-		color = Color(151, 151, 151), -- 435
-		color_lang = Color(255, 167, 73) -- 416
-	} -- 416
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 435
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 416
-			_base_0[_key_0] = _val_0 -- 416
-		end -- 416
-	end -- 435
-	if _base_0.__index == nil then -- 416
-		_base_0.__index = _base_0 -- 416
-	end -- 435
-	setmetatable(_base_0, _parent_0.__base) -- 416
-	_class_0 = setmetatable({ -- 416
-		__init = function(self, ...) -- 416
-			return _class_0.__parent.__init(self, ...) -- 416
-		end, -- 416
-		__base = _base_0, -- 416
-		__name = "Radio", -- 416
-		__parent = _parent_0 -- 416
-	}, { -- 416
-		__index = function(cls, name) -- 416
-			local val = rawget(_base_0, name) -- 416
-			if val == nil then -- 416
-				local parent = rawget(cls, "__parent") -- 416
-				if parent then -- 416
-					return parent[name] -- 416
-				end -- 416
-			else -- 416
-				return val -- 416
-			end -- 416
-		end, -- 416
-		__call = function(cls, ...) -- 416
-			local _self_0 = setmetatable({ }, _base_0) -- 416
-			cls.__init(_self_0, ...) -- 416
-			return _self_0 -- 416
-		end -- 416
-	}) -- 416
-	_base_0.__class = _class_0 -- 416
-	if _parent_0.__inherited then -- 416
-		_parent_0.__inherited(_parent_0, _class_0) -- 416
-	end -- 416
-	Radio = _class_0 -- 416
-end -- 435
-if SERVER then -- 437
-	Radio.Parse = function(self, ply, lang, cmd, text) -- 438
-		local my_category = ply:getJobTable().category -- 439
-		local valid = { } -- 440
-		for _, target in pairs(player.GetAll()) do -- 441
-			local _continue_0 = false -- 442
-			repeat -- 442
-				if not (target:getJobTable().category == my_category) then -- 442
-					_continue_0 = true -- 442
-					break -- 442
-				end -- 442
-				valid[#valid + 1] = target -- 443
-				_continue_0 = true -- 442
-			until true -- 443
-			if not _continue_0 then -- 443
-				break -- 443
-			end -- 443
-		end -- 443
-		local name_color = ply:getJobTable().color -- 445
-		text = self:Process(ply, text) -- 446
-		return Chat.Send(self.name, { -- 448
-			name = ply:Name(), -- 448
-			name_color = name_color, -- 449
-			lang = lang, -- 450
-			text = text -- 451
-		}, valid) -- 452
-	end -- 438
-end -- 437
-local XOMBOKOM -- 454
-do -- 454
-	local _class_0 -- 454
-	local _parent_0 = SOUND -- 454
-	local _base_0 = { -- 454
-		level = SNDLVL_NONE, -- 456
-		sound = (function() -- 456
-			local _accum_0 = { } -- 456
-			local _len_0 = 1 -- 456
-			for i = 1, 7 do -- 456
-				_accum_0[_len_0] = "kidneydagger/broadcast" .. tostring(i) .. ".wav" -- 456
-				_len_0 = _len_0 + 1 -- 456
-			end -- 456
-			return _accum_0 -- 456
-		end)() -- 454
-	} -- 454
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 456
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 454
-			_base_0[_key_0] = _val_0 -- 454
-		end -- 454
-	end -- 456
-	if _base_0.__index == nil then -- 454
-		_base_0.__index = _base_0 -- 454
-	end -- 456
-	setmetatable(_base_0, _parent_0.__base) -- 454
-	_class_0 = setmetatable({ -- 454
-		__init = function(self, ...) -- 454
-			return _class_0.__parent.__init(self, ...) -- 454
-		end, -- 454
-		__base = _base_0, -- 454
-		__name = "XOMBOKOM", -- 454
-		__parent = _parent_0 -- 454
-	}, { -- 454
-		__index = function(cls, name) -- 454
-			local val = rawget(_base_0, name) -- 454
-			if val == nil then -- 454
-				local parent = rawget(cls, "__parent") -- 454
-				if parent then -- 454
-					return parent[name] -- 454
-				end -- 454
-			else -- 454
-				return val -- 454
-			end -- 454
-		end, -- 454
-		__call = function(cls, ...) -- 454
-			local _self_0 = setmetatable({ }, _base_0) -- 454
-			cls.__init(_self_0, ...) -- 454
-			return _self_0 -- 454
-		end -- 454
-	}) -- 454
-	_base_0.__class = _class_0 -- 454
-	if _parent_0.__inherited then -- 454
-		_parent_0.__inherited(_parent_0, _class_0) -- 454
-	end -- 454
-	XOMBOKOM = _class_0 -- 454
-end -- 456
-local DEUS -- 458
-do -- 458
-	local _class_0 -- 458
-	local _parent_0 = SOUND -- 458
-	local _base_0 = { -- 458
-		level = SNDLVL_NONE, -- 460
-		sound = (function() -- 460
-			local _accum_0 = { } -- 460
-			local _len_0 = 1 -- 460
-			for i = 1, 2 do -- 460
-				_accum_0[_len_0] = "changes" .. tostring(i) .. ".ogg" -- 460
-				_len_0 = _len_0 + 1 -- 460
-			end -- 460
-			return _accum_0 -- 460
-		end)() -- 458
-	} -- 458
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 460
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 458
-			_base_0[_key_0] = _val_0 -- 458
-		end -- 458
-	end -- 460
-	if _base_0.__index == nil then -- 458
-		_base_0.__index = _base_0 -- 458
-	end -- 460
-	setmetatable(_base_0, _parent_0.__base) -- 458
-	_class_0 = setmetatable({ -- 458
-		__init = function(self, ...) -- 458
-			return _class_0.__parent.__init(self, ...) -- 458
-		end, -- 458
-		__base = _base_0, -- 458
-		__name = "DEUS", -- 458
-		__parent = _parent_0 -- 458
-	}, { -- 458
-		__index = function(cls, name) -- 458
-			local val = rawget(_base_0, name) -- 458
-			if val == nil then -- 458
-				local parent = rawget(cls, "__parent") -- 458
-				if parent then -- 458
-					return parent[name] -- 458
-				end -- 458
-			else -- 458
-				return val -- 458
-			end -- 458
-		end, -- 458
-		__call = function(cls, ...) -- 458
-			local _self_0 = setmetatable({ }, _base_0) -- 458
-			cls.__init(_self_0, ...) -- 458
-			return _self_0 -- 458
-		end -- 458
-	}) -- 458
-	_base_0.__class = _class_0 -- 458
-	if _parent_0.__inherited then -- 458
-		_parent_0.__inherited(_parent_0, _class_0) -- 458
-	end -- 458
-	DEUS = _class_0 -- 458
-end -- 460
-local Broadcast -- 462
-do -- 462
-	local _class_0 -- 462
-	local _parent_0 = CHAT_CMD_IC -- 462
-	local _base_0 = { -- 462
-		name = "Broadcast", -- 464
-		desc = "Make them all listen.", -- 465
-		typing = "Decreeing...", -- 467
-		commands = { -- 467
-			"broadcast", -- 467
-			"ad" -- 467
-		}, -- 469
-		color = Color(200, 0, 0), -- 471
-		font = "Spleen_Chat", -- 473
-		Process = function(self, ply, text) -- 473
-			return Chat.Autopretty(ply, text:upper()) -- 473
-		end, -- 475
-		Handle = function(self, ply, lang, cmd, text) -- 475
-			if not (ply:Team() == TEAM_EMPEROR) then -- 476
-				ply:Notify("<c=200,0,0>This power is NOT FOR YOU.") -- 477
-				return -- 478
-			end -- 476
-			return _class_0.__parent.__base.Handle(self, ply, lang, cmd, text) -- 479
-		end -- 462
-	} -- 462
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 479
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 462
-			_base_0[_key_0] = _val_0 -- 462
-		end -- 462
-	end -- 479
-	if _base_0.__index == nil then -- 462
-		_base_0.__index = _base_0 -- 462
-	end -- 479
-	setmetatable(_base_0, _parent_0.__base) -- 462
-	_class_0 = setmetatable({ -- 462
-		__init = function(self, ...) -- 462
-			return _class_0.__parent.__init(self, ...) -- 462
-		end, -- 462
-		__base = _base_0, -- 462
-		__name = "Broadcast", -- 462
-		__parent = _parent_0 -- 462
-	}, { -- 462
-		__index = function(cls, name) -- 462
-			local val = rawget(_base_0, name) -- 462
-			if val == nil then -- 462
-				local parent = rawget(cls, "__parent") -- 462
-				if parent then -- 462
-					return parent[name] -- 462
-				end -- 462
-			else -- 462
-				return val -- 462
-			end -- 462
-		end, -- 462
-		__call = function(cls, ...) -- 462
-			local _self_0 = setmetatable({ }, _base_0) -- 462
-			cls.__init(_self_0, ...) -- 462
-			return _self_0 -- 462
-		end -- 462
-	}) -- 462
-	_base_0.__class = _class_0 -- 462
-	if _parent_0.__inherited then -- 462
-		_parent_0.__inherited(_parent_0, _class_0) -- 462
-	end -- 462
-	Broadcast = _class_0 -- 462
-end -- 479
-local Godcast -- 481
-do -- 481
-	local _class_0 -- 481
-	local _parent_0 = CHAT_CMD_IC -- 481
-	local _base_0 = { -- 481
-		name = "Godcast", -- 483
-		desc = "Make them all listen.", -- 484
-		typing = "Decreeing...", -- 486
-		commands = { -- 486
-			"godcast", -- 486
-			"god" -- 486
-		}, -- 488
-		color = Color(0, 0, 0), -- 490
-		font = "Spleen_Chat", -- 492
-		Process = function(self, ply, text) -- 492
-			return Chat.Autopretty(ply, text:upper()) -- 492
-		end, -- 494
-		Handle = function(self, ply, lang, cmd, text) -- 494
-			if not (ply:Team() == TEAM_EMPEROR) then -- 495
-				ply:Notify("<c=200,0,0>This power is NOT FOR YOU.") -- 496
-				return -- 497
-			end -- 495
-			return _class_0.__parent.__base.Handle(self, ply, lang, cmd, text) -- 498
-		end -- 481
-	} -- 481
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 498
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 481
-			_base_0[_key_0] = _val_0 -- 481
-		end -- 481
-	end -- 498
-	if _base_0.__index == nil then -- 481
-		_base_0.__index = _base_0 -- 481
-	end -- 498
-	setmetatable(_base_0, _parent_0.__base) -- 481
-	_class_0 = setmetatable({ -- 481
-		__init = function(self, ...) -- 481
-			return _class_0.__parent.__init(self, ...) -- 481
-		end, -- 481
-		__base = _base_0, -- 481
-		__name = "Godcast", -- 481
-		__parent = _parent_0 -- 481
-	}, { -- 481
-		__index = function(cls, name) -- 481
-			local val = rawget(_base_0, name) -- 481
-			if val == nil then -- 481
-				local parent = rawget(cls, "__parent") -- 481
-				if parent then -- 481
-					return parent[name] -- 481
-				end -- 481
-			else -- 481
-				return val -- 481
-			end -- 481
-		end, -- 481
-		__call = function(cls, ...) -- 481
-			local _self_0 = setmetatable({ }, _base_0) -- 481
-			cls.__init(_self_0, ...) -- 481
-			return _self_0 -- 481
-		end -- 481
-	}) -- 481
-	_base_0.__class = _class_0 -- 481
-	if _parent_0.__inherited then -- 481
-		_parent_0.__inherited(_parent_0, _class_0) -- 481
-	end -- 481
-	Godcast = _class_0 -- 481
-end -- 498
-if CLIENT then -- 500
-	Broadcast.OnReceive = function(self, data) -- 501
-		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[XOMBOKOM] <wiggle>" .. tostring(data.text) -- 501
-	end -- 501
-	Godcast.OnReceive = function(self, data) -- 502
-		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[ORACLEKOM] <wiggle>" .. tostring(data.text) -- 502
+Chat.BadWords = { -- 261
+	"larp", -- 261
+	"huzz", -- 261
+	"bruzz", -- 261
+	"kirk", -- 261
+	"chud", -- 261
+	"nigger", -- 261
+	"tranny", -- 261
+	"nigga", -- 261
+	"kike", -- 261
+	"autism", -- 261
+	"autistic", -- 261
+	"autist", -- 261
+	"trannies", -- 261
+	"faggot", -- 261
+	"fag", -- 261
+	"fgt", -- 261
+	"libtard", -- 261
+	"gmyza", -- 261
+	"poggers", -- 261
+	"pogchamp", -- 261
+	"prole gaming", -- 261
+	"omegalol", -- 261
+	"kekw", -- 261
+	"trihard7", -- 261
+	"ur mom", -- 261
+	"ur mum", -- 261
+	"bri-ish", -- 261
+	"bri'ish", -- 261
+	"nword", -- 261
+	"rdm", -- 261
+	"nlr", -- 261
+	"failrp", -- 261
+	"chad", -- 261
+	"hoes mad", -- 261
+	"yeet", -- 261
+	"corpsed", -- 261
+	"kek", -- 261
+	"chungus", -- 261
+	"pog", -- 261
+	"fortnite", -- 261
+	"skinwalk", -- 261
+	"skinshift", -- 261
+	"skin walk", -- 261
+	"skin shift", -- 261
+	"unbindall", -- 261
+	"white walking", -- 261
+	"weeb", -- 261
+	"weeaboo", -- 261
+	"amogus", -- 261
+	"amog us", -- 261
+	"pretty cringe", -- 261
+	"that's cringe", -- 261
+	"redpilled", -- 261
+	"tradcath", -- 261
+	"zoomer", -- 261
+	"boomer", -- 261
+	"doomer", -- 261
+	"groyper", -- 261
+	"bluepill", -- 261
+	"redpill", -- 261
+	"tradwife", -- 261
+	"blackpill", -- 261
+	"big chungus", -- 261
+	"spongebob", -- 261
+	"impostor among us", -- 261
+	"imposter among us", -- 261
+	"ligma", -- 261
+	"deez", -- 261
+	"swag", -- 261
+	"font", -- 261
+	"bussin", -- 261
+	"sussy", -- 261
+	"bussy", -- 261
+	"meme", -- 261
+	"koom", -- 261
+	"niglet", -- 261
+	"stem cell meat", -- 261
+	"make me butcher", -- 261
+	"nlgger", -- 261
+	"nlgga", -- 261
+	"nlg", -- 261
+	"bruh", -- 261
+	"allah", -- 261
+	"akbar", -- 261
+	"alahu", -- 261
+	"ackbar", -- 261
+	"lifeweb", -- 261
+	"cuck", -- 261
+	"coom", -- 261
+	"tryhard", -- 261
+	"morbius", -- 261
+	"morbin", -- 261
+	"/advert", -- 261
+	"skibidi", -- 261
+	"rizz", -- 261
+	"gyatt", -- 261
+	"solta" -- 261
+} -- 261
+do -- 263
+	local _class_0 -- 263
+	local _parent_0 = CHAT_CMD -- 263
+	local _base_0 = { -- 263
+		name = "GENERIC", -- 265
+		color = Color(200, 200, 200), -- 266
+		font = "Spleen_Label", -- 267
+		OnReceive = function(self, data) -- 267
+			return string.format("<font=%s><c=%s>%s", self.font, self.color, data.text) -- 267
+		end -- 263
+	} -- 263
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 267
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 263
+			_base_0[_key_0] = _val_0 -- 263
+		end -- 263
+	end -- 267
+	if _base_0.__index == nil then -- 263
+		_base_0.__index = _base_0 -- 263
+	end -- 267
+	setmetatable(_base_0, _parent_0.__base) -- 263
+	_class_0 = setmetatable({ -- 263
+		__init = function(self, ...) -- 263
+			return _class_0.__parent.__init(self, ...) -- 263
+		end, -- 263
+		__base = _base_0, -- 263
+		__parent = _parent_0 -- 263
+	}, { -- 263
+		__index = function(cls, name) -- 263
+			local val = rawget(_base_0, name) -- 263
+			if val == nil then -- 263
+				local parent = rawget(cls, "__parent") -- 263
+				if parent then -- 263
+					return parent[name] -- 263
+				end -- 263
+			else -- 263
+				return val -- 263
+			end -- 263
+		end, -- 263
+		__call = function(cls, ...) -- 263
+			local _self_0 = setmetatable({ }, _base_0) -- 263
+			cls.__init(_self_0, ...) -- 263
+			return _self_0 -- 263
+		end -- 263
+	}) -- 263
+	_base_0.__class = _class_0 -- 263
+	if _parent_0.__inherited then -- 263
+		_parent_0.__inherited(_parent_0, _class_0) -- 263
+	end -- 263
+end -- 267
+do -- 269
+	local _class_0 -- 269
+	local _parent_0 = CHAT_CMD -- 269
+	local _base_0 = { -- 269
+		name = "NOTICE", -- 271
+		color = Color(229, 201, 98), -- 272
+		font = "Spleen_Chat", -- 273
+		OnReceive = function(self, data) -- 273
+			return string.format("<font=%s><c=%s>%s", self.font, self.color, data.text) -- 273
+		end -- 269
+	} -- 269
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 273
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 269
+			_base_0[_key_0] = _val_0 -- 269
+		end -- 269
+	end -- 273
+	if _base_0.__index == nil then -- 269
+		_base_0.__index = _base_0 -- 269
+	end -- 273
+	setmetatable(_base_0, _parent_0.__base) -- 269
+	_class_0 = setmetatable({ -- 269
+		__init = function(self, ...) -- 269
+			return _class_0.__parent.__init(self, ...) -- 269
+		end, -- 269
+		__base = _base_0, -- 269
+		__parent = _parent_0 -- 269
+	}, { -- 269
+		__index = function(cls, name) -- 269
+			local val = rawget(_base_0, name) -- 269
+			if val == nil then -- 269
+				local parent = rawget(cls, "__parent") -- 269
+				if parent then -- 269
+					return parent[name] -- 269
+				end -- 269
+			else -- 269
+				return val -- 269
+			end -- 269
+		end, -- 269
+		__call = function(cls, ...) -- 269
+			local _self_0 = setmetatable({ }, _base_0) -- 269
+			cls.__init(_self_0, ...) -- 269
+			return _self_0 -- 269
+		end -- 269
+	}) -- 269
+	_base_0.__class = _class_0 -- 269
+	if _parent_0.__inherited then -- 269
+		_parent_0.__inherited(_parent_0, _class_0) -- 269
+	end -- 269
+end -- 273
+do -- 275
+	local _class_0 -- 275
+	local _parent_0 = CHAT_CMD -- 275
+	local _base_0 = { -- 275
+		name = "ERROR", -- 277
+		color = Color(200, 0, 0), -- 278
+		color_console = Color(255, 90, 90), -- 279
+		font = "Spleen_Chat", -- 280
+		OnReceive = function(self, data) -- 280
+			return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">ERROR: " .. tostring(data.text), "<c=" .. tostring(self.color_console) .. ">ERROR: " .. tostring(data.text) -- 280
+		end -- 275
+	} -- 275
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 280
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 275
+			_base_0[_key_0] = _val_0 -- 275
+		end -- 275
+	end -- 280
+	if _base_0.__index == nil then -- 275
+		_base_0.__index = _base_0 -- 275
+	end -- 280
+	setmetatable(_base_0, _parent_0.__base) -- 275
+	_class_0 = setmetatable({ -- 275
+		__init = function(self, ...) -- 275
+			return _class_0.__parent.__init(self, ...) -- 275
+		end, -- 275
+		__base = _base_0, -- 275
+		__parent = _parent_0 -- 275
+	}, { -- 275
+		__index = function(cls, name) -- 275
+			local val = rawget(_base_0, name) -- 275
+			if val == nil then -- 275
+				local parent = rawget(cls, "__parent") -- 275
+				if parent then -- 275
+					return parent[name] -- 275
+				end -- 275
+			else -- 275
+				return val -- 275
+			end -- 275
+		end, -- 275
+		__call = function(cls, ...) -- 275
+			local _self_0 = setmetatable({ }, _base_0) -- 275
+			cls.__init(_self_0, ...) -- 275
+			return _self_0 -- 275
+		end -- 275
+	}) -- 275
+	_base_0.__class = _class_0 -- 275
+	if _parent_0.__inherited then -- 275
+		_parent_0.__inherited(_parent_0, _class_0) -- 275
+	end -- 275
+end -- 280
+do -- 282
+	local _class_0 -- 282
+	local _parent_0 = CHAT_CMD -- 282
+	local _base_0 = { -- 282
+		tabs = TAB_IC, -- 284
+		log_category = "ic", -- 286
+		Handle = function(self, ply, lang, cmd, text) -- 286
+			if not ply:Alive() then -- 287
+				ply:SendChat("ERROR", "You're DEAD.") -- 288
+				return -- 289
+			end -- 287
+			return _class_0.__parent.__base.Handle(self, ply, lang, cmd, text) -- 290
+		end -- 282
+	} -- 282
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 290
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 282
+			_base_0[_key_0] = _val_0 -- 282
+		end -- 282
+	end -- 290
+	if _base_0.__index == nil then -- 282
+		_base_0.__index = _base_0 -- 282
+	end -- 290
+	setmetatable(_base_0, _parent_0.__base) -- 282
+	_class_0 = setmetatable({ -- 282
+		__init = function(self, ...) -- 282
+			return _class_0.__parent.__init(self, ...) -- 282
+		end, -- 282
+		__base = _base_0, -- 282
+		__name = "CHAT_CMD_IC", -- 282
+		__parent = _parent_0 -- 282
+	}, { -- 282
+		__index = function(cls, name) -- 282
+			local val = rawget(_base_0, name) -- 282
+			if val == nil then -- 282
+				local parent = rawget(cls, "__parent") -- 282
+				if parent then -- 282
+					return parent[name] -- 282
+				end -- 282
+			else -- 282
+				return val -- 282
+			end -- 282
+		end, -- 282
+		__call = function(cls, ...) -- 282
+			local _self_0 = setmetatable({ }, _base_0) -- 282
+			cls.__init(_self_0, ...) -- 282
+			return _self_0 -- 282
+		end -- 282
+	}) -- 282
+	_base_0.__class = _class_0 -- 282
+	if _parent_0.__inherited then -- 282
+		_parent_0.__inherited(_parent_0, _class_0) -- 282
+	end -- 282
+	CHAT_CMD_IC = _class_0 -- 282
+end -- 290
+local Action -- 292
+do -- 292
+	local _class_0 -- 292
+	local _parent_0 = CHAT_CMD_IC -- 292
+	local _base_0 = { -- 292
+		name = "Action", -- 294
+		desc = "Do something.", -- 295
+		typing = "Performing...", -- 297
+		commands = { -- 297
+			"me", -- 297
+			"em" -- 297
+		}, -- 298
+		aliases = { -- 298
+			":", -- 298
+			"*" -- 298
+		}, -- 300
+		range = 400, -- 301
+		range_muffled = 0, -- 303
+		font = "Spleen_Chat" -- 292
+	} -- 292
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 303
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 292
+			_base_0[_key_0] = _val_0 -- 292
+		end -- 292
+	end -- 303
+	if _base_0.__index == nil then -- 292
+		_base_0.__index = _base_0 -- 292
+	end -- 303
+	setmetatable(_base_0, _parent_0.__base) -- 292
+	_class_0 = setmetatable({ -- 292
+		__init = function(self, ...) -- 292
+			return _class_0.__parent.__init(self, ...) -- 292
+		end, -- 292
+		__base = _base_0, -- 292
+		__name = "Action", -- 292
+		__parent = _parent_0 -- 292
+	}, { -- 292
+		__index = function(cls, name) -- 292
+			local val = rawget(_base_0, name) -- 292
+			if val == nil then -- 292
+				local parent = rawget(cls, "__parent") -- 292
+				if parent then -- 292
+					return parent[name] -- 292
+				end -- 292
+			else -- 292
+				return val -- 292
+			end -- 292
+		end, -- 292
+		__call = function(cls, ...) -- 292
+			local _self_0 = setmetatable({ }, _base_0) -- 292
+			cls.__init(_self_0, ...) -- 292
+			return _self_0 -- 292
+		end -- 292
+	}) -- 292
+	_base_0.__class = _class_0 -- 292
+	if _parent_0.__inherited then -- 292
+		_parent_0.__inherited(_parent_0, _class_0) -- 292
+	end -- 292
+	Action = _class_0 -- 292
+end -- 303
+if CLIENT then -- 305
+	Action.OnReceive = function(self, data) -- 306
+		local text = data.text -- 307
+		if not string.match(text, "^[,.']") then -- 308
+			text = " " .. tostring(text) -- 308
+		end -- 308
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(data.color) .. ">** " .. tostring(data.name) .. tostring(text) -- 309
+	end -- 306
+end -- 305
+if SERVER then -- 311
+	Action.Parse = function(self, ply, lang, cmd, text) -- 312
+		return { -- 313
+			name = ply:Name(), -- 313
+			color = ply:getJobTable().color, -- 313
+			text = text -- 313
+		} -- 313
+	end -- 312
+end -- 311
+local Say -- 315
+do -- 315
+	local _class_0 -- 315
+	local _parent_0 = CHAT_CMD_IC -- 315
+	local _base_0 = { -- 315
+		name = "Say", -- 317
+		desc = "Speak out to those around you.", -- 318
+		typing = "Lying...", -- 319
+		tense = "said", -- 321
+		commands = { -- 321
+			"say" -- 321
+		}, -- 323
+		use_language = true, -- 324
+		hearable = true, -- 326
+		range = 400, -- 327
+		range_muffled = 150, -- 329
+		font = "Spleen_Chat", -- 331
+		color = Color(91, 166, 221), -- 332
+		color_lang = Color(255, 167, 73), -- 334
+		Process = function(self, ply, text) -- 334
+			return Chat.Autopretty(ply, text) -- 334
+		end -- 315
+	} -- 315
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 334
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 315
+			_base_0[_key_0] = _val_0 -- 315
+		end -- 315
+	end -- 334
+	if _base_0.__index == nil then -- 315
+		_base_0.__index = _base_0 -- 315
+	end -- 334
+	setmetatable(_base_0, _parent_0.__base) -- 315
+	_class_0 = setmetatable({ -- 315
+		__init = function(self, ...) -- 315
+			return _class_0.__parent.__init(self, ...) -- 315
+		end, -- 315
+		__base = _base_0, -- 315
+		__name = "Say", -- 315
+		__parent = _parent_0 -- 315
+	}, { -- 315
+		__index = function(cls, name) -- 315
+			local val = rawget(_base_0, name) -- 315
+			if val == nil then -- 315
+				local parent = rawget(cls, "__parent") -- 315
+				if parent then -- 315
+					return parent[name] -- 315
+				end -- 315
+			else -- 315
+				return val -- 315
+			end -- 315
+		end, -- 315
+		__call = function(cls, ...) -- 315
+			local _self_0 = setmetatable({ }, _base_0) -- 315
+			cls.__init(_self_0, ...) -- 315
+			return _self_0 -- 315
+		end -- 315
+	}) -- 315
+	_base_0.__class = _class_0 -- 315
+	if _parent_0.__inherited then -- 315
+		_parent_0.__inherited(_parent_0, _class_0) -- 315
+	end -- 315
+	Say = _class_0 -- 315
+end -- 334
+if CLIENT then -- 336
+	Say.OnReceive = function(self, data) -- 337
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(data.name_color) .. ">" .. tostring(data.name) .. " <c=" .. tostring(Color(255, 255, 255)) .. ">" .. tostring(self.tense) .. ", <c=" .. tostring(self.color) .. ">\"" .. tostring(data.text) .. "\"" -- 337
+	end -- 337
+end -- 336
+if SERVER then -- 348
+	Say.Parse = function(self, ply, lang, cmd, text) -- 349
+		local targets = self:GetTargets(ply) -- 350
+		local valid = { } -- 351
+		local invalid = { } -- 352
+		for _index_0 = 1, #targets do -- 353
+			local target = targets[_index_0] -- 353
+			if target == ply or true then -- 355
+				valid[#valid + 1] = target -- 356
+			else -- 358
+				invalid[#invalid + 1] = target -- 358
+			end -- 355
+		end -- 358
+		local name_color = ply:getJobTable().color -- 361
+		text = self:Process(ply, text) -- 362
+		if not self.silent then -- 363
+			ply:PlaySpeechSound(text, SNDLVL_65DB) -- 363
+		end -- 363
+		return Chat.Send(self.name, { -- 365
+			name = ply:Name(), -- 365
+			name_color = name_color, -- 366
+			lang = lang, -- 367
+			text = text -- 368
+		}, valid) -- 369
+	end -- 349
+end -- 348
+local Yell -- 372
+do -- 372
+	local _class_0 -- 372
+	local _parent_0 = Say -- 372
+	local _base_0 = { -- 372
+		name = "Yell", -- 374
+		desc = "Yell something at the top of your lungs.", -- 375
+		typing = "Yelling...", -- 376
+		tense = "shouted", -- 378
+		commands = { -- 378
+			"yell", -- 378
+			"y" -- 378
+		}, -- 380
+		range = 800, -- 381
+		range_muffled = 400, -- 383
+		color = Color(255, 50, 50), -- 384
+		color_lang = Color(255, 167, 73), -- 386
+		Process = function(self, ply, text) -- 386
+			text = _class_0.__parent.__base.Process(self, ply, text) -- 387
+			text = string.upper(text) -- 388
+			local punc = string.sub(text, string.len(text)) -- 389
+			if "." == punc then -- 391
+				text = tostring(string.sub(text, 1, -2)) .. "!" -- 392
+			elseif "?" == punc then -- 393
+				text = text .. "!" -- 394
+			else -- 396
+				text = text .. "!" -- 396
+			end -- 396
+			return "<wiggle=2>" .. tostring(text) .. "</wiggle>" -- 397
+		end -- 372
+	} -- 372
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 397
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 372
+			_base_0[_key_0] = _val_0 -- 372
+		end -- 372
+	end -- 397
+	if _base_0.__index == nil then -- 372
+		_base_0.__index = _base_0 -- 372
+	end -- 397
+	setmetatable(_base_0, _parent_0.__base) -- 372
+	_class_0 = setmetatable({ -- 372
+		__init = function(self, ...) -- 372
+			return _class_0.__parent.__init(self, ...) -- 372
+		end, -- 372
+		__base = _base_0, -- 372
+		__name = "Yell", -- 372
+		__parent = _parent_0 -- 372
+	}, { -- 372
+		__index = function(cls, name) -- 372
+			local val = rawget(_base_0, name) -- 372
+			if val == nil then -- 372
+				local parent = rawget(cls, "__parent") -- 372
+				if parent then -- 372
+					return parent[name] -- 372
+				end -- 372
+			else -- 372
+				return val -- 372
+			end -- 372
+		end, -- 372
+		__call = function(cls, ...) -- 372
+			local _self_0 = setmetatable({ }, _base_0) -- 372
+			cls.__init(_self_0, ...) -- 372
+			return _self_0 -- 372
+		end -- 372
+	}) -- 372
+	_base_0.__class = _class_0 -- 372
+	if _parent_0.__inherited then -- 372
+		_parent_0.__inherited(_parent_0, _class_0) -- 372
+	end -- 372
+	Yell = _class_0 -- 372
+end -- 397
+local Whisper -- 399
+do -- 399
+	local _class_0 -- 399
+	local _parent_0 = Say -- 399
+	local _base_0 = { -- 399
+		name = "Whisper", -- 401
+		desc = "Quietly transmit your secrets to your close ones.", -- 402
+		typing = "Whispering...", -- 403
+		tense = "whispered", -- 405
+		silent = true, -- 407
+		font = "Spleen_Chat_Small", -- 409
+		commands = { -- 409
+			"whisper", -- 409
+			"w" -- 409
+		}, -- 411
+		range = 150, -- 412
+		range_muffled = 0, -- 414
+		color = Color(151, 151, 151), -- 415
+		color_lang = Color(255, 167, 73) -- 399
+	} -- 399
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 415
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 399
+			_base_0[_key_0] = _val_0 -- 399
+		end -- 399
+	end -- 415
+	if _base_0.__index == nil then -- 399
+		_base_0.__index = _base_0 -- 399
+	end -- 415
+	setmetatable(_base_0, _parent_0.__base) -- 399
+	_class_0 = setmetatable({ -- 399
+		__init = function(self, ...) -- 399
+			return _class_0.__parent.__init(self, ...) -- 399
+		end, -- 399
+		__base = _base_0, -- 399
+		__name = "Whisper", -- 399
+		__parent = _parent_0 -- 399
+	}, { -- 399
+		__index = function(cls, name) -- 399
+			local val = rawget(_base_0, name) -- 399
+			if val == nil then -- 399
+				local parent = rawget(cls, "__parent") -- 399
+				if parent then -- 399
+					return parent[name] -- 399
+				end -- 399
+			else -- 399
+				return val -- 399
+			end -- 399
+		end, -- 399
+		__call = function(cls, ...) -- 399
+			local _self_0 = setmetatable({ }, _base_0) -- 399
+			cls.__init(_self_0, ...) -- 399
+			return _self_0 -- 399
+		end -- 399
+	}) -- 399
+	_base_0.__class = _class_0 -- 399
+	if _parent_0.__inherited then -- 399
+		_parent_0.__inherited(_parent_0, _class_0) -- 399
+	end -- 399
+	Whisper = _class_0 -- 399
+end -- 415
+local Radio -- 417
+do -- 417
+	local _class_0 -- 417
+	local _parent_0 = Say -- 417
+	local _base_0 = { -- 417
+		name = "Radio", -- 419
+		desc = "Call your squad.", -- 420
+		typing = "Chattering...", -- 421
+		tense = "called", -- 423
+		silent = true, -- 425
+		font = "Spleen_Chat_Small", -- 427
+		commands = { -- 427
+			"radio", -- 427
+			"r" -- 427
+		}, -- 429
+		tabs = TAB_RADIO, -- 430
+		log_category = "radio", -- 432
+		range = 1500, -- 433
+		range_muffled = 0, -- 435
+		color = Color(151, 151, 151), -- 436
+		color_lang = Color(255, 167, 73) -- 417
+	} -- 417
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 436
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 417
+			_base_0[_key_0] = _val_0 -- 417
+		end -- 417
+	end -- 436
+	if _base_0.__index == nil then -- 417
+		_base_0.__index = _base_0 -- 417
+	end -- 436
+	setmetatable(_base_0, _parent_0.__base) -- 417
+	_class_0 = setmetatable({ -- 417
+		__init = function(self, ...) -- 417
+			return _class_0.__parent.__init(self, ...) -- 417
+		end, -- 417
+		__base = _base_0, -- 417
+		__name = "Radio", -- 417
+		__parent = _parent_0 -- 417
+	}, { -- 417
+		__index = function(cls, name) -- 417
+			local val = rawget(_base_0, name) -- 417
+			if val == nil then -- 417
+				local parent = rawget(cls, "__parent") -- 417
+				if parent then -- 417
+					return parent[name] -- 417
+				end -- 417
+			else -- 417
+				return val -- 417
+			end -- 417
+		end, -- 417
+		__call = function(cls, ...) -- 417
+			local _self_0 = setmetatable({ }, _base_0) -- 417
+			cls.__init(_self_0, ...) -- 417
+			return _self_0 -- 417
+		end -- 417
+	}) -- 417
+	_base_0.__class = _class_0 -- 417
+	if _parent_0.__inherited then -- 417
+		_parent_0.__inherited(_parent_0, _class_0) -- 417
+	end -- 417
+	Radio = _class_0 -- 417
+end -- 436
+if SERVER then -- 438
+	Radio.Parse = function(self, ply, lang, cmd, text) -- 439
+		local my_category = ply:getJobTable().category -- 440
+		local valid = { } -- 441
+		for _, target in pairs(player.GetAll()) do -- 442
+			local _continue_0 = false -- 443
+			repeat -- 443
+				if not (target:getJobTable().category == my_category) then -- 443
+					_continue_0 = true -- 443
+					break -- 443
+				end -- 443
+				valid[#valid + 1] = target -- 444
+				_continue_0 = true -- 443
+			until true -- 444
+			if not _continue_0 then -- 444
+				break -- 444
+			end -- 444
+		end -- 444
+		local name_color = ply:getJobTable().color -- 446
+		text = self:Process(ply, text) -- 447
+		return Chat.Send(self.name, { -- 449
+			name = ply:Name(), -- 449
+			name_color = name_color, -- 450
+			lang = lang, -- 451
+			text = text -- 452
+		}, valid) -- 453
+	end -- 439
+end -- 438
+local XOMBOKOM -- 455
+do -- 455
+	local _class_0 -- 455
+	local _parent_0 = SOUND -- 455
+	local _base_0 = { -- 455
+		level = SNDLVL_NONE, -- 457
+		sound = (function() -- 457
+			local _accum_0 = { } -- 457
+			local _len_0 = 1 -- 457
+			for i = 1, 7 do -- 457
+				_accum_0[_len_0] = "kidneydagger/broadcast" .. tostring(i) .. ".wav" -- 457
+				_len_0 = _len_0 + 1 -- 457
+			end -- 457
+			return _accum_0 -- 457
+		end)() -- 455
+	} -- 455
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 457
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 455
+			_base_0[_key_0] = _val_0 -- 455
+		end -- 455
+	end -- 457
+	if _base_0.__index == nil then -- 455
+		_base_0.__index = _base_0 -- 455
+	end -- 457
+	setmetatable(_base_0, _parent_0.__base) -- 455
+	_class_0 = setmetatable({ -- 455
+		__init = function(self, ...) -- 455
+			return _class_0.__parent.__init(self, ...) -- 455
+		end, -- 455
+		__base = _base_0, -- 455
+		__name = "XOMBOKOM", -- 455
+		__parent = _parent_0 -- 455
+	}, { -- 455
+		__index = function(cls, name) -- 455
+			local val = rawget(_base_0, name) -- 455
+			if val == nil then -- 455
+				local parent = rawget(cls, "__parent") -- 455
+				if parent then -- 455
+					return parent[name] -- 455
+				end -- 455
+			else -- 455
+				return val -- 455
+			end -- 455
+		end, -- 455
+		__call = function(cls, ...) -- 455
+			local _self_0 = setmetatable({ }, _base_0) -- 455
+			cls.__init(_self_0, ...) -- 455
+			return _self_0 -- 455
+		end -- 455
+	}) -- 455
+	_base_0.__class = _class_0 -- 455
+	if _parent_0.__inherited then -- 455
+		_parent_0.__inherited(_parent_0, _class_0) -- 455
+	end -- 455
+	XOMBOKOM = _class_0 -- 455
+end -- 457
+local DEUS -- 459
+do -- 459
+	local _class_0 -- 459
+	local _parent_0 = SOUND -- 459
+	local _base_0 = { -- 459
+		level = SNDLVL_NONE, -- 461
+		sound = (function() -- 461
+			local _accum_0 = { } -- 461
+			local _len_0 = 1 -- 461
+			for i = 1, 2 do -- 461
+				_accum_0[_len_0] = "changes" .. tostring(i) .. ".ogg" -- 461
+				_len_0 = _len_0 + 1 -- 461
+			end -- 461
+			return _accum_0 -- 461
+		end)() -- 459
+	} -- 459
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 461
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 459
+			_base_0[_key_0] = _val_0 -- 459
+		end -- 459
+	end -- 461
+	if _base_0.__index == nil then -- 459
+		_base_0.__index = _base_0 -- 459
+	end -- 461
+	setmetatable(_base_0, _parent_0.__base) -- 459
+	_class_0 = setmetatable({ -- 459
+		__init = function(self, ...) -- 459
+			return _class_0.__parent.__init(self, ...) -- 459
+		end, -- 459
+		__base = _base_0, -- 459
+		__name = "DEUS", -- 459
+		__parent = _parent_0 -- 459
+	}, { -- 459
+		__index = function(cls, name) -- 459
+			local val = rawget(_base_0, name) -- 459
+			if val == nil then -- 459
+				local parent = rawget(cls, "__parent") -- 459
+				if parent then -- 459
+					return parent[name] -- 459
+				end -- 459
+			else -- 459
+				return val -- 459
+			end -- 459
+		end, -- 459
+		__call = function(cls, ...) -- 459
+			local _self_0 = setmetatable({ }, _base_0) -- 459
+			cls.__init(_self_0, ...) -- 459
+			return _self_0 -- 459
+		end -- 459
+	}) -- 459
+	_base_0.__class = _class_0 -- 459
+	if _parent_0.__inherited then -- 459
+		_parent_0.__inherited(_parent_0, _class_0) -- 459
+	end -- 459
+	DEUS = _class_0 -- 459
+end -- 461
+local Broadcast -- 463
+do -- 463
+	local _class_0 -- 463
+	local _parent_0 = CHAT_CMD_IC -- 463
+	local _base_0 = { -- 463
+		name = "Broadcast", -- 465
+		desc = "Make them all listen.", -- 466
+		typing = "Decreeing...", -- 468
+		commands = { -- 468
+			"broadcast", -- 468
+			"ad" -- 468
+		}, -- 470
+		color = Color(200, 0, 0), -- 472
+		font = "Spleen_Chat", -- 474
+		Process = function(self, ply, text) -- 474
+			return Chat.Autopretty(ply, text:upper()) -- 474
+		end, -- 476
+		Handle = function(self, ply, lang, cmd, text) -- 476
+			if not (ply:Team() == TEAM_EMPEROR) then -- 477
+				ply:Notify("<c=200,0,0>This power is NOT FOR YOU.") -- 478
+				return -- 479
+			end -- 477
+			return _class_0.__parent.__base.Handle(self, ply, lang, cmd, text) -- 480
+		end -- 463
+	} -- 463
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 480
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 463
+			_base_0[_key_0] = _val_0 -- 463
+		end -- 463
+	end -- 480
+	if _base_0.__index == nil then -- 463
+		_base_0.__index = _base_0 -- 463
+	end -- 480
+	setmetatable(_base_0, _parent_0.__base) -- 463
+	_class_0 = setmetatable({ -- 463
+		__init = function(self, ...) -- 463
+			return _class_0.__parent.__init(self, ...) -- 463
+		end, -- 463
+		__base = _base_0, -- 463
+		__name = "Broadcast", -- 463
+		__parent = _parent_0 -- 463
+	}, { -- 463
+		__index = function(cls, name) -- 463
+			local val = rawget(_base_0, name) -- 463
+			if val == nil then -- 463
+				local parent = rawget(cls, "__parent") -- 463
+				if parent then -- 463
+					return parent[name] -- 463
+				end -- 463
+			else -- 463
+				return val -- 463
+			end -- 463
+		end, -- 463
+		__call = function(cls, ...) -- 463
+			local _self_0 = setmetatable({ }, _base_0) -- 463
+			cls.__init(_self_0, ...) -- 463
+			return _self_0 -- 463
+		end -- 463
+	}) -- 463
+	_base_0.__class = _class_0 -- 463
+	if _parent_0.__inherited then -- 463
+		_parent_0.__inherited(_parent_0, _class_0) -- 463
+	end -- 463
+	Broadcast = _class_0 -- 463
+end -- 480
+local Godcast -- 482
+do -- 482
+	local _class_0 -- 482
+	local _parent_0 = CHAT_CMD_IC -- 482
+	local _base_0 = { -- 482
+		name = "Godcast", -- 484
+		desc = "Make them all listen.", -- 485
+		typing = "Decreeing...", -- 487
+		commands = { -- 487
+			"godcast", -- 487
+			"god" -- 487
+		}, -- 489
+		color = Color(0, 0, 0), -- 491
+		font = "Spleen_Chat", -- 493
+		Process = function(self, ply, text) -- 493
+			return Chat.Autopretty(ply, text:upper()) -- 493
+		end, -- 495
+		Handle = function(self, ply, lang, cmd, text) -- 495
+			if not (ply:Team() == TEAM_EMPEROR) then -- 496
+				ply:Notify("<c=200,0,0>This power is NOT FOR YOU.") -- 497
+				return -- 498
+			end -- 496
+			return _class_0.__parent.__base.Handle(self, ply, lang, cmd, text) -- 499
+		end -- 482
+	} -- 482
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 499
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 482
+			_base_0[_key_0] = _val_0 -- 482
+		end -- 482
+	end -- 499
+	if _base_0.__index == nil then -- 482
+		_base_0.__index = _base_0 -- 482
+	end -- 499
+	setmetatable(_base_0, _parent_0.__base) -- 482
+	_class_0 = setmetatable({ -- 482
+		__init = function(self, ...) -- 482
+			return _class_0.__parent.__init(self, ...) -- 482
+		end, -- 482
+		__base = _base_0, -- 482
+		__name = "Godcast", -- 482
+		__parent = _parent_0 -- 482
+	}, { -- 482
+		__index = function(cls, name) -- 482
+			local val = rawget(_base_0, name) -- 482
+			if val == nil then -- 482
+				local parent = rawget(cls, "__parent") -- 482
+				if parent then -- 482
+					return parent[name] -- 482
+				end -- 482
+			else -- 482
+				return val -- 482
+			end -- 482
+		end, -- 482
+		__call = function(cls, ...) -- 482
+			local _self_0 = setmetatable({ }, _base_0) -- 482
+			cls.__init(_self_0, ...) -- 482
+			return _self_0 -- 482
+		end -- 482
+	}) -- 482
+	_base_0.__class = _class_0 -- 482
+	if _parent_0.__inherited then -- 482
+		_parent_0.__inherited(_parent_0, _class_0) -- 482
+	end -- 482
+	Godcast = _class_0 -- 482
+end -- 499
+if CLIENT then -- 501
+	Broadcast.OnReceive = function(self, data) -- 502
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[XOMBOKOM] <wiggle>" .. tostring(data.text) -- 502
 	end -- 502
-end -- 500
-if SERVER then -- 503
-	Broadcast.Parse = function(self, ply, lang, cmd, text) -- 504
-		text = self:Process(ply, text) -- 505
-		ply:EmitSound("XOMBOKOM") -- 506
-		return { -- 507
-			text = text -- 507
-		} -- 507
-	end -- 504
-	Godcast.Parse = function(self, ply, lang, cmd, text) -- 509
-		text = self:Process(ply, text) -- 510
-		ply:EmitSound("DEUS") -- 511
-		ply:AddDespair(5) -- 512
-		net.Start("evilrp_frighten") -- 513
-		net.Send(ply) -- 514
-		ply:Notify("<c=200,0,0> " .. tostring(text) .. ".") -- 515
-		return { -- 516
-			text = text -- 516
-		} -- 516
-	end -- 509
-end -- 503
-local OOC -- 519
-do -- 519
-	local _class_0 -- 519
-	local _parent_0 = CHAT_CMD -- 519
-	local _base_0 = { -- 519
-		name = "OOC", -- 521
-		desc = "Global out-of-character chat.", -- 522
-		typing = "Typing...", -- 524
-		commands = { -- 524
-			"ooc" -- 524
-		}, -- 525
-		aliases = { -- 525
-			"//" -- 525
-		}, -- 527
-		tabs = TAB_OOC, -- 528
-		log_category = "ooc", -- 530
-		color = Color(200, 0, 0), -- 532
-		font = "Spleen_Chat_Small" -- 519
-	} -- 519
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 532
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 519
-			_base_0[_key_0] = _val_0 -- 519
-		end -- 519
-	end -- 532
-	if _base_0.__index == nil then -- 519
-		_base_0.__index = _base_0 -- 519
-	end -- 532
-	setmetatable(_base_0, _parent_0.__base) -- 519
-	_class_0 = setmetatable({ -- 519
-		__init = function(self, ...) -- 519
-			return _class_0.__parent.__init(self, ...) -- 519
-		end, -- 519
-		__base = _base_0, -- 519
-		__name = "OOC", -- 519
-		__parent = _parent_0 -- 519
-	}, { -- 519
-		__index = function(cls, name) -- 519
-			local val = rawget(_base_0, name) -- 519
-			if val == nil then -- 519
-				local parent = rawget(cls, "__parent") -- 519
-				if parent then -- 519
-					return parent[name] -- 519
-				end -- 519
-			else -- 519
-				return val -- 519
-			end -- 519
-		end, -- 519
-		__call = function(cls, ...) -- 519
-			local _self_0 = setmetatable({ }, _base_0) -- 519
-			cls.__init(_self_0, ...) -- 519
-			return _self_0 -- 519
-		end -- 519
-	}) -- 519
-	_base_0.__class = _class_0 -- 519
-	if _parent_0.__inherited then -- 519
-		_parent_0.__inherited(_parent_0, _class_0) -- 519
-	end -- 519
-	OOC = _class_0 -- 519
-end -- 532
-if CLIENT then -- 534
-	OOC.OnReceive = function(self, data) -- 535
-		local prefix -- 536
-		if data.rainbow_name then -- 537
-			prefix = "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC]</c> <rgb=1,13,30>" .. tostring(data.name) .. "</rgb>" -- 538
-		else -- 540
-			prefix = "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC]</c> <c=" .. tostring(data.color) .. ">" .. tostring(data.name) .. "</c>" -- 540
-		end -- 537
-		return tostring(prefix) .. ": " .. tostring(data.text) -- 541
-	end -- 535
-end -- 534
-if SERVER then -- 542
-	OOC.Parse = function(self, ply, lang, cmd, text) -- 545
-		local sid = ply:SteamID() -- 546
-		local r = util.SharedRandom(sid, 0, 255, 1) -- 547
-		local g = util.SharedRandom(sid, 0, 255, 2) -- 548
-		local b = util.SharedRandom(sid, 0, 255, 3) -- 549
-		local color = Color(r, g, b) -- 550
-		local rainbow_name = ply:HasDonation("rainbow") and (ply:GetInfoNum("lfr_rainbow_username", 1) == 1) -- 551
-		return { -- 552
-			name = ply:SteamName(), -- 552
-			color = color, -- 552
-			text = text, -- 552
-			rainbow_name = rainbow_name -- 552
-		} -- 552
-	end -- 545
-end -- 542
-local LOOC -- 555
-do -- 555
-	local _class_0 -- 555
-	local _parent_0 = CHAT_CMD -- 555
-	local _base_0 = { -- 555
-		name = "Local OOC", -- 557
-		desc = "Local out-of-character chat.", -- 558
-		typing = "Typing...", -- 560
-		commands = { -- 560
-			"looc" -- 560
-		}, -- 561
-		aliases = { -- 561
-			"[[", -- 561
-			".//" -- 561
-		}, -- 563
-		range = 400, -- 565
-		tabs = TABS_LOOC, -- 566
-		log_category = "ooc", -- 568
-		color = Color(138, 185, 209), -- 570
-		font = "Spleen_Chat_Small" -- 555
-	} -- 555
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 570
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 555
-			_base_0[_key_0] = _val_0 -- 555
-		end -- 555
-	end -- 570
-	if _base_0.__index == nil then -- 555
-		_base_0.__index = _base_0 -- 555
-	end -- 570
-	setmetatable(_base_0, _parent_0.__base) -- 555
-	_class_0 = setmetatable({ -- 555
-		__init = function(self, ...) -- 555
-			return _class_0.__parent.__init(self, ...) -- 555
-		end, -- 555
-		__base = _base_0, -- 555
-		__name = "LOOC", -- 555
-		__parent = _parent_0 -- 555
-	}, { -- 555
-		__index = function(cls, name) -- 555
-			local val = rawget(_base_0, name) -- 555
-			if val == nil then -- 555
-				local parent = rawget(cls, "__parent") -- 555
-				if parent then -- 555
-					return parent[name] -- 555
-				end -- 555
-			else -- 555
-				return val -- 555
-			end -- 555
-		end, -- 555
-		__call = function(cls, ...) -- 555
-			local _self_0 = setmetatable({ }, _base_0) -- 555
-			cls.__init(_self_0, ...) -- 555
-			return _self_0 -- 555
-		end -- 555
-	}) -- 555
-	_base_0.__class = _class_0 -- 555
-	if _parent_0.__inherited then -- 555
-		_parent_0.__inherited(_parent_0, _class_0) -- 555
-	end -- 555
-	LOOC = _class_0 -- 555
-end -- 570
-if CLIENT then -- 572
-	LOOC.OnReceive = function(self, data) -- 573
-		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC-LOCAL]</c> <c=" .. tostring(data.color) .. ">" .. tostring(data.name) .. "</c>: " .. tostring(data.text) -- 573
-	end -- 573
-end -- 572
-if SERVER then -- 574
-	LOOC.Parse = function(self, ply, lang, cmd, text) -- 575
-		return { -- 575
-			name = ply:Name(), -- 575
-			color = team.GetColor(ply:Team()), -- 575
-			text = text -- 575
-		} -- 575
-	end -- 575
-end -- 574
+	Godcast.OnReceive = function(self, data) -- 503
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[ORACLEKOM] <wiggle>" .. tostring(data.text) -- 503
+	end -- 503
+end -- 501
+if SERVER then -- 504
+	Broadcast.Parse = function(self, ply, lang, cmd, text) -- 505
+		text = self:Process(ply, text) -- 506
+		ply:EmitSound("XOMBOKOM") -- 507
+		return { -- 508
+			text = text -- 508
+		} -- 508
+	end -- 505
+	Godcast.Parse = function(self, ply, lang, cmd, text) -- 510
+		text = self:Process(ply, text) -- 511
+		ply:EmitSound("DEUS") -- 512
+		ply:AddDespair(5) -- 513
+		net.Start("evilrp_frighten") -- 514
+		net.Send(ply) -- 515
+		ply:Notify("<c=200,0,0> " .. tostring(text) .. ".") -- 516
+		return { -- 517
+			text = text -- 517
+		} -- 517
+	end -- 510
+end -- 504
+local OOC -- 520
+do -- 520
+	local _class_0 -- 520
+	local _parent_0 = CHAT_CMD -- 520
+	local _base_0 = { -- 520
+		name = "OOC", -- 522
+		desc = "Global out-of-character chat.", -- 523
+		typing = "Typing...", -- 525
+		commands = { -- 525
+			"ooc" -- 525
+		}, -- 526
+		aliases = { -- 526
+			"//" -- 526
+		}, -- 528
+		tabs = TAB_OOC, -- 529
+		log_category = "ooc", -- 531
+		color = Color(200, 0, 0), -- 533
+		font = "Spleen_Chat_Small" -- 520
+	} -- 520
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 533
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 520
+			_base_0[_key_0] = _val_0 -- 520
+		end -- 520
+	end -- 533
+	if _base_0.__index == nil then -- 520
+		_base_0.__index = _base_0 -- 520
+	end -- 533
+	setmetatable(_base_0, _parent_0.__base) -- 520
+	_class_0 = setmetatable({ -- 520
+		__init = function(self, ...) -- 520
+			return _class_0.__parent.__init(self, ...) -- 520
+		end, -- 520
+		__base = _base_0, -- 520
+		__name = "OOC", -- 520
+		__parent = _parent_0 -- 520
+	}, { -- 520
+		__index = function(cls, name) -- 520
+			local val = rawget(_base_0, name) -- 520
+			if val == nil then -- 520
+				local parent = rawget(cls, "__parent") -- 520
+				if parent then -- 520
+					return parent[name] -- 520
+				end -- 520
+			else -- 520
+				return val -- 520
+			end -- 520
+		end, -- 520
+		__call = function(cls, ...) -- 520
+			local _self_0 = setmetatable({ }, _base_0) -- 520
+			cls.__init(_self_0, ...) -- 520
+			return _self_0 -- 520
+		end -- 520
+	}) -- 520
+	_base_0.__class = _class_0 -- 520
+	if _parent_0.__inherited then -- 520
+		_parent_0.__inherited(_parent_0, _class_0) -- 520
+	end -- 520
+	OOC = _class_0 -- 520
+end -- 533
+if CLIENT then -- 535
+	OOC.OnReceive = function(self, data) -- 536
+		local prefix -- 537
+		if data.rainbow_name then -- 538
+			prefix = "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC]</c> <rgb=1,13,30>" .. tostring(data.name) .. "</rgb>" -- 539
+		else -- 541
+			prefix = "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC]</c> <c=" .. tostring(data.color) .. ">" .. tostring(data.name) .. "</c>" -- 541
+		end -- 538
+		return tostring(prefix) .. ": " .. tostring(data.text) -- 542
+	end -- 536
+end -- 535
+if SERVER then -- 543
+	OOC.Parse = function(self, ply, lang, cmd, text) -- 546
+		local sid = ply:SteamID() -- 547
+		local r = util.SharedRandom(sid, 0, 255, 1) -- 548
+		local g = util.SharedRandom(sid, 0, 255, 2) -- 549
+		local b = util.SharedRandom(sid, 0, 255, 3) -- 550
+		local color = Color(r, g, b) -- 551
+		local rainbow_name = ply:HasDonation("rainbow") and (ply:GetInfoNum("lfr_rainbow_username", 1) == 1) -- 552
+		return { -- 553
+			name = ply:SteamName(), -- 553
+			color = color, -- 553
+			text = text, -- 553
+			rainbow_name = rainbow_name -- 553
+		} -- 553
+	end -- 546
+end -- 543
+local LOOC -- 556
+do -- 556
+	local _class_0 -- 556
+	local _parent_0 = CHAT_CMD -- 556
+	local _base_0 = { -- 556
+		name = "Local OOC", -- 558
+		desc = "Local out-of-character chat.", -- 559
+		typing = "Typing...", -- 561
+		commands = { -- 561
+			"looc" -- 561
+		}, -- 562
+		aliases = { -- 562
+			"[[", -- 562
+			".//" -- 562
+		}, -- 564
+		range = 400, -- 566
+		tabs = TABS_LOOC, -- 567
+		log_category = "ooc", -- 569
+		color = Color(138, 185, 209), -- 571
+		font = "Spleen_Chat_Small" -- 556
+	} -- 556
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 571
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 556
+			_base_0[_key_0] = _val_0 -- 556
+		end -- 556
+	end -- 571
+	if _base_0.__index == nil then -- 556
+		_base_0.__index = _base_0 -- 556
+	end -- 571
+	setmetatable(_base_0, _parent_0.__base) -- 556
+	_class_0 = setmetatable({ -- 556
+		__init = function(self, ...) -- 556
+			return _class_0.__parent.__init(self, ...) -- 556
+		end, -- 556
+		__base = _base_0, -- 556
+		__name = "LOOC", -- 556
+		__parent = _parent_0 -- 556
+	}, { -- 556
+		__index = function(cls, name) -- 556
+			local val = rawget(_base_0, name) -- 556
+			if val == nil then -- 556
+				local parent = rawget(cls, "__parent") -- 556
+				if parent then -- 556
+					return parent[name] -- 556
+				end -- 556
+			else -- 556
+				return val -- 556
+			end -- 556
+		end, -- 556
+		__call = function(cls, ...) -- 556
+			local _self_0 = setmetatable({ }, _base_0) -- 556
+			cls.__init(_self_0, ...) -- 556
+			return _self_0 -- 556
+		end -- 556
+	}) -- 556
+	_base_0.__class = _class_0 -- 556
+	if _parent_0.__inherited then -- 556
+		_parent_0.__inherited(_parent_0, _class_0) -- 556
+	end -- 556
+	LOOC = _class_0 -- 556
+end -- 571
+if CLIENT then -- 573
+	LOOC.OnReceive = function(self, data) -- 574
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC-LOCAL]</c> <c=" .. tostring(data.color) .. ">" .. tostring(data.name) .. "</c>: " .. tostring(data.text) -- 574
+	end -- 574
+end -- 573
+if SERVER then -- 575
+	LOOC.Parse = function(self, ply, lang, cmd, text) -- 576
+		return { -- 576
+			name = ply:Name(), -- 576
+			color = team.GetColor(ply:Team()), -- 576
+			text = text -- 576
+		} -- 576
+	end -- 576
+end -- 575

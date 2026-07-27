@@ -54,19 +54,30 @@ reward_stem_cells_on_kill = function(ply, attacker, dmg) -- 29
 	local attackerJob = RPExtraTeams[attacker:Team()] -- 33
 	local plyJob = RPExtraTeams[ply:Team()] -- 34
 	if attackerJob.category == plyJob.category then -- 35
-		if attacker:Team() == TEAM_EMPEROR then -- 36
-			attacker:Notify("<c=0,200,0>Bad dogs must be put down.") -- 37
-			return -- 38
+		if attackerJob.category == "Royalists" then -- 36
+			if ply:Team() == TEAM_EMPEROR then -- 37
+				local amount = -50 -- 38
+				attacker:AddStemCells(amount) -- 39
+				attacker:Notify("<c=200,0,0>MY LEADER! MY STEM CELLS!!!") -- 40
+				attacker:AddDespair(60) -- 41
+				net.Start("evilrp_frighten") -- 42
+				net.Send(attacker) -- 43
+				return -- 44
+			end -- 37
 		end -- 36
-		local amount = -2 -- 39
-		attacker:AddStemCells(amount) -- 40
-		attacker:Notify("<c=200,0,0>I HAVE KILLED MY OWN BROTHER.") -- 41
-		net.Start("evilrp_frighten") -- 42
-		net.Send(attacker) -- 43
-		return -- 44
+		if attacker:Team() == TEAM_EMPEROR then -- 45
+			attacker:Notify("<c=0,200,0>Bad dogs must be put down.") -- 46
+			return -- 47
+		end -- 45
+		local amount = -2 -- 48
+		attacker:AddStemCells(amount) -- 49
+		attacker:Notify("<c=200,0,0>I HAVE KILLED MY OWN BROTHER.") -- 50
+		net.Start("evilrp_frighten") -- 51
+		net.Send(attacker) -- 52
+		return -- 53
 	end -- 35
-	local amount = 1 -- 46
-	return attacker:AddStemCells(amount) -- 47
+	local amount = 1 -- 55
+	return attacker:AddStemCells(amount) -- 56
 end -- 29
-hook.Add("DoPlayerDeath", "evilrp_lose_stem_cells_on_death", lose_stem_cells_on_death) -- 50
-return hook.Add("DoPlayerDeath", "evilrp_reward_stem_cells_on_kill", reward_stem_cells_on_kill) -- 51
+hook.Add("DoPlayerDeath", "evilrp_lose_stem_cells_on_death", lose_stem_cells_on_death) -- 59
+return hook.Add("DoPlayerDeath", "evilrp_reward_stem_cells_on_kill", reward_stem_cells_on_kill) -- 60

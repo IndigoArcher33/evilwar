@@ -33,6 +33,15 @@ reward_stem_cells_on_kill = (ply, attacker, dmg) ->
   attackerJob = RPExtraTeams[attacker\Team!]
   plyJob = RPExtraTeams[ply\Team!]
   if attackerJob.category == plyJob.category
+    if attackerJob.category == "Royalists"
+      if ply\Team! == TEAM_EMPEROR
+        amount = -50
+        attacker\AddStemCells(amount)
+        attacker\Notify"<c=200,0,0>MY LEADER! MY STEM CELLS!!!"
+        attacker\AddDespair(60)
+        net.Start"evilrp_frighten"
+        net.Send attacker
+        return
     if attacker\Team! == TEAM_EMPEROR
       attacker\Notify"<c=0,200,0>Bad dogs must be put down."
       return

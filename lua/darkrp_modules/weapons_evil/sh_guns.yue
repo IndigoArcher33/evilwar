@@ -23,8 +23,8 @@ class Bodyguard extends EvilRP_Weapon
     ClipSize: 5
     DefaultClip: 10
 
-    Damage: 35
-    Delay: 60 / 120
+    Damage: 20
+    Delay: 60 / 60
 
     Range: 400
     Accuracy: 12
@@ -172,8 +172,8 @@ class Candlewood extends EvilRP_Weapon
   Primary: {
     Ammo: "Buckshot"
 
-    ClipSize: 4
-    DefaultClip: 8
+    ClipSize: 5
+    DefaultClip: 10
 
     Damage: 15
     PumpAction: false -- confusingly this must be false, because the animations
@@ -363,8 +363,8 @@ class Obrez extends EvilRP_Weapon
     
   UseHands: true
   ViewModelTargetFOV: 54
-  ViewModel: Model"models/weapons/c_obrez.mdl"
-  WorldModel: Model"models/weapons/w_obrez.mdl"
+  ViewModel: Model"models/tnb/weapons/c_obrez.mdl"
+  WorldModel: Model"models/tnb/weapons/w_obrez.mdl"
     
   HoldType: "ar2"
   LowerHoldType: "passive"
@@ -380,7 +380,7 @@ class Obrez extends EvilRP_Weapon
     Delay: 1.25
       
     Range: 300
-    Accuracy: 20
+    Accuracy: 14
 
     RangeModifier: 0.95
 
@@ -419,14 +419,14 @@ class Owler extends EvilRP_Weapon
   Primary: {
     Ammo: "SMG1"
 
-    ClipSize: 20
+    ClipSize: 15
     DefaultClip: 40
 
-    Damage: 20
+    Damage: 10
     Delay: 60 / 1000
 
     Range: 200
-    Accuracy: 8
+    Accuracy: 24
 
     RangeModifier: 0.55
 
@@ -524,8 +524,8 @@ class Painkiller extends EvilRP_Weapon
     ClipSize: 5
     DefaultClip: 10
 
-    Damage: 60
-    Delay: 60 / 360
+    Damage: 45
+    Delay: 60 / 80
 
     Range: 1200
     Accuracy: 12
@@ -881,9 +881,173 @@ class Obliterator extends EvilRP_Weapon
       Sound: "Weapon_Pistol.Reload"
     }
 
+    Sound: "tekka/weapons/weapon_hk416.wav"
+    TracerName: "Tracer"
+
+  }
+
+
+class Viper extends EvilRP_Weapon 
+  PrintName: "Viper"
+  Description: "An OLD sub-machine gun. It's impossible to find one that was freshly manufactured nowadays."
+
+  Slot: 2
+
+  Price: 2500
+  Spawnable: true
+
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/tnb/weapons/c_sten.mdl"
+  WorldModel: Model"models/tnb/weapons/w_sten.mdl"
+
+  HoldType: "ar2"
+  LowerHoldType: "passive"
+
+  Firemode: -1
+  Primary: {
+    Ammo: "AR2"
+
+    ClipSize: 25
+    DefaultClip: 50
+
+    Damage: 15
+    Delay: 60 / 525
+
+    Range: 900
+    Accuracy: 13
+
+    RangeModifier: 0.99
+
+    Recoil: {
+      MinAng: Angle(5.8, -0.9, 0)
+      MaxAng: Angle(10.8, 0.9, 0)
+      Punch: 0.7
+      Ratio: 0.5
+    }
+
+    Reload: {
+      Sound: "Weapon_Pistol.Reload"
+    }
+
     Sound: "tekka/weapons/weapon_k98.wav"
     TracerName: "Tracer"
 
   }
+
+class Warrant_Fire extends SOUND
+  sound: "tekka/weapons/weapon_shotgun2.wav"
+  chan: CHAN_WEAPON
+
+class Warrant extends EvilRP_Weapon 
+  PrintName: "Warrant"
+  Description: "A pocket-sized shotgun with a bad reputation of horribly failing at its sole purpose, close-ranged combat."
+
+  Slot: 1
+    
+  Price: 2600
+
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/tnb/weapons/c_shorty.mdl"
+  WorldModel: Model"models/tnb/weapons/w_shorty.mdl"
+    
+  HoldType: "shotgun"
+  LowerHoldType: "passive"
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "Buckshot"
+
+    ClipSize: 3
+    DefaultClip: 9
+
+    Damage: 10
+    PumpAction: false -- confusingly this must be false, because the animations
+                      -- are from CS:S
+    Pump:
+      Delay: 0.6
+      Sound: "weapons/shotgun/shotgun_cock.wav"
+      FromEmpty: true
+      
+    Count: 5
+    Delay: -1
+
+    Range: 400
+    Accuracy: 16
+
+    RangeModifier: 0.7
+
+    Recoil: {
+      MinAng: Angle(15, -2, 0)
+      MaxAng: Angle(20, 2, 0)
+      Punch: 0.9
+      Ratio: 0.8
+    }
+        
+    Reload: {
+      Amount: 1
+      Sound: "Reload_Shell"
+      Shotgun: true
+    }
+      
+    Sound: "Warrant_Fire"
+    TracerName: "Tracer"
+  }
+
+
+class Knell extends EvilRP_Weapon 
+  PrintName: "Knell"
+  Description: "A small but reliable revolver, formerly used for executions."
+
+  Slot: 1
+    
+  Spawnable: true
+    
+  UseHands: true
+  ViewModelTargetFOV: 54
+  ViewModel: Model"models/tnb/weapons/c_nagant.mdl"
+  WorldModel: Model"models/tnb/weapons/w_nagant.mdl"
+    
+  HoldType: "revolver"
+  LowerHoldType: "normal"
+
+  Price: 1400
+    
+  Firemode: 0
+  Primary: {
+    Ammo: "357"
+
+    ClipSize: 8
+    DefaultClip: 16
+
+    Damage: 24
+    Delay: 60 / 111
+
+    Range: 400
+    Accuracy: 11
+
+    RangeModifier: 0.78
+
+    Recoil: {
+      MinAng: Angle(6.2, -0.3, 0)
+      MaxAng: Angle(8.2, 0.3, 0)
+      Punch: 0.9
+      Ratio: 0.3
+    }
+        
+    Reload: {
+      Sound: "Weapon_357.Reload"
+    }
+      
+    Sound: "tekka/weapons/weapon_m1.wav"
+    TracerName: "Tracer"
+  }
+
+
+
+
 
 
