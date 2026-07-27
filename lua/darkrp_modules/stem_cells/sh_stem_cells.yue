@@ -6,6 +6,7 @@ meta = FindMetaTable"Player"
 meta[k] = v for k, v in pairs{
   -- hunger
   AddStemCells: (amt) =>
+    return if amt == 0
     c = @GetStemCells!
     c = math.Clamp(c + amt, 0, 666)
     @SetStemCells c

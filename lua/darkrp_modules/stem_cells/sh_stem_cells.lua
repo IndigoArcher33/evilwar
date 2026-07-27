@@ -58,39 +58,42 @@ end -- 3
 local meta = FindMetaTable("Player") -- 5
 for k, v in pairs({ -- 8
 	AddStemCells = function(self, amt) -- 8
-		local c = self:GetStemCells() -- 9
-		c = math.Clamp(c + amt, 0, 666) -- 10
-		self:SetStemCells(c) -- 11
-		local cells = "cells" -- 12
-		if math.abs(amt) == 1 then -- 13
-			cells = "cell" -- 13
-		end -- 13
-		local amt_str -- 14
-		if amt == 1 then -- 15
-			amt_str = "a" -- 16
-		else -- 18
-			amt_str = string.english_number(math.abs(amt)) -- 18
-		end -- 15
-		if amt >= 0 then -- 19
-			self:EmitSound("StemSound") -- 20
-			return self:Notify("<c=0,200,0>Gained " .. tostring(amt_str) .. " stem " .. tostring(cells) .. ".") -- 21
-		else -- 23
-			return self:Notify("<c=200,0,0>Lost " .. tostring(amt_str) .. " stem " .. tostring(cells) .. ".") -- 23
-		end -- 19
+		if amt == 0 then -- 9
+			return -- 9
+		end -- 9
+		local c = self:GetStemCells() -- 10
+		c = math.Clamp(c + amt, 0, 666) -- 11
+		self:SetStemCells(c) -- 12
+		local cells = "cells" -- 13
+		if math.abs(amt) == 1 then -- 14
+			cells = "cell" -- 14
+		end -- 14
+		local amt_str -- 15
+		if amt == 1 then -- 16
+			amt_str = "a" -- 17
+		else -- 19
+			amt_str = string.english_number(math.abs(amt)) -- 19
+		end -- 16
+		if amt >= 0 then -- 20
+			self:EmitSound("StemSound") -- 21
+			return self:Notify("<c=0,200,0>Gained " .. tostring(amt_str) .. " stem " .. tostring(cells) .. ".") -- 22
+		else -- 24
+			return self:Notify("<c=200,0,0>Lost " .. tostring(amt_str) .. " stem " .. tostring(cells) .. ".") -- 24
+		end -- 20
 	end, -- 8
-	SetStemCells = function(self, amt) -- 24
-		if SERVER then -- 25
-			sql.Query("UPDATE evilrp_stem_cells SET Amount = '" .. tostring(amt) .. "' WHERE SteamID = '" .. tostring(self:SteamID64()) .. "'") -- 26
-			return self:SetNWFloat("evilrp_stem_cells", amt) -- 27
-		end -- 25
-	end, -- 24
-	GetStemCells = function(self) -- 28
-		if SERVER then -- 29
-			return tonumber(sql.Query("SELECT Amount FROM evilrp_stem_cells WHERE SteamID = '" .. tostring(self:SteamID64()) .. "'")[1].Amount) -- 30
-		else -- 32
-			return self:GetNWFloat("evilrp_stem_cells", 0) -- 32
-		end -- 29
-	end -- 28
-}) do -- 33
+	SetStemCells = function(self, amt) -- 25
+		if SERVER then -- 26
+			sql.Query("UPDATE evilrp_stem_cells SET Amount = '" .. tostring(amt) .. "' WHERE SteamID = '" .. tostring(self:SteamID64()) .. "'") -- 27
+			return self:SetNWFloat("evilrp_stem_cells", amt) -- 28
+		end -- 26
+	end, -- 25
+	GetStemCells = function(self) -- 29
+		if SERVER then -- 30
+			return tonumber(sql.Query("SELECT Amount FROM evilrp_stem_cells WHERE SteamID = '" .. tostring(self:SteamID64()) .. "'")[1].Amount) -- 31
+		else -- 33
+			return self:GetNWFloat("evilrp_stem_cells", 0) -- 33
+		end -- 30
+	end -- 29
+}) do -- 34
 	meta[k] = v -- 6
 end -- 6

@@ -17,7 +17,7 @@ lose_stem_cells_on_death = (ply, attacker, dmg) ->
     amount -= 1
     ply.death_by_neglect = nil
   old_amt = ply\GetStemCells!
-  ply\AddStemCells(amount)
+  ply\AddStemCells(amount) --if amount ~= 0  no need to guard this anymore
   if old_amt ~= ply\GetStemCells! -- stem cells WERE lost on death if true
     timer.Simple( 1, ->
       return unless ply and ply\IsValid! and ply\IsPlayer!
