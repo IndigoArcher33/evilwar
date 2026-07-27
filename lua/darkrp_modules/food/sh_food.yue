@@ -521,7 +521,7 @@ class BootLeg extends Drink
 
 
   UseText: {
-    "takes small swigs of the bootlegged wine, wincing in pain as the strong liquor trickles down and burns his scabbed and cut skin."
+    "Takes a swig of the bootlegged wine, wincing as the strong liquor trickles down and burns his scabbed and cut skin."
     "tries to drink all of the bootlegged wine, before gasping heavily."
     "breathes in before taking a massive swig of the bootlegged wine, grimacing upon burning his mouth." }
  

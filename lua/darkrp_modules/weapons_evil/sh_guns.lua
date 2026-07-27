@@ -20,8 +20,8 @@ do -- 1
 			Ammo = "357", -- 21
 			ClipSize = 5, -- 23
 			DefaultClip = 10, -- 24
-			Damage = 35, -- 26
-			Delay = 60 / 120, -- 27
+			Damage = 20, -- 26
+			Delay = 60 / 60, -- 27
 			Range = 400, -- 29
 			Accuracy = 12, -- 30
 			RangeModifier = 0.78, -- 32
@@ -359,8 +359,8 @@ do -- 153
 		Firemode = 0, -- 172
 		Primary = { -- 173
 			Ammo = "Buckshot", -- 173
-			ClipSize = 4, -- 175
-			DefaultClip = 8, -- 176
+			ClipSize = 5, -- 175
+			DefaultClip = 10, -- 176
 			Damage = 15, -- 178
 			PumpAction = false, -- 179
 			Pump = { -- 182
@@ -678,8 +678,8 @@ do -- 354
 		Spawnable = true, -- 364
 		UseHands = true, -- 365
 		ViewModelTargetFOV = 54, -- 366
-		ViewModel = Model("models/weapons/c_obrez.mdl"), -- 367
-		WorldModel = Model("models/weapons/w_obrez.mdl"), -- 369
+		ViewModel = Model("models/tnb/weapons/c_obrez.mdl"), -- 367
+		WorldModel = Model("models/tnb/weapons/w_obrez.mdl"), -- 369
 		HoldType = "ar2", -- 370
 		LowerHoldType = "passive", -- 372
 		Firemode = 0, -- 373
@@ -690,7 +690,7 @@ do -- 354
 			Damage = 40, -- 379
 			Delay = 1.25, -- 380
 			Range = 300, -- 382
-			Accuracy = 20, -- 383
+			Accuracy = 14, -- 383
 			RangeModifier = 0.95, -- 385
 			Recoil = { -- 388
 				MinAng = Angle(15 - 6.2, 0), -- 388
@@ -763,12 +763,12 @@ do -- 402
 		Firemode = -1, -- 419
 		Primary = { -- 420
 			Ammo = "SMG1", -- 420
-			ClipSize = 20, -- 422
+			ClipSize = 15, -- 422
 			DefaultClip = 40, -- 423
-			Damage = 20, -- 425
+			Damage = 10, -- 425
 			Delay = 60 / 1000, -- 426
 			Range = 200, -- 428
-			Accuracy = 8, -- 429
+			Accuracy = 24, -- 429
 			RangeModifier = 0.55, -- 431
 			Recoil = { -- 434
 				MinAng = Angle(2.3, -0.5, 0), -- 434
@@ -928,8 +928,8 @@ do -- 502
 			Ammo = "Pistol", -- 522
 			ClipSize = 5, -- 524
 			DefaultClip = 10, -- 525
-			Damage = 60, -- 527
-			Delay = 60 / 360, -- 528
+			Damage = 45, -- 527
+			Delay = 60 / 80, -- 528
 			Range = 1200, -- 530
 			Accuracy = 12, -- 531
 			RangeModifier = 0.90, -- 533
@@ -1493,7 +1493,7 @@ do -- 841
 			Reload = { -- 881
 				Sound = "Weapon_Pistol.Reload" -- 881
 			}, -- 880
-			Sound = "tekka/weapons/weapon_k98.wav", -- 884
+			Sound = "tekka/weapons/weapon_hk416.wav", -- 884
 			TracerName = "Tracer" -- 885
 		} -- 841
 	} -- 841
@@ -1536,5 +1536,299 @@ do -- 841
 		_parent_0.__inherited(_parent_0, _class_0) -- 841
 	end -- 841
 	Obliterator = _class_0 -- 841
-	return _class_0 -- 887
 end -- 887
+local Viper -- 890
+do -- 890
+	local _class_0 -- 890
+	local _parent_0 = EvilRP_Weapon -- 890
+	local _base_0 = { -- 890
+		PrintName = "Viper", -- 892
+		Description = "An OLD sub-machine gun. It's impossible to find one that was freshly manufactured nowadays.", -- 894
+		Slot = 2, -- 896
+		Price = 2500, -- 897
+		Spawnable = true, -- 899
+		UseHands = true, -- 900
+		ViewModelTargetFOV = 54, -- 901
+		ViewModel = Model("models/tnb/weapons/c_sten.mdl"), -- 902
+		WorldModel = Model("models/tnb/weapons/w_sten.mdl"), -- 904
+		HoldType = "ar2", -- 905
+		LowerHoldType = "passive", -- 907
+		Firemode = -1, -- 908
+		Primary = { -- 909
+			Ammo = "AR2", -- 909
+			ClipSize = 25, -- 911
+			DefaultClip = 50, -- 912
+			Damage = 15, -- 914
+			Delay = 60 / 525, -- 915
+			Range = 900, -- 917
+			Accuracy = 13, -- 918
+			RangeModifier = 0.99, -- 920
+			Recoil = { -- 923
+				MinAng = Angle(5.8, -0.9, 0), -- 923
+				MaxAng = Angle(10.8, 0.9, 0), -- 924
+				Punch = 0.7, -- 925
+				Ratio = 0.5 -- 926
+			}, -- 922
+			Reload = { -- 930
+				Sound = "Weapon_Pistol.Reload" -- 930
+			}, -- 929
+			Sound = "tekka/weapons/weapon_k98.wav", -- 933
+			TracerName = "Tracer" -- 934
+		} -- 890
+	} -- 890
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 936
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 890
+			_base_0[_key_0] = _val_0 -- 890
+		end -- 890
+	end -- 936
+	if _base_0.__index == nil then -- 890
+		_base_0.__index = _base_0 -- 890
+	end -- 936
+	setmetatable(_base_0, _parent_0.__base) -- 890
+	_class_0 = setmetatable({ -- 890
+		__init = function(self, ...) -- 890
+			return _class_0.__parent.__init(self, ...) -- 890
+		end, -- 890
+		__base = _base_0, -- 890
+		__name = "Viper", -- 890
+		__parent = _parent_0 -- 890
+	}, { -- 890
+		__index = function(cls, name) -- 890
+			local val = rawget(_base_0, name) -- 890
+			if val == nil then -- 890
+				local parent = rawget(cls, "__parent") -- 890
+				if parent then -- 890
+					return parent[name] -- 890
+				end -- 890
+			else -- 890
+				return val -- 890
+			end -- 890
+		end, -- 890
+		__call = function(cls, ...) -- 890
+			local _self_0 = setmetatable({ }, _base_0) -- 890
+			cls.__init(_self_0, ...) -- 890
+			return _self_0 -- 890
+		end -- 890
+	}) -- 890
+	_base_0.__class = _class_0 -- 890
+	if _parent_0.__inherited then -- 890
+		_parent_0.__inherited(_parent_0, _class_0) -- 890
+	end -- 890
+	Viper = _class_0 -- 890
+end -- 936
+local Warrant_Fire -- 938
+do -- 938
+	local _class_0 -- 938
+	local _parent_0 = SOUND -- 938
+	local _base_0 = { -- 938
+		sound = "tekka/weapons/weapon_shotgun2.wav", -- 940
+		chan = CHAN_WEAPON -- 938
+	} -- 938
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 940
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 938
+			_base_0[_key_0] = _val_0 -- 938
+		end -- 938
+	end -- 940
+	if _base_0.__index == nil then -- 938
+		_base_0.__index = _base_0 -- 938
+	end -- 940
+	setmetatable(_base_0, _parent_0.__base) -- 938
+	_class_0 = setmetatable({ -- 938
+		__init = function(self, ...) -- 938
+			return _class_0.__parent.__init(self, ...) -- 938
+		end, -- 938
+		__base = _base_0, -- 938
+		__name = "Warrant_Fire", -- 938
+		__parent = _parent_0 -- 938
+	}, { -- 938
+		__index = function(cls, name) -- 938
+			local val = rawget(_base_0, name) -- 938
+			if val == nil then -- 938
+				local parent = rawget(cls, "__parent") -- 938
+				if parent then -- 938
+					return parent[name] -- 938
+				end -- 938
+			else -- 938
+				return val -- 938
+			end -- 938
+		end, -- 938
+		__call = function(cls, ...) -- 938
+			local _self_0 = setmetatable({ }, _base_0) -- 938
+			cls.__init(_self_0, ...) -- 938
+			return _self_0 -- 938
+		end -- 938
+	}) -- 938
+	_base_0.__class = _class_0 -- 938
+	if _parent_0.__inherited then -- 938
+		_parent_0.__inherited(_parent_0, _class_0) -- 938
+	end -- 938
+	Warrant_Fire = _class_0 -- 938
+end -- 940
+local Warrant -- 942
+do -- 942
+	local _class_0 -- 942
+	local _parent_0 = EvilRP_Weapon -- 942
+	local _base_0 = { -- 942
+		PrintName = "Warrant", -- 944
+		Description = "A pocket-sized shotgun with a bad reputation of horribly failing at its sole purpose, close-ranged combat.", -- 946
+		Slot = 1, -- 948
+		Price = 2600, -- 950
+		Spawnable = true, -- 952
+		UseHands = true, -- 953
+		ViewModelTargetFOV = 54, -- 954
+		ViewModel = Model("models/tnb/weapons/c_shorty.mdl"), -- 955
+		WorldModel = Model("models/tnb/weapons/w_shorty.mdl"), -- 957
+		HoldType = "shotgun", -- 958
+		LowerHoldType = "passive", -- 960
+		Firemode = 0, -- 961
+		Primary = { -- 962
+			Ammo = "Buckshot", -- 962
+			ClipSize = 3, -- 964
+			DefaultClip = 9, -- 965
+			Damage = 10, -- 967
+			PumpAction = false, -- 968
+			Pump = { -- 971
+				Delay = 0.6, -- 971
+				Sound = "weapons/shotgun/shotgun_cock.wav", -- 972
+				FromEmpty = true -- 973
+			}, -- 970
+			Count = 5, -- 975
+			Delay = -1, -- 976
+			Range = 400, -- 978
+			Accuracy = 16, -- 979
+			RangeModifier = 0.7, -- 981
+			Recoil = { -- 984
+				MinAng = Angle(15, -2, 0), -- 984
+				MaxAng = Angle(20, 2, 0), -- 985
+				Punch = 0.9, -- 986
+				Ratio = 0.8 -- 987
+			}, -- 983
+			Reload = { -- 991
+				Amount = 1, -- 991
+				Sound = "Reload_Shell", -- 992
+				Shotgun = true -- 993
+			}, -- 990
+			Sound = "Warrant_Fire", -- 996
+			TracerName = "Tracer" -- 997
+		} -- 942
+	} -- 942
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 998
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 942
+			_base_0[_key_0] = _val_0 -- 942
+		end -- 942
+	end -- 998
+	if _base_0.__index == nil then -- 942
+		_base_0.__index = _base_0 -- 942
+	end -- 998
+	setmetatable(_base_0, _parent_0.__base) -- 942
+	_class_0 = setmetatable({ -- 942
+		__init = function(self, ...) -- 942
+			return _class_0.__parent.__init(self, ...) -- 942
+		end, -- 942
+		__base = _base_0, -- 942
+		__name = "Warrant", -- 942
+		__parent = _parent_0 -- 942
+	}, { -- 942
+		__index = function(cls, name) -- 942
+			local val = rawget(_base_0, name) -- 942
+			if val == nil then -- 942
+				local parent = rawget(cls, "__parent") -- 942
+				if parent then -- 942
+					return parent[name] -- 942
+				end -- 942
+			else -- 942
+				return val -- 942
+			end -- 942
+		end, -- 942
+		__call = function(cls, ...) -- 942
+			local _self_0 = setmetatable({ }, _base_0) -- 942
+			cls.__init(_self_0, ...) -- 942
+			return _self_0 -- 942
+		end -- 942
+	}) -- 942
+	_base_0.__class = _class_0 -- 942
+	if _parent_0.__inherited then -- 942
+		_parent_0.__inherited(_parent_0, _class_0) -- 942
+	end -- 942
+	Warrant = _class_0 -- 942
+end -- 998
+local Knell -- 1001
+do -- 1001
+	local _class_0 -- 1001
+	local _parent_0 = EvilRP_Weapon -- 1001
+	local _base_0 = { -- 1001
+		PrintName = "Knell", -- 1003
+		Description = "A small but reliable revolver, formerly used for executions.", -- 1005
+		Slot = 1, -- 1007
+		Spawnable = true, -- 1009
+		UseHands = true, -- 1010
+		ViewModelTargetFOV = 54, -- 1011
+		ViewModel = Model("models/tnb/weapons/c_nagant.mdl"), -- 1012
+		WorldModel = Model("models/tnb/weapons/w_nagant.mdl"), -- 1014
+		HoldType = "revolver", -- 1015
+		LowerHoldType = "normal", -- 1017
+		Price = 1400, -- 1019
+		Firemode = 0, -- 1020
+		Primary = { -- 1021
+			Ammo = "357", -- 1021
+			ClipSize = 8, -- 1023
+			DefaultClip = 16, -- 1024
+			Damage = 24, -- 1026
+			Delay = 60 / 111, -- 1027
+			Range = 400, -- 1029
+			Accuracy = 11, -- 1030
+			RangeModifier = 0.78, -- 1032
+			Recoil = { -- 1035
+				MinAng = Angle(6.2, -0.3, 0), -- 1035
+				MaxAng = Angle(8.2, 0.3, 0), -- 1036
+				Punch = 0.9, -- 1037
+				Ratio = 0.3 -- 1038
+			}, -- 1034
+			Reload = { -- 1042
+				Sound = "Weapon_357.Reload" -- 1042
+			}, -- 1041
+			Sound = "tekka/weapons/weapon_m1.wav", -- 1045
+			TracerName = "Tracer" -- 1046
+		} -- 1001
+	} -- 1001
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 1047
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 1001
+			_base_0[_key_0] = _val_0 -- 1001
+		end -- 1001
+	end -- 1047
+	if _base_0.__index == nil then -- 1001
+		_base_0.__index = _base_0 -- 1001
+	end -- 1047
+	setmetatable(_base_0, _parent_0.__base) -- 1001
+	_class_0 = setmetatable({ -- 1001
+		__init = function(self, ...) -- 1001
+			return _class_0.__parent.__init(self, ...) -- 1001
+		end, -- 1001
+		__base = _base_0, -- 1001
+		__name = "Knell", -- 1001
+		__parent = _parent_0 -- 1001
+	}, { -- 1001
+		__index = function(cls, name) -- 1001
+			local val = rawget(_base_0, name) -- 1001
+			if val == nil then -- 1001
+				local parent = rawget(cls, "__parent") -- 1001
+				if parent then -- 1001
+					return parent[name] -- 1001
+				end -- 1001
+			else -- 1001
+				return val -- 1001
+			end -- 1001
+		end, -- 1001
+		__call = function(cls, ...) -- 1001
+			local _self_0 = setmetatable({ }, _base_0) -- 1001
+			cls.__init(_self_0, ...) -- 1001
+			return _self_0 -- 1001
+		end -- 1001
+	}) -- 1001
+	_base_0.__class = _class_0 -- 1001
+	if _parent_0.__inherited then -- 1001
+		_parent_0.__inherited(_parent_0, _class_0) -- 1001
+	end -- 1001
+	Knell = _class_0 -- 1001
+	return _class_0 -- 1047
+end -- 1047
