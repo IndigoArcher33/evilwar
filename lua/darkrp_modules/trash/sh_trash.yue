@@ -195,9 +195,9 @@ class Plastic extends Trash
   SubmitSound: "Trash_Plastic"
 
   Refinement:
-    result: "polymer/refined"
-    time: 2
-    rust: 1
+    result: "polymer/thermoplastic"
+    time: 4
+    rust: 5
 
 class Twitchel extends Plastic
   Model: Model"models/props_junk/garbage_plasticbottle003a.mdl"

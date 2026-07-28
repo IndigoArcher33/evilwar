@@ -429,7 +429,7 @@ do -- 215
 				else -- 266
 					col = "200,200,0" -- 266
 					msgs = self.FuseMessages.success -- 267
-					happy = math.random(2, 6) -- 268
+					happy = math.random(1, 2) -- 268
 				end -- 258
 				ply:AddDespair(-happy) -- 269
 			elseif 4 == roll or 5 == roll then -- 270
@@ -484,50 +484,59 @@ do -- 215
 			if CLIENT then -- 304
 				return -- 304
 			end -- 304
-			if not IsValid(self.wire) and not self.broken and self:GetPrimed() then -- 305
-				self.broken = true -- 306
-				self:EmitSound("Padlock.Break") -- 307
-				if IsValid(self) then -- 308
-					self:Explode() -- 308
-				end -- 308
-				return -- 309
-			end -- 305
-			if IsValid(self.wire) and not self.broken and self:GetPrimed() and self:GetWired() then -- 311
-				local trace = { -- 313
-					start = self:LocalToWorld(self.wire.LPos1), -- 313
-					endpos = self.stick:GetPos() + Vector(0, 0, 2), -- 314
-					filter = { -- 315
-						self, -- 315
-						self.stick -- 315
-					} -- 315
-				} -- 312
-				local tr = util.TraceLine(trace) -- 317
-				if tr.Hit then -- 318
-					return self.wire:Remove() -- 319
-				end -- 318
-			end -- 311
-		end, -- 321
-		SetupTrap = function(self) -- 321
-			_class_0.__parent.__base.SetupTrap(self) -- 322
-			self.stick = ents.Create("prop_physics") -- 323
-			do -- 324
-				local _with_0 = self.stick -- 324
-				_with_0:SetPos(self:GetPos() + Vector(0, 0, 30)) -- 325
-				_with_0:SetModel("models/props_wasteland/prison_throwswitchbase001.mdl") -- 326
-				_with_0:Spawn() -- 327
-			end -- 324
-			self:DeleteOnRemove(self.stick) -- 329
-			self.wire = constraint.Rope(self, self.stick, 0, 0, Vector(0, 0, 0), Vector(1.5, 0, -2.8), 200, 0, 10, 0.05, "cable/cable2", false) -- 331
+			self:NextThink(CurTime() + 0.05) -- 305
+			if not IsValid(self.wire) and not self.broken and self:GetPrimed() then -- 307
+				self.broken = true -- 308
+				self:EmitSound("Padlock.Break") -- 309
+				if IsValid(self) then -- 310
+					self:Explode() -- 310
+				end -- 310
+				return -- 311
+			end -- 307
+			if IsValid(self.wire) and not self.broken and self:GetPrimed() and self:GetWired() then -- 313
+				local trace = { -- 315
+					start = self:LocalToWorld(self.wire.LPos1), -- 315
+					endpos = self.stick:GetPos() + Vector(0, 0, 2), -- 316
+					filter = { -- 317
+						self, -- 317
+						self.stick -- 317
+					} -- 317
+				} -- 314
+				local tr = util.TraceLine(trace) -- 319
+				if tr.Hit then -- 320
+					local ply -- 321
+					if tr.Entity and tr.Entity:IsPlayer() then -- 321
+						ply = tr.Entity -- 321
+					end -- 321
+					if ply and ply:Team() == TEAM_STALKER then -- 322
+						return true -- 322
+					end -- 322
+					self.wire:Remove() -- 323
+				end -- 320
+			end -- 313
+			return true -- 324
+		end, -- 326
+		SetupTrap = function(self) -- 326
+			_class_0.__parent.__base.SetupTrap(self) -- 327
+			self.stick = ents.Create("prop_physics") -- 328
+			do -- 329
+				local _with_0 = self.stick -- 329
+				_with_0:SetPos(self:GetPos() + Vector(0, 0, 30)) -- 330
+				_with_0:SetModel("models/props_wasteland/prison_throwswitchbase001.mdl") -- 331
+				_with_0:Spawn() -- 332
+			end -- 329
+			self:DeleteOnRemove(self.stick) -- 334
+			self.wire = constraint.Rope(self, self.stick, 0, 0, Vector(0, 0, 0), Vector(1.5, 0, -2.8), 200, 0, 10, 0.05, "cable/cable2", false) -- 336
 		end -- 215
 	} -- 215
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 331
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 336
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 215
 			_base_0[_key_0] = _val_0 -- 215
 		end -- 215
-	end -- 331
+	end -- 336
 	if _base_0.__index == nil then -- 215
 		_base_0.__index = _base_0 -- 215
-	end -- 331
+	end -- 336
 	setmetatable(_base_0, _parent_0.__base) -- 215
 	_class_0 = setmetatable({ -- 215
 		__init = function(self, ...) -- 215
@@ -559,86 +568,159 @@ do -- 215
 		_parent_0.__inherited(_parent_0, _class_0) -- 215
 	end -- 215
 	WireTrap = _class_0 -- 215
-end -- 331
-local IED -- 333
-do -- 333
-	local _class_0 -- 333
-	local _parent_0 = Trap -- 333
-	local _base_0 = { -- 333
-		PrintName = "IED", -- 335
-		Description = "An explosive device, disguised as a pile of trash.", -- 336
-		Model = "models/props_junk/garbage128_composite001b.mdl", -- 337
-		Power = 25, -- 339
-		Touch = function(self, what) -- 339
-			if CLIENT then -- 340
-				return -- 340
-			end -- 340
-			if not what:IsPlayer() then -- 341
-				return -- 341
-			end -- 341
-			if not self:GetPrimed() then -- 342
-				return -- 342
-			end -- 342
-			return self:Explode() -- 343
-		end, -- 345
-		HUDRender = function(self) -- 345
-			if self:GetPrimed() then -- 346
+end -- 336
+local ShotgunWire -- 338
+do -- 338
+	local _class_0 -- 338
+	local _parent_0 = WireTrap -- 338
+	local _base_0 = { -- 338
+		PrintName = "Shotgun Wiretrap", -- 340
+		Description = "It will get the job done.", -- 341
+		Model = "models/tnb/weapons/w_sawnoff.mdl", -- 342
+		Pellets = 16, -- 343
+		Damage = 10, -- 345
+		Explode = function(self) -- 345
+			if self.exploding then -- 346
 				return -- 346
 			end -- 346
-			local ct = { } -- 347
-			ct[#ct + 1] = self.PrintName -- 348
-			if self.Description then -- 349
-				ct[#ct + 1] = "" -- 350
-				ct[#ct + 1] = { -- 351
-					text = self.Description, -- 351
-					font = "Spleen_Label_Small" -- 351
-				} -- 351
-				ct[#ct + 1] = { -- 352
-					text = "Seems like a dud.", -- 352
-					font = "Spleen_Label_Small" -- 352
-				} -- 352
-			end -- 349
-			return ct -- 353
-		end -- 333
-	} -- 333
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 353
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 333
-			_base_0[_key_0] = _val_0 -- 333
-		end -- 333
-	end -- 353
-	if _base_0.__index == nil then -- 333
-		_base_0.__index = _base_0 -- 333
-	end -- 353
-	setmetatable(_base_0, _parent_0.__base) -- 333
-	_class_0 = setmetatable({ -- 333
-		__init = function(self, ...) -- 333
-			return _class_0.__parent.__init(self, ...) -- 333
-		end, -- 333
-		__base = _base_0, -- 333
-		__name = "IED", -- 333
-		__parent = _parent_0 -- 333
-	}, { -- 333
-		__index = function(cls, name) -- 333
-			local val = rawget(_base_0, name) -- 333
-			if val == nil then -- 333
-				local parent = rawget(cls, "__parent") -- 333
-				if parent then -- 333
-					return parent[name] -- 333
-				end -- 333
-			else -- 333
-				return val -- 333
-			end -- 333
-		end, -- 333
-		__call = function(cls, ...) -- 333
-			local _self_0 = setmetatable({ }, _base_0) -- 333
-			cls.__init(_self_0, ...) -- 333
-			return _self_0 -- 333
-		end -- 333
-	}) -- 333
-	_base_0.__class = _class_0 -- 333
-	if _parent_0.__inherited then -- 333
-		_parent_0.__inherited(_parent_0, _class_0) -- 333
-	end -- 333
-	IED = _class_0 -- 333
-	return _class_0 -- 353
-end -- 353
+			self.exploding = true -- 347
+			self:EmitSound("Weapon_FlareGun.Single") -- 348
+			local bullet -- 349
+			bullet = { } -- 349
+			bullet.Num = self.Pellets -- 351
+			bullet.Src = self:GetPos() -- 352
+			bullet.Dir = self:GetForward() -- 353
+			bullet.Spread = Vector(0.1, 0.1, 0) -- 354
+			bullet.TracerName = "Tracer" -- 355
+			bullet.Force = 20 * 0.5 -- 356
+			bullet.Damage = self.Damage -- 357
+			self:FireBullets(bullet) -- 358
+			local ed = EffectData() -- 359
+			ed:SetOrigin(self:GetPos()) -- 361
+			ed:SetAngles(self:GetForward():Angle()) -- 362
+			util.Effect("MuzzleEffect", ed) -- 363
+			return SafeRemoveEntityDelayed(self, 2.5) -- 364
+		end -- 338
+	} -- 338
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 364
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 338
+			_base_0[_key_0] = _val_0 -- 338
+		end -- 338
+	end -- 364
+	if _base_0.__index == nil then -- 338
+		_base_0.__index = _base_0 -- 338
+	end -- 364
+	setmetatable(_base_0, _parent_0.__base) -- 338
+	_class_0 = setmetatable({ -- 338
+		__init = function(self, ...) -- 338
+			return _class_0.__parent.__init(self, ...) -- 338
+		end, -- 338
+		__base = _base_0, -- 338
+		__name = "ShotgunWire", -- 338
+		__parent = _parent_0 -- 338
+	}, { -- 338
+		__index = function(cls, name) -- 338
+			local val = rawget(_base_0, name) -- 338
+			if val == nil then -- 338
+				local parent = rawget(cls, "__parent") -- 338
+				if parent then -- 338
+					return parent[name] -- 338
+				end -- 338
+			else -- 338
+				return val -- 338
+			end -- 338
+		end, -- 338
+		__call = function(cls, ...) -- 338
+			local _self_0 = setmetatable({ }, _base_0) -- 338
+			cls.__init(_self_0, ...) -- 338
+			return _self_0 -- 338
+		end -- 338
+	}) -- 338
+	_base_0.__class = _class_0 -- 338
+	if _parent_0.__inherited then -- 338
+		_parent_0.__inherited(_parent_0, _class_0) -- 338
+	end -- 338
+	ShotgunWire = _class_0 -- 338
+end -- 364
+local IED -- 368
+do -- 368
+	local _class_0 -- 368
+	local _parent_0 = Trap -- 368
+	local _base_0 = { -- 368
+		PrintName = "IED", -- 370
+		Description = "An explosive device, disguised as a pile of trash.", -- 371
+		Model = "models/props_junk/garbage128_composite001b.mdl", -- 372
+		Power = 25, -- 374
+		Touch = function(self, what) -- 374
+			if CLIENT then -- 375
+				return -- 375
+			end -- 375
+			if not what:IsPlayer() then -- 376
+				return -- 376
+			end -- 376
+			if not self:GetPrimed() then -- 377
+				return -- 377
+			end -- 377
+			return self:Explode() -- 378
+		end, -- 380
+		HUDRender = function(self) -- 380
+			if self:GetPrimed() then -- 381
+				return -- 381
+			end -- 381
+			local ct = { } -- 382
+			ct[#ct + 1] = self.PrintName -- 383
+			if self.Description then -- 384
+				ct[#ct + 1] = "" -- 385
+				ct[#ct + 1] = { -- 386
+					text = self.Description, -- 386
+					font = "Spleen_Label_Small" -- 386
+				} -- 386
+				ct[#ct + 1] = { -- 387
+					text = "Seems like a dud.", -- 387
+					font = "Spleen_Label_Small" -- 387
+				} -- 387
+			end -- 384
+			return ct -- 388
+		end -- 368
+	} -- 368
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 388
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 368
+			_base_0[_key_0] = _val_0 -- 368
+		end -- 368
+	end -- 388
+	if _base_0.__index == nil then -- 368
+		_base_0.__index = _base_0 -- 368
+	end -- 388
+	setmetatable(_base_0, _parent_0.__base) -- 368
+	_class_0 = setmetatable({ -- 368
+		__init = function(self, ...) -- 368
+			return _class_0.__parent.__init(self, ...) -- 368
+		end, -- 368
+		__base = _base_0, -- 368
+		__name = "IED", -- 368
+		__parent = _parent_0 -- 368
+	}, { -- 368
+		__index = function(cls, name) -- 368
+			local val = rawget(_base_0, name) -- 368
+			if val == nil then -- 368
+				local parent = rawget(cls, "__parent") -- 368
+				if parent then -- 368
+					return parent[name] -- 368
+				end -- 368
+			else -- 368
+				return val -- 368
+			end -- 368
+		end, -- 368
+		__call = function(cls, ...) -- 368
+			local _self_0 = setmetatable({ }, _base_0) -- 368
+			cls.__init(_self_0, ...) -- 368
+			return _self_0 -- 368
+		end -- 368
+	}) -- 368
+	_base_0.__class = _class_0 -- 368
+	if _parent_0.__inherited then -- 368
+		_parent_0.__inherited(_parent_0, _class_0) -- 368
+	end -- 368
+	IED = _class_0 -- 368
+	return _class_0 -- 388
+end -- 388

@@ -131,24 +131,24 @@ do -- 4
 	end -- 4
 	Polymer = _class_0 -- 4
 end -- 41
-local Pure -- 42
+local Nylon -- 42
 do -- 42
 	local _class_0 -- 42
 	local _parent_0 = Polymer -- 42
 	local _base_0 = { -- 42
 		Model = Model("models/props_junk/plasticbucket001a.mdl"), -- 45
-		PrintName = "Plastic Polymer", -- 46
-		Description = "A pure block of plastic.", -- 47
+		PrintName = "Nylon 666", -- 46
+		Description = "Weapons-grade cancerplastic, ethically sourced.", -- 47
 		UseText = { -- 48
-			"%s chokes on perfection.", -- 48
-			"%s cracks a molar on pure plastic.", -- 49
-			"%s lets the pure plastic melt in their stomach.", -- 50
-			"%s cracks their jaw on a hunk of polymer." -- 51
+			"chokes on perfection.", -- 48
+			"cracks a molar on pure plastic.", -- 49
+			"lets the pure plastic melt in their stomach.", -- 50
+			"cracks their jaw on a hunk of polymer." -- 51
 		}, -- 54
 		BiteDamage = 25, -- 55
 		CookTime = 5, -- 56
 		Precursor = { -- 57
-			polymer = 1 -- 57
+			polymer = 2 -- 57
 		} -- 42
 	} -- 42
 	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 57
@@ -165,7 +165,7 @@ do -- 42
 			return _class_0.__parent.__init(self, ...) -- 42
 		end, -- 42
 		__base = _base_0, -- 42
-		__name = "Pure", -- 42
+		__name = "Nylon", -- 42
 		__parent = _parent_0 -- 42
 	}, { -- 42
 		__index = function(cls, name) -- 42
@@ -189,38 +189,39 @@ do -- 42
 	if _parent_0.__inherited then -- 42
 		_parent_0.__inherited(_parent_0, _class_0) -- 42
 	end -- 42
-	Pure = _class_0 -- 42
+	Nylon = _class_0 -- 42
 end -- 57
-local Refined -- 60
+local Thermoplastic -- 60
 do -- 60
 	local _class_0 -- 60
 	local _parent_0 = Polymer -- 60
 	local _base_0 = { -- 60
 		Model = Model("models/Items/CrossbowRounds.mdl"), -- 63
-		PrintName = "Pure Plastic", -- 64
-		Description = "A small bundle of recycled plastic.\nCan be cooked into a usable chunk.", -- 65
+		PrintName = "Thermoplastic", -- 64
+		Description = "An extremely malleable piece of plastic.\nCan be cooked into a usable chunk.", -- 65
 		UseText = { -- 66
-			"%s chokes on the plastic tubes.", -- 66
-			"%s doubled their chance of getting cancer.", -- 67
-			"%s hurts their mouth chewing on hard plastic." -- 68
+			"chokes on the plastic tubes.", -- 66
+			"doubled their chance of getting cancer.", -- 67
+			"hurts their mouth chewing on hard plastic." -- 68
 		}, -- 71
-		BiteDamage = 34 -- 60
+		BiteDamage = 34, -- 72
+		CookTime = 5 -- 60
 	} -- 60
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 71
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 72
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 60
 			_base_0[_key_0] = _val_0 -- 60
 		end -- 60
-	end -- 71
+	end -- 72
 	if _base_0.__index == nil then -- 60
 		_base_0.__index = _base_0 -- 60
-	end -- 71
+	end -- 72
 	setmetatable(_base_0, _parent_0.__base) -- 60
 	_class_0 = setmetatable({ -- 60
 		__init = function(self, ...) -- 60
 			return _class_0.__parent.__init(self, ...) -- 60
 		end, -- 60
 		__base = _base_0, -- 60
-		__name = "Refined", -- 60
+		__name = "Thermoplastic", -- 60
 		__parent = _parent_0 -- 60
 	}, { -- 60
 		__index = function(cls, name) -- 60
@@ -244,6 +245,6 @@ do -- 60
 	if _parent_0.__inherited then -- 60
 		_parent_0.__inherited(_parent_0, _class_0) -- 60
 	end -- 60
-	Refined = _class_0 -- 60
-	return _class_0 -- 71
-end -- 71
+	Thermoplastic = _class_0 -- 60
+	return _class_0 -- 72
+end -- 72

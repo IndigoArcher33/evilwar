@@ -45,10 +45,10 @@ class Scrap extends Metal
   PrintName: "Scrap Metal"
   Description: "A chunk of delectable scrap metal."
   UseText: {
-    "%s cuts their tongue eating the sharp metal."
-    "%s disfigures themselves enjoying a nice chunk of metal."
-    "%s lets the sharp metal wreak havoc on their stomach."
-    "%s pierces their cheeks trying to eat scrap metal."
+    "cuts their tongue eating the sharp metal."
+    "disfigures themselves enjoying a nice chunk of metal."
+    "lets the sharp metal wreak havoc on their stomach."
+    "pierces their cheeks trying to eat scrap metal."
   }
 
   BiteDamage: 25
@@ -63,9 +63,9 @@ class Slag extends Metal
   PrintName: "Slag Metal"
   Description: "A rock with a piece of metal stuck in it.\nCan be processed in a Refinery."
   UseText: {
-    "%s breaks their teeth trying to crack open the slag metal."
-    "%s shatters their morals gnawing a piece of slag metal."
-    "%s hurts their jaw on a piece of slag metal."
+    "breaks their teeth trying to crack open the slag metal."
+    "shatters their morals gnawing a piece of slag metal."
+    "hurts their jaw on a piece of slag metal."
   }
 
   BiteDamage: 34

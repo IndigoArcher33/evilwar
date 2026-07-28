@@ -45,7 +45,7 @@ class Scrap extends Wood
   PrintName: "Scrap Wood"
   Description: "A rough wedge of a tree's flesh."
   UseText: {
-    "%s swallows splinters trying to gnaw on a hunk of wood."
+    "swallows splinters trying to gnaw on a hunk of wood."
   }
 
   BiteDamage: 25

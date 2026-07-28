@@ -716,9 +716,9 @@ do -- 188
 		Description = "Plastic waste, dead to the world.\nRecycle in a refinery, or dispose of it properly in a nearby river.", -- 195
 		SubmitSound = "Trash_Plastic", -- 197
 		Refinement = { -- 198
-			result = "polymer/refined", -- 198
-			time = 2, -- 199
-			rust = 1 -- 200
+			result = "polymer/thermoplastic", -- 198
+			time = 4, -- 199
+			rust = 5 -- 200
 		} -- 188
 	} -- 188
 	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 200

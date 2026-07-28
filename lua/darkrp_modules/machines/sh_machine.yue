@@ -59,6 +59,7 @@ class Machine extends ENTITY
 
   Precursors: {}
   FactoryIdentifier: ""
+  BasePay: 5
 
   SetupDataTables: =>
     @NetworkVar("String", "Producing")
@@ -371,7 +372,7 @@ class Machine extends ENTITY
           @["SetButton#{button}"] @, 0
           for k, v in ipairs @buttons
             left = true if @["GetButton#{k}"](@) == idx
-          reward = 5
+          reward = @BasePay
           rate = GAMEMODE.taxes.labor / 100
           taxed = math.floor(reward * rate)
           reward -= taxed
@@ -395,13 +396,16 @@ class Machine extends ENTITY
               \SetRadius 3
             util.Effect "Sparks", ed
           ply\AddMoney reward, "The Grind"
-          if ply\Team! == TEAM_PRIVATE
-            ply.buttons_pushed or= 0
-            ply.buttons_pushed += 1
-            if ply.buttons_pushed % 30 == 0
-              ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
-              ply\AddStemCells(2)
+          @Reward ply
           @NewLight(ply) if (not left) or math.random(1,100) <= 50
+
+  Reward: (ply) =>
+    return unless ply\Team! == TEAM_PRIVATE
+    ply.buttons_pushed or= 0
+    ply.buttons_pushed += 1
+    if ply.buttons_pushed % 50 == 0
+      ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
+      ply\AddStemCells(1)
 
   GetNearestButton: (who) =>
     who = LocalPlayer! if (not who or not IsValid(who))
@@ -538,9 +542,17 @@ class Machine extends ENTITY
 
 class Tools extends Machine
   PrintName: "Tool Machine"
+  BasePay: 7
   Precursors:
     * name: "metal"
     * name: "wood"
+  Reward: (ply) =>
+    return unless ply\Team! == TEAM_PRIVATE
+    ply.buttons_pushed or= 0
+    ply.buttons_pushed += 2
+    if ply.buttons_pushed % 50 == 0
+      ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
+      ply\AddStemCells(1)
   Products:
     ["evilrp_melee/crowbar"]: {
       precursors:
@@ -571,6 +583,7 @@ class Tools extends Machine
   FactoryIdentifier: "tools"
 class Food extends Machine
   PrintName: "Food Machine"
+  BasePay: 3
   Precursors:
     * name: "biomass"
     * name: "fluid"
@@ -602,9 +615,18 @@ class Food extends Machine
   FactoryIdentifier: "food"
 class Weapons extends Machine
   PrintName: "Weapons Machine"
+  BasePay: 10
   Precursors:
     * name: "metal"
     * name: "polymer"
+
+  Reward: (ply) =>
+    return unless ply\Team! == TEAM_PRIVATE
+    ply.buttons_pushed or= 0
+    ply.buttons_pushed += 3
+    if ply.buttons_pushed % 50 == 0
+      ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
+      ply\AddStemCells(1)
   Products:
     ["evilrp_weapon/bodyguard"]: {
       precursors:
@@ -655,6 +677,14 @@ class Weapons extends Machine
   FactoryIdentifier: "weapons"
 class Medicine extends Machine
   PrintName: "Medicine Machine"
+  BasePay: 7
+  Reward: (ply) =>
+    return unless ply\Team! == TEAM_PRIVATE
+    ply.buttons_pushed or= 0
+    ply.buttons_pushed += 2
+    if ply.buttons_pushed % 50 == 0
+      ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
+      ply\AddStemCells(1)
   Precursors:
     * name: "biomass"
     * name: "metal"

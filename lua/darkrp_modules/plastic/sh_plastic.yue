@@ -39,35 +39,36 @@ class Polymer extends ITEM
     ply\TakeDamageInfo dmg
     @Remove!
       
-class Pure extends Polymer
+class Nylon extends Polymer
   Model: Model"models/props_junk/plasticbucket001a.mdl"
 
-  PrintName: "Plastic Polymer"
-  Description: "A pure block of plastic."
+  PrintName: "Nylon 666"
+  Description: "Weapons-grade cancerplastic, ethically sourced."
   UseText: {
-    "%s chokes on perfection."
-    "%s cracks a molar on pure plastic."
-    "%s lets the pure plastic melt in their stomach."
-    "%s cracks their jaw on a hunk of polymer."
+    "chokes on perfection."
+    "cracks a molar on pure plastic."
+    "lets the pure plastic melt in their stomach."
+    "cracks their jaw on a hunk of polymer."
   }
 
   BiteDamage: 25
   CookTime: 5
   Precursor:
-    polymer: 1
+    polymer: 2
 
 
-class Refined extends Polymer
+class Thermoplastic extends Polymer
   Model: Model"models/Items/CrossbowRounds.mdl"
 
-  PrintName: "Pure Plastic"
-  Description: "A small bundle of recycled plastic.\nCan be cooked into a usable chunk."
+  PrintName: "Thermoplastic"
+  Description: "An extremely malleable piece of plastic.\nCan be cooked into a usable chunk."
   UseText: {
-    "%s chokes on the plastic tubes."
-    "%s doubled their chance of getting cancer."
-    "%s hurts their mouth chewing on hard plastic."
+    "chokes on the plastic tubes."
+    "doubled their chance of getting cancer."
+    "hurts their mouth chewing on hard plastic."
   }
 
   BiteDamage: 34
-    
+  CookTime: 5
+
 

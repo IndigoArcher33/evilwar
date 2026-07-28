@@ -140,10 +140,10 @@ do -- 42
 		PrintName = "Scrap Metal", -- 46
 		Description = "A chunk of delectable scrap metal.", -- 47
 		UseText = { -- 48
-			"%s cuts their tongue eating the sharp metal.", -- 48
-			"%s disfigures themselves enjoying a nice chunk of metal.", -- 49
-			"%s lets the sharp metal wreak havoc on their stomach.", -- 50
-			"%s pierces their cheeks trying to eat scrap metal." -- 51
+			"cuts their tongue eating the sharp metal.", -- 48
+			"disfigures themselves enjoying a nice chunk of metal.", -- 49
+			"lets the sharp metal wreak havoc on their stomach.", -- 50
+			"pierces their cheeks trying to eat scrap metal." -- 51
 		}, -- 54
 		BiteDamage = 25, -- 56
 		Precursor = { -- 57
@@ -199,9 +199,9 @@ do -- 60
 		PrintName = "Slag Metal", -- 64
 		Description = "A rock with a piece of metal stuck in it.\nCan be processed in a Refinery.", -- 65
 		UseText = { -- 66
-			"%s breaks their teeth trying to crack open the slag metal.", -- 66
-			"%s shatters their morals gnawing a piece of slag metal.", -- 67
-			"%s hurts their jaw on a piece of slag metal." -- 68
+			"breaks their teeth trying to crack open the slag metal.", -- 66
+			"shatters their morals gnawing a piece of slag metal.", -- 67
+			"hurts their jaw on a piece of slag metal." -- 68
 		}, -- 71
 		BiteDamage = 34, -- 73
 		Refinement = { -- 74

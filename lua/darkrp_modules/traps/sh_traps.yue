@@ -265,7 +265,7 @@ class WireTrap extends Trap
         else
           col = "200,200,0" -- yellow
           msgs = @FuseMessages.success
-          happy = math.random(2,6)
+          happy = math.random(1,2)
         ply\AddDespair(-happy)
       when 4, 5 
         col = "200,0,0" -- red
@@ -302,6 +302,8 @@ class WireTrap extends Trap
   Think: =>
     super!
     return if CLIENT
+    @NextThink(CurTime! + 0.05) -- I'm worried this isn't going to be too performant
+
     if not IsValid(@wire) and not @broken and @GetPrimed!
       @broken = true
       @EmitSound "Padlock.Break"
@@ -316,7 +318,10 @@ class WireTrap extends Trap
         
       tr = util.TraceLine trace
       if tr.Hit 
+        ply = tr.Entity if tr.Entity and tr.Entity\IsPlayer!
+        return true if ply and ply\Team! == TEAM_STALKER
         @wire\Remove!
+    return true
 
   SetupTrap: =>
     super!
@@ -329,6 +334,36 @@ class WireTrap extends Trap
     @DeleteOnRemove(@stick)
     
     @wire = constraint.Rope(@,@stick,0,0,Vector(0,0,0),Vector(1.5,0,-2.8),200,0,10,0.05,"cable/cable2",false)
+
+class ShotgunWire extends WireTrap
+  PrintName: "Shotgun Wiretrap"
+  Description: "It will get the job done."
+  Model: "models/tnb/weapons/w_sawnoff.mdl"
+  Pellets: 16
+  Damage: 10
+
+  Explode: =>
+    return if @exploding
+    @exploding = true
+    @EmitSound("Weapon_FlareGun.Single")
+    local bullet = {}
+    with bullet
+      .Num = @Pellets
+      .Src = @GetPos!
+      .Dir = @GetForward!
+      .Spread = Vector( 0.1, 0.1, 0 ) 
+      .TracerName = "Tracer"
+      .Force = 20 * 0.5
+      .Damage = @Damage
+    @FireBullets(bullet)
+    ed = EffectData!
+    with ed
+      \SetOrigin @GetPos!
+      \SetAngles @GetForward!\Angle!
+    util.Effect("MuzzleEffect", ed)
+    SafeRemoveEntityDelayed(@, 2.5) 
+
+
 
 class IED extends Trap
   PrintName: "IED"

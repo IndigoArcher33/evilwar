@@ -140,7 +140,7 @@ do -- 42
 		PrintName = "Scrap Wood", -- 46
 		Description = "A rough wedge of a tree's flesh.", -- 47
 		UseText = { -- 48
-			"%s swallows splinters trying to gnaw on a hunk of wood." -- 48
+			"swallows splinters trying to gnaw on a hunk of wood." -- 48
 		}, -- 51
 		BiteDamage = 25, -- 53
 		Precursor = { -- 54

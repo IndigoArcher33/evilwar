@@ -139,8 +139,9 @@ draw_bars = ->
   ply = LocalPlayer!
   -- drifts
   w = ScrW! * .5
-  [xd, yd] = [5 * sin(CurTime! * 0.666), 5 * sin(CurTime! * 0.333)]
-  [x, y] = [(ScrW! / 2) - (w / 2) + (2 * xd), 12 + yd]
+  xd, yd = 5 * sin(CurTime! * 0.666), 5 * sin(CurTime! * 0.333)
+  x, y = (ScrW! / 2) - (w / 2) + (2 * xd), 12 + yd
+  
   switch ply\Team!
     when TEAM_GHOST
       -- render suffering here
