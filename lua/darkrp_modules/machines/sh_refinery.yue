@@ -77,6 +77,19 @@ class Refinery extends ENTITY
 
   Touch: (what) =>
     if SERVER
+      if what.Rust
+        @SetRust math.Clamp(@GetRust! + what.Rust, 0, 100)
+        @EmitSound"ambient/machines/machine1_hit1.wav"
+        pos = what\GetPos!
+        ed = EffectData!
+        with ed
+          \SetOrigin pos
+          \SetScale 1
+          \SetMagnitude 1
+          \SetRadius 3
+        util.Effect "Sparks", ed
+        what\Trash!
+        return
       return if @GetProductionEnd! > 0
       return unless what.Refinement
       prod = what.Refinement
