@@ -219,7 +219,7 @@ do -- 69
 			if CLIENT then -- 111
 				return -- 111
 			end -- 111
-			if (ply:Team() ~= TEAM_EMPEROR) or (ply:Team() ~= TEAM_STALKER) then -- 112
+			if (ply:Team() ~= TEAM_EMPEROR) and (ply:Team() ~= TEAM_STALKER) then -- 112
 				ply:Notify("<c=200,0,0> WHAT THE FUCK IS THIS? HOLY SHI~") -- 113
 				ply:AddDespair(100) -- 114
 				net.Start("evilrp_jumpscare") -- 115
