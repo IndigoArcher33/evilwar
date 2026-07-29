@@ -661,7 +661,7 @@ do -- 257
 					local cmd = args[1] -- 291
 					if cmd ~= "" then -- 292
 						print(cmd) -- 293
-						local cply = util.GetPlayerByName(cmd) -- 294
+						local cply = GetPlayerByName(cmd) -- 294
 						if not IsValid(cply) then -- 295
 							gterm:Broadcast(term, "that person does not exist", GT_COL_ERR) -- 296
 							return -- 297
