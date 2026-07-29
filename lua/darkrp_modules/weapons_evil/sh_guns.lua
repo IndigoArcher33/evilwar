@@ -622,7 +622,7 @@ do -- 308
 			Reload = { -- 347
 				Sound = "Weapon_Pistol.Reload" -- 347
 			}, -- 346
-			Sound = "tekka/weapons/weapon_m92.wav", -- 350
+			Sound = "tekka/weapons/weapon_pistolcrack.wav", -- 350
 			TracerName = "Tracer" -- 351
 		} -- 308
 	} -- 308

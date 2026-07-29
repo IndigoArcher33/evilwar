@@ -347,7 +347,7 @@ class Novoluger extends EvilRP_Weapon
       Sound: "Weapon_Pistol.Reload"
     }
       
-    Sound: "tekka/weapons/weapon_m92.wav"
+    Sound: "tekka/weapons/weapon_pistolcrack.wav"
     TracerName: "Tracer"
   }
 

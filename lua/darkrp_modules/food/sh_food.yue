@@ -337,7 +337,7 @@ class MoldMelon extends Food
   Despair: 4 
   Description: "A pithy husk of fruit, fully colonized by white mold."
 
-  Price: 25
+  Price: 45
 
   UseText: {
     "eats a moldy melon."
@@ -364,7 +364,7 @@ class FearBeer extends Drink
   Despair: -25
   Description: "A bottle of foul off-yellow liquid.\n'BEER' is hand-written on the label."
 
-  Price: 60
+  Price: 80
 
   TrashClass: "trash/bottle/fearbeer"
 
@@ -432,7 +432,7 @@ class SmearBeer extends Drink
   Despair: -35
   Description: "A bottle of cloudy, greyish red booze.\nThe label is obscured with a smear of old blood."
 
-  Price: 95
+  Price: 150
 
   TrashClass: "trash/bottle"
 
@@ -501,7 +501,7 @@ class Shake extends Drink
   Despair: 30
   Description: "A jug full of partially blended human remains.\nIt's warm and chunky."
 
-  Price: 120
+  Price: 140
 
   TrashClass: "trash/plastic/shake"
 
@@ -558,7 +558,7 @@ class Twitchel extends Drink
   Despair: 6
   Description: "A bottle of refreshingly lukewarm, cloudy green drink."
 
-  Price: 80
+  Price: 120
 
   TrashClass: "trash/plastic/twitchel"
 
@@ -637,7 +637,6 @@ class Bleach extends Medicine
   PrintName: "Chlorine"
   Model: Model "models/props_junk/garbage_plasticbottle002a.mdl"
   Sound: "DrinkFluid"
-
   Description: "Do NOT even think about drinking this. \n Last guy who tried couldn't even finish it before falling over."
   HealthAdd: -50
   Hunger: 40
@@ -730,7 +729,7 @@ class SloppyRibs extends Food
 class AblativePaste extends Medicine
   PrintName: "Ablative paste"
   Model: Model"models/props_lab/jar01a.mdl"
-  Cost: 480
+  Price: 380
   Armor: 35
   Despair: 15
   Description: "A rough, sticky, uncomfortable paste but, at least it'll prevent your blood from leaking out."
