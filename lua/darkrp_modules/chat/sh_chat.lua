@@ -1202,7 +1202,7 @@ do -- 482
 			return Chat.Autopretty(ply, text:upper()) -- 493
 		end, -- 495
 		Handle = function(self, ply, lang, cmd, text) -- 495
-			if not (ply:Team() == TEAM_EMPEROR) then -- 496
+			if not ply:IsSuperAdmin() then -- 496
 				ply:Notify("<c=200,0,0>This power is NOT FOR YOU.") -- 497
 				return -- 498
 			end -- 496
