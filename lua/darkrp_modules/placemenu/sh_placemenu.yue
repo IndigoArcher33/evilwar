@@ -1,13 +1,5 @@
 meta = FindMetaTable"Player"
 
-meta.Build = (amt, src="From thin air") =>
-  @addBuild amt
-  amt_str = if amt > 0
-    "<c=0,200,0>+#{amt}"
-  else
-    "<c=200,0,0>#{amt}"
-  @Notify"#{src}: #{amt_str}"
-
 class PlaceBuild extends SOUND
   sound: "ambient/levels/labs/coinslot1.wav"
 
@@ -83,8 +75,8 @@ if SERVER
       ply.cant_build = false)
 else
   hook.Add "PlayerBindPress", "evilrp_scrolltrap", (ply, bind, pressed) ->
-    return false if not pressed
-    return false unless ply\GetNWBool"evilrp_building"
+    return if not pressed
+    return unless ply\GetNWBool"evilrp_building"
     bind = bind\lower!
     if bind\find"invnext"
       netstream.Send "ScrollTrap", 1
@@ -94,8 +86,8 @@ else
       return true
 
   hook.Add "PlayerBindPress", "evilrp_droptrap", (ply, bind, pressed) ->
-    return false if not pressed
-    return false unless ply\GetNWBool"evilrp_building"
+    return if not pressed
+    return unless ply\GetNWBool"evilrp_building"
     bind = bind\lower!
     if bind\find"+attack"
       netstream.Send "DropTrap"
