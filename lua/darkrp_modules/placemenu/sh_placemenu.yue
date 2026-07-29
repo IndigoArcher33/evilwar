@@ -1,0 +1,105 @@
+meta = FindMetaTable"Player"
+
+meta.Build = (amt, src="From thin air") =>
+  @addBuild amt
+  amt_str = if amt > 0
+    "<c=0,200,0>+#{amt}"
+  else
+    "<c=200,0,0>#{amt}"
+  @Notify"#{src}: #{amt_str}"
+
+class PlaceBuild extends SOUND
+  sound: "ambient/levels/labs/coinslot1.wav"
+
+TRAP_LIST = {
+  {name: "IED",  class: "entity_longuse/trap/ied"}
+  {name: "Wired Grenade", class: "entity_longuse/trap/wiretrap"}
+  {name: "Wired Shotgun",   class: "entity_longuse/trap/wiretrap/shotgunwire"}
+}
+
+TRAP_COST = 150
+
+if SERVER
+  netstream.Hook "BeginBuilding", (ply) ->
+    return if ply.cant_build
+    return if ply\GetNWBool"evilrp_building"
+    ply\SetNWInt("evilrp_trapindex", 1)
+    ply\SetNWBool("evilrp_building", true)
+    ply\Notify"Scroll to select a trap."
+    ply\Notify"Left click to place it. Reload to cancel."
+
+  netstream.Hook "CancelBuilding", (ply) ->
+    return unless ply\GetNWBool"evilrp_building"
+    ply\SetNWBool("evilrp_building", false)
+    ply\Notify"Cancelled."
+
+  netstream.Hook "ScrollTrap", (ply, dir) ->
+    return unless ply\GetNWBool"evilrp_building"
+    return unless dir == 1 or dir == -1
+    count = #TRAP_LIST
+    index = ply\GetNWInt("evilrp_trapindex", 1) + dir
+    index = count if index < 1
+    index = 1 if index > count
+    ply\SetNWInt("evilrp_trapindex", index)
+    ply\Notify"Selected: #{TRAP_LIST[index].name}"
+
+  netstream.Hook "DropTrap", (ply) ->
+    return unless ply\GetNWBool"evilrp_building"
+    return if ply\Team! != TEAM_STALKER
+    return unless ply\Alive!
+    return if ply.cant_build
+
+    money = ply\getDarkRPVar"money"
+    return if TRAP_COST > money
+
+    index = ply\GetNWInt("evilrp_trapindex", 1)
+    trap = TRAP_LIST[index]
+    return unless trap
+
+    ply\SetNWBool("evilrp_building", false)
+
+    tr = GAMEMODE\GetHandTrace(ply, 80)
+    return unless tr.Hit
+
+    ent = ents.Create(trap.class)
+    return unless IsValid(ent)
+
+    ply\AddMoney(-TRAP_COST, "Placed #{trap.name}")
+    ply\DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_DROP)
+
+    ent\SetPos(tr.HitPos + tr.HitNormal * 2)
+    ent\SetAngles(Angle(0, ply\EyeAngles!.y, 0))
+    ent.owner = ply
+    ent\Spawn!
+    ent\Activate!
+
+    PlaceBuild()\play(ply)
+
+    DarkRP.log("#{ply\Nick!} (#{ply\SteamID!}) placed a #{trap.name} for #{DarkRP.formatMoney(TRAP_COST)}")
+
+    ply.cant_build = true
+    timer.Simple(1, ->
+      return unless IsValid(ply)
+      ply.cant_build = false)
+else
+  hook.Add "PlayerBindPress", "evilrp_scrolltrap", (ply, bind, pressed) ->
+    return false if not pressed
+    return false unless ply\GetNWBool"evilrp_building"
+    bind = bind\lower!
+    if bind\find"invnext"
+      netstream.Send "ScrollTrap", 1
+      return true
+    elseif bind\find"invprev"
+      netstream.Send "ScrollTrap", -1
+      return true
+
+  hook.Add "PlayerBindPress", "evilrp_droptrap", (ply, bind, pressed) ->
+    return false if not pressed
+    return false unless ply\GetNWBool"evilrp_building"
+    bind = bind\lower!
+    if bind\find"+attack"
+      netstream.Send "DropTrap"
+      return true
+    elseif bind\find"+reload"
+      netstream.Send "CancelBuilding"
+      return true

@@ -13,4 +13,4 @@ return netstream.Hook("PocketItem", function(ply, item) -- 1
 	ply:PlaySignal(ACT_GMOD_GESTURE_ITEM_GIVE, true) -- 7
 	ply:EmitSound("Pocket_Item") -- 8
 	return ply:addPocketItem(item) -- 9
-end) -- 10
+end) -- 1
