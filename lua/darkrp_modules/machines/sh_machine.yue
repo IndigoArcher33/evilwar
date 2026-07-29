@@ -296,7 +296,7 @@ class Machine extends ENTITY
     if attacker and IsValid(attacker)
       if attacker\IsPlayer!
         switch attacker\Team!
-          when TEAM_SANITAR
+          when TEAM_SANITAR or TEAM_CONSCRIPT
             rust = @GetRust!
             @SetRust math.max(0, rust - (dmg\GetDamage! * .2))
             reward = math.floor(math.abs(rust - @GetRust!) * 3)
