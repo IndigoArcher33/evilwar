@@ -291,7 +291,7 @@ class Tyrant extends OS
         cmd = args[1]
         if cmd ~= ""
           print cmd
-          cply = util.GetPlayerByName cmd
+          cply = GetPlayerByName cmd
           if not IsValid(cply)
             gterm\Broadcast term, "that person does not exist", GT_COL_ERR
             return
