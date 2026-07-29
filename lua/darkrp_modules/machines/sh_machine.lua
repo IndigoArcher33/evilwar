@@ -504,7 +504,7 @@ do -- 49
 			if attacker and IsValid(attacker) then -- 296
 				if attacker:IsPlayer() then -- 297
 					local _exp_0 = attacker:Team() -- 298
-					if (TEAM_SANITAR or TEAM_CONSCRIPT) == _exp_0 then -- 299
+					if TEAM_SANITAR == _exp_0 or TEAM_CONSCRIPT == _exp_0 then -- 299
 						local rust = self:GetRust() -- 300
 						self:SetRust(math.max(0, rust - (dmg:GetDamage() * .2))) -- 301
 						local reward = math.floor(math.abs(rust - self:GetRust()) * 3) -- 302
