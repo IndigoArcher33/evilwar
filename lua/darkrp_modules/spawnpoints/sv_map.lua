@@ -28,7 +28,7 @@ create_spawnpoints = function() -- 1
 				job = TEAM_EMPEROR -- 15
 			}, -- 14
 			{ -- 16
-				pos = Vector(455.911926, -7058.494629, -811.57952), -- 16
+				pos = Vector(467, -7023, -886), -- 16
 				job = TEAM_STALKER -- 17
 			}, -- 16
 			{ -- 18
