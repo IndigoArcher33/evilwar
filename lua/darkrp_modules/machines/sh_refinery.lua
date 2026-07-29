@@ -80,142 +80,155 @@ do -- 4
 		end, -- 78
 		Touch = function(self, what) -- 78
 			if SERVER then -- 79
-				if self:GetProductionEnd() > 0 then -- 80
-					return -- 80
+				if what.Rust then -- 80
+					self:SetRust(math.Clamp(self:GetRust() + what.Rust, 0, 100)) -- 81
+					self:EmitSound("ambient/machines/machine1_hit1.wav") -- 82
+					local pos = what:GetPos() -- 83
+					local ed = EffectData() -- 84
+					ed:SetOrigin(pos) -- 86
+					ed:SetScale(1) -- 87
+					ed:SetMagnitude(1) -- 88
+					ed:SetRadius(3) -- 89
+					util.Effect("Sparks", ed) -- 90
+					what:Trash() -- 91
+					return -- 92
 				end -- 80
-				if not what.Refinement then -- 81
-					return -- 81
-				end -- 81
-				local prod = what.Refinement -- 82
-				local submitter = what:GetNWEntity("evilrp_submitter") -- 83
-				if not (submitter and IsValid(submitter)) then -- 84
-					return -- 84
-				end -- 84
-				if what.Processed then -- 85
-					return -- 85
-				end -- 85
-				what.Processed = true -- 86
-				if what.Submitted then -- 87
-					what:Submitted() -- 87
-				end -- 87
-				if what.SubmitSound then -- 88
-					what:EmitSound(what.SubmitSound) -- 88
-				end -- 88
-				self:SetProducing(what:GetClass()) -- 89
-				local ct = CurTime() -- 90
-				self:SetProductionStart(ct) -- 91
-				local wait = prod.time * (1 + (self:GetRust() / 100)) -- 92
-				self:SetProductionEnd(ct + wait) -- 93
-				self:SetWorker(submitter) -- 94
-				self:EmitSound("ambient/machines/machine1_hit1.wav") -- 95
-				self:SetSoundLoop(self:StartLoopingSound("ambient/machines/machine_whine1.wav")) -- 96
-				local ed = EffectData() -- 97
-				ed:SetStart(self:GetPos()) -- 99
-				ed:SetOrigin(self:GetPos()) -- 100
-				ed:SetScale(2) -- 101
-				util.Effect("StunstickImpact", ed, true, true) -- 102
-				return what:Remove() -- 103
+				if self:GetProductionEnd() > 0 then -- 93
+					return -- 93
+				end -- 93
+				if not what.Refinement then -- 94
+					return -- 94
+				end -- 94
+				local prod = what.Refinement -- 95
+				local submitter = what:GetNWEntity("evilrp_submitter") -- 96
+				if not (submitter and IsValid(submitter)) then -- 97
+					return -- 97
+				end -- 97
+				if what.Processed then -- 98
+					return -- 98
+				end -- 98
+				what.Processed = true -- 99
+				if what.Submitted then -- 100
+					what:Submitted() -- 100
+				end -- 100
+				if what.SubmitSound then -- 101
+					what:EmitSound(what.SubmitSound) -- 101
+				end -- 101
+				self:SetProducing(what:GetClass()) -- 102
+				local ct = CurTime() -- 103
+				self:SetProductionStart(ct) -- 104
+				local wait = prod.time * (1 + (self:GetRust() / 100)) -- 105
+				self:SetProductionEnd(ct + wait) -- 106
+				self:SetWorker(submitter) -- 107
+				self:EmitSound("ambient/machines/machine1_hit1.wav") -- 108
+				self:SetSoundLoop(self:StartLoopingSound("ambient/machines/machine_whine1.wav")) -- 109
+				local ed = EffectData() -- 110
+				ed:SetStart(self:GetPos()) -- 112
+				ed:SetOrigin(self:GetPos()) -- 113
+				ed:SetScale(2) -- 114
+				util.Effect("StunstickImpact", ed, true, true) -- 115
+				return what:Remove() -- 116
 			end -- 79
-		end, -- 105
-		OnTakeDamage = function(self, dmg) -- 105
-			local attacker = dmg:GetAttacker() -- 106
-			if attacker and IsValid(attacker) then -- 107
-				if attacker:IsPlayer() then -- 108
-					local _exp_0 = attacker:Team() -- 109
-					if TEAM_SANITAR == _exp_0 or TEAM_CONSCRIPT == _exp_0 then -- 110
-						local rust = self:GetRust() -- 111
-						self:SetRust(math.max(0, rust - (dmg:GetDamage() * .2))) -- 112
-						local reward = math.floor(math.abs(rust - self:GetRust()) * 2.3) -- 113
-						if reward > 0 then -- 114
-							return attacker:AddMoney(reward, "The Cleansing") -- 115
-						end -- 114
-					end -- 116
-				end -- 108
-			end -- 107
-		end, -- 117
-		Draw = function(self) -- 117
-			self:DrawModel() -- 118
-			return self:Render3D2D() -- 119
-		end, -- 121
-		HUDRender = function(self) -- 121
-			local ct = { } -- 122
-			ct[#ct + 1] = self.PrintName -- 123
-			ct[#ct + 1] = { -- 125
-				text = "Certain items can be processed into more useful things with this.", -- 125
-				font = "Spleen_Label_Small" -- 126
-			} -- 124
-			ct[#ct + 1] = { -- 129
-				text = "The rustier it is, the longer it will take.", -- 129
-				font = "Spleen_Label_Small" -- 130
-			} -- 128
-			return ct -- 132
+		end, -- 118
+		OnTakeDamage = function(self, dmg) -- 118
+			local attacker = dmg:GetAttacker() -- 119
+			if attacker and IsValid(attacker) then -- 120
+				if attacker:IsPlayer() then -- 121
+					local _exp_0 = attacker:Team() -- 122
+					if TEAM_SANITAR == _exp_0 or TEAM_CONSCRIPT == _exp_0 then -- 123
+						local rust = self:GetRust() -- 124
+						self:SetRust(math.max(0, rust - (dmg:GetDamage() * .2))) -- 125
+						local reward = math.floor(math.abs(rust - self:GetRust()) * 2.3) -- 126
+						if reward > 0 then -- 127
+							return attacker:AddMoney(reward, "The Cleansing") -- 128
+						end -- 127
+					end -- 129
+				end -- 121
+			end -- 120
+		end, -- 130
+		Draw = function(self) -- 130
+			self:DrawModel() -- 131
+			return self:Render3D2D() -- 132
 		end, -- 134
-		Render3D2D = function(self) -- 134
-			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 135
-			if not (dist_sqr < 128 ^ 2) then -- 136
-				return -- 136
-			end -- 136
-			local font = "Spleen_Label" -- 137
-			local desp = lp:GetDespair() * 0.01 -- 138
-			local ct = CurTime() -- 139
-			local pos = self:GetPos() + (self:GetUp() * 15) + (self:GetForward() * 25) + (self:GetRight() * -20) -- 140
-			local ang = self:GetAngles() -- 141
-			ang:RotateAroundAxis(ang:Up(), -90) -- 143
-			ang:RotateAroundAxis(ang:Forward(), 90) -- 144
-			ang:RotateAroundAxis(ang:Right(), 90) -- 145
-			cam.Start3D2D(pos, ang, 0.1) -- 147
-			surface.SetMaterial(noise) -- 149
-			surface.SetDrawColor(Color(255, 255, 255, 255)) -- 150
-			surface.DrawTexturedRect(0, 0, 152, 38) -- 151
-			local txt = "Refinery" -- 153
-			local txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 154
-			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 155
-			cam.End3D2D() -- 157
-			pos = self:GetPos() + (self:GetUp() * 5) + (self:GetForward() * 25) + (self:GetRight() * -22) -- 159
+		HUDRender = function(self) -- 134
+			local ct = { } -- 135
+			ct[#ct + 1] = self.PrintName -- 136
+			ct[#ct + 1] = { -- 138
+				text = "Certain items can be processed into more useful things with this.", -- 138
+				font = "Spleen_Label_Small" -- 139
+			} -- 137
+			ct[#ct + 1] = { -- 142
+				text = "The rustier it is, the longer it will take.", -- 142
+				font = "Spleen_Label_Small" -- 143
+			} -- 141
+			return ct -- 145
+		end, -- 147
+		Render3D2D = function(self) -- 147
+			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 148
+			if not (dist_sqr < 128 ^ 2) then -- 149
+				return -- 149
+			end -- 149
+			local font = "Spleen_Label" -- 150
+			local desp = lp:GetDespair() * 0.01 -- 151
+			local ct = CurTime() -- 152
+			local pos = self:GetPos() + (self:GetUp() * 15) + (self:GetForward() * 25) + (self:GetRight() * -20) -- 153
+			local ang = self:GetAngles() -- 154
+			ang:RotateAroundAxis(ang:Up(), -90) -- 156
+			ang:RotateAroundAxis(ang:Forward(), 90) -- 157
+			ang:RotateAroundAxis(ang:Right(), 90) -- 158
 			cam.Start3D2D(pos, ang, 0.1) -- 160
-			local rust = self:GetRust() -- 161
-			txt = tostring(rust) .. "% rust" -- 162
-			if rust < 0 then -- 163
-				txt = "give me purpose" -- 164
-			elseif rust >= 100 then -- 165
-				txt = "100% ROTTEN" -- 166
-			end -- 163
-			local pend = self:GetProductionEnd() -- 167
-			local pstart = self:GetProductionStart() -- 168
-			local prod = self:GetProducing() -- 169
-			if pend > 0 and prod then -- 170
-				prod = scripted_ents.Get(prod) -- 171
-				local text -- 172
-				if prod then -- 172
-					text = prod.PrintName -- 172
-				end -- 172
-			end -- 170
-			surface.SetDrawColor(0, 0, 0, 255) -- 173
-			surface.DrawRect(0, 0, 152, 78) -- 174
-			if pend > 0 then -- 175
-				local cur = ct - pstart -- 176
-				surface.SetDrawColor(0, 150 + (100 * math.cos(ct)), 0, 255) -- 177
-				surface.DrawRect(0, 0, 152 * (cur / (pend - pstart)), 78) -- 178
-			elseif rust >= 100 then -- 179
-				surface.SetDrawColor(150 + (100 * math.cos(ct)), 0, 0, 255) -- 180
-				surface.DrawRect(0, 0, 152 * (rust / 100), 78) -- 181
-			else -- 183
-				surface.SetDrawColor(147, 58 + (2 * math.cos(ct)), 22, 255) -- 183
-				surface.DrawRect(0, 0, 152 * (rust / 100), 78) -- 184
-			end -- 175
-			txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 185
-			txt_obj:Draw(76, 24, 1, TEXT_ALIGN_CENTER) -- 186
-			return cam.End3D2D() -- 187
+			surface.SetMaterial(noise) -- 162
+			surface.SetDrawColor(Color(255, 255, 255, 255)) -- 163
+			surface.DrawTexturedRect(0, 0, 152, 38) -- 164
+			local txt = "Refinery" -- 166
+			local txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 167
+			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 168
+			cam.End3D2D() -- 170
+			pos = self:GetPos() + (self:GetUp() * 5) + (self:GetForward() * 25) + (self:GetRight() * -22) -- 172
+			cam.Start3D2D(pos, ang, 0.1) -- 173
+			local rust = self:GetRust() -- 174
+			txt = tostring(rust) .. "% rust" -- 175
+			if rust < 0 then -- 176
+				txt = "give me purpose" -- 177
+			elseif rust >= 100 then -- 178
+				txt = "100% ROTTEN" -- 179
+			end -- 176
+			local pend = self:GetProductionEnd() -- 180
+			local pstart = self:GetProductionStart() -- 181
+			local prod = self:GetProducing() -- 182
+			if pend > 0 and prod then -- 183
+				prod = scripted_ents.Get(prod) -- 184
+				local text -- 185
+				if prod then -- 185
+					text = prod.PrintName -- 185
+				end -- 185
+			end -- 183
+			surface.SetDrawColor(0, 0, 0, 255) -- 186
+			surface.DrawRect(0, 0, 152, 78) -- 187
+			if pend > 0 then -- 188
+				local cur = ct - pstart -- 189
+				surface.SetDrawColor(0, 150 + (100 * math.cos(ct)), 0, 255) -- 190
+				surface.DrawRect(0, 0, 152 * (cur / (pend - pstart)), 78) -- 191
+			elseif rust >= 100 then -- 192
+				surface.SetDrawColor(150 + (100 * math.cos(ct)), 0, 0, 255) -- 193
+				surface.DrawRect(0, 0, 152 * (rust / 100), 78) -- 194
+			else -- 196
+				surface.SetDrawColor(147, 58 + (2 * math.cos(ct)), 22, 255) -- 196
+				surface.DrawRect(0, 0, 152 * (rust / 100), 78) -- 197
+			end -- 188
+			txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 198
+			txt_obj:Draw(76, 24, 1, TEXT_ALIGN_CENTER) -- 199
+			return cam.End3D2D() -- 200
 		end -- 4
 	} -- 4
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 188
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 201
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 4
 			_base_0[_key_0] = _val_0 -- 4
 		end -- 4
-	end -- 188
+	end -- 201
 	if _base_0.__index == nil then -- 4
 		_base_0.__index = _base_0 -- 4
-	end -- 188
+	end -- 201
 	setmetatable(_base_0, _parent_0.__base) -- 4
 	_class_0 = setmetatable({ -- 4
 		__init = function(self, ...) -- 4
@@ -247,5 +260,5 @@ do -- 4
 		_parent_0.__inherited(_parent_0, _class_0) -- 4
 	end -- 4
 	Refinery = _class_0 -- 4
-	return _class_0 -- 188
-end -- 188
+	return _class_0 -- 201
+end -- 201

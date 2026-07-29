@@ -54,7 +54,7 @@ class Nylon extends Polymer
   BiteDamage: 25
   CookTime: 5
   Precursor:
-    polymer: 2
+    polymer: 4
 
 
 class Thermoplastic extends Polymer

@@ -148,7 +148,7 @@ do -- 42
 		BiteDamage = 25, -- 55
 		CookTime = 5, -- 56
 		Precursor = { -- 57
-			polymer = 2 -- 57
+			polymer = 4 -- 57
 		} -- 42
 	} -- 42
 	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 57
