@@ -36,6 +36,25 @@ global EVIL_MACHINE_POSITIONS_CURSED = {
       generator:
         pos: Vector(2251, -374, 65)
         ang: Angle(-0, 117, -0)
+  ["rp_lymphoma"]:
+    * machine:
+        pos: Vector(-101, -4665, -780.5)
+        ang: Angle(0, 0, 0)
+      generator:
+        pos: Vector(-46, -4589, -815.7)
+        ang: Angle(0, 9, 0)
+    * machine:
+        pos: Vector(287.821411, -6748.479004, -860.485352)
+        ang: Angle(0, -90, 0)
+      generator:
+        pos: Vector(202.270126, -6837.956543, -895.734802)
+        ang: Angle(0, 67, 0)
+    * machine:
+        pos: Vector(1516.259399, -3269.026367, -27.724955)
+        ang: Angle(0, -90, 0)
+      generator:
+        pos: Vector(1405.752563, -3296.348389, -63.624626)
+        ang: Angle(0, 45, 0)
 }
 
 create_machines_and_otherwise = ->

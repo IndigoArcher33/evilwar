@@ -61,191 +61,223 @@ EVIL_MACHINE_POSITIONS_CURSED = { -- 2
 				ang = Angle(-0, 117, -0) -- 38
 			} -- 36
 		} -- 33
-	} -- 2
+	}, -- 2
+	["rp_lymphoma"] = { -- 40
+		{ -- 40
+			machine = { -- 41
+				pos = Vector(-101, -4665, -780.5), -- 41
+				ang = Angle(0, 0, 0) -- 42
+			}, -- 40
+			generator = { -- 44
+				pos = Vector(-46, -4589, -815.7), -- 44
+				ang = Angle(0, 9, 0) -- 45
+			} -- 43
+		}, -- 40
+		{ -- 46
+			machine = { -- 47
+				pos = Vector(287.821411, -6748.479004, -860.485352), -- 47
+				ang = Angle(0, -90, 0) -- 48
+			}, -- 46
+			generator = { -- 50
+				pos = Vector(202.270126, -6837.956543, -895.734802), -- 50
+				ang = Angle(0, 67, 0) -- 51
+			} -- 49
+		}, -- 46
+		{ -- 52
+			machine = { -- 53
+				pos = Vector(1516.259399, -3269.026367, -27.724955), -- 53
+				ang = Angle(0, -90, 0) -- 54
+			}, -- 52
+			generator = { -- 56
+				pos = Vector(1405.752563, -3296.348389, -63.624626), -- 56
+				ang = Angle(0, 45, 0) -- 57
+			} -- 55
+		} -- 52
+	} -- 39
 } -- 1
-local create_machines_and_otherwise -- 41
-create_machines_and_otherwise = function() -- 41
-	local EVIL_GENERATOR_POSITIONS = { -- 43
-		["rp_lymphoma"] = { -- 44
-			{ -- 44
-				pos = Vector(-972, 1153, 1), -- 44
-				ang = Angle(-0, 0, -0), -- 45
-				id = "tools" -- 46
-			}, -- 44
-			{ -- 47
-				pos = Vector(209, 2618, 1), -- 47
-				ang = Angle(-0, -47, -0), -- 48
-				id = "food" -- 49
-			}, -- 47
-			{ -- 50
-				pos = Vector(256, 289, 193), -- 50
-				ang = Angle(-0, 90, 0), -- 51
-				id = "weapons" -- 52
-			}, -- 50
-			{ -- 53
-				pos = Vector(1529, 769, 1), -- 53
-				ang = Angle(-0, -0, 0), -- 54
-				id = "medicine" -- 55
-			}, -- 53
-			{ -- 56
-				pos = Vector(3041, 1784, -103), -- 56
-				ang = Angle(8, 126, 0), -- 57
-				id = "evil" -- 58
-			} -- 56
-		} -- 43
-	} -- 42
-	local EVIL_MACHINE_POSITIONS = { -- 61
-		["rp_lymphoma"] = { -- 62
-			{ -- 62
-				pos = Vector(-1104, 1264, 36), -- 62
-				ang = Angle(-0, -180, 0), -- 63
-				cls = "machine/tools" -- 64
-			}, -- 62
-			{ -- 65
-				pos = Vector(-1104, 1461, 36), -- 65
-				ang = Angle(-0, -180, 0), -- 66
-				cls = "machine/tools" -- 67
-			}, -- 65
-			{ -- 68
-				pos = Vector(-277, 2704, 36), -- 68
-				ang = Angle(-0, -90, 0), -- 69
-				cls = "machine/food" -- 70
-			}, -- 68
-			{ -- 71
-				pos = Vector(-146, 2704, 36), -- 71
-				ang = Angle(-0, -90, 0), -- 72
-				cls = "machine/food" -- 73
-			}, -- 71
-			{ -- 74
-				pos = Vector(-10, 2705, 37), -- 74
-				ang = Angle(-0, -90, 0), -- 75
-				cls = "machine/food" -- 76
-			}, -- 74
-			{ -- 77
-				pos = Vector(592, 275, 228), -- 77
-				ang = Angle(-0, -180, -0), -- 78
-				cls = "machine/weapons" -- 79
-			}, -- 77
-			{ -- 80
-				pos = Vector(592, 400, 228), -- 80
-				ang = Angle(-0, -180, -0), -- 81
-				cls = "machine/weapons" -- 82
-			}, -- 80
-			{ -- 83
-				pos = Vector(1712, 736, 36), -- 83
-				ang = Angle(-0, -180, 0), -- 84
-				cls = "machine/medicine" -- 85
-			}, -- 83
-			{ -- 86
-				pos = Vector(1712, 548, 36), -- 86
-				ang = Angle(-0, -180, 0), -- 87
-				cls = "machine/medicine" -- 88
-			}, -- 86
-			{ -- 89
-				pos = Vector(3003, 1774, -103), -- 89
-				ang = Angle(19, 173, 0), -- 90
-				cls = "machine/evil" -- 91
-			}, -- 89
-			{ -- 92
-				pos = Vector(323, 2401, 28), -- 92
-				ang = Angle(-0, 90, 0), -- 93
-				cls = "refinery" -- 94
-			}, -- 92
-			{ -- 95
-				pos = Vector(323, 2147, 28), -- 95
-				ang = Angle(0, 90, -0), -- 96
-				cls = "refinery" -- 97
-			}, -- 95
-			{ -- 98
-				pos = Vector(-354, 2399, 28), -- 98
-				ang = Angle(-0, -90, -0), -- 99
-				cls = "refinery" -- 100
-			}, -- 98
-			{ -- 101
-				pos = Vector(-1292, 1508, 28), -- 101
-				ang = Angle(0, 180, -0), -- 102
-				cls = "refinery" -- 103
-			}, -- 101
-			{ -- 104
-				pos = Vector(-575, 538, 48), -- 104
-				ang = Angle(0, 0, 0), -- 105
-				cls = "cooker" -- 106
-			}, -- 104
-			{ -- 107
-				pos = Vector(-575, 494, 48), -- 107
-				ang = Angle(0, 0, 0), -- 108
-				cls = "cooker" -- 109
-			}, -- 107
-			{ -- 110
-				pos = Vector(573.55, -3365.23, -815), -- 110
-				ang = Angle(0, -180, 0), -- 111
-				cls = "cooker" -- 112
-			} -- 110
-		} -- 61
-	} -- 60
-	local map = game.GetMap() -- 114
-	local _list_0 = ents.FindByClass("generator") -- 115
-	for _index_0 = 1, #_list_0 do -- 115
-		local gen = _list_0[_index_0] -- 115
-		gen:Remove() -- 116
-	end -- 116
-	if EVIL_GENERATOR_POSITIONS[map] then -- 117
-		local _list_1 = EVIL_GENERATOR_POSITIONS[map] -- 118
-		for _index_0 = 1, #_list_1 do -- 118
-			local v = _list_1[_index_0] -- 118
-			local sp = ents.Create("generator") -- 119
-			sp:SetPos(v.pos) -- 121
-			sp:SetAngles(v.ang) -- 122
-			sp:SetFactoryIdentifier(v.id) -- 123
-			sp:Spawn() -- 124
-			sp:Activate() -- 125
-			sp:GetPhysicsObject():EnableMotion(false) -- 126
-			MsgC(Color(0, 200, 0), tostring(sp) .. " spawned with factory identifier '", Color(200, 200, 200), v.id, Color(0, 200, 0), "'.\n") -- 127
-		end -- 132
-		local _list_2 = ents.FindByClass("machine/*") -- 138
-		for _index_0 = 1, #_list_2 do -- 138
-			local mach = _list_2[_index_0] -- 138
-			mach:Remove() -- 139
-		end -- 139
-		local _list_3 = ents.FindByClass("refinery") -- 140
-		for _index_0 = 1, #_list_3 do -- 140
-			local ref = _list_3[_index_0] -- 140
-			ref:Remove() -- 141
-		end -- 141
-		return timer.Simple(1, function() -- 142
-			if EVIL_MACHINE_POSITIONS[map] then -- 143
-				local _list_4 = EVIL_MACHINE_POSITIONS[map] -- 144
-				for _index_0 = 1, #_list_4 do -- 144
-					local v = _list_4[_index_0] -- 144
-					local sp = ents.Create(v.cls) -- 145
-					do -- 146
-						sp:SetPos(v.pos) -- 147
-						sp:SetAngles(v.ang) -- 148
-						sp:Spawn() -- 149
-						sp:Activate() -- 150
-						local phys = sp:GetPhysicsObject() -- 151
-						if IsValid(phys) then -- 152
-							phys:EnableMotion(false) -- 152
-						end -- 152
-						MsgC(Color(0, 200, 0), tostring(sp) .. " spawned.\n") -- 153
-					end -- 146
-				end -- 154
-			end -- 143
-			if EVIL_MACHINE_POSITIONS_CURSED[map] then -- 155
-				local sp = ents.Create("machine/evil") -- 156
-				do -- 157
-					sp:Spawn() -- 158
-					sp:Activate() -- 159
-					local phys = sp:GetPhysicsObject() -- 160
-					if IsValid(phys) then -- 161
-						phys:EnableMotion(false) -- 161
-					end -- 161
-					MsgC(Color(200, 0, 0), tostring(sp) .. " SPAWNED.\n") -- 162
-					sp:Shift() -- 164
-				end -- 157
-			end -- 155
-			return -- 165
-		end) -- 165
-	end -- 117
-end -- 41
-return hook.Add("InitPostEntity", "evilrp_create_machines_and_otherwise", create_machines_and_otherwise) -- 167
+local create_machines_and_otherwise -- 60
+create_machines_and_otherwise = function() -- 60
+	local EVIL_GENERATOR_POSITIONS = { -- 62
+		["rp_lymphoma"] = { -- 63
+			{ -- 63
+				pos = Vector(-972, 1153, 1), -- 63
+				ang = Angle(-0, 0, -0), -- 64
+				id = "tools" -- 65
+			}, -- 63
+			{ -- 66
+				pos = Vector(209, 2618, 1), -- 66
+				ang = Angle(-0, -47, -0), -- 67
+				id = "food" -- 68
+			}, -- 66
+			{ -- 69
+				pos = Vector(256, 289, 193), -- 69
+				ang = Angle(-0, 90, 0), -- 70
+				id = "weapons" -- 71
+			}, -- 69
+			{ -- 72
+				pos = Vector(1529, 769, 1), -- 72
+				ang = Angle(-0, -0, 0), -- 73
+				id = "medicine" -- 74
+			}, -- 72
+			{ -- 75
+				pos = Vector(3041, 1784, -103), -- 75
+				ang = Angle(8, 126, 0), -- 76
+				id = "evil" -- 77
+			} -- 75
+		} -- 62
+	} -- 61
+	local EVIL_MACHINE_POSITIONS = { -- 80
+		["rp_lymphoma"] = { -- 81
+			{ -- 81
+				pos = Vector(-1104, 1264, 36), -- 81
+				ang = Angle(-0, -180, 0), -- 82
+				cls = "machine/tools" -- 83
+			}, -- 81
+			{ -- 84
+				pos = Vector(-1104, 1461, 36), -- 84
+				ang = Angle(-0, -180, 0), -- 85
+				cls = "machine/tools" -- 86
+			}, -- 84
+			{ -- 87
+				pos = Vector(-277, 2704, 36), -- 87
+				ang = Angle(-0, -90, 0), -- 88
+				cls = "machine/food" -- 89
+			}, -- 87
+			{ -- 90
+				pos = Vector(-146, 2704, 36), -- 90
+				ang = Angle(-0, -90, 0), -- 91
+				cls = "machine/food" -- 92
+			}, -- 90
+			{ -- 93
+				pos = Vector(-10, 2705, 37), -- 93
+				ang = Angle(-0, -90, 0), -- 94
+				cls = "machine/food" -- 95
+			}, -- 93
+			{ -- 96
+				pos = Vector(592, 275, 228), -- 96
+				ang = Angle(-0, -180, -0), -- 97
+				cls = "machine/weapons" -- 98
+			}, -- 96
+			{ -- 99
+				pos = Vector(592, 400, 228), -- 99
+				ang = Angle(-0, -180, -0), -- 100
+				cls = "machine/weapons" -- 101
+			}, -- 99
+			{ -- 102
+				pos = Vector(1712, 736, 36), -- 102
+				ang = Angle(-0, -180, 0), -- 103
+				cls = "machine/medicine" -- 104
+			}, -- 102
+			{ -- 105
+				pos = Vector(1712, 548, 36), -- 105
+				ang = Angle(-0, -180, 0), -- 106
+				cls = "machine/medicine" -- 107
+			}, -- 105
+			{ -- 108
+				pos = Vector(3003, 1774, -103), -- 108
+				ang = Angle(19, 173, 0), -- 109
+				cls = "machine/evil" -- 110
+			}, -- 108
+			{ -- 111
+				pos = Vector(323, 2401, 28), -- 111
+				ang = Angle(-0, 90, 0), -- 112
+				cls = "refinery" -- 113
+			}, -- 111
+			{ -- 114
+				pos = Vector(323, 2147, 28), -- 114
+				ang = Angle(0, 90, -0), -- 115
+				cls = "refinery" -- 116
+			}, -- 114
+			{ -- 117
+				pos = Vector(-354, 2399, 28), -- 117
+				ang = Angle(-0, -90, -0), -- 118
+				cls = "refinery" -- 119
+			}, -- 117
+			{ -- 120
+				pos = Vector(-1292, 1508, 28), -- 120
+				ang = Angle(0, 180, -0), -- 121
+				cls = "refinery" -- 122
+			}, -- 120
+			{ -- 123
+				pos = Vector(-575, 538, 48), -- 123
+				ang = Angle(0, 0, 0), -- 124
+				cls = "cooker" -- 125
+			}, -- 123
+			{ -- 126
+				pos = Vector(-575, 494, 48), -- 126
+				ang = Angle(0, 0, 0), -- 127
+				cls = "cooker" -- 128
+			}, -- 126
+			{ -- 129
+				pos = Vector(573.55, -3365.23, -815), -- 129
+				ang = Angle(0, -180, 0), -- 130
+				cls = "cooker" -- 131
+			} -- 129
+		} -- 80
+	} -- 79
+	local map = game.GetMap() -- 133
+	local _list_0 = ents.FindByClass("generator") -- 134
+	for _index_0 = 1, #_list_0 do -- 134
+		local gen = _list_0[_index_0] -- 134
+		gen:Remove() -- 135
+	end -- 135
+	if EVIL_GENERATOR_POSITIONS[map] then -- 136
+		local _list_1 = EVIL_GENERATOR_POSITIONS[map] -- 137
+		for _index_0 = 1, #_list_1 do -- 137
+			local v = _list_1[_index_0] -- 137
+			local sp = ents.Create("generator") -- 138
+			sp:SetPos(v.pos) -- 140
+			sp:SetAngles(v.ang) -- 141
+			sp:SetFactoryIdentifier(v.id) -- 142
+			sp:Spawn() -- 143
+			sp:Activate() -- 144
+			sp:GetPhysicsObject():EnableMotion(false) -- 145
+			MsgC(Color(0, 200, 0), tostring(sp) .. " spawned with factory identifier '", Color(200, 200, 200), v.id, Color(0, 200, 0), "'.\n") -- 146
+		end -- 151
+		local _list_2 = ents.FindByClass("machine/*") -- 157
+		for _index_0 = 1, #_list_2 do -- 157
+			local mach = _list_2[_index_0] -- 157
+			mach:Remove() -- 158
+		end -- 158
+		local _list_3 = ents.FindByClass("refinery") -- 159
+		for _index_0 = 1, #_list_3 do -- 159
+			local ref = _list_3[_index_0] -- 159
+			ref:Remove() -- 160
+		end -- 160
+		return timer.Simple(1, function() -- 161
+			if EVIL_MACHINE_POSITIONS[map] then -- 162
+				local _list_4 = EVIL_MACHINE_POSITIONS[map] -- 163
+				for _index_0 = 1, #_list_4 do -- 163
+					local v = _list_4[_index_0] -- 163
+					local sp = ents.Create(v.cls) -- 164
+					do -- 165
+						sp:SetPos(v.pos) -- 166
+						sp:SetAngles(v.ang) -- 167
+						sp:Spawn() -- 168
+						sp:Activate() -- 169
+						local phys = sp:GetPhysicsObject() -- 170
+						if IsValid(phys) then -- 171
+							phys:EnableMotion(false) -- 171
+						end -- 171
+						MsgC(Color(0, 200, 0), tostring(sp) .. " spawned.\n") -- 172
+					end -- 165
+				end -- 173
+			end -- 162
+			if EVIL_MACHINE_POSITIONS_CURSED[map] then -- 174
+				local sp = ents.Create("machine/evil") -- 175
+				do -- 176
+					sp:Spawn() -- 177
+					sp:Activate() -- 178
+					local phys = sp:GetPhysicsObject() -- 179
+					if IsValid(phys) then -- 180
+						phys:EnableMotion(false) -- 180
+					end -- 180
+					MsgC(Color(200, 0, 0), tostring(sp) .. " SPAWNED.\n") -- 181
+					sp:Shift() -- 183
+				end -- 176
+			end -- 174
+			return -- 184
+		end) -- 184
+	end -- 136
+end -- 60
+return hook.Add("InitPostEntity", "evilrp_create_machines_and_otherwise", create_machines_and_otherwise) -- 186

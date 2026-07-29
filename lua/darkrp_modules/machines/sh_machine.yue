@@ -750,6 +750,11 @@ class Evil extends Machine
         metal: 7
         wood: 2
       time: 30 }
+    ["evilrp_weapon/viper"]: {
+      precursors:
+        metal: 4
+        wood: 2
+      time: 30 }
 
   ProduceItem: (item) =>
     -- the evil machine drops items directly

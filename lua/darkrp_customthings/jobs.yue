@@ -463,7 +463,7 @@ TEAM_DEALER = DarkRP.createJob "Quartermaster",
       when TEAM_SANITAR
         text = "The oldest living Dragoon.\nRespect. Honor."
       when TEAM_KORPSMAN
-        text = "A reminder of the power of\nKapitalism."
+        text = "A reminder of the power of Kapitalism."
       when TEAM_DEALER
         text = "I'm seeing double!"
       when TEAM_EMPEROR
@@ -474,8 +474,8 @@ TEAM_DEALER = DarkRP.createJob "Quartermaster",
         text = "BONES ARE HIS DOLLARS."
     return { :text, font: "Spleen_Label_Small" }, true
   first_names: { "Quartermaster", "Quartiermeister"}
-  last_names: {"Kommissariatsdienst"} 
-  special_name: "Kwartiermeester"
+  last_names: {"Kommissariatsdienst", } 
+  special_name: "Trusty"
   special_name_chance: 1000
   ShowSpare1: open_player_menu
   ShowSpare2: open_action_menu

@@ -1381,102 +1381,109 @@ do -- 719
 					wood = 2 -- 751
 				}, -- 749
 				time = 30 -- 752
-			} -- 748
-		}, -- 754
-		ProduceItem = function(self, item) -- 754
-			local etab = scripted_ents.Get(item) -- 756
-			local weapon -- 757
-			if not etab then -- 758
-				etab = weapons.Get(item) -- 760
-				weapon = true -- 761
-			end -- 758
-			local product -- 762
-			if weapon then -- 763
-				product = ents.Create("evilrp/spawned/weapon") -- 764
-				product:SetModel(etab.WorldModel) -- 766
-				product:SetWeaponClass(item) -- 767
-			else -- 769
-				product = ents.Create(item) -- 769
+			}, -- 748
+			["evilrp_weapon/viper"] = { -- 754
+				precursors = { -- 755
+					metal = 4, -- 755
+					wood = 2 -- 756
+				}, -- 754
+				time = 30 -- 757
+			} -- 753
+		}, -- 759
+		ProduceItem = function(self, item) -- 759
+			local etab = scripted_ents.Get(item) -- 761
+			local weapon -- 762
+			if not etab then -- 763
+				etab = weapons.Get(item) -- 765
+				weapon = true -- 766
 			end -- 763
-			product:SetPos(self:GetPos() + Vector(0, 0, -12) + (self:GetForward() * 8)) -- 770
-			product:Spawn() -- 771
-			product:Activate() -- 772
-			self:EmitSound("Evil_Squeal") -- 773
-			return product -- 774
-		end, -- 776
-		Shift = function(self) -- 776
-			if not SERVER then -- 777
-				return -- 777
-			end -- 777
-			local map = game.GetMap() -- 778
-			if not EVIL_MACHINE_POSITIONS_CURSED[map] then -- 779
-				return -- 779
-			end -- 779
-			local positions_all -- 780
-			do -- 780
-				local _tab_0 = { } -- 780
-				local _obj_0 = EVIL_MACHINE_POSITIONS_CURSED[map] -- 780
-				local _idx_0 = 1 -- 780
-				for _key_0, _value_0 in pairs(_obj_0) do -- 780
-					if _idx_0 == _key_0 then -- 780
-						_tab_0[#_tab_0 + 1] = _value_0 -- 780
-						_idx_0 = _idx_0 + 1 -- 780
-					else -- 780
-						_tab_0[_key_0] = _value_0 -- 780
-					end -- 780
-				end -- 780
-				positions_all = _tab_0 -- 780
-			end -- 780
-			local positions = { } -- 781
-			local our_pos = self:GetPos() -- 783
-			for k, v in pairs(positions_all) do -- 784
-				if not (our_pos == v.machine.pos) then -- 785
-					positions[#positions + 1] = v -- 786
+			local product -- 767
+			if weapon then -- 768
+				product = ents.Create("evilrp/spawned/weapon") -- 769
+				product:SetModel(etab.WorldModel) -- 771
+				product:SetWeaponClass(item) -- 772
+			else -- 774
+				product = ents.Create(item) -- 774
+			end -- 768
+			product:SetPos(self:GetPos() + Vector(0, 0, -12) + (self:GetForward() * 8)) -- 775
+			product:Spawn() -- 776
+			product:Activate() -- 777
+			self:EmitSound("Evil_Squeal") -- 778
+			return product -- 779
+		end, -- 781
+		Shift = function(self) -- 781
+			if not SERVER then -- 782
+				return -- 782
+			end -- 782
+			local map = game.GetMap() -- 783
+			if not EVIL_MACHINE_POSITIONS_CURSED[map] then -- 784
+				return -- 784
+			end -- 784
+			local positions_all -- 785
+			do -- 785
+				local _tab_0 = { } -- 785
+				local _obj_0 = EVIL_MACHINE_POSITIONS_CURSED[map] -- 785
+				local _idx_0 = 1 -- 785
+				for _key_0, _value_0 in pairs(_obj_0) do -- 785
+					if _idx_0 == _key_0 then -- 785
+						_tab_0[#_tab_0 + 1] = _value_0 -- 785
+						_idx_0 = _idx_0 + 1 -- 785
+					else -- 785
+						_tab_0[_key_0] = _value_0 -- 785
+					end -- 785
 				end -- 785
-			end -- 786
-			local where = positions[math.random(#positions)] -- 787
-			local where_mach = where.machine -- 788
-			local where_gen = where.generator -- 789
-			self:EmitSound("Evil_Squeal") -- 790
-			self:SetPos(where_mach.pos) -- 791
-			self:SetAngles(where_mach.ang) -- 792
-			local gen = self:GetGenerator() -- 793
-			gen:SetPos(where_gen.pos) -- 795
-			gen:SetAngles(where_gen.ang) -- 796
-			gen:SetRust(0) -- 797
-			gen:SetFuel(0) -- 798
-			if gen:GetOn() then -- 799
-				gen:SetOn(false) -- 800
-				gen:StopLoopingSound(gen:GetSoundLoop()) -- 801
-				gen.Overload = false -- 802
-			end -- 799
-			self:PositionButtons() -- 803
-			self:SetRust(0) -- 804
-			return MsgC(Color(200, 0, 0), "The evil machine shifted.\n") -- 805
-		end, -- 807
-		Think = function(self) -- 807
-			_class_0.__parent.__base.Think(self) -- 808
-			local ct = CurTime() -- 809
-			if not self.next_shift then -- 810
-				self.next_shift = ct + 5 -- 810
-			end -- 810
-			if ct >= self.next_shift then -- 811
-				if self:GetProducing() == "" then -- 812
-					self.next_shift = ct + math.random(300, 900) -- 813
-					return self:Shift() -- 814
-				end -- 812
-			end -- 811
-		end, -- 816
+				positions_all = _tab_0 -- 785
+			end -- 785
+			local positions = { } -- 786
+			local our_pos = self:GetPos() -- 788
+			for k, v in pairs(positions_all) do -- 789
+				if not (our_pos == v.machine.pos) then -- 790
+					positions[#positions + 1] = v -- 791
+				end -- 790
+			end -- 791
+			local where = positions[math.random(#positions)] -- 792
+			local where_mach = where.machine -- 793
+			local where_gen = where.generator -- 794
+			self:EmitSound("Evil_Squeal") -- 795
+			self:SetPos(where_mach.pos) -- 796
+			self:SetAngles(where_mach.ang) -- 797
+			local gen = self:GetGenerator() -- 798
+			gen:SetPos(where_gen.pos) -- 800
+			gen:SetAngles(where_gen.ang) -- 801
+			gen:SetRust(0) -- 802
+			gen:SetFuel(0) -- 803
+			if gen:GetOn() then -- 804
+				gen:SetOn(false) -- 805
+				gen:StopLoopingSound(gen:GetSoundLoop()) -- 806
+				gen.Overload = false -- 807
+			end -- 804
+			self:PositionButtons() -- 808
+			self:SetRust(0) -- 809
+			return MsgC(Color(200, 0, 0), "The evil machine shifted.\n") -- 810
+		end, -- 812
+		Think = function(self) -- 812
+			_class_0.__parent.__base.Think(self) -- 813
+			local ct = CurTime() -- 814
+			if not self.next_shift then -- 815
+				self.next_shift = ct + 5 -- 815
+			end -- 815
+			if ct >= self.next_shift then -- 816
+				if self:GetProducing() == "" then -- 817
+					self.next_shift = ct + math.random(300, 900) -- 818
+					return self:Shift() -- 819
+				end -- 817
+			end -- 816
+		end, -- 821
 		FactoryIdentifier = "evil" -- 719
 	} -- 719
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 816
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 821
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 719
 			_base_0[_key_0] = _val_0 -- 719
 		end -- 719
-	end -- 816
+	end -- 821
 	if _base_0.__index == nil then -- 719
 		_base_0.__index = _base_0 -- 719
-	end -- 816
+	end -- 821
 	setmetatable(_base_0, _parent_0.__base) -- 719
 	_class_0 = setmetatable({ -- 719
 		__init = function(self, ...) -- 719
@@ -1508,5 +1515,5 @@ do -- 719
 		_parent_0.__inherited(_parent_0, _class_0) -- 719
 	end -- 719
 	Evil = _class_0 -- 719
-	return _class_0 -- 816
-end -- 816
+	return _class_0 -- 821
+end -- 821

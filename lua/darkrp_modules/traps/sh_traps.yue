@@ -179,7 +179,7 @@ class Trap extends ENTITY_LONGUSE
     with fire_ent
       \SetPos(@GetPos!)
       \SetKeyValue("spawnflags", "1")
-      \SetKeyValue("attack", tostring(math.random(10, 15)))
+      \SetKeyValue("attack", tostring(math.random(20, 40)))
       \SetKeyValue("firesize", tostring(math.random(100, 150)))
       \Spawn!
       \Activate!
@@ -369,7 +369,7 @@ class IED extends Trap
   PrintName: "IED"
   Description: "An explosive device, disguised as a pile of trash."
   Model: "models/props_junk/garbage128_composite001b.mdl"
-  Power: 25
+  Power: 40
 
   Touch: (what) =>
     return if CLIENT

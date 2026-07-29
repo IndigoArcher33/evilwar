@@ -268,7 +268,7 @@ do -- 18
 			local fire_ent = ents.Create("env_fire") -- 178
 			fire_ent:SetPos(self:GetPos()) -- 180
 			fire_ent:SetKeyValue("spawnflags", "1") -- 181
-			fire_ent:SetKeyValue("attack", tostring(math.random(10, 15))) -- 182
+			fire_ent:SetKeyValue("attack", tostring(math.random(20, 40))) -- 182
 			fire_ent:SetKeyValue("firesize", tostring(math.random(100, 150))) -- 183
 			fire_ent:Spawn() -- 184
 			fire_ent:Activate() -- 185
@@ -650,7 +650,7 @@ do -- 368
 		PrintName = "IED", -- 370
 		Description = "An explosive device, disguised as a pile of trash.", -- 371
 		Model = "models/props_junk/garbage128_composite001b.mdl", -- 372
-		Power = 25, -- 374
+		Power = 40, -- 374
 		Touch = function(self, what) -- 374
 			if CLIENT then -- 375
 				return -- 375

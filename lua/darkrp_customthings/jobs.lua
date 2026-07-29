@@ -811,7 +811,7 @@ TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 442
 			elseif TEAM_SANITAR == _exp_0 then -- 463
 				text = "The oldest living Dragoon.\nRespect. Honor." -- 464
 			elseif TEAM_KORPSMAN == _exp_0 then -- 465
-				text = "A reminder of the power of\nKapitalism." -- 466
+				text = "A reminder of the power of Kapitalism." -- 466
 			elseif TEAM_DEALER == _exp_0 then -- 467
 				text = "I'm seeing double!" -- 468
 			elseif TEAM_EMPEROR == _exp_0 then -- 469
@@ -834,7 +834,7 @@ TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 442
 	last_names = { -- 477
 		"Kommissariatsdienst" -- 477
 	}, -- 477
-	special_name = "Kwartiermeester", -- 478
+	special_name = "Trusty", -- 478
 	special_name_chance = 1000, -- 479
 	ShowSpare1 = open_player_menu, -- 480
 	ShowSpare2 = open_action_menu, -- 481
