@@ -56,8 +56,9 @@ class Lootable extends ENTITY_LONGUSE
 
   SetupDataTables: =>
     super!
-    @NetworkVar "Int", "Remaining"
-    @NetworkVar "String", "LootName"
+    unless @GetRemaining
+      @NetworkVar "Int", "Remaining"
+      @NetworkVar "String", "LootName"
 
   Initialize: =>
     return if CLIENT
@@ -442,3 +443,10 @@ class Cache extends Lootable -- for the outsiders to loot to use against or sell
     * "item/loot/spareammo"
     * "item/loot/spareammo"
     * "item/loot/spareammo"
+
+if ENT
+  scripted_ents.Register(Dumpster, "evilrp_dumpster")
+  scripted_ents.Register(Crate, "evilrp_crate")
+  scripted_ents.Register(Locker, "evilrp_locker")
+  scripted_ents.Register(Chest, "evilrp_chest")
+  scripted_ents.Register(Cache, "evilrp_cache")
