@@ -10,7 +10,7 @@ GAMEMODE.action_menu = { -- 5
 	width = 0 -- 15
 } -- 4
 local get_intrinsic_actions -- 18
-get_intrinsic_actions = function(ply) -- 18
+get_intrinsic_actions = function() -- 18
 	local actions = { } -- 19
 	local wep = lp:GetActiveWeapon() -- 20
 	if wep:IsValid() and wep:GetModel() ~= "" then -- 21
@@ -27,7 +27,7 @@ get_intrinsic_actions = function(ply) -- 18
 			return netstream.Send("BeginPaying") -- 23
 		end) -- 23
 	} -- 23
-	if ply:Team() == TEAM_STAKER then -- 24
+	if lp:Team() == TEAM_STALKER then -- 24
 		actions[#actions + 1] = { -- 25
 			desc = "Trap", -- 25
 			func = (function() -- 25

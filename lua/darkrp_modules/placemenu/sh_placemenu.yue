@@ -13,6 +13,7 @@ TRAP_COST = 150
 
 if SERVER
   netstream.Hook "BeginBuilding", (ply) ->
+    building = ply\GetNWBool"evilrp_building"
     return if ply.cant_build
     return if ply\GetNWBool"evilrp_building"
     ply\SetNWInt("evilrp_trapindex", 1)
@@ -74,24 +75,10 @@ if SERVER
       return unless IsValid(ply)
       ply.cant_build = false)
 else
-  hook.Add "PlayerBindPress", "evilrp_scrolltrap", (ply, bind, pressed) ->
-    return if not pressed
-    return unless ply\GetNWBool"evilrp_building"
-    bind = bind\lower!
-    if bind\find"invnext"
-      netstream.Send "ScrollTrap", 1
-      return true
-    elseif bind\find"invprev"
-      netstream.Send "ScrollTrap", -1
-      return true
-
   hook.Add "PlayerBindPress", "evilrp_droptrap", (ply, bind, pressed) ->
+    bind = bind\lower!
     return if not pressed
     return unless ply\GetNWBool"evilrp_building"
-    bind = bind\lower!
-    if bind\find"+attack"
-      netstream.Send "DropTrap"
-      return true
-    elseif bind\find"+reload"
+    if bind\find"+reload"
       netstream.Send "CancelBuilding"
       return true

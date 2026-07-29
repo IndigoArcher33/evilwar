@@ -15,13 +15,13 @@ GAMEMODE.action_menu = {
   width: 0
 }
 
-get_intrinsic_actions = (ply) ->
+get_intrinsic_actions = ->
   actions = {}
   wep = lp\GetActiveWeapon!
   if wep\IsValid! and wep\GetModel! ~= ""
     actions[] = { desc: "Drop #{wep.PrintName}", func: (-> netstream.Send"DropWeapon" ) }
   actions[] = { desc: "Payment", func: (-> netstream.Send"BeginPaying" ) }
-  if ply\Team! == TEAM_STAKER
+  if lp\Team! == TEAM_STALKER
     actions[] = { desc: "Trap", func: (-> netstream.Send"BeginBuilding" ) }
   return actions
 

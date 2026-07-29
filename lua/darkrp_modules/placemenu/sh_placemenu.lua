@@ -64,121 +64,103 @@ local TRAP_LIST = { -- 7
 local TRAP_COST = 150 -- 12
 if SERVER then -- 14
 	netstream.Hook("BeginBuilding", function(ply) -- 15
-		if ply.cant_build then -- 16
-			return -- 16
-		end -- 16
-		if ply:GetNWBool("evilrp_building") then -- 17
+		local building = ply:GetNWBool("evilrp_building") -- 16
+		if ply.cant_build then -- 17
 			return -- 17
 		end -- 17
-		ply:SetNWInt("evilrp_trapindex", 1) -- 18
-		ply:SetNWBool("evilrp_building", true) -- 19
-		ply:Notify("Scroll to select a trap.") -- 20
-		return ply:Notify("Left click to place it. Reload to cancel.") -- 21
+		if ply:GetNWBool("evilrp_building") then -- 18
+			return -- 18
+		end -- 18
+		ply:SetNWInt("evilrp_trapindex", 1) -- 19
+		ply:SetNWBool("evilrp_building", true) -- 20
+		ply:Notify("Scroll to select a trap.") -- 21
+		return ply:Notify("Left click to place it. Reload to cancel.") -- 22
 	end) -- 15
-	netstream.Hook("CancelBuilding", function(ply) -- 23
-		if not ply:GetNWBool("evilrp_building") then -- 24
-			return -- 24
-		end -- 24
-		ply:SetNWBool("evilrp_building", false) -- 25
-		return ply:Notify("Cancelled.") -- 26
-	end) -- 23
-	netstream.Hook("ScrollTrap", function(ply, dir) -- 28
-		if not ply:GetNWBool("evilrp_building") then -- 29
-			return -- 29
-		end -- 29
-		if not (dir == 1 or dir == -1) then -- 30
+	netstream.Hook("CancelBuilding", function(ply) -- 24
+		if not ply:GetNWBool("evilrp_building") then -- 25
+			return -- 25
+		end -- 25
+		ply:SetNWBool("evilrp_building", false) -- 26
+		return ply:Notify("Cancelled.") -- 27
+	end) -- 24
+	netstream.Hook("ScrollTrap", function(ply, dir) -- 29
+		if not ply:GetNWBool("evilrp_building") then -- 30
 			return -- 30
 		end -- 30
-		local count = #TRAP_LIST -- 31
-		local index = ply:GetNWInt("evilrp_trapindex", 1) + dir -- 32
-		if index < 1 then -- 33
-			index = count -- 33
-		end -- 33
-		if index > count then -- 34
-			index = 1 -- 34
+		if not (dir == 1 or dir == -1) then -- 31
+			return -- 31
+		end -- 31
+		local count = #TRAP_LIST -- 32
+		local index = ply:GetNWInt("evilrp_trapindex", 1) + dir -- 33
+		if index < 1 then -- 34
+			index = count -- 34
 		end -- 34
-		ply:SetNWInt("evilrp_trapindex", index) -- 35
-		return ply:Notify("Selected: " .. tostring(TRAP_LIST[index].name)) -- 36
-	end) -- 28
-	return netstream.Hook("DropTrap", function(ply) -- 38
-		if not ply:GetNWBool("evilrp_building") then -- 39
-			return -- 39
-		end -- 39
-		if ply:Team() ~= TEAM_STALKER then -- 40
+		if index > count then -- 35
+			index = 1 -- 35
+		end -- 35
+		ply:SetNWInt("evilrp_trapindex", index) -- 36
+		return ply:Notify("Selected: " .. tostring(TRAP_LIST[index].name)) -- 37
+	end) -- 29
+	return netstream.Hook("DropTrap", function(ply) -- 39
+		if not ply:GetNWBool("evilrp_building") then -- 40
 			return -- 40
 		end -- 40
-		if not ply:Alive() then -- 41
+		if ply:Team() ~= TEAM_STALKER then -- 41
 			return -- 41
 		end -- 41
-		if ply.cant_build then -- 42
+		if not ply:Alive() then -- 42
 			return -- 42
 		end -- 42
-		local money = ply:getDarkRPVar("money") -- 44
-		if TRAP_COST > money then -- 45
-			return -- 45
-		end -- 45
-		local index = ply:GetNWInt("evilrp_trapindex", 1) -- 47
-		local trap = TRAP_LIST[index] -- 48
-		if not trap then -- 49
-			return -- 49
-		end -- 49
-		ply:SetNWBool("evilrp_building", false) -- 51
-		local tr = GAMEMODE:GetHandTrace(ply, 80) -- 53
-		if not tr.Hit then -- 54
-			return -- 54
-		end -- 54
-		local ent = ents.Create(trap.class) -- 56
-		if not IsValid(ent) then -- 57
-			return -- 57
-		end -- 57
-		ply:AddMoney(-TRAP_COST, "Placed " .. tostring(trap.name)) -- 59
-		ply:DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_DROP) -- 60
-		ent:SetPos(tr.HitPos + tr.HitNormal * 2) -- 62
-		ent:SetAngles(Angle(0, ply:EyeAngles().y, 0)) -- 63
-		ent.owner = ply -- 64
-		ent:Spawn() -- 65
-		ent:Activate() -- 66
-		PlaceBuild():play(ply) -- 68
-		DarkRP.log(tostring(ply:Nick()) .. " (" .. tostring(ply:SteamID()) .. ") placed a " .. tostring(trap.name) .. " for " .. tostring(DarkRP.formatMoney(TRAP_COST))) -- 70
-		ply.cant_build = true -- 72
-		return timer.Simple(1, function() -- 73
-			if not IsValid(ply) then -- 74
-				return -- 74
-			end -- 74
-			ply.cant_build = false -- 75
-		end) -- 73
-	end) -- 38
-else -- 77
-	hook.Add("PlayerBindPress", "evilrp_scrolltrap", function(ply, bind, pressed) -- 77
-		if not pressed then -- 78
-			return -- 78
-		end -- 78
-		if not ply:GetNWBool("evilrp_building") then -- 79
-			return -- 79
-		end -- 79
-		bind = bind:lower() -- 80
-		if bind:find("invnext") then -- 81
-			netstream.Send("ScrollTrap", 1) -- 82
-			return true -- 83
-		elseif bind:find("invprev") then -- 84
-			netstream.Send("ScrollTrap", -1) -- 85
-			return true -- 86
+		if ply.cant_build then -- 43
+			return -- 43
+		end -- 43
+		local money = ply:getDarkRPVar("money") -- 45
+		if TRAP_COST > money then -- 46
+			return -- 46
+		end -- 46
+		local index = ply:GetNWInt("evilrp_trapindex", 1) -- 48
+		local trap = TRAP_LIST[index] -- 49
+		if not trap then -- 50
+			return -- 50
+		end -- 50
+		ply:SetNWBool("evilrp_building", false) -- 52
+		local tr = GAMEMODE:GetHandTrace(ply, 80) -- 54
+		if not tr.Hit then -- 55
+			return -- 55
+		end -- 55
+		local ent = ents.Create(trap.class) -- 57
+		if not IsValid(ent) then -- 58
+			return -- 58
+		end -- 58
+		ply:AddMoney(-TRAP_COST, "Placed " .. tostring(trap.name)) -- 60
+		ply:DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_DROP) -- 61
+		ent:SetPos(tr.HitPos + tr.HitNormal * 2) -- 63
+		ent:SetAngles(Angle(0, ply:EyeAngles().y, 0)) -- 64
+		ent.owner = ply -- 65
+		ent:Spawn() -- 66
+		ent:Activate() -- 67
+		PlaceBuild():play(ply) -- 69
+		DarkRP.log(tostring(ply:Nick()) .. " (" .. tostring(ply:SteamID()) .. ") placed a " .. tostring(trap.name) .. " for " .. tostring(DarkRP.formatMoney(TRAP_COST))) -- 71
+		ply.cant_build = true -- 73
+		return timer.Simple(1, function() -- 74
+			if not IsValid(ply) then -- 75
+				return -- 75
+			end -- 75
+			ply.cant_build = false -- 76
+		end) -- 74
+	end) -- 39
+else -- 78
+	return hook.Add("PlayerBindPress", "evilrp_droptrap", function(ply, bind, pressed) -- 78
+		bind = bind:lower() -- 79
+		if not pressed then -- 80
+			return -- 80
+		end -- 80
+		if not ply:GetNWBool("evilrp_building") then -- 81
+			return -- 81
 		end -- 81
-	end) -- 77
-	return hook.Add("PlayerBindPress", "evilrp_droptrap", function(ply, bind, pressed) -- 88
-		if not pressed then -- 89
-			return -- 89
-		end -- 89
-		if not ply:GetNWBool("evilrp_building") then -- 90
-			return -- 90
-		end -- 90
-		bind = bind:lower() -- 91
-		if bind:find("+attack") then -- 92
-			netstream.Send("DropTrap") -- 93
-			return true -- 94
-		elseif bind:find("+reload") then -- 95
-			netstream.Send("CancelBuilding") -- 96
-			return true -- 97
-		end -- 92
-	end) -- 88
+		if bind:find("+reload") then -- 82
+			netstream.Send("CancelBuilding") -- 83
+			return true -- 84
+		end -- 82
+	end) -- 78
 end -- 14

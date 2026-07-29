@@ -86,7 +86,7 @@ hook.Add("HUDPaint", "evilrp_weapon_select", function() -- 21
 				cam.PushModelMatrix(matrix) -- 85
 				txt_obj:Draw(64, 0, alpha_delta, TEXT_ALIGN_LEFT) -- 86
 				cam.PopModelMatrix() -- 87
-			end -- 87
+			end -- 61
 			if fade_time < ct and alpha > 0 then -- 88
 				alpha = 0 -- 88
 			end -- 88
@@ -116,75 +116,90 @@ hook.Add("PlayerBindPress", "evilrp_weapon_select", function(ply, bind, pressed)
 	local wep_cls = valid and cur_wep:GetClass() or nil -- 103
 	local btool -- 104
 	local paying -- 105
-	if ply:InVehicle() then -- 106
-		return -- 106
-	end -- 106
-	if valid and wep_cls == "weapon_physgun" and ply:KeyDown(IN_ATTACK) then -- 107
+	local building -- 106
+	if ply:InVehicle() then -- 107
 		return -- 107
 	end -- 107
-	paying = ply:GetNWBool("evilrp_paying") -- 108
-	if valid then -- 109
-		if "gmod_tool" == wep_cls then -- 111
-			local tool = ply:GetTool() -- 112
-			btool = tool and (tool.Scroll ~= nil) -- 113
-		end -- 113
-	end -- 109
-	if paying then -- 114
-		ply.payment_amount = ply.payment_amount or 0 -- 115
-		local shift = ply:KeyDown(IN_SPEED) -- 116
-		if bind:find("invprev") then -- 117
-			ply.payment_amount = ply.payment_amount - (shift and 5 or 1) -- 118
-		elseif bind:find("invnext") then -- 119
-			ply.payment_amount = ply.payment_amount + (shift and 5 or 1) -- 120
-		end -- 117
-		ply.payment_amount = math.min(ply:getDarkRPVar("money"), math.max(ply.payment_amount, 0)) -- 121
-		local old_index = index -- 122
-		index = ply.payment_amount -- 123
-		on_index_changed() -- 124
-		return -- 125
-	end -- 114
-	local weapons = ply:GetWeapons() -- 126
-	if bind:find("invprev") and not btool then -- 127
-		local old_index = index -- 128
-		index = math.min(index + 1, #weapons) -- 129
-		if (alpha == 0 or old_index ~= index) then -- 130
-			on_index_changed(weapons[index]) -- 130
-		end -- 130
-		return true -- 131
-	elseif bind:find("invnext") and not btool then -- 132
-		local old_index = index -- 133
-		index = math.max(index - 1, 1) -- 134
-		if (alpha == 0 or old_index ~= index) then -- 135
-			on_index_changed(weapons[index]) -- 135
-		end -- 135
-		return true -- 136
-	elseif bind:find("slot") then -- 137
-		index = math.Clamp(tonumber(bind:match("slot(%d)")) or 1, 1, #weapons) -- 138
-		on_index_changed(weapons[index]) -- 139
-		return true -- 140
-	elseif bind:find("attack") and alpha > 0 then -- 141
-		local weapon = weapons[index] -- 142
-		if IsValid(weapon) then -- 143
-			lp:EmitSound("HL2Player.Use") -- 144
-			input.SelectWeapon(weapon) -- 145
-			alpha = 0 -- 146
+	if valid and wep_cls == "weapon_physgun" and ply:KeyDown(IN_ATTACK) then -- 108
+		return -- 108
+	end -- 108
+	paying = ply:GetNWBool("evilrp_paying") -- 109
+	building = ply:GetNWBool("evilrp_building") -- 110
+	if valid then -- 111
+		if "gmod_tool" == wep_cls then -- 113
+			local tool = ply:GetTool() -- 114
+			btool = tool and (tool.Scroll ~= nil) -- 115
+		end -- 112
+	end -- 111
+	if paying then -- 116
+		ply.payment_amount = ply.payment_amount or 0 -- 117
+		local shift = ply:KeyDown(IN_SPEED) -- 118
+		if bind:find("invprev") then -- 119
+			ply.payment_amount = ply.payment_amount - (shift and 5 or 1) -- 120
+		elseif bind:find("invnext") then -- 121
+			ply.payment_amount = ply.payment_amount + (shift and 5 or 1) -- 122
+		end -- 119
+		ply.payment_amount = math.min(ply:getDarkRPVar("money"), math.max(ply.payment_amount, 0)) -- 123
+		local old_index = index -- 124
+		index = ply.payment_amount -- 125
+		on_index_changed() -- 126
+		return -- 127
+	end -- 116
+	if building then -- 128
+		if bind:find("invprev") then -- 129
+			netstream.Send("ScrollTrap", -1) -- 130
+			return true -- 131
+		elseif bind:find("invnext") then -- 132
+			netstream.Send("ScrollTrap", 1) -- 133
+			return true -- 134
+		elseif bind:find("attack") then -- 135
+			netstream.Send("DropTrap") -- 136
+			return true -- 137
+		end -- 129
+		return -- 138
+	end -- 128
+	local weapons = ply:GetWeapons() -- 139
+	if bind:find("invprev") and not btool then -- 140
+		local old_index = index -- 141
+		index = math.min(index + 1, #weapons) -- 142
+		if (alpha == 0 or old_index ~= index) then -- 143
+			on_index_changed(weapons[index]) -- 143
 		end -- 143
-		return true -- 147
-	end -- 127
-	return -- 148
-end) -- 96
-local was_paying -- 150
-return hook.Add("Think", "evilrp_weapon_select", function() -- 152
-	if (not IsValid(lp) or not lp:Alive()) then -- 153
-		alpha = 0 -- 153
-	end -- 153
-	was_paying = was_paying or lp:GetNWBool("evilrp_paying") -- 154
-	if was_paying and not lp:GetNWBool("evilrp_paying") then -- 155
-		was_paying = false -- 156
-		index = 0 -- 157
-		delta_index = 0 -- 158
-		alpha_delta = 0 -- 159
-		alpha = 0 -- 160
-	end -- 155
+		return true -- 144
+	elseif bind:find("invnext") and not btool then -- 145
+		local old_index = index -- 146
+		index = math.max(index - 1, 1) -- 147
+		if (alpha == 0 or old_index ~= index) then -- 148
+			on_index_changed(weapons[index]) -- 148
+		end -- 148
+		return true -- 149
+	elseif bind:find("slot") then -- 150
+		index = math.Clamp(tonumber(bind:match("slot(%d)")) or 1, 1, #weapons) -- 151
+		on_index_changed(weapons[index]) -- 152
+		return true -- 153
+	elseif bind:find("attack") and alpha > 0 then -- 154
+		local weapon = weapons[index] -- 155
+		if IsValid(weapon) then -- 156
+			lp:EmitSound("HL2Player.Use") -- 157
+			input.SelectWeapon(weapon) -- 158
+			alpha = 0 -- 159
+		end -- 156
+		return true -- 160
+	end -- 140
 	return -- 161
-end) -- 161
+end) -- 96
+local was_paying -- 163
+return hook.Add("Think", "evilrp_weapon_select", function() -- 165
+	if (not IsValid(lp) or not lp:Alive()) then -- 166
+		alpha = 0 -- 166
+	end -- 166
+	was_paying = was_paying or lp:GetNWBool("evilrp_paying") -- 167
+	if was_paying and not lp:GetNWBool("evilrp_paying") then -- 168
+		was_paying = false -- 169
+		index = 0 -- 170
+		delta_index = 0 -- 171
+		alpha_delta = 0 -- 172
+		alpha = 0 -- 173
+	end -- 168
+	return -- 174
+end) -- 165

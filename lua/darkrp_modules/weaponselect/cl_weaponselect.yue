@@ -103,9 +103,11 @@ hook.Add "PlayerBindPress", "evilrp_weapon_select", (ply, bind, pressed) ->
   wep_cls = valid and cur_wep\GetClass! or nil
   local btool
   local paying
+  local building
   return if ply\InVehicle!
   return if valid and wep_cls == "weapon_physgun" and ply\KeyDown(IN_ATTACK)
   paying = ply\GetNWBool"evilrp_paying"
+  building = ply\GetNWBool"evilrp_building"
   if valid
     switch wep_cls
       when "gmod_tool"
@@ -122,6 +124,17 @@ hook.Add "PlayerBindPress", "evilrp_weapon_select", (ply, bind, pressed) ->
     old_index = index
     index = ply.payment_amount
     on_index_changed!
+    return
+  if building
+    if bind\find"invprev" -- scrolling down
+      netstream.Send "ScrollTrap", -1
+      return true
+    elseif bind\find"invnext" -- scrolling up
+      netstream.Send "ScrollTrap", 1
+      return true
+    elseif bind\find"attack"
+      netstream.Send "DropTrap"
+      return true
     return
   weapons = ply\GetWeapons!
   if bind\find"invprev" and not btool
