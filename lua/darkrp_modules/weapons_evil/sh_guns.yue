@@ -315,8 +315,8 @@ class Novoluger extends EvilRP_Weapon
     
   UseHands: true
   ViewModelTargetFOV: 54
-  ViewModel: Model"models/weapons/c_novoluger.mdl"
-  WorldModel: Model"models/weapons/w_novoluger.mdl"
+  ViewModel: Model"models/tnb/weapons/c_luger.mdl"
+  WorldModel: Model"models/tnb/weapons/w_luger.mdl"
     
   HoldType: "pistol"
   LowerHoldType: "normal"
@@ -447,7 +447,7 @@ class Owler extends EvilRP_Weapon
 
 class Pacifier extends EvilRP_Weapon 
   PrintName: "Pacifier"
-  Description: "The favourite pistol of the Sanitar Squad."
+  Description: "The favourite pistol of the quartermaster."
 
   Slot: 1
     
@@ -458,8 +458,8 @@ class Pacifier extends EvilRP_Weapon
 
   UseHands: true
   ViewModelTargetFOV: 54
-  ViewModel: Model"models/tnb/weapons/c_usp.mdl"
-  WorldModel: Model"models/tnb/weapons/w_usp.mdl"
+  ViewModel: Model"models/tnb/weapons/c_m9.mdl"
+  WorldModel: Model"models/tnb/weapons/w_m9.mdl"
     
   HoldType: "pistol"
   LowerHoldType: "normal"
@@ -490,7 +490,7 @@ class Pacifier extends EvilRP_Weapon
       Sound: "Weapon_Pistol.Reload"
     }
       
-    Sound: "tekka/weapons/weapon_m92.wav"
+    Sound: "tekka/weapons/weapon_socom.wav"
     TracerName: "Tracer"
 
     AltFire: =>
@@ -656,8 +656,8 @@ class Trooper extends EvilRP_Weapon
     
   UseHands: true
   ViewModelTargetFOV: 54
-  ViewModel: Model"models/weapons/c_trooper.mdl"
-  WorldModel: Model"models/weapons/w_trooper.mdl"
+  ViewModel: Model"models/tnb/weapons/c_g3.mdl"
+  WorldModel: Model"models/tnb/weapons/w_g3.mdl"
     
   HoldType: "ar2"
   LowerHoldType: "passive"

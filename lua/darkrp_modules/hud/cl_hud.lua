@@ -371,172 +371,198 @@ local bars = { -- 90
 			return nil -- 96
 		end)() or "blood" -- 96
 	end), -- 90
-	hunger = HUDBar((function() -- 97
+	armor = HUDBar((function() -- 97
 		local lp = LocalPlayer() -- 98
 		local jt = lp:getJobTable() -- 99
 		return (function() -- 100
 			local _obj_0 = jt.bar_colors -- 100
 			if _obj_0 ~= nil then -- 100
-				return _obj_0.hunger -- 100
+				return _obj_0.armor -- 100
 			end -- 100
 			return nil -- 100
-		end)() or Color(0, 168, 0) -- 100
+		end)() or Color(0, 0, 200) -- 100
 	end), (function(self) -- 100
+		return LocalPlayer():Armor() -- 100
+	end), function() -- 100
 		local lp = LocalPlayer() -- 101
 		local jt = lp:getJobTable() -- 102
-		if jt.no_needs then -- 103
-			return -- 103
-		end -- 103
-		if lp:Alive() then -- 104
-			return lp:GetHunger() -- 104
-		end -- 104
-	end), function() -- 104
+		return (function() -- 103
+			local _obj_0 = jt.bar_names -- 103
+			if _obj_0 ~= nil then -- 103
+				return _obj_0.armor -- 103
+			end -- 103
+			return nil -- 103
+		end)() or "carapace" -- 103
+	end), -- 97
+	hunger = HUDBar((function() -- 104
 		local lp = LocalPlayer() -- 105
 		local jt = lp:getJobTable() -- 106
 		return (function() -- 107
-			local _obj_0 = jt.bar_names -- 107
+			local _obj_0 = jt.bar_colors -- 107
 			if _obj_0 ~= nil then -- 107
 				return _obj_0.hunger -- 107
 			end -- 107
 			return nil -- 107
-		end)() or "emptiness" -- 107
-	end), -- 97
-	thirst = HUDBar((function() -- 108
-		local lp = LocalPlayer() -- 109
-		local jt = lp:getJobTable() -- 110
-		return (function() -- 111
-			local _obj_0 = jt.bar_colors -- 111
-			if _obj_0 ~= nil then -- 111
-				return _obj_0.thirst -- 111
-			end -- 111
-			return nil -- 111
-		end)() or Color(0, 168, 168) -- 111
-	end), (function(self) -- 111
+		end)() or Color(0, 168, 0) -- 107
+	end), (function(self) -- 107
+		local lp = LocalPlayer() -- 108
+		local jt = lp:getJobTable() -- 109
+		if jt.no_needs then -- 110
+			return -- 110
+		end -- 110
+		if lp:Alive() then -- 111
+			return lp:GetHunger() -- 111
+		end -- 111
+	end), function() -- 111
 		local lp = LocalPlayer() -- 112
 		local jt = lp:getJobTable() -- 113
-		if jt.no_needs then -- 114
-			return -- 114
-		end -- 114
-		if lp:Alive() then -- 115
-			return lp:GetThirst() -- 115
-		end -- 115
-	end), function() -- 115
+		return (function() -- 114
+			local _obj_0 = jt.bar_names -- 114
+			if _obj_0 ~= nil then -- 114
+				return _obj_0.hunger -- 114
+			end -- 114
+			return nil -- 114
+		end)() or "emptiness" -- 114
+	end), -- 104
+	thirst = HUDBar((function() -- 115
 		local lp = LocalPlayer() -- 116
 		local jt = lp:getJobTable() -- 117
 		return (function() -- 118
-			local _obj_0 = jt.bar_names -- 118
+			local _obj_0 = jt.bar_colors -- 118
 			if _obj_0 ~= nil then -- 118
 				return _obj_0.thirst -- 118
 			end -- 118
 			return nil -- 118
-		end)() or "dryness" -- 118
-	end), -- 108
-	despair = HUDBar((function() -- 119
-		local lp = LocalPlayer() -- 120
-		local jt = lp:getJobTable() -- 121
-		return (function() -- 122
-			local _obj_0 = jt.bar_colors -- 122
-			if _obj_0 ~= nil then -- 122
-				return _obj_0.despair -- 122
-			end -- 122
-			return nil -- 122
-		end)() or Color(168, 168, 168) -- 122
-	end), (function(self) -- 122
+		end)() or Color(0, 168, 168) -- 118
+	end), (function(self) -- 118
+		local lp = LocalPlayer() -- 119
+		local jt = lp:getJobTable() -- 120
+		if jt.no_needs then -- 121
+			return -- 121
+		end -- 121
+		if lp:Alive() then -- 122
+			return lp:GetThirst() -- 122
+		end -- 122
+	end), function() -- 122
 		local lp = LocalPlayer() -- 123
 		local jt = lp:getJobTable() -- 124
-		if jt.no_needs then -- 125
-			return -- 125
-		end -- 125
-		if lp:Alive() then -- 126
-			return lp:GetDespair() -- 126
-		end -- 126
-	end), function() -- 126
+		return (function() -- 125
+			local _obj_0 = jt.bar_names -- 125
+			if _obj_0 ~= nil then -- 125
+				return _obj_0.thirst -- 125
+			end -- 125
+			return nil -- 125
+		end)() or "dryness" -- 125
+	end), -- 115
+	despair = HUDBar((function() -- 126
 		local lp = LocalPlayer() -- 127
 		local jt = lp:getJobTable() -- 128
 		return (function() -- 129
-			local _obj_0 = jt.bar_names -- 129
+			local _obj_0 = jt.bar_colors -- 129
 			if _obj_0 ~= nil then -- 129
 				return _obj_0.despair -- 129
 			end -- 129
 			return nil -- 129
-		end)() or "sadness" -- 129
-	end), -- 119
-	death = HUDBar(Color(128, 128, 128), (function(self) -- 130
-		local rag = LocalPlayer():Ragdoll() -- 131
-		if not (rag and IsValid(rag) and rag:GetNWBool("corpse")) then -- 132
+		end)() or Color(168, 168, 168) -- 129
+	end), (function(self) -- 129
+		local lp = LocalPlayer() -- 130
+		local jt = lp:getJobTable() -- 131
+		if jt.no_needs then -- 132
 			return -- 132
 		end -- 132
-		local cur = CurTime() - rag:GetNWInt("decomp_start") -- 133
-		local ending = rag:GetNWInt("decomp_finish") - rag:GetNWInt("decomp_start") -- 134
-		return 100 - ((cur / ending) * 100) -- 135
-	end), "death") -- 130
+		if lp:Alive() then -- 133
+			return lp:GetDespair() -- 133
+		end -- 133
+	end), function() -- 133
+		local lp = LocalPlayer() -- 134
+		local jt = lp:getJobTable() -- 135
+		return (function() -- 136
+			local _obj_0 = jt.bar_names -- 136
+			if _obj_0 ~= nil then -- 136
+				return _obj_0.despair -- 136
+			end -- 136
+			return nil -- 136
+		end)() or "sadness" -- 136
+	end), -- 126
+	death = HUDBar(Color(128, 128, 128), (function(self) -- 137
+		local rag = LocalPlayer():Ragdoll() -- 138
+		if not (rag and IsValid(rag) and rag:GetNWBool("corpse")) then -- 139
+			return -- 139
+		end -- 139
+		local cur = CurTime() - rag:GetNWInt("decomp_start") -- 140
+		local ending = rag:GetNWInt("decomp_finish") - rag:GetNWInt("decomp_start") -- 141
+		return 100 - ((cur / ending) * 100) -- 142
+	end), "death") -- 137
 } -- 89
-local draw_bars -- 138
-draw_bars = function() -- 138
-	local ply = LocalPlayer() -- 139
-	local w = ScrW() * .5 -- 141
-	local xd, yd = 5 * sin(CurTime() * 0.666), 5 * sin(CurTime() * 0.333) -- 142
-	local x, y = (ScrW() / 2) - (w / 2) + (2 * xd), 12 + yd -- 143
-	local _exp_0 = ply:Team() -- 145
-	if TEAM_GHOST == _exp_0 then -- 146
-	else -- 149
-		if ply:Alive() then -- 149
-			if ply:HasOddity(ODDITY_ANASOGONSIA) then -- 150
-				local desp = ply:GetDespair() * 0.01 -- 151
-				local ct = CurTime() -- 152
-				local font = "Spleen_Label" -- 153
-				local txt = "i don't know" -- 154
-				local txt_obj = scribe.Parse("<stutter><wiggle=" .. tostring(5 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt), nil) -- 155
-				return txt_obj:Draw(x + (w / 2), y - 2, .23 + math.abs(math.sin(ct * .5) * .38), TEXT_ALIGN_CENTER) -- 156
-			else -- 158
-				if bars.health:render(x, y, w) then -- 158
-					y = y + 24 -- 158
-				end -- 158
-				if bars.hunger:render(x, y, w) then -- 159
-					y = y + 24 -- 159
-				end -- 159
-				if bars.thirst:render(x, y, w) then -- 160
-					y = y + 24 -- 160
-				end -- 160
-				if bars.despair:render(x, y, w) then -- 161
-					y = y + 24 -- 161
-				end -- 161
-			end -- 150
-		else -- 163
-			return bars.death:render(x, y, w) -- 163
-		end -- 149
-	end -- 163
-end -- 138
-local prog_width = 400 -- 166
-local prog_height = 40 -- 167
-local prog_spacing = 60 -- 168
-local prog_offset = 40 -- 169
-local col_bg = Color(64, 64, 64, 200) -- 171
-local col_fg = Color(168, 0, 0) -- 172
-local col_tx = color_white -- 173
-local back = surface.GetFontHeight("Spleen_Label") * 1.25 -- 175
-local draw_prog -- 177
-draw_prog = function() -- 177
-	local sw = ScrW() -- 178
-	local sh = ScrH() -- 179
-	local w = prog_width * 0.5 -- 180
-	for k, data in ipairs(progress.Active) do -- 181
-		local x = (sw * 0.5) - w -- 182
-		local y = (sh * 0.5) + prog_offset + ((k - 1) * prog_spacing) -- 183
-		surface.SetDrawColor(col_bg) -- 184
-		surface.DrawRect(x, y, prog_width, prog_height) -- 185
-		surface.SetDrawColor(col_fg) -- 186
-		surface.DrawRect(x + 1, y + 1, (prog_width - 2) * data.Fraction, prog_height - 2) -- 187
-		local desp = lp:GetDespair() * 0.01 -- 188
-		local ct = CurTime() -- 189
-		local font = "Spleen_Label" -- 190
-		local txt = data.Name or "Uhh..." -- 191
-		local txt_obj = scribe.Parse("<stutter><wiggle=" .. tostring(5 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt), nil) -- 192
-		txt_obj:Draw(sw * 0.5, y + prog_height - back, .23 + math.abs(math.sin(ct * .5) * .38), TEXT_ALIGN_CENTER) -- 193
-	end -- 193
-end -- 177
-return hook.Add("HUDPaint", "evilrp_xhud", function() -- 195
-	draw_bars() -- 196
-	draw_prog() -- 197
-	return -- 198
-end) -- 198
+local draw_bars -- 145
+draw_bars = function() -- 145
+	local ply = LocalPlayer() -- 146
+	local w = ScrW() * .5 -- 148
+	local xd, yd = 5 * sin(CurTime() * 0.666), 5 * sin(CurTime() * 0.333) -- 149
+	local x, y = (ScrW() / 2) - (w / 2) + (2 * xd), 12 + yd -- 150
+	local _exp_0 = ply:Team() -- 151
+	if TEAM_GHOST == _exp_0 then -- 152
+	else -- 155
+		if ply:Alive() then -- 155
+			if ply:HasOddity(ODDITY_ANASOGONSIA) then -- 156
+				local desp = ply:GetDespair() * 0.01 -- 157
+				local ct = CurTime() -- 158
+				local font = "Spleen_Label" -- 159
+				local txt = "i don't know" -- 160
+				local txt_obj = scribe.Parse("<stutter><wiggle=" .. tostring(5 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt), nil) -- 161
+				return txt_obj:Draw(x + (w / 2), y - 2, .23 + math.abs(math.sin(ct * .5) * .38), TEXT_ALIGN_CENTER) -- 162
+			else -- 164
+				if bars.health:render(x, y, w) then -- 164
+					y = y + 24 -- 164
+				end -- 164
+				if bars.armor:render(x, y, w) then -- 165
+					y = y + 24 -- 165
+				end -- 165
+				if bars.hunger:render(x, y, w) then -- 166
+					y = y + 24 -- 166
+				end -- 166
+				if bars.thirst:render(x, y, w) then -- 167
+					y = y + 24 -- 167
+				end -- 167
+				if bars.despair:render(x, y, w) then -- 168
+					y = y + 24 -- 168
+				end -- 168
+			end -- 156
+		else -- 170
+			return bars.death:render(x, y, w) -- 170
+		end -- 155
+	end -- 170
+end -- 145
+local prog_width = 400 -- 173
+local prog_height = 40 -- 174
+local prog_spacing = 60 -- 175
+local prog_offset = 40 -- 176
+local col_bg = Color(64, 64, 64, 200) -- 178
+local col_fg = Color(168, 0, 0) -- 179
+local col_tx = color_white -- 180
+local back = surface.GetFontHeight("Spleen_Label") * 1.25 -- 182
+local draw_prog -- 184
+draw_prog = function() -- 184
+	local sw = ScrW() -- 185
+	local sh = ScrH() -- 186
+	local w = prog_width * 0.5 -- 187
+	for k, data in ipairs(progress.Active) do -- 188
+		local x = (sw * 0.5) - w -- 189
+		local y = (sh * 0.5) + prog_offset + ((k - 1) * prog_spacing) -- 190
+		surface.SetDrawColor(col_bg) -- 191
+		surface.DrawRect(x, y, prog_width, prog_height) -- 192
+		surface.SetDrawColor(col_fg) -- 193
+		surface.DrawRect(x + 1, y + 1, (prog_width - 2) * data.Fraction, prog_height - 2) -- 194
+		local desp = lp:GetDespair() * 0.01 -- 195
+		local ct = CurTime() -- 196
+		local font = "Spleen_Label" -- 197
+		local txt = data.Name or "Uhh..." -- 198
+		local txt_obj = scribe.Parse("<stutter><wiggle=" .. tostring(5 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt), nil) -- 199
+		txt_obj:Draw(sw * 0.5, y + prog_height - back, .23 + math.abs(math.sin(ct * .5) * .38), TEXT_ALIGN_CENTER) -- 200
+	end -- 200
+end -- 184
+return hook.Add("HUDPaint", "evilrp_xhud", function() -- 202
+	draw_bars() -- 203
+	draw_prog() -- 204
+	return -- 205
+end) -- 205

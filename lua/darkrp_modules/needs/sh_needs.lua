@@ -148,7 +148,7 @@ need_think_hunger = function(ply) -- 108
 		ply.needs_ticks.hunger = CurTime() + need_intervals.hunger -- 109
 	end -- 109
 	if CurTime() >= ply.needs_ticks.hunger and ply:Alive() and is_moving(ply) then -- 110
-		ply:AddHunger(1) -- 111
+		ply:AddHunger(2) -- 111
 		ply.needs_ticks.hunger = CurTime() + need_intervals.hunger -- 112
 	end -- 110
 end -- 108
@@ -158,7 +158,7 @@ need_think_thirst = function(ply) -- 114
 		ply.needs_ticks.thirst = CurTime() + need_intervals.thirst -- 115
 	end -- 115
 	if CurTime() >= ply.needs_ticks.thirst and ply:Alive() and is_moving(ply) then -- 116
-		ply:AddThirst(1) -- 117
+		ply:AddThirst(2) -- 117
 		ply.needs_ticks.thirst = CurTime() + need_intervals.thirst -- 118
 	end -- 116
 end -- 114

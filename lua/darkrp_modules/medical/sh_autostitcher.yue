@@ -87,7 +87,7 @@ class Autostitcher extends ENTITY
             \SetAttacker ply
             \SetDamage 15
             \SetInflictor @
-            \SetDamageType DMG_SLASH
+            \SetDamageType DMG_FALL
           ply\TakeDamageInfo dmg
           ply\Notify"<c=200,0,0>Nice try, freak."
           @EmitSound"items/medshotno1.wav"
@@ -101,7 +101,7 @@ class Autostitcher extends ENTITY
           \SetAttacker ply
           \SetDamage 20
           \SetInflictor @
-          \SetDamageType DMG_SLASH
+          \SetDamageType DMG_FALL
         ply\TakeDamageInfo dmg
         @SetCharges @GetCharges! + 1
         reward = math.random(15,30)       

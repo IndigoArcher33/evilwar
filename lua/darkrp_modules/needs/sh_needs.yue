@@ -108,13 +108,13 @@ need_intervals =
 need_think_hunger = (ply) ->
   ply.needs_ticks.hunger = CurTime! + need_intervals.hunger unless ply.needs_ticks.hunger
   if CurTime! >= ply.needs_ticks.hunger and ply\Alive! and is_moving(ply)
-    ply\AddHunger 1
+    ply\AddHunger 2
     ply.needs_ticks.hunger = CurTime! + need_intervals.hunger
 
 need_think_thirst = (ply) ->
   ply.needs_ticks.thirst = CurTime! + need_intervals.thirst unless ply.needs_ticks.thirst
   if CurTime! >= ply.needs_ticks.thirst and ply\Alive! and is_moving(ply)
-    ply\AddThirst 1
+    ply\AddThirst 2
     ply.needs_ticks.thirst = CurTime! + need_intervals.thirst
       
 need_think_despair = (ply) ->

@@ -42,6 +42,11 @@ class Food extends ITEM
       amt = @Despair
       amt = amt! if isfunction(amt)
       ply\AddDespair amt
+    if @Armor
+      amt = @Armor
+      amt = amt! if isfunction(amt)
+      if amt > 0
+       ply\SetArmor ( ply\Armor! + amt )
     if @HealthAdd
       amt = @HealthAdd
       amt = amt! if isfunction(amt)
@@ -136,6 +141,12 @@ class Skin extends Food
   Description: "A greasy patch of some kind of hide.\nIt would probably taste nasty."
   Model: Model"models/gibs/antlion_gib_small_2.mdl"
   HealthAdd: => (math.random 10, 20)
+  Despair: => (math.random 1, 5)
+  
+  UseText: {
+    "applies some skin to their wounds."
+    "glues on some skin."
+  }
 
 class Abortion extends Food
   PrintName: "Abortion"
@@ -219,6 +230,7 @@ class BootSoup extends Food
 class MeatLoaf extends Food
   PrintName: "Meatloaf"
   Model: Model"models/props_junk/garbage_takeoutcarton001a.mdl"
+  Armor: 5
   Hunger: -40
   Thirst: -9
   Despair: -20
@@ -234,12 +246,10 @@ class MeatLoaf extends Food
     ply\AddStemCells(1)
 
   UseText: {
-    "Devours their meatloaf."
-    "chokes while consuming slop."
-    "struggles to eat a slop bowl."
-    "chomps on some slop."
-    "begrudgingly eats a spoonful of slop."
-    "consumes slop." }
+    "devours their meatloaf."
+    "gobbles down their meatloaf, and looks amazed."
+    "savors the taste of the meatloaf whilst ingesting it."
+     }
 
 
 class SlopBowl extends Food
@@ -521,7 +531,7 @@ class BootLeg extends Drink
 
 
   UseText: {
-    "Takes a swig of the bootlegged wine, wincing as the strong liquor trickles down and burns his scabbed and cut skin."
+    "takes a swig of the bootlegged wine, wincing as the strong liquor trickles down and burns his scabbed and cut skin."
     "tries to drink all of the bootlegged wine, before gasping heavily."
     "breathes in before taking a massive swig of the bootlegged wine, grimacing upon burning his mouth." }
  
@@ -564,6 +574,8 @@ class Twitchel extends Drink
 
 class TakeMeds extends SOUND
   sound: ["npc/zombie/zombie_pain#{i}.wav" for i=1,3]
+
+
 
 class Medicine extends Food
   PrintName: "Medicine"
@@ -685,7 +697,7 @@ class Chow extends Food
     "eats some wasteland chow, then spits out the tiny bones."
     "chomps on some wasteland chow."
     "forces down some wasteland chow down their throat."
-    "eats some chow, secretly enjoying it"
+    "eats some chow, secretly enjoying it."
   }
 
   Eat: (ply) =>
@@ -693,6 +705,7 @@ class Chow extends Food
     return if CLIENT
     plyJob = RPExtraTeams[ply\Team!]
     if plyJob.category == "Wasteland"
+      ply\SetArmor ( ply\Armor! + 20 )
       ply\AddDespair(-30)
       ply\AddHunger(-30)
       ply\AddThirst(-10)
@@ -714,6 +727,15 @@ class SloppyRibs extends Food
    "munches on the rib, and then licks the glaze off his hands."
    "gobbles down the rib, and spits out the bone."}
   
+class AblativePaste extends Medicine
+  PrintName: "Ablative paste"
+  Model: Model"models/props_lab/jar01a.mdl"
+  Cost: 480
+  Armor: 35
+  Despair: 15
+  Description: "A rough, sticky, uncomfortable paste but, at least it'll prevent your blood from leaking out."
+  Sound: "foley/alyx_hug_eli.wav"
+  UseText: { "applies the paste to their delicate skin."}
 
 class EyeballNoodles extends Food
   PrintName: "Eyeball Noodles"

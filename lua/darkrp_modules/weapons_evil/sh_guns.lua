@@ -599,8 +599,8 @@ do -- 308
 		Spawnable = true, -- 316
 		UseHands = true, -- 317
 		ViewModelTargetFOV = 54, -- 318
-		ViewModel = Model("models/weapons/c_novoluger.mdl"), -- 319
-		WorldModel = Model("models/weapons/w_novoluger.mdl"), -- 321
+		ViewModel = Model("models/tnb/weapons/c_luger.mdl"), -- 319
+		WorldModel = Model("models/tnb/weapons/w_luger.mdl"), -- 321
 		HoldType = "pistol", -- 322
 		LowerHoldType = "normal", -- 324
 		Firemode = 0, -- 325
@@ -829,14 +829,14 @@ do -- 448
 	local _parent_0 = EvilRP_Weapon -- 448
 	local _base_0 = { -- 448
 		PrintName = "Pacifier", -- 450
-		Description = "The favourite pistol of the Sanitar Squad.", -- 452
+		Description = "The favourite pistol of the quartermaster.", -- 452
 		Slot = 1, -- 454
 		Spawnable = true, -- 457
 		Price = 1750, -- 459
 		UseHands = true, -- 460
 		ViewModelTargetFOV = 54, -- 461
-		ViewModel = Model("models/tnb/weapons/c_usp.mdl"), -- 462
-		WorldModel = Model("models/tnb/weapons/w_usp.mdl"), -- 464
+		ViewModel = Model("models/tnb/weapons/c_m9.mdl"), -- 462
+		WorldModel = Model("models/tnb/weapons/w_m9.mdl"), -- 464
 		HoldType = "pistol", -- 465
 		LowerHoldType = "normal", -- 467
 		Firemode = 0, -- 468
@@ -858,7 +858,7 @@ do -- 448
 			Reload = { -- 490
 				Sound = "Weapon_Pistol.Reload" -- 490
 			}, -- 489
-			Sound = "tekka/weapons/weapon_m92.wav", -- 493
+			Sound = "tekka/weapons/weapon_socom.wav", -- 493
 			TracerName = "Tracer", -- 494
 			AltFire = function(self) -- 496
 				self.Primary.Automatic = false -- 497
@@ -1155,8 +1155,8 @@ do -- 647
 		Spawnable = true, -- 657
 		UseHands = true, -- 658
 		ViewModelTargetFOV = 54, -- 659
-		ViewModel = Model("models/weapons/c_trooper.mdl"), -- 660
-		WorldModel = Model("models/weapons/w_trooper.mdl"), -- 662
+		ViewModel = Model("models/tnb/weapons/c_g3.mdl"), -- 660
+		WorldModel = Model("models/tnb/weapons/w_g3.mdl"), -- 662
 		HoldType = "ar2", -- 663
 		LowerHoldType = "passive", -- 665
 		Firemode = -1, -- 666

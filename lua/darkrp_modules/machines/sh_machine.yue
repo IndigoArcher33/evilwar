@@ -591,27 +591,27 @@ class Food extends Machine
     ["item/food/soyloaf"]: {
       precursors:
         biomass: 1
-      time: 3 }
+      time: 6 }
     ["item/food/drink/fearbeer"]: {
       precursors:
         biomass: 3
-      time: 1 }
+      time: 7 }
     ["item/food/drink/smearbeer"]: {
       precursors:
         biomass: 4
-      time: 2 }
+      time: 8 }
     ["item/food/drink/shake"]: {
       precursors:
         biomass: 4
-      time: 2 }
+      time: 6 }
     ["item/food/moldmelon"]: {
       precursors:
         biomass: 2
-      time: 1 }
+      time: 9 }
     ["item/food/drink/twitchel"]: {
       precursors:
         biomass: 2
-      time: 2 }
+      time: 5 }
   FactoryIdentifier: "food"
 class Weapons extends Machine
   PrintName: "Weapons Machine"
@@ -632,9 +632,9 @@ class Weapons extends Machine
       precursors:
         metal: 5
       time: 20 }
-    ["evilrp_weapon/coach"]: {
+    ["evilrp_weapon/warrant"]: {
       precursors:
-        metal: 7
+        metal: 5
       time: 20 }
     ["evilrp_weapon/hope"]: {
       precursors:
@@ -643,6 +643,10 @@ class Weapons extends Machine
     ["evilrp_weapon/enforcer"]: {
       precursors:
         metal: 7
+      time: 25 }
+    ["evilrp_weapon/viper"]: {
+      precursors:
+        metal: 6
       time: 25 }
     ["evilrp_weapon/brainpaster"]: {
       precursors:
@@ -667,12 +671,12 @@ class Weapons extends Machine
     ["evilrp_weapon/obliterator"]: {
       precursors:
         metal: 8
-        polymer: 4
+        polymer: 5
       time: 30 }
     ["evilrp_weapon/trooper"]: {
       precursors:
-        metal: 10
-        polymer: 5
+        metal: 11
+        polymer: 7
       time: 30 }
   FactoryIdentifier: "weapons"
 class Medicine extends Machine
@@ -694,14 +698,16 @@ class Medicine extends Machine
         biomass: 2
         metal: 1
       time: 10 }
-    ["item/food/medicine/timegas"]: {
+    ["item/food/medicine/ablativepaste"]: {
       precursors:
-        metal: 2
+        biomass: 3
+        metal: 1
       time: 10 }
     ["item/food/medicine/bleach"]: {
       precursors:
         biomass: 2
-        metal: 1 }
+        metal: 1 
+      time: 10 }
 
   FactoryIdentifier: "medicine"
 

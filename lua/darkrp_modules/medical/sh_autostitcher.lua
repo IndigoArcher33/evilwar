@@ -96,7 +96,7 @@ do -- 14
 						dmg:SetAttacker(ply) -- 87
 						dmg:SetDamage(15) -- 88
 						dmg:SetInflictor(self) -- 89
-						dmg:SetDamageType(DMG_SLASH) -- 90
+						dmg:SetDamageType(DMG_FALL) -- 90
 						ply:TakeDamageInfo(dmg) -- 91
 						ply:Notify("<c=200,0,0>Nice try, freak.") -- 92
 						self:EmitSound("items/medshotno1.wav") -- 93
@@ -109,7 +109,7 @@ do -- 14
 					dmg:SetAttacker(ply) -- 101
 					dmg:SetDamage(20) -- 102
 					dmg:SetInflictor(self) -- 103
-					dmg:SetDamageType(DMG_SLASH) -- 104
+					dmg:SetDamageType(DMG_FALL) -- 104
 					ply:TakeDamageInfo(dmg) -- 105
 					self:SetCharges(self:GetCharges() + 1) -- 106
 					local reward = math.random(15, 30) -- 107

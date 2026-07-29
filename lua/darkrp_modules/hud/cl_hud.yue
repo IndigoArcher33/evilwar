@@ -94,6 +94,13 @@ bars = {
     lp = LocalPlayer!
     jt = lp\getJobTable!
     return jt.bar_names?.health or "blood")
+  armor: HUDBar((->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_colors?.armor or Color(0,0,200)), (=> LocalPlayer!\Armor!), ->
+    lp = LocalPlayer!
+    jt = lp\getJobTable!
+    return jt.bar_names?.armor or "carapace")
   hunger: HUDBar((->
     lp = LocalPlayer!
     jt = lp\getJobTable!
@@ -140,8 +147,7 @@ draw_bars = ->
   -- drifts
   w = ScrW! * .5
   xd, yd = 5 * sin(CurTime! * 0.666), 5 * sin(CurTime! * 0.333)
-  x, y = (ScrW! / 2) - (w / 2) + (2 * xd), 12 + yd
-  
+  x, y = (ScrW! / 2) - (w / 2) + (2 * xd), 12 + yd  
   switch ply\Team!
     when TEAM_GHOST
       -- render suffering here
@@ -156,6 +162,7 @@ draw_bars = ->
           txt_obj\Draw x + (w / 2), y - 2, .23 + math.abs(math.sin(ct * .5) * .38), TEXT_ALIGN_CENTER
         else
           y += 24 if bars.health\render x, y, w
+          y += 24 if bars.armor\render x, y, w
           y += 24 if bars.hunger\render x, y, w
           y += 24 if bars.thirst\render x, y, w
           y += 24 if bars.despair\render x, y, w

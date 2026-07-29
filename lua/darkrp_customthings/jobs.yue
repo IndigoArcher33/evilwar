@@ -371,6 +371,7 @@ TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
       -- gear
       [7]: 1
     }
+    ply\SetArmor( 25 )
     return false
 
 TEAM_SANITAR = DarkRP.createJob "Dragoon",
@@ -434,6 +435,7 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
       -- hands
       [5]: 0
     }
+    ply\SetArmor( 40 )
     return false
 
 TEAM_DEALER = DarkRP.createJob "Quartermaster",
@@ -627,6 +629,7 @@ TEAM_EMPEROR = DarkRP.createJob "Emperor",
     }
     ply\SetNWInt("evilrp_gasmask", 4)
     ply\Give"evilrp_weapon/novoluger"
+    ply\SetArmor( 65 )
     return false
 
 GAMEMODE.CivilProtection =
