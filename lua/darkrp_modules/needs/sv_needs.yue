@@ -6,6 +6,16 @@ hook.Add "PlayerInitialSpawn", "evilrp_setup_player_needs", (ply) ->
   ply.evilrp_needs_rtable = sql.Query( "SELECT SteamID, Hunger, Thirst, Despair FROM evilrp_needs WHERE SteamID = '" .. ply\SteamID64! .. "'" )
   unless ply.evilrp_needs_rtable
     sql.Query( "INSERT INTO evilrp_needs( SteamID, Hunger, Thirst, Despair ) VALUES( '" .. ply\SteamID64! .. "', 0, 0, 0 )" )
+  else
+    sql.Query( "UPDATE evilrp_needs SET Hunger = 0, Thirst = 0, Despair = 0 WHERE SteamID = '" .. ply\SteamID64! .. "'" )
+  ply.evilrp_needs = sql.Query( "SELECT SteamID, Hunger, Thirst, Despair FROM evilrp_needs WHERE SteamID = '" .. ply\SteamID64! .. "'" )[1]
+  ply\SetNWFloat( "evilrp_needs_hunger", tonumber(0) )
+  ply\SetNWFloat( "evilrp_needs_thirst", tonumber(0) )
+  ply\SetNWFloat( "evilrp_needs_despair", tonumber(0) )
+
+hook.Add "PlayerSpawn", "evilrp_setup_player_needs", (ply) ->
+  
+  sql.Query( "UPDATE evilrp_needs SET Hunger = 0, Thirst = 0, Despair = 0 WHERE SteamID = '" .. ply\SteamID64! .. "'" )
   ply.evilrp_needs = sql.Query( "SELECT SteamID, Hunger, Thirst, Despair FROM evilrp_needs WHERE SteamID = '" .. ply\SteamID64! .. "'" )[1]
   ply\SetNWFloat( "evilrp_needs_hunger", tonumber(0) )
   ply\SetNWFloat( "evilrp_needs_thirst", tonumber(0) )
