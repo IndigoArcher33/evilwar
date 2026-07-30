@@ -1,4 +1,11 @@
-GAMEMODE.Stocks = {} unless GAMEMODE.Stocks
+GAMEMODE.Stocks = {
+  "evilrp_melee/pipe": 5
+} unless GAMEMODE.Stocks
+
+net.Start"evilrp_receive_stocks" -- we send the initial stocks
+net.WriteTable GAMEMODE.Stocks
+net.Broadcast!
+
 
 GAMEMODE.AddStock = (item) =>
   etab = scripted_ents.Get(item) or weapons.Get(item)
