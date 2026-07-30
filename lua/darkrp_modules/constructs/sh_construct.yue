@@ -128,8 +128,8 @@ class Construct extends ITEM
       cost = getCostFromCls(cls, p.name)
       if cost > 0
         name = "#{p.name\sub(1, 1)\upper!}#{p.name\sub(2, -1)}"
-        get = @["GetPrecursor#{name}"]
-        if not get or get(@) < cost
+        amt = @["GetPrecursor#{name}"](@)
+        if not amt or amt < cost
           return false
     return true
 

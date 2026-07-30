@@ -228,8 +228,8 @@ do -- 21
 				local cost = getCostFromCls(cls, p.name) -- 128
 				if cost > 0 then -- 129
 					local name = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) -- 130
-					local get = self["GetPrecursor" .. tostring(name)] -- 131
-					if not get or get(self) < cost then -- 132
+					local amt = self["GetPrecursor" .. tostring(name)](self) -- 131
+					if not amt or amt < cost then -- 132
 						return false -- 133
 					end -- 132
 				end -- 129
