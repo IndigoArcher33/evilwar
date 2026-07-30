@@ -1,0 +1,38 @@
+cries_of_pain =
+  * "AAAAAAAAAAAH"
+  * "AAAAAAAAAGHHHH"
+  * "WAAAAAARGH"
+  * "I'M -- UHH... OWWWW-"
+  * "SOTLA SAVE ME"
+  * "FUCK, FUCK, FUUUUU-"
+  * "OHH... OOOOUGH."
+
+nt = 0
+
+class BurningAgony extends SOUND
+  pitch: {130, 160}
+  sound: ["lfr/corpse/caught_fire#{i}.wav" for i=1,4]
+
+onfall = ->
+  return unless CLIENT
+  ply = LocalPlayer!
+  return if ply\Team! == TEAM_GHOST
+  return if ply\GetMoveType! == MOVETYPE_NOCLIP
+  return if ply\GetMoveType! == MOVETYPE_LADDER
+
+  ct = CurTime!
+  return if nt > ct
+  
+  if not ply\IsPlayer! or not ply\Alive!
+    return
+  if not ply\IsOnGround! and ply\GetVelocity!.z < -500
+    nt = ct + 5
+    ply.dont_scream = true
+    should_play = not (ply.burning_agony_sound and ply.burning_agony_sound\IsPlaying!)
+    ply\ConCommand("say /y #{cries_of_pain[math.random(#cries_of_pain)]}")
+    with ply.burning_agony_sound = CreateSound(ply, "BurningAgony")
+      \Play!
+      \ChangePitch(math.random(100,130))
+  return
+
+hook.Add "Think", "evilrp_onfall", onfall

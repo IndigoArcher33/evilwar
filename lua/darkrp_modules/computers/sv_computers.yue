@@ -281,6 +281,24 @@ class Tyrant extends OS
           \Broadcast term, "  end list"
       help: "Basic usage instructions."
     }
+    [":want"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_EMPEROR
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        cmd = args[1]
+        if cmd ~= ""
+          print cmd
+          cply = GetPlayerByName cmd
+          if not IsValid(cply)
+            gterm\Broadcast term, "that person does not exist", GT_COL_ERR
+            return
+          name = cply\Nick!
+          team = cply\Team!
+          cply\MakeWanted 300, "offending the Emperor"
+          gterm\Broadcast term, "death to#{name}", GT_COL_SUCC
+      help: "Make the nuisances pay for their arrogance."
+    }
     [":conscript"]: {
       Callback: (ply, term, args) =>
         if ply\Team! ~= TEAM_EMPEROR
@@ -297,7 +315,6 @@ class Tyrant extends OS
             return
           name = cply\Nick!
           team = cply\Team!
-          print "conscript: #{name} (#{team})"
           if team ~= TEAM_PRIVATE
             gterm\Broadcast term, "#{name} is too important", GT_COL_ERR
             return
