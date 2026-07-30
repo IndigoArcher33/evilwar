@@ -479,6 +479,25 @@ class Broadcast extends CHAT_CMD_IC
       return
     super ply, lang, cmd, text
 
+class Meistercast extends CHAT_CMD_IC
+  name: "Meistercast"
+  desc: "Make them all listen."
+  typing: "Decreeing..."
+
+  commands: {"broadcast", "ad"}
+
+  color: Color(210, 100, 0)
+
+  font: "Spleen_Chat"
+
+  Process: (ply, text) => Chat.Autopretty ply, text\upper!
+
+  Handle: (ply, lang, cmd, text) =>
+    unless ply\Team! == TEAM_DEALER
+      ply\Notify"<c=200,0,0>This power is NOT FOR YOU."
+      return
+    super ply, lang, cmd, text
+
 class Godcast extends CHAT_CMD_IC
   name: "Godcast"
   desc: "Make them all listen."
@@ -501,10 +520,16 @@ class Godcast extends CHAT_CMD_IC
 if CLIENT
   Broadcast.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[XOMBOKOM] <wiggle>#{data.text}"
   Godcast.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[ORACLEKOM] <wiggle>#{data.text}"
+  Meistercast.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[MEISTERKOM] <wiggle>#{data.text}"
 if SERVER
   Broadcast.Parse = (ply, lang, cmd, text) =>
     text = @Process ply, text
     ply\EmitSound"XOMBOKOM"
+    return { :text }
+
+  Meistercast.Parse = (ply, lang, cmd, text) =>
+    text = @Process ply, text
+    ply\EmitSound"kidneydagger/vote.ogg"
     return { :text }
   
   Godcast.Parse = (ply, lang, cmd, text) =>

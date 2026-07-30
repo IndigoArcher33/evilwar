@@ -1184,25 +1184,25 @@ do -- 463
 	end -- 463
 	Broadcast = _class_0 -- 463
 end -- 480
-local Godcast -- 482
+local Meistercast -- 482
 do -- 482
 	local _class_0 -- 482
 	local _parent_0 = CHAT_CMD_IC -- 482
 	local _base_0 = { -- 482
-		name = "Godcast", -- 484
+		name = "Meistercast", -- 484
 		desc = "Make them all listen.", -- 485
 		typing = "Decreeing...", -- 487
 		commands = { -- 487
-			"godcast", -- 487
-			"god" -- 487
+			"broadcast", -- 487
+			"ad" -- 487
 		}, -- 489
-		color = Color(0, 0, 0), -- 491
+		color = Color(210, 100, 0), -- 491
 		font = "Spleen_Chat", -- 493
 		Process = function(self, ply, text) -- 493
 			return Chat.Autopretty(ply, text:upper()) -- 493
 		end, -- 495
 		Handle = function(self, ply, lang, cmd, text) -- 495
-			if not ply:IsSuperAdmin() then -- 496
+			if not (ply:Team() == TEAM_DEALER) then -- 496
 				ply:Notify("<c=200,0,0>This power is NOT FOR YOU.") -- 497
 				return -- 498
 			end -- 496
@@ -1223,7 +1223,7 @@ do -- 482
 			return _class_0.__parent.__init(self, ...) -- 482
 		end, -- 482
 		__base = _base_0, -- 482
-		__name = "Godcast", -- 482
+		__name = "Meistercast", -- 482
 		__parent = _parent_0 -- 482
 	}, { -- 482
 		__index = function(cls, name) -- 482
@@ -1247,194 +1247,269 @@ do -- 482
 	if _parent_0.__inherited then -- 482
 		_parent_0.__inherited(_parent_0, _class_0) -- 482
 	end -- 482
-	Godcast = _class_0 -- 482
+	Meistercast = _class_0 -- 482
 end -- 499
-if CLIENT then -- 501
-	Broadcast.OnReceive = function(self, data) -- 502
-		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[XOMBOKOM] <wiggle>" .. tostring(data.text) -- 502
-	end -- 502
-	Godcast.OnReceive = function(self, data) -- 503
-		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[ORACLEKOM] <wiggle>" .. tostring(data.text) -- 503
-	end -- 503
-end -- 501
-if SERVER then -- 504
-	Broadcast.Parse = function(self, ply, lang, cmd, text) -- 505
-		text = self:Process(ply, text) -- 506
-		ply:EmitSound("XOMBOKOM") -- 507
-		return { -- 508
-			text = text -- 508
-		} -- 508
-	end -- 505
-	Godcast.Parse = function(self, ply, lang, cmd, text) -- 510
-		text = self:Process(ply, text) -- 511
-		ply:EmitSound("DEUS") -- 512
-		ply:AddDespair(5) -- 513
-		net.Start("evilrp_frighten") -- 514
-		net.Send(ply) -- 515
-		ply:Notify("<c=200,0,0> " .. tostring(text) .. ".") -- 516
-		return { -- 517
-			text = text -- 517
-		} -- 517
-	end -- 510
-end -- 504
-local OOC -- 520
-do -- 520
-	local _class_0 -- 520
-	local _parent_0 = CHAT_CMD -- 520
-	local _base_0 = { -- 520
-		name = "OOC", -- 522
-		desc = "Global out-of-character chat.", -- 523
-		typing = "Typing...", -- 525
-		commands = { -- 525
-			"ooc" -- 525
-		}, -- 526
-		aliases = { -- 526
-			"//" -- 526
-		}, -- 528
-		tabs = TAB_OOC, -- 529
-		log_category = "ooc", -- 531
-		color = Color(200, 0, 0), -- 533
-		font = "Spleen_Chat_Small" -- 520
-	} -- 520
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 533
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 520
-			_base_0[_key_0] = _val_0 -- 520
-		end -- 520
-	end -- 533
-	if _base_0.__index == nil then -- 520
-		_base_0.__index = _base_0 -- 520
-	end -- 533
-	setmetatable(_base_0, _parent_0.__base) -- 520
-	_class_0 = setmetatable({ -- 520
-		__init = function(self, ...) -- 520
-			return _class_0.__parent.__init(self, ...) -- 520
-		end, -- 520
-		__base = _base_0, -- 520
-		__name = "OOC", -- 520
-		__parent = _parent_0 -- 520
-	}, { -- 520
-		__index = function(cls, name) -- 520
-			local val = rawget(_base_0, name) -- 520
-			if val == nil then -- 520
-				local parent = rawget(cls, "__parent") -- 520
-				if parent then -- 520
-					return parent[name] -- 520
-				end -- 520
-			else -- 520
-				return val -- 520
-			end -- 520
-		end, -- 520
-		__call = function(cls, ...) -- 520
-			local _self_0 = setmetatable({ }, _base_0) -- 520
-			cls.__init(_self_0, ...) -- 520
-			return _self_0 -- 520
-		end -- 520
-	}) -- 520
-	_base_0.__class = _class_0 -- 520
-	if _parent_0.__inherited then -- 520
-		_parent_0.__inherited(_parent_0, _class_0) -- 520
-	end -- 520
-	OOC = _class_0 -- 520
-end -- 533
-if CLIENT then -- 535
-	OOC.OnReceive = function(self, data) -- 536
-		local prefix -- 537
-		if data.rainbow_name then -- 538
-			prefix = "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC]</c> <rgb=1,13,30>" .. tostring(data.name) .. "</rgb>" -- 539
-		else -- 541
-			prefix = "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC]</c> <c=" .. tostring(data.color) .. ">" .. tostring(data.name) .. "</c>" -- 541
-		end -- 538
-		return tostring(prefix) .. ": " .. tostring(data.text) -- 542
-	end -- 536
-end -- 535
-if SERVER then -- 543
-	OOC.Parse = function(self, ply, lang, cmd, text) -- 546
-		local sid = ply:SteamID() -- 547
-		local r = util.SharedRandom(sid, 0, 255, 1) -- 548
-		local g = util.SharedRandom(sid, 0, 255, 2) -- 549
-		local b = util.SharedRandom(sid, 0, 255, 3) -- 550
-		local color = Color(r, g, b) -- 551
-		local rainbow_name = ply:HasDonation("rainbow") and (ply:GetInfoNum("lfr_rainbow_username", 1) == 1) -- 552
-		return { -- 553
-			name = ply:SteamName(), -- 553
-			color = color, -- 553
-			text = text, -- 553
-			rainbow_name = rainbow_name -- 553
-		} -- 553
-	end -- 546
-end -- 543
-local LOOC -- 556
-do -- 556
-	local _class_0 -- 556
-	local _parent_0 = CHAT_CMD -- 556
-	local _base_0 = { -- 556
-		name = "Local OOC", -- 558
-		desc = "Local out-of-character chat.", -- 559
-		typing = "Typing...", -- 561
-		commands = { -- 561
-			"looc" -- 561
-		}, -- 562
-		aliases = { -- 562
-			"[[", -- 562
-			".//" -- 562
-		}, -- 564
-		range = 400, -- 566
-		tabs = TABS_LOOC, -- 567
-		log_category = "ooc", -- 569
-		color = Color(138, 185, 209), -- 571
-		font = "Spleen_Chat_Small" -- 556
-	} -- 556
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 571
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 556
-			_base_0[_key_0] = _val_0 -- 556
-		end -- 556
+local Godcast -- 501
+do -- 501
+	local _class_0 -- 501
+	local _parent_0 = CHAT_CMD_IC -- 501
+	local _base_0 = { -- 501
+		name = "Godcast", -- 503
+		desc = "Make them all listen.", -- 504
+		typing = "Decreeing...", -- 506
+		commands = { -- 506
+			"godcast", -- 506
+			"god" -- 506
+		}, -- 508
+		color = Color(0, 0, 0), -- 510
+		font = "Spleen_Chat", -- 512
+		Process = function(self, ply, text) -- 512
+			return Chat.Autopretty(ply, text:upper()) -- 512
+		end, -- 514
+		Handle = function(self, ply, lang, cmd, text) -- 514
+			if not ply:IsSuperAdmin() then -- 515
+				ply:Notify("<c=200,0,0>This power is NOT FOR YOU.") -- 516
+				return -- 517
+			end -- 515
+			return _class_0.__parent.__base.Handle(self, ply, lang, cmd, text) -- 518
+		end -- 501
+	} -- 501
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 518
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 501
+			_base_0[_key_0] = _val_0 -- 501
+		end -- 501
+	end -- 518
+	if _base_0.__index == nil then -- 501
+		_base_0.__index = _base_0 -- 501
+	end -- 518
+	setmetatable(_base_0, _parent_0.__base) -- 501
+	_class_0 = setmetatable({ -- 501
+		__init = function(self, ...) -- 501
+			return _class_0.__parent.__init(self, ...) -- 501
+		end, -- 501
+		__base = _base_0, -- 501
+		__name = "Godcast", -- 501
+		__parent = _parent_0 -- 501
+	}, { -- 501
+		__index = function(cls, name) -- 501
+			local val = rawget(_base_0, name) -- 501
+			if val == nil then -- 501
+				local parent = rawget(cls, "__parent") -- 501
+				if parent then -- 501
+					return parent[name] -- 501
+				end -- 501
+			else -- 501
+				return val -- 501
+			end -- 501
+		end, -- 501
+		__call = function(cls, ...) -- 501
+			local _self_0 = setmetatable({ }, _base_0) -- 501
+			cls.__init(_self_0, ...) -- 501
+			return _self_0 -- 501
+		end -- 501
+	}) -- 501
+	_base_0.__class = _class_0 -- 501
+	if _parent_0.__inherited then -- 501
+		_parent_0.__inherited(_parent_0, _class_0) -- 501
+	end -- 501
+	Godcast = _class_0 -- 501
+end -- 518
+if CLIENT then -- 520
+	Broadcast.OnReceive = function(self, data) -- 521
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[XOMBOKOM] <wiggle>" .. tostring(data.text) -- 521
+	end -- 521
+	Godcast.OnReceive = function(self, data) -- 522
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[ORACLEKOM] <wiggle>" .. tostring(data.text) -- 522
+	end -- 522
+	Meistercast.OnReceive = function(self, data) -- 523
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[MEISTERKOM] <wiggle>" .. tostring(data.text) -- 523
+	end -- 523
+end -- 520
+if SERVER then -- 524
+	Broadcast.Parse = function(self, ply, lang, cmd, text) -- 525
+		text = self:Process(ply, text) -- 526
+		ply:EmitSound("XOMBOKOM") -- 527
+		return { -- 528
+			text = text -- 528
+		} -- 528
+	end -- 525
+	Meistercast.Parse = function(self, ply, lang, cmd, text) -- 530
+		text = self:Process(ply, text) -- 531
+		ply:EmitSound("kidneydagger/vote.ogg") -- 532
+		return { -- 533
+			text = text -- 533
+		} -- 533
+	end -- 530
+	Godcast.Parse = function(self, ply, lang, cmd, text) -- 535
+		text = self:Process(ply, text) -- 536
+		ply:EmitSound("DEUS") -- 537
+		ply:AddDespair(5) -- 538
+		net.Start("evilrp_frighten") -- 539
+		net.Send(ply) -- 540
+		ply:Notify("<c=200,0,0> " .. tostring(text) .. ".") -- 541
+		return { -- 542
+			text = text -- 542
+		} -- 542
+	end -- 535
+end -- 524
+local OOC -- 545
+do -- 545
+	local _class_0 -- 545
+	local _parent_0 = CHAT_CMD -- 545
+	local _base_0 = { -- 545
+		name = "OOC", -- 547
+		desc = "Global out-of-character chat.", -- 548
+		typing = "Typing...", -- 550
+		commands = { -- 550
+			"ooc" -- 550
+		}, -- 551
+		aliases = { -- 551
+			"//" -- 551
+		}, -- 553
+		tabs = TAB_OOC, -- 554
+		log_category = "ooc", -- 556
+		color = Color(200, 0, 0), -- 558
+		font = "Spleen_Chat_Small" -- 545
+	} -- 545
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 558
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 545
+			_base_0[_key_0] = _val_0 -- 545
+		end -- 545
+	end -- 558
+	if _base_0.__index == nil then -- 545
+		_base_0.__index = _base_0 -- 545
+	end -- 558
+	setmetatable(_base_0, _parent_0.__base) -- 545
+	_class_0 = setmetatable({ -- 545
+		__init = function(self, ...) -- 545
+			return _class_0.__parent.__init(self, ...) -- 545
+		end, -- 545
+		__base = _base_0, -- 545
+		__name = "OOC", -- 545
+		__parent = _parent_0 -- 545
+	}, { -- 545
+		__index = function(cls, name) -- 545
+			local val = rawget(_base_0, name) -- 545
+			if val == nil then -- 545
+				local parent = rawget(cls, "__parent") -- 545
+				if parent then -- 545
+					return parent[name] -- 545
+				end -- 545
+			else -- 545
+				return val -- 545
+			end -- 545
+		end, -- 545
+		__call = function(cls, ...) -- 545
+			local _self_0 = setmetatable({ }, _base_0) -- 545
+			cls.__init(_self_0, ...) -- 545
+			return _self_0 -- 545
+		end -- 545
+	}) -- 545
+	_base_0.__class = _class_0 -- 545
+	if _parent_0.__inherited then -- 545
+		_parent_0.__inherited(_parent_0, _class_0) -- 545
+	end -- 545
+	OOC = _class_0 -- 545
+end -- 558
+if CLIENT then -- 560
+	OOC.OnReceive = function(self, data) -- 561
+		local prefix -- 562
+		if data.rainbow_name then -- 563
+			prefix = "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC]</c> <rgb=1,13,30>" .. tostring(data.name) .. "</rgb>" -- 564
+		else -- 566
+			prefix = "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC]</c> <c=" .. tostring(data.color) .. ">" .. tostring(data.name) .. "</c>" -- 566
+		end -- 563
+		return tostring(prefix) .. ": " .. tostring(data.text) -- 567
+	end -- 561
+end -- 560
+if SERVER then -- 568
+	OOC.Parse = function(self, ply, lang, cmd, text) -- 571
+		local sid = ply:SteamID() -- 572
+		local r = util.SharedRandom(sid, 0, 255, 1) -- 573
+		local g = util.SharedRandom(sid, 0, 255, 2) -- 574
+		local b = util.SharedRandom(sid, 0, 255, 3) -- 575
+		local color = Color(r, g, b) -- 576
+		local rainbow_name = ply:HasDonation("rainbow") and (ply:GetInfoNum("lfr_rainbow_username", 1) == 1) -- 577
+		return { -- 578
+			name = ply:SteamName(), -- 578
+			color = color, -- 578
+			text = text, -- 578
+			rainbow_name = rainbow_name -- 578
+		} -- 578
 	end -- 571
-	if _base_0.__index == nil then -- 556
-		_base_0.__index = _base_0 -- 556
-	end -- 571
-	setmetatable(_base_0, _parent_0.__base) -- 556
-	_class_0 = setmetatable({ -- 556
-		__init = function(self, ...) -- 556
-			return _class_0.__parent.__init(self, ...) -- 556
-		end, -- 556
-		__base = _base_0, -- 556
-		__name = "LOOC", -- 556
-		__parent = _parent_0 -- 556
-	}, { -- 556
-		__index = function(cls, name) -- 556
-			local val = rawget(_base_0, name) -- 556
-			if val == nil then -- 556
-				local parent = rawget(cls, "__parent") -- 556
-				if parent then -- 556
-					return parent[name] -- 556
-				end -- 556
-			else -- 556
-				return val -- 556
-			end -- 556
-		end, -- 556
-		__call = function(cls, ...) -- 556
-			local _self_0 = setmetatable({ }, _base_0) -- 556
-			cls.__init(_self_0, ...) -- 556
-			return _self_0 -- 556
-		end -- 556
-	}) -- 556
-	_base_0.__class = _class_0 -- 556
-	if _parent_0.__inherited then -- 556
-		_parent_0.__inherited(_parent_0, _class_0) -- 556
-	end -- 556
-	LOOC = _class_0 -- 556
-end -- 571
-if CLIENT then -- 573
-	LOOC.OnReceive = function(self, data) -- 574
-		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC-LOCAL]</c> <c=" .. tostring(data.color) .. ">" .. tostring(data.name) .. "</c>: " .. tostring(data.text) -- 574
-	end -- 574
-end -- 573
-if SERVER then -- 575
-	LOOC.Parse = function(self, ply, lang, cmd, text) -- 576
-		return { -- 576
-			name = ply:Name(), -- 576
-			color = team.GetColor(ply:Team()), -- 576
-			text = text -- 576
-		} -- 576
-	end -- 576
-end -- 575
+end -- 568
+local LOOC -- 581
+do -- 581
+	local _class_0 -- 581
+	local _parent_0 = CHAT_CMD -- 581
+	local _base_0 = { -- 581
+		name = "Local OOC", -- 583
+		desc = "Local out-of-character chat.", -- 584
+		typing = "Typing...", -- 586
+		commands = { -- 586
+			"looc" -- 586
+		}, -- 587
+		aliases = { -- 587
+			"[[", -- 587
+			".//" -- 587
+		}, -- 589
+		range = 400, -- 591
+		tabs = TABS_LOOC, -- 592
+		log_category = "ooc", -- 594
+		color = Color(138, 185, 209), -- 596
+		font = "Spleen_Chat_Small" -- 581
+	} -- 581
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 596
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 581
+			_base_0[_key_0] = _val_0 -- 581
+		end -- 581
+	end -- 596
+	if _base_0.__index == nil then -- 581
+		_base_0.__index = _base_0 -- 581
+	end -- 596
+	setmetatable(_base_0, _parent_0.__base) -- 581
+	_class_0 = setmetatable({ -- 581
+		__init = function(self, ...) -- 581
+			return _class_0.__parent.__init(self, ...) -- 581
+		end, -- 581
+		__base = _base_0, -- 581
+		__name = "LOOC", -- 581
+		__parent = _parent_0 -- 581
+	}, { -- 581
+		__index = function(cls, name) -- 581
+			local val = rawget(_base_0, name) -- 581
+			if val == nil then -- 581
+				local parent = rawget(cls, "__parent") -- 581
+				if parent then -- 581
+					return parent[name] -- 581
+				end -- 581
+			else -- 581
+				return val -- 581
+			end -- 581
+		end, -- 581
+		__call = function(cls, ...) -- 581
+			local _self_0 = setmetatable({ }, _base_0) -- 581
+			cls.__init(_self_0, ...) -- 581
+			return _self_0 -- 581
+		end -- 581
+	}) -- 581
+	_base_0.__class = _class_0 -- 581
+	if _parent_0.__inherited then -- 581
+		_parent_0.__inherited(_parent_0, _class_0) -- 581
+	end -- 581
+	LOOC = _class_0 -- 581
+end -- 596
+if CLIENT then -- 598
+	LOOC.OnReceive = function(self, data) -- 599
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[OOC-LOCAL]</c> <c=" .. tostring(data.color) .. ">" .. tostring(data.name) .. "</c>: " .. tostring(data.text) -- 599
+	end -- 599
+end -- 598
+if SERVER then -- 600
+	LOOC.Parse = function(self, ply, lang, cmd, text) -- 601
+		return { -- 601
+			name = ply:Name(), -- 601
+			color = team.GetColor(ply:Team()), -- 601
+			text = text -- 601
+		} -- 601
+	end -- 601
+end -- 600
