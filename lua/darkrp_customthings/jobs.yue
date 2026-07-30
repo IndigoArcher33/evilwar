@@ -87,7 +87,7 @@ TEAM_GHOST = DarkRP.createJob "Ghost",
     return tab
 
 TEAM_STALKER = DarkRP.createJob "Stalker",
-  color: Color(20, 150, 20)
+  color: Color(71, 22, 0)
   model: "models/liver_failure/wastelander/wastelander.mdl"
   description: "A soul with no allegiance, destined to plunder the wasteland."
   weapons: {"evilrp_weapon/whisper", "evilrp_melee/axe"}
@@ -303,7 +303,7 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
     return false
 
 TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
-  color: Color(25, 170, 0)
+  color: Color(19, 51, 45)
   model: "models/vel/evilwar/royalist.mdl"
   description: "The fate of those who don't make the cut."
   weapons: {"evilrp_weapon/obrez", "evilrp_melee/pipe"}
@@ -376,7 +376,7 @@ TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
     return false
 
 TEAM_SANITAR = DarkRP.createJob "Dragoon",
-  color: Color(25, 170, 0)
+  color: Color(0, 25, 93)
   model: "models/vel/evilwar/royalist.mdl"
   description: "The right hand of the Emperor.\nRespected by his peers,\nfeared by his enemies."
   weapons: {"evilrp_weapon/hope", "evilrp_melee/sabre"}
