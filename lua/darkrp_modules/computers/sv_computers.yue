@@ -297,7 +297,7 @@ class Tyrant extends OS
           team = cply\Team!
           cply\MakeWanted 300, "offending the Emperor"
           gterm\Broadcast term, "death to#{name}", GT_COL_SUCC
-      help: "Make the nuisances pay for their arrogance."
+      help: "Make a nuisance pay for its arrogance."
     }
     [":conscript"]: {
       Callback: (ply, term, args) =>
