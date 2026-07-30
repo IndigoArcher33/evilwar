@@ -7,6 +7,6 @@ hook.Add "PlayerInitialSpawn", "evilrp_setup_player_needs", (ply) ->
   unless ply.evilrp_needs_rtable
     sql.Query( "INSERT INTO evilrp_needs( SteamID, Hunger, Thirst, Despair ) VALUES( '" .. ply\SteamID64! .. "', 0, 0, 0 )" )
   ply.evilrp_needs = sql.Query( "SELECT SteamID, Hunger, Thirst, Despair FROM evilrp_needs WHERE SteamID = '" .. ply\SteamID64! .. "'" )[1]
-  ply\SetNWFloat( "evilrp_needs_hunger", tonumber(ply.evilrp_needs.Hunger or 0) )
-  ply\SetNWFloat( "evilrp_needs_thirst", tonumber(ply.evilrp_needs.Thirst or 0) )
-  ply\SetNWFloat( "evilrp_needs_despair", tonumber(ply.evilrp_needs.Despair or 0) )
+  ply\SetNWFloat( "evilrp_needs_hunger", tonumber(0) )
+  ply\SetNWFloat( "evilrp_needs_thirst", tonumber(0) )
+  ply\SetNWFloat( "evilrp_needs_despair", tonumber(0) )

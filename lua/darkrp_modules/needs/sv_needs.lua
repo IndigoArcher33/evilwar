@@ -10,7 +10,7 @@ return hook.Add("PlayerInitialSpawn", "evilrp_setup_player_needs", function(ply)
 		sql.Query("INSERT INTO evilrp_needs( SteamID, Hunger, Thirst, Despair ) VALUES( '" .. ply:SteamID64() .. "', 0, 0, 0 )") -- 8
 	end -- 7
 	ply.evilrp_needs = sql.Query("SELECT SteamID, Hunger, Thirst, Despair FROM evilrp_needs WHERE SteamID = '" .. ply:SteamID64() .. "'")[1] -- 9
-	ply:SetNWFloat("evilrp_needs_hunger", tonumber(ply.evilrp_needs.Hunger or 0)) -- 10
-	ply:SetNWFloat("evilrp_needs_thirst", tonumber(ply.evilrp_needs.Thirst or 0)) -- 11
-	return ply:SetNWFloat("evilrp_needs_despair", tonumber(ply.evilrp_needs.Despair or 0)) -- 12
+	ply:SetNWFloat("evilrp_needs_hunger", tonumber(0)) -- 10
+	ply:SetNWFloat("evilrp_needs_thirst", tonumber(0)) -- 11
+	return ply:SetNWFloat("evilrp_needs_despair", tonumber(0)) -- 12
 end) -- 12
