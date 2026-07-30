@@ -1,0 +1,176 @@
+class Equip_Weapon extends SOUND
+  sound: ["dysphoria/weapons/wield_gun#{i}.ogg" for i=1,3]
+
+entity_cost = {
+  {
+    cls: "entity_longuse/trap/wiretrap/shotgunwire"
+    precursors:
+      metal: 5
+      wood: 5
+  }
+}
+
+getCostFromCls = (cls, precursor) ->
+  return 0 unless cls and cls ~= ""
+  for ent in *entity_cost
+    if ent.cls == cls
+      return ent.precursors[precursor] or 0
+  return 0
+
+
+class Construct extends ITEM
+  @__entity: "evilrp/spawned/construct"
+  PrintName: "Construct"
+  Spawnable: true
+  Model: Model"models/props_c17/consolebox05a.mdl"
+  AdminSpawnable: true
+  Interesting: true
+
+  Precursors: 
+    * name: "biomass"
+    * name: "fluid"
+    * name: "metal"
+    * name: "wood"
+
+  ImpactSound:
+    soft: "weapon.ImpactSoft"
+    hard: "weapon.ImpactHard"
+
+  BasePay: 5
+
+  SetupDataTables: =>
+    super!
+    @NetworkVar("String", "EntityClass")
+
+    for p in *@Precursors
+      name = "#{p.name\sub(1, 1)\upper!}#{p.name\sub(2, -1)}"
+      @NetworkVar("Int", "Precursor#{name}")
+    @NetworkVar("Entity", "Worker")
+
+  AddPrecursor: (pre, amt) =>
+    cls = @GetEntityClass!
+    return false unless cls and cls ~= ""
+    cost = getCostFromCls(cls, pre)
+    return false if cost <= 0
+    name = "#{pre\sub(1, 1)\upper!}#{pre\sub(2, -1)}"
+    -- look, I'm going to be real, I fucking hate this with every fiber of my being but I genuinely don't think
+    -- there's a better way of doing this without a fuckton of boilerplate code for every single precursor. Do I hate getting a function from a string?
+    -- A lot, I really do, but it's 4AM and I'm tired, I saw amy do it in sh_machine and I'm not sure how bad it really is   ~Vel
+
+    current = @["GetPrecursor#{name}"](@)
+    return false if current >= cost
+    @["SetPrecursor#{name}"](@, math.min(current + amt, cost)) -- I don't fully get why but you need to pass the @ (self) as the first parameter if you ever do this
+    return true
+
+    return false
+
+  Touch: (what) =>
+    if SERVER
+      return unless what.Precursor
+      return if what.Processed
+
+      local pre, amt
+      for p in *@Precursors
+        for k, v in pairs what.Precursor
+          if p.name == k
+            pre = k
+            amt = v
+            amt = amt(@) if isfunction(amt)
+            break
+      return unless (pre and amt)
+
+      return unless @AddPrecursor pre, amt
+
+      what.Processed = true
+      what\EmitSound what.SubmitSound if what.SubmitSound
+      what.Submitted what if what.Submitted
+
+      submitter = what\GetNWEntity "evilrp_submitter", NULL
+      reward = math.random(10, 15) * amt
+      rate = GAMEMODE.taxes.labor / 100
+      taxed = math.floor(reward * rate)
+      reward -= taxed
+      GAMEMODE.taxes_stored.labor += taxed if taxed > 0
+      reward = math.ceil(reward)
+
+      if submitter and IsValid(submitter) and submitter\IsPlayer! and submitter\Alive!
+        submitter\AddMoney reward, "The Operation"
+      else
+        GAMEMODE.taxes_stored.labor += reward if reward > 0
+
+      what\Remove!
+
+      if submitter and IsValid(submitter) and submitter\IsPlayer! and submitter\Team! == TEAM_PRIVATE
+        submitter.precursor_supplied or= 0
+        submitter.precursor_supplied += amt
+        if submitter.precursor_supplied_difference and (submitter.precursor_supplied % 50) < submitter.precursor_supplied_difference
+          submitter\Notify"<c=0,200,0>Your work ethic makes Liver Failure proud."
+          submitter\AddStemCells(1)
+        submitter.precursor_supplied_difference = submitter.precursor_supplied % 50
+
+  HUDRender: =>
+    ct = {}
+    cls = @GetEntityClass!
+    ent = scripted_ents.Get(cls) if cls and cls ~= ""
+    printName = ent and ent.PrintName or @PrintName
+    ct[] = "Constructing... #{printName}"
+    ct[] = ""
+    ct[] = { text: "Supply the necessary materials.", font: "Spleen_Label_Small" }
+    return ct
+
+  Sound: "Equip_Weapon"
+
+  IsFinished: =>
+    cls = @GetEntityClass!
+    return false unless cls and cls ~= ""
+
+    for p in *@Precursors
+      cost = getCostFromCls(cls, p.name)
+      if cost > 0
+        name = "#{p.name\sub(1, 1)\upper!}#{p.name\sub(2, -1)}"
+        get = @["GetPrecursor#{name}"]
+        if not get or get(@) < cost
+          return false
+    return true
+
+  Initialize: =>
+    @SetModel @Model
+    if SERVER
+      DarkRP.ValidatedPhysicsInit @, SOLID_VPHYSICS, "The issue lies with entity\"#{@GetEntityClass! or 'unknown'}\""
+      @SetMoveType MOVETYPE_VPHYSICS
+      @SetSolid SOLID_VPHYSICS
+      @PhysWake!
+
+  OnTakeDamage: (dmg) => @TakePhysicsDamage dmg
+
+  SetConstruct: (cls) =>
+    @SetEntityClass cls
+    for p in *@Precursors
+      name = "#{p.name\sub(1, 1)\upper!}#{p.name\sub(2, -1)}"
+      set = @["SetPrecursor#{name}"]
+      set(@, 0) if set
+
+  OnUseFinish: (ply) =>
+    if @GetEntityClass! == "" or @GetEntityClass! == nil
+      @SetConstruct "entity_longuse/trap/wiretrap/shotgunwire"
+      return
+
+    return unless @IsFinished!
+
+    super ply
+
+    if SERVER
+      cls = @GetEntityClass!
+      ent = ents.Create cls
+      if IsValid ent
+        with ent
+          \SetPos @GetPos!
+          \SetAngles @GetAngles!
+          \Spawn!
+          \Activate!
+        @Remove!
+
+if SERVER 
+  block_types = {"Physgun1", "Spawning1", "Toolgun1"}
+  FPP.AddDefaultBlocked(block_types, "evilrp/spawned/weapon")
+  FPP.AddDefaultBlocked(block_types, "evilrp_weapon")
