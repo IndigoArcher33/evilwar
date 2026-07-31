@@ -21,17 +21,19 @@ justice = function(ply, attacker, dmg) -- 1
 	if attacker:Wanted() then -- 9
 		return -- 9
 	end -- 9
-	if not (attacker:Team() == TEAM_SANITAR) then -- 10
+	if not (attacker:Team() == TEAM_SANITAR or attacker:Team() == TEAM_CONSCRIPT) then -- 10
 		return -- 10
 	end -- 10
 	if attacker == ply then -- 11
 		return -- 11
 	end -- 11
-	local cells = ply:GetStemCells() -- 12
-	if not (cells > 0) then -- 13
-		return -- 13
-	end -- 13
-	ply:AddStemCells(-1) -- 14
-	return ply:Notify("<c=200,0,0>The long tentacle of the law got you.") -- 15
+	attacker:Notify("<c=0,200,0>You have executed a criminal.") -- 12
+	attacker:AddSteamCells(2) -- 13
+	local cells = ply:GetStemCells() -- 14
+	if not (cells > 0) then -- 15
+		return -- 15
+	end -- 15
+	ply:AddStemCells(-1) -- 16
+	return ply:Notify("<c=200,0,0>The long tentacle of the law got you.") -- 17
 end -- 1
-return hook.Add("DoPlayerDeath", "evilrp_justice", justice) -- 17
+return hook.Add("DoPlayerDeath", "evilrp_justice", justice) -- 19

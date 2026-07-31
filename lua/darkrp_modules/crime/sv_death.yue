@@ -7,8 +7,10 @@ justice = (ply, attacker, dmg) ->
   return unless attacker and IsValid(attacker)
   return unless attacker\IsPlayer!
   return if attacker\Wanted!
-  return unless attacker\Team! == TEAM_SANITAR
+  return unless attacker\Team! == TEAM_SANITAR or attacker\Team! == TEAM_CONSCRIPT
   return if attacker == ply
+  attacker\Notify"<c=0,200,0>You have executed a criminal."
+  attacker\AddSteamCells(2)
   cells = ply\GetStemCells!
   return unless cells > 0
   ply\AddStemCells(-1)
