@@ -484,7 +484,7 @@ class Meistercast extends CHAT_CMD_IC
   desc: "Make them all listen."
   typing: "Decreeing..."
 
-  commands: {"broadcast", "ad"}
+  commands: {"broadcast", "meister"}
 
   color: Color(210, 100, 0)
 

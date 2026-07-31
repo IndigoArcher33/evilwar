@@ -1194,7 +1194,7 @@ do -- 482
 		typing = "Decreeing...", -- 487
 		commands = { -- 487
 			"broadcast", -- 487
-			"ad" -- 487
+			"meister" -- 487
 		}, -- 489
 		color = Color(210, 100, 0), -- 491
 		font = "Spleen_Chat", -- 493
