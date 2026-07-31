@@ -156,7 +156,7 @@ class Abortion extends Food
   HealthAdd: 20
   RotTime: 240
   Description: "An artificial baby that never got the chance to be born.\nDelicious."
-
+  Price: 175
   UseText: {
     "eats a baby."
     "rips apart an abortion and eats the pieces."

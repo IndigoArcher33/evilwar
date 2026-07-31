@@ -75,11 +75,11 @@ class Knife extends EvilRP_Melee
     ChargeTime: 0.2
 
     Light: {
-      Damage: 15
+      Damage: 12
       DamageType: DMG_SLASH
 
       Range: 75
-      Delay: 0.5
+      Delay: 0.6
 
       Act: ACT_VM_MISSCENTER
 
@@ -87,7 +87,7 @@ class Knife extends EvilRP_Melee
     },
 
     Heavy: {
-      Damage: 25
+      Damage: 22
       DamageType: DMG_SLASH
 
       Range: 75

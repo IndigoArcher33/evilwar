@@ -108,10 +108,10 @@ do -- 53
 		Primary = { -- 75
 			ChargeTime = 0.2, -- 75
 			Light = { -- 78
-				Damage = 15, -- 78
+				Damage = 12, -- 78
 				DamageType = DMG_SLASH, -- 79
 				Range = 75, -- 81
-				Delay = 0.5, -- 82
+				Delay = 0.6, -- 82
 				Act = ACT_VM_MISSCENTER, -- 84
 				Sound = { -- 86
 					"weapons/knife/knife_hit1.wav", -- 86
@@ -119,7 +119,7 @@ do -- 53
 				} -- 86
 			}, -- 77
 			Heavy = { -- 90
-				Damage = 25, -- 90
+				Damage = 22, -- 90
 				DamageType = DMG_SLASH, -- 91
 				Range = 75, -- 93
 				Delay = 0.9, -- 94

@@ -506,7 +506,8 @@ do -- 151
 		Thirst = -20, -- 156
 		HealthAdd = 20, -- 157
 		RotTime = 240, -- 158
-		Description = "An artificial baby that never got the chance to be born.\nDelicious.", -- 160
+		Description = "An artificial baby that never got the chance to be born.\nDelicious.", -- 159
+		Price = 175, -- 160
 		UseText = { -- 161
 			"eats a baby.", -- 161
 			"rips apart an abortion and eats the pieces.", -- 162

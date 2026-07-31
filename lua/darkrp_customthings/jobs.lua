@@ -119,7 +119,7 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 90
 	description = "A soul with no allegiance, destined to plunder the wasteland.", -- 92
 	weapons = { -- 93
 		"evilrp_weapon/whisper", -- 93
-		"evilrp_melee/axe" -- 93
+		"evilrp_melee/knife" -- 93
 	}, -- 93
 	category = "Wasteland", -- 94
 	command = "stalker", -- 95

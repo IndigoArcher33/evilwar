@@ -605,6 +605,10 @@ class Food extends Machine
       precursors:
         biomass: 1
       time: 6 }
+    ["item/food/abortion"]: {
+      precursors:
+        biomass: 3
+      time: 6 }
     ["item/food/drink/fearbeer"]: {
       precursors:
         biomass: 3

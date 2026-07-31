@@ -90,7 +90,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   color: Color(71, 22, 0)
   model: "models/liver_failure/wastelander/wastelander.mdl"
   description: "A soul with no allegiance, destined to plunder the wasteland."
-  weapons: {"evilrp_weapon/whisper", "evilrp_melee/axe"}
+  weapons: {"evilrp_weapon/whisper", "evilrp_melee/knife"}
   category: "Wasteland"
   command: "stalker"
   use_machines: true
