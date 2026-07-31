@@ -16,10 +16,10 @@ hook.Add("PlayerInitialSpawn", "evilrp_setup_player_needs", function(ply) -- 5
 	ply:SetNWFloat("evilrp_needs_thirst", tonumber(0)) -- 13
 	return ply:SetNWFloat("evilrp_needs_despair", tonumber(0)) -- 14
 end) -- 5
-return hook.Add("PlayerSpawn", "evilrp_setup_player_needs", function(ply) -- 16
-	sql.Query("UPDATE evilrp_needs SET Hunger = 0, Thirst = 0, Despair = 0 WHERE SteamID = '" .. ply:SteamID64() .. "'") -- 18
-	ply.evilrp_needs = sql.Query("SELECT SteamID, Hunger, Thirst, Despair FROM evilrp_needs WHERE SteamID = '" .. ply:SteamID64() .. "'")[1] -- 19
-	ply:SetNWFloat("evilrp_needs_hunger", tonumber(0)) -- 20
-	ply:SetNWFloat("evilrp_needs_thirst", tonumber(0)) -- 21
-	return ply:SetNWFloat("evilrp_needs_despair", tonumber(0)) -- 22
-end) -- 22
+return hook.Add("PlayerSpawn", "evilrp_setup_player_needs", function(ply) -- 17
+	sql.Query("UPDATE evilrp_needs SET Hunger = 0, Thirst = 0, Despair = 0 WHERE SteamID = '" .. ply:SteamID64() .. "'") -- 19
+	ply.evilrp_needs = sql.Query("SELECT SteamID, Hunger, Thirst, Despair FROM evilrp_needs WHERE SteamID = '" .. ply:SteamID64() .. "'")[1] -- 20
+	ply:SetNWFloat("evilrp_needs_hunger", tonumber(0)) -- 21
+	ply:SetNWFloat("evilrp_needs_thirst", tonumber(0)) -- 22
+	return ply:SetNWFloat("evilrp_needs_despair", tonumber(0)) -- 23
+end) -- 23

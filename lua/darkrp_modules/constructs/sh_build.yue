@@ -1,0 +1,22 @@
+
+if SERVER
+  netstream.Hook "BeginBuild", (ply) ->
+    return unless ply\CanBuild!
+    ent = ents.Create"evilrp/spawned/construct"
+    money = ply\getDarkRPVar"money"
+    cost = 100
+    if money < cost
+      ply\Notify"<color=210, 0, 0>You need #{cost} bones, vagrant.</color>"
+      net.Start"evilrp_frighten"
+      net.Send ply
+      ply\ConCommand"say /me grimaces."
+      ply\AddDespair 5
+      return
+    with ent
+      \SetPos ply\GetPos! + (ply\GetForward! * 64)
+      \SetAngles Angle(0, ply\EyeAngles!.y, 0)
+      \Spawn!
+      \Activate!
+    DarkRP.log("#{ply\Nick!} (#{ply\SteamID!}) placed a construct")
+    ply\AddMoney -cost, "The Plan"
+    ply\Notify"Interact to cycle the constructs."

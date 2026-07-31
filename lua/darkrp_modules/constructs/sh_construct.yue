@@ -1,12 +1,26 @@
 class Equip_Weapon extends SOUND
   sound: ["dysphoria/weapons/wield_gun#{i}.ogg" for i=1,3]
 
+noise = Material"effects/tvscreen_noise001a"
+  
+
 entity_cost = {
   {
     cls: "entity_longuse/trap/wiretrap/shotgunwire"
     precursors:
-      metal: 5
-      wood: 5
+      metal: 3
+      wood: 3
+  }
+  {
+    cls: "entity_longuse/trap/wiretrap"
+    precursors:
+      metal: 2
+  }
+  {
+    cls: "entity_longuse/trap/ied"
+    precursors:
+      metal: 1
+      wood: 3
   }
 }
 
@@ -41,6 +55,7 @@ class Construct extends ITEM
   SetupDataTables: =>
     super!
     @NetworkVar("String", "EntityClass")
+    @NetworkVar("Bool", "Started")
 
     for p in *@Precursors
       name = "#{p.name\sub(1, 1)\upper!}#{p.name\sub(2, -1)}"
@@ -60,9 +75,8 @@ class Construct extends ITEM
     current = @["GetPrecursor#{name}"](@)
     return false if current >= cost
     @["SetPrecursor#{name}"](@, math.min(current + amt, cost)) -- I don't fully get why but you need to pass the @ (self) as the first parameter if you ever do this
+    @SetStarted true if not @GetStarted!
     return true
-
-    return false
 
   Touch: (what) =>
     if SERVER
@@ -112,11 +126,63 @@ class Construct extends ITEM
     ct = {}
     cls = @GetEntityClass!
     ent = scripted_ents.Get(cls) if cls and cls ~= ""
-    printName = ent and ent.PrintName or @PrintName
+    printName = ""
+    printName = ent.PrintName if ent and ent.PrintName
     ct[] = "Constructing... #{printName}"
     ct[] = ""
     ct[] = { text: "Supply the necessary materials.", font: "Spleen_Label_Small" }
     return ct
+
+  Draw: =>
+    @DrawModel!
+    @Render3D2D!
+
+  Render3D2D: =>
+    cls = @GetEntityClass!
+    ent = scripted_ents.Get(cls) if cls and cls ~= ""
+    printName = ent and ent.PrintName or @PrintName
+
+    dist_sqr = @GetPos!\DistToSqr(lp\GetPos!)
+    return unless dist_sqr < 128^2
+    font = "Spleen_Label"
+    desp = lp\GetDespair! * 0.01
+    ct = CurTime!
+    pos = @GetPos! + (@GetUp! * 6) - (@GetForward! * 18) + (@GetRight! * 13)
+    ang = @GetAngles!
+    with ang
+      \RotateAroundAxis \Up!, 90
+      \RotateAroundAxis \Forward!, 0
+      \RotateAroundAxis \Right!, 0
+    -- 3D2D start: name
+    cam.Start3D2D pos, ang, 0.1
+    -- draw a rectangle, on which to draw the text atop
+    surface.SetMaterial noise
+    surface.SetDrawColor Color(255,255,255,255)
+    surface.DrawTexturedRect 0, 0, 265, 38
+    -- render the name
+    txt = "#{printName}"
+    txt_obj = scribe.Parse "<stutter><rgb=1,1,30><wiggle=#{8 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+    txt_obj\Draw 8, 6, 1, TEXT_ALIGN_LEFT
+    -- 3D2D end
+    cam.End3D2D!
+    -- 3D2D start: precursors
+    pos = @GetPos! + (@GetUp! * 6) - (@GetForward! * 7) + (@GetRight! * 11)
+    
+    for p in *@Precursors
+      -- we check if the precursor is needed
+      continue if p and p.name and getCostFromCls(cls, p.name) <= 0
+      pos += (-@GetForward! * 3)
+      cam.Start3D2D pos, ang, 0.1
+      name = "#{p.name\sub(1, 1)\upper!}#{p.name\sub(2, -1)}"
+      amt = @["GetPrecursor#{name}"](@)
+      cost = getCostFromCls(cls, p.name)
+      amt_str = "<c=200,0,0>#{amt}" if amt < cost
+      amt_str or= "<c=0,200,0>#{amt}"
+      txt = "#{p.name\sub(1, 1)\upper!}#{p.name\sub(2, -1)}: #{amt_str}/#{cost}"
+      txt_obj = scribe.Parse "<stutter><rgb=1,1,30><wiggle=#{8 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+      txt_obj\Draw 8, 6, 1, TEXT_ALIGN_LEFT
+      cam.End3D2D!
+    
 
   Sound: "Equip_Weapon"
 
@@ -136,10 +202,11 @@ class Construct extends ITEM
   Initialize: =>
     @SetModel @Model
     if SERVER
-      DarkRP.ValidatedPhysicsInit @, SOLID_VPHYSICS, "The issue lies with entity\"#{@GetEntityClass! or 'unknown'}\""
+      @PhysicsInit SOLID_VPHYSICS
       @SetMoveType MOVETYPE_VPHYSICS
       @SetSolid SOLID_VPHYSICS
       @PhysWake!
+    @SetStarted false
 
   OnTakeDamage: (dmg) => @TakePhysicsDamage dmg
 
@@ -151,8 +218,13 @@ class Construct extends ITEM
       set(@, 0) if set
 
   OnUseFinish: (ply) =>
-    if @GetEntityClass! == "" or @GetEntityClass! == nil
-      @SetConstruct "entity_longuse/trap/wiretrap/shotgunwire"
+    @index or= 1
+    if not @GetStarted!
+      if @index >= #entity_cost
+        @index = 1
+      else
+        @index += 1
+      @SetConstruct entity_cost[@index].cls
       return
 
     return unless @IsFinished!
@@ -167,6 +239,7 @@ class Construct extends ITEM
           \SetPos @GetPos!
           \SetAngles @GetAngles!
           \Spawn!
+          \CPPISetOwner ply -- used for prop protection, they can physgun or delete the trap now
           \Activate!
         @Remove!
 

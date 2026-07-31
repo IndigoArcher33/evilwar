@@ -599,3 +599,35 @@ if CLIENT
   LOOC.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[OOC-LOCAL]</c> <c=#{data.color}>#{data.name}</c>: #{data.text}"
 if SERVER
   LOOC.Parse = (ply, lang, cmd, text) => { name: ply\Name!, color: team.GetColor(ply\Team!), :text }
+
+
+class Admin extends CHAT_CMD
+  name: "Admin"
+  desc: "Local out-of-character chat."
+  typing: "Typing..."
+
+  commands: {"a", "admin", "//"}
+  aliases: {"@"}
+
+  range: 400
+
+  tabs: TABS_ADMIN
+  log_category: "ooc"
+
+  color: Color(210, 0, 0)
+
+  font: "Spleen_Chat_Small"
+
+if CLIENT
+  Admin.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[ADMIN]</c> <c=#{data.color}>#{data.name}</c>: #{data.text}"
+if SERVER
+  Admin.Parse = (ply, lang, cmd, text) => 
+    valid = {ply}
+    for _, target in pairs(player.GetAll!)
+      continue unless target\IsAdmin!
+      valid[] = target
+    Chat.Send @name, {
+      name: ply\Name!
+      color: Color(210, 0, 0)
+      :text
+    }, valid

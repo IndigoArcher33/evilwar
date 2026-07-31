@@ -21,6 +21,8 @@ get_intrinsic_actions = ->
   if wep\IsValid! and wep\GetModel! ~= ""
     actions[] = { desc: "Drop #{wep.PrintName}", func: (-> netstream.Send"DropWeapon" ) }
   actions[] = { desc: "Payment", func: (-> netstream.Send"BeginPaying" ) }
+  if lp\CanBuild!
+    actions[] = { desc: "Build", func: (-> netstream.Send"BeginBuild" ) }
   return actions
 
 render_action_menu = ->

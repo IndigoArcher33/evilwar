@@ -13,6 +13,7 @@ hook.Add "PlayerInitialSpawn", "evilrp_setup_player_needs", (ply) ->
   ply\SetNWFloat( "evilrp_needs_thirst", tonumber(0) )
   ply\SetNWFloat( "evilrp_needs_despair", tonumber(0) )
 
+-- wipes needs on every subsequent spawn, assuming the needs table exists
 hook.Add "PlayerSpawn", "evilrp_setup_player_needs", (ply) ->
   
   sql.Query( "UPDATE evilrp_needs SET Hunger = 0, Thirst = 0, Despair = 0 WHERE SteamID = '" .. ply\SteamID64! .. "'" )

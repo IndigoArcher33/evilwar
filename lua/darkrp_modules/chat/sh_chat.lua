@@ -1513,3 +1513,96 @@ if SERVER then -- 600
 		} -- 601
 	end -- 601
 end -- 600
+local Admin -- 604
+do -- 604
+	local _class_0 -- 604
+	local _parent_0 = CHAT_CMD -- 604
+	local _base_0 = { -- 604
+		name = "Admin", -- 606
+		desc = "Local out-of-character chat.", -- 607
+		typing = "Typing...", -- 609
+		commands = { -- 609
+			"a", -- 609
+			"admin", -- 609
+			"//" -- 609
+		}, -- 610
+		aliases = { -- 610
+			"@" -- 610
+		}, -- 612
+		range = 400, -- 614
+		tabs = TABS_ADMIN, -- 615
+		log_category = "ooc", -- 617
+		color = Color(210, 0, 0), -- 619
+		font = "Spleen_Chat_Small" -- 604
+	} -- 604
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 619
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 604
+			_base_0[_key_0] = _val_0 -- 604
+		end -- 604
+	end -- 619
+	if _base_0.__index == nil then -- 604
+		_base_0.__index = _base_0 -- 604
+	end -- 619
+	setmetatable(_base_0, _parent_0.__base) -- 604
+	_class_0 = setmetatable({ -- 604
+		__init = function(self, ...) -- 604
+			return _class_0.__parent.__init(self, ...) -- 604
+		end, -- 604
+		__base = _base_0, -- 604
+		__name = "Admin", -- 604
+		__parent = _parent_0 -- 604
+	}, { -- 604
+		__index = function(cls, name) -- 604
+			local val = rawget(_base_0, name) -- 604
+			if val == nil then -- 604
+				local parent = rawget(cls, "__parent") -- 604
+				if parent then -- 604
+					return parent[name] -- 604
+				end -- 604
+			else -- 604
+				return val -- 604
+			end -- 604
+		end, -- 604
+		__call = function(cls, ...) -- 604
+			local _self_0 = setmetatable({ }, _base_0) -- 604
+			cls.__init(_self_0, ...) -- 604
+			return _self_0 -- 604
+		end -- 604
+	}) -- 604
+	_base_0.__class = _class_0 -- 604
+	if _parent_0.__inherited then -- 604
+		_parent_0.__inherited(_parent_0, _class_0) -- 604
+	end -- 604
+	Admin = _class_0 -- 604
+end -- 619
+if CLIENT then -- 621
+	Admin.OnReceive = function(self, data) -- 622
+		return "<font=" .. tostring(self.font) .. "><c=" .. tostring(self.color) .. ">[ADMIN]</c> <c=" .. tostring(data.color) .. ">" .. tostring(data.name) .. "</c>: " .. tostring(data.text) -- 622
+	end -- 622
+end -- 621
+if SERVER then -- 623
+	Admin.Parse = function(self, ply, lang, cmd, text) -- 624
+		local valid = { -- 625
+			ply -- 625
+		} -- 625
+		for _, target in pairs(player.GetAll()) do -- 626
+			local _continue_0 = false -- 627
+			repeat -- 627
+				if not target:IsAdmin() then -- 627
+					_continue_0 = true -- 627
+					break -- 627
+				end -- 627
+				valid[#valid + 1] = target -- 628
+				_continue_0 = true -- 627
+			until true -- 628
+			if not _continue_0 then -- 628
+				break -- 628
+			end -- 628
+		end -- 628
+		return Chat.Send(self.name, { -- 630
+			name = ply:Name(), -- 630
+			color = Color(210, 0, 0), -- 631
+			text = text -- 632
+		}, valid) -- 633
+	end -- 624
+end -- 623
