@@ -355,8 +355,6 @@ TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
   ShowSpare1: open_player_menu
   ShowSpare2: open_action_menu
   PlayerLoadout: (ply) ->
-    ply\ClearOddities!
-    ply\AddOddity ODDITY.list[math.random(#ODDITY.list)]
     set_bodygroup(ply, slot, val) for slot, val in pairs {
       -- torse
       [0]: 0
