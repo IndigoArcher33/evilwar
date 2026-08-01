@@ -32,7 +32,7 @@ meta[k] = v for k, v in pairs{
     else
       max = @GetMaxHealth!
       hp_add = 2
-      hp_add *= 2 if @Team! == TEAM_KORPSMAN
+      hp_add *= 3 if @Team! == TEAM_KORPSMAN
       @SetHealth math.min(max, @Health! + hp_add)
   SetHunger: (amt) =>
     if SERVER

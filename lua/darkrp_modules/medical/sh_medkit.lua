@@ -95,7 +95,7 @@ do -- 1
 				ply:SetHealth(ply:Health() - 1) -- 65
 				ply.heal_stem_progress = ply.heal_stem_progress or 0 -- 66
 				ply.heal_stem_progress = ply.heal_stem_progress + 2 -- 67
-				if ply.heal_stem_progress >= 100 then -- 68
+				if ply.heal_stem_progress >= 150 then -- 68
 					ply.heal_stem_progress = 0 -- 69
 					ply:AddStemCells(1) -- 70
 				end -- 68
