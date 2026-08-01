@@ -1,6 +1,6 @@
 -- [yue]: darkrp_modules\jitters\sh_jitters.yue
-local hp_threshold = 30 -- 1
-local intensity_max = 5 -- 2
+local hp_threshold = 20 -- 1
+local intensity_max = 2 -- 2
 local disabled = false -- 3
 local fear_of_death -- 5
 fear_of_death = function() -- 5

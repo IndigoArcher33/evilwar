@@ -1,5 +1,5 @@
-hp_threshold = 30
-intensity_max = 5
+hp_threshold = 20
+intensity_max = 2
 disabled = false
 
 fear_of_death = ->

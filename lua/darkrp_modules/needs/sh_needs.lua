@@ -39,7 +39,7 @@ for k, v in pairs({ -- 19
 			local max = self:GetMaxHealth() -- 33
 			local hp_add = 2 -- 34
 			if self:Team() == TEAM_KORPSMAN then -- 35
-				hp_add = hp_add * 2 -- 35
+				hp_add = hp_add * 3 -- 35
 			end -- 35
 			return self:SetHealth(math.min(max, self:Health() + hp_add)) -- 36
 		end -- 25
