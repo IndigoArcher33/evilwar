@@ -1,26 +1,3 @@
-hints =
-  * "Despair distorts your vision and the stability of text."
-  * "As a ghost, pressing R will teleport you somewhere else, such as if you get stuck."
-  * "As a ghost, you can fly by jumping while holding SHIFT."
-  * "It's only a crime if the authorities see it."
-  * "Right click on a fallen body with empty hands in order to pick it up."
-  * "Your needs are not suggestions; maxing out any of them will kill you."
-  * "Under some circumstances, death may incur loss of stem cells."
-  * "You can be horrible, but it can mean even more to be friendly."
-  * "Death will not lower your needs in the majority of cases."
-  * "Pressing F4 or opening the context menu (on the C key by default) can bring up multiple options for interacting with some objects."
-  * "It's better to be interesting than perfect."
-  * "It's better to be pissed off than pissed on."
-  * "There's no use crying over spilled blood."
-  * "Press F3 to access your inventory; inside, left clicking on an item will use it while right clicking on one will drop it."
-  * "You can estimate your remaining ammo for an equipped weapon by holding the USE key and pressing your RELOAD key."
-  * "When the world shakes and howls, that means the game's code was altered -- something changed."
-  * "Stem cells are kept between the world's reincarnations, unlike your bones and your items. They're nice to have and painful to lose."
-  * "You don't have to be the one to push the buttons; stocking the facilities is arguably more helpful."
-  * "Admin abuse can, will, and does happen."
-  * "Press B to whip it out."
-  * "Voice communication is permanently disabled."
-  * "Does this game offend your senses? It has a variety of options you can customize. Try opening the developer's console and look for console variables that begin with <c=0,200,0>lfr_<c=0,200,200>."
 
 if CLIENT
   CreateClientConVar("lfr_hints", 1, true, true, "Toggle whether hints display each time you become a ghost.")
@@ -28,22 +5,67 @@ if CLIENT
 meta = FindMetaTable"Player"
 
 meta.TakeAHint = =>
-  @SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>#{hints[math.random(#hints)]}")
+  @SendChat("GENERIC", "<f=Spleen_Chat><c=128,128,128> You are a ghost, an unfortunate soul in this forsaken world. You can teleport to certain areas with the R key, areas that you can find a body you can possess.") -- Yes, i know how bloated this will be and look but it works and i dont give a single fuck - cinnamon
+
+meta.TakeAHintStalker = =>
+  @SendChat("GENERIC", "<f=Spleen_Chat><c=0,200,200> You are a stalker, a unpatriotic wastelander. Maybe, you could possibly barter with the EMPEROR with whatever you can find out with the wastes, and in the mines. Unlike everyone else, you are talented. Talented at not caring about what trash you'll dig through today.")
+
+meta.TakeAHintBonehead = =>
+  @SendChat("GENERIC", "<f=Spleen_Chat><c=255,255,255> ARRRRGHH, MUST KILL THEM ALL AND TAKE THEIR SKIN!!!")
+
+meta.TakeAHintPrivate = =>
+  @SendChat("GENERIC", "<f=Spleen_Chat><c=0,200,0> You are a patriotic Lymphoman resident conscripted to serve as both a laborer and combatant. You are mainly responsible about the productivity and labor of this glorious city and can operate factories unlike anyone else.")
+
+meta.TakeAHintConscript = =>
+  @SendChat("GENERIC", "<f=Spleen_Chat><c=0,0,200> You have been conscripted by the emperor himself to serve as a policing unit in Lymphoma. You're responsible for keeping order in the city and risking your life for the Emperor. This role holds responsibility.<c=0,0,0> You must not purposely cause the deaths of your comrades. If you cannot take this responsibility, kill yourself.")
+
+meta.TakeAHintSanitar = =>
+  @SendChat("GENERIC", "<f=Spleen_Chat><c=0,0,200> You are apart of the dragoons, the EMPEROR'S finest and superb soldiers. The Privates, Conscripts, and Sanitaters are your subordinates, Whilst the EMPEROR and the Quartermaster are your superiors. <c=0,0,0>Keep order within the city, but If you cannot take this responsibility, kill yourself.")
+
+meta.TakeAHintDealer = =>
+  @SendChat("GENERIC", "<f=Spleen_Chat><c=255,255,0> You are the Quartermaster. Thanks to your kapitalist mindset, your able to get better deals from the autodealers. You can use /meister to let everyone hear your voice.<c=0,0,0> But, if you cannot take the responsibility of being a quartermaster, kill yourself.")
+
+meta.TakeAHintEmperor = =>
+    @SendChat("GENERIC", "<f=Spleen_Chat><c=200,0,0> You are the EMPEROR, the wise leader of the Lymphomians. You must keep order within your city, and keep your men in line. Perhaps think about conscripting a few privates to keep the city safe.")
+
 
 hook.Add "PlayerSpawn", "evilrp_hints", (ply) ->
   return unless ply\GetInfoNum("lfr_hints", 1) == 1
   timer.Simple(3, ->
     return unless ply and IsValid(ply)
     return unless ply\Alive!
-    return unless ply\Team! == TEAM_GHOST
-    ply\TakeAHint!
     unless ply.got_first_hint
       ply.got_first_hint = true
-      ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,100,100>[ <c=0,200,200>You can change whether you receive these hints with console variable <c=0,200,0>lfr_hints<c=0,200,200>. <c=0,100,100>]")
-      ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,100,100>[ <c=0,200,200>While a ghost, you can press F1 to take another hint. <c=0,100,100>]"))
+      ply\SendChat("GENERIC", "<f=Spleen_Chat><c=128,128,128> You are a ghost, an unfortunate soul in this forsaken world. You can teleport to certain areas with the R key, areas that you can find a body you can possess.")
+      ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,100,100>[ <c=0,200,200>You can press F1 to receive info on your current fate in life, at any time. <c=0,100,100>]"))
 
 hook.Add "ShowHelp", "evilrp_hints", (ply) ->
   return unless SERVER
-  return unless ply\Team! == TEAM_GHOST
   return unless ply\Alive!
-  ply\TakeAHint!
+  if ply\Team! == TEAM_GHOST
+    ply\TakeAHint!
+    return
+  if ply\Team! == TEAM_STALKER
+    ply\TakeAHintStalker!
+    return
+  if ply\Team! == TEAM_BONEHEAD
+    ply\TakeAHintBonehead!
+    return
+  if ply\Team! == TEAM_PRIVATE
+    ply\TakeAHintPrivate!
+    return
+  if ply\Team! == TEAM_CONSCRIPT
+    ply\TakeAHintConscript!
+    return
+  if ply\Team! == TEAM_SANITAR
+    ply\TakeAHintSanitar!
+    return
+  if ply\Team! == TEAM_DEALER
+    ply\TakeAHintDealer!
+    return
+  if ply\Team! == TEAM_KORPSMAN
+    ply\TakeAHintKorpsman!
+    return
+  if ply\Team! == TEAM_EMPEROR
+    ply\TakeAHintEmperor!
+    return
