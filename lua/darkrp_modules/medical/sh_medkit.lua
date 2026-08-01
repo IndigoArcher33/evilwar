@@ -93,22 +93,28 @@ do -- 1
 				local nh = math.min(found:Health() + 2, found:GetMaxHealth()) -- 62
 				found:SetHealth(nh) -- 64
 				ply:SetHealth(ply:Health() - 1) -- 65
-				ply:EmitSound("ambient/creatures/teddy.wav", 150, (found:Health() / found:GetMaxHealth()) * 100) -- 66
-				if ply:Health() <= 0 and ply:Alive() then -- 68
-					return ply:Kill() -- 68
+				ply.heal_stem_progress = ply.heal_stem_progress or 0 -- 66
+				ply.heal_stem_progress = ply.heal_stem_progress + 2 -- 67
+				if ply.heal_stem_progress >= 100 then -- 68
+					ply.heal_stem_progress = 0 -- 69
+					ply:AddStemCells(1) -- 70
 				end -- 68
+				ply:EmitSound("ambient/creatures/teddy.wav", 150, (found:Health() / found:GetMaxHealth()) * 100) -- 71
+				if ply:Health() <= 0 and ply:Alive() then -- 73
+					return ply:Kill() -- 73
+				end -- 73
 			end -- 58
-		end, -- 71
+		end, -- 76
 		SecondaryAttack = function(self) end -- 1
 	} -- 1
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 71
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 76
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 1
 			_base_0[_key_0] = _val_0 -- 1
 		end -- 1
-	end -- 71
+	end -- 76
 	if _base_0.__index == nil then -- 1
 		_base_0.__index = _base_0 -- 1
-	end -- 71
+	end -- 76
 	setmetatable(_base_0, _parent_0.__base) -- 1
 	_class_0 = setmetatable({ -- 1
 		__init = function(self, ...) -- 1
@@ -142,5 +148,5 @@ do -- 1
 		_parent_0.__inherited(_parent_0, _class_0) -- 1
 	end -- 1
 	Medkit = _class_0 -- 1
-	return _class_0 -- 71
-end -- 71
+	return _class_0 -- 76
+end -- 76

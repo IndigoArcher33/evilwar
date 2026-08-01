@@ -63,6 +63,11 @@ class Medkit extends WEAPON
       -- TODO: emergency calls
       found\SetHealth nh
       ply\SetHealth ply\Health! - 1
+      ply.heal_stem_progress = ply.heal_stem_progress or 0
+      ply.heal_stem_progress += 2
+      if ply.heal_stem_progress >= 150
+        ply.heal_stem_progress = 0
+        ply\AddStemCells 1
       ply\EmitSound "ambient/creatures/teddy.wav", 150, (found\Health! / found\GetMaxHealth!) * 100
       -- TODO: malpractice
       ply\Kill! if ply\Health! <= 0 and ply\Alive!
