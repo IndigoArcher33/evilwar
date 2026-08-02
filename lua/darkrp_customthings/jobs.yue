@@ -133,6 +133,8 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   special_name_chance: 1000
   ShowSpare1: open_player_menu
   ShowSpare2: open_action_menu
+  Reflect: (ply) ->
+    ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am a Stalker, an unpatriotic wastelander. I pawn off the Wasteland's treasures to the highest bidder. Unlike everyone else, I am talented at digging through trash.")
   PlayerLoadout: (ply) ->
     ply\ClearOddities!
     ply\AddOddity ODDITY.list[math.random(#ODDITY.list)]
@@ -229,6 +231,8 @@ TEAM_BONEHEAD = DarkRP.createJob "Bonehead",
   ShowSpare2: ->
     if CLIENT
       GAMEMODE\Frighten!
+  Reflect: (ply) ->
+    ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=210,0,0>ARRRRGHH, I MUST KILL THEM ALL AND TAKE THEIR SKIN!!!")
   PlayerLoadout: (ply) ->
     ply\SetNWInt "evilrp_gasmask", 0
     ply\Give("evilrp_melee/hands/boneclaws")
@@ -284,6 +288,8 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
   special_name_chance: 1000
   ShowSpare1: open_player_menu
   ShowSpare2: open_action_menu
+  Reflect: (ply) ->
+    ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am a patriotic Lymphoman resident, a laborer and combatant. I must remain productive, my body should be used for the greater good. <c=0,210,0> I can be conscripted by the EMPEROR.")
   PlayerLoadout: (ply) ->
     ply\ClearOddities!
     ply\AddOddity ODDITY.list[math.random(#ODDITY.list)]
@@ -354,6 +360,8 @@ TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
   special_name_chance: 1000
   ShowSpare1: open_player_menu
   ShowSpare2: open_action_menu
+  Reflect: (ply) ->
+    ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I have been conscripted by the EMPEROR himself. I must patrol the Wasteland and prevent the entry of foreign invaders, and risk my life for the Emperor. This role holds responsibility.<c=210,0,0> I must not purposely cause the deaths of your comrades.")
   PlayerLoadout: (ply) ->
     set_bodygroup(ply, slot, val) for slot, val in pairs {
       -- torse
@@ -418,6 +426,8 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
   ShowSpare2: open_action_menu
   bar_names:
     health: "resolve"
+  Reflect: (ply) ->
+    ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am part of the EMPEROR's finest soldiers. The Privates, Conscripts, and Sanitaters are my subordinates, whilst the EMPEROR and the Quartermaster are my superiors. <c=0,210,0>I must keep order within the city, and the machines tidy")
   PlayerLoadout: (ply) ->
     ply\ClearOddities!
     ply\AddOddity ODDITY.list[math.random(#ODDITY.list)]
@@ -609,6 +619,8 @@ TEAM_EMPEROR = DarkRP.createJob "Emperor",
   ShowSpare2: open_action_menu
   bar_names:
     health: "PRIDE"
+  Reflect: (ply) ->
+    ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am the EMPEROR of Lymphoma. I am the supreme ruler of this city and its people. I decide who lives and who dies. <c=0,210,0>I can use my terminal to administrate our internal affairs.")
   PlayerLoadout: (ply) ->
     ply\ClearOddities!
     oddities = [v for k, v in pairs(ODDITY.list) when v ~= ODDITY_ILLITERACY]

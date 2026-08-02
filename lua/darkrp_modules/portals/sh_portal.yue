@@ -242,6 +242,7 @@ class Spawn extends Portal
       snd = table.Random(RPExtraTeams[fate].become_sounds)
       ply\EmitSound(snd)
       ply\EmitSound("npc/stalker/go_alert2.wav", 140, 40, 0.2)
+      ply\Reflect!
       net.Start"evilrp_receive_stocks"
       net.WriteTable(GAMEMODE.Stocks)
       net.Send(ply)

@@ -356,25 +356,26 @@ do -- 149
 				local snd = table.Random(RPExtraTeams[fate].become_sounds) -- 242
 				ply:EmitSound(snd) -- 243
 				ply:EmitSound("npc/stalker/go_alert2.wav", 140, 40, 0.2) -- 244
-				net.Start("evilrp_receive_stocks") -- 245
-				net.WriteTable(GAMEMODE.Stocks) -- 246
-				return net.Send(ply) -- 247
-			else -- 249
-				net.Start("evilrp_jumpscare") -- 249
-				net.Send(ply) -- 250
-				ply:Notify("<c=200,0,0>YOU HAVE " .. tostring(ply:GetStemCells()) .. " STEM CELLS.") -- 251
-				return ply:Notify("<c=200,0,0>YOU NEED " .. tostring(cost) .. " STEM CELLS TO HAVE THIS PURPOSE IN LIFE.") -- 252
+				ply:Reflect() -- 245
+				net.Start("evilrp_receive_stocks") -- 246
+				net.WriteTable(GAMEMODE.Stocks) -- 247
+				return net.Send(ply) -- 248
+			else -- 250
+				net.Start("evilrp_jumpscare") -- 250
+				net.Send(ply) -- 251
+				ply:Notify("<c=200,0,0>YOU HAVE " .. tostring(ply:GetStemCells()) .. " STEM CELLS.") -- 252
+				return ply:Notify("<c=200,0,0>YOU NEED " .. tostring(cost) .. " STEM CELLS TO HAVE THIS PURPOSE IN LIFE.") -- 253
 			end -- 236
 		end -- 149
 	} -- 149
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 252
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 253
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 149
 			_base_0[_key_0] = _val_0 -- 149
 		end -- 149
-	end -- 252
+	end -- 253
 	if _base_0.__index == nil then -- 149
 		_base_0.__index = _base_0 -- 149
-	end -- 252
+	end -- 253
 	setmetatable(_base_0, _parent_0.__base) -- 149
 	_class_0 = setmetatable({ -- 149
 		__init = function(self, ...) -- 149
@@ -406,225 +407,225 @@ do -- 149
 		_parent_0.__inherited(_parent_0, _class_0) -- 149
 	end -- 149
 	Spawn = _class_0 -- 149
-end -- 252
-local WavePrepared -- 254
-do -- 254
-	local _class_0 -- 254
-	local _parent_0 = SOUND -- 254
-	local _base_0 = { -- 254
-		sound = "npc/combine_gunship/ping_patrol.wav", -- 256
-		pitch = { -- 256
-			80, -- 256
-			90 -- 256
-		}, -- 257
-		volume = 0.9 -- 254
-	} -- 254
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 257
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 254
-			_base_0[_key_0] = _val_0 -- 254
-		end -- 254
-	end -- 257
-	if _base_0.__index == nil then -- 254
-		_base_0.__index = _base_0 -- 254
-	end -- 257
-	setmetatable(_base_0, _parent_0.__base) -- 254
-	_class_0 = setmetatable({ -- 254
-		__init = function(self, ...) -- 254
-			return _class_0.__parent.__init(self, ...) -- 254
-		end, -- 254
-		__base = _base_0, -- 254
-		__name = "WavePrepared", -- 254
-		__parent = _parent_0 -- 254
-	}, { -- 254
-		__index = function(cls, name) -- 254
-			local val = rawget(_base_0, name) -- 254
-			if val == nil then -- 254
-				local parent = rawget(cls, "__parent") -- 254
-				if parent then -- 254
-					return parent[name] -- 254
-				end -- 254
-			else -- 254
-				return val -- 254
-			end -- 254
-		end, -- 254
-		__call = function(cls, ...) -- 254
-			local _self_0 = setmetatable({ }, _base_0) -- 254
-			cls.__init(_self_0, ...) -- 254
-			return _self_0 -- 254
-		end -- 254
-	}) -- 254
-	_base_0.__class = _class_0 -- 254
-	if _parent_0.__inherited then -- 254
-		_parent_0.__inherited(_parent_0, _class_0) -- 254
-	end -- 254
-	WavePrepared = _class_0 -- 254
-end -- 257
-local Wave -- 259
-do -- 259
-	local _class_0 -- 259
-	local _parent_0 = Spawn -- 259
-	local _base_0 = { -- 259
-		PrintName = "Wavepoint", -- 262
-		spawn_delay = 30, -- 264
-		SetupDataTables = function(self) -- 264
-			_class_0.__parent.__base.SetupDataTables(self) -- 265
-			self:NetworkVar("Bool", "Active") -- 266
-			return self:NetworkVar("Int", "SpawnTime") -- 267
-		end, -- 269
-		GetCustomColor = function(self) -- 269
-			if self:GetActive() then -- 270
-				return HSVToColor((CurTime() * 128) % 360, 1, 1) -- 271
-			else -- 273
-				return Color(0, 0, 255) -- 273
-			end -- 270
-		end, -- 275
-		GetPortalMat = function(self) -- 275
-			return mat_wave -- 275
-		end, -- 277
-		HUDRender = function(self) -- 277
-			local ply = LocalPlayer() -- 278
-			if not (ply:Team() == TEAM_GHOST) then -- 279
-				return false -- 279
-			end -- 279
-			local fate = self:GetFate() -- 280
-			local ct = { } -- 281
-			ct[#ct + 1] = { -- 282
-				text = RPExtraTeams[fate].name -- 282
-			} -- 282
+end -- 253
+local WavePrepared -- 255
+do -- 255
+	local _class_0 -- 255
+	local _parent_0 = SOUND -- 255
+	local _base_0 = { -- 255
+		sound = "npc/combine_gunship/ping_patrol.wav", -- 257
+		pitch = { -- 257
+			80, -- 257
+			90 -- 257
+		}, -- 258
+		volume = 0.9 -- 255
+	} -- 255
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 258
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 255
+			_base_0[_key_0] = _val_0 -- 255
+		end -- 255
+	end -- 258
+	if _base_0.__index == nil then -- 255
+		_base_0.__index = _base_0 -- 255
+	end -- 258
+	setmetatable(_base_0, _parent_0.__base) -- 255
+	_class_0 = setmetatable({ -- 255
+		__init = function(self, ...) -- 255
+			return _class_0.__parent.__init(self, ...) -- 255
+		end, -- 255
+		__base = _base_0, -- 255
+		__name = "WavePrepared", -- 255
+		__parent = _parent_0 -- 255
+	}, { -- 255
+		__index = function(cls, name) -- 255
+			local val = rawget(_base_0, name) -- 255
+			if val == nil then -- 255
+				local parent = rawget(cls, "__parent") -- 255
+				if parent then -- 255
+					return parent[name] -- 255
+				end -- 255
+			else -- 255
+				return val -- 255
+			end -- 255
+		end, -- 255
+		__call = function(cls, ...) -- 255
+			local _self_0 = setmetatable({ }, _base_0) -- 255
+			cls.__init(_self_0, ...) -- 255
+			return _self_0 -- 255
+		end -- 255
+	}) -- 255
+	_base_0.__class = _class_0 -- 255
+	if _parent_0.__inherited then -- 255
+		_parent_0.__inherited(_parent_0, _class_0) -- 255
+	end -- 255
+	WavePrepared = _class_0 -- 255
+end -- 258
+local Wave -- 260
+do -- 260
+	local _class_0 -- 260
+	local _parent_0 = Spawn -- 260
+	local _base_0 = { -- 260
+		PrintName = "Wavepoint", -- 263
+		spawn_delay = 30, -- 265
+		SetupDataTables = function(self) -- 265
+			_class_0.__parent.__base.SetupDataTables(self) -- 266
+			self:NetworkVar("Bool", "Active") -- 267
+			return self:NetworkVar("Int", "SpawnTime") -- 268
+		end, -- 270
+		GetCustomColor = function(self) -- 270
+			if self:GetActive() then -- 271
+				return HSVToColor((CurTime() * 128) % 360, 1, 1) -- 272
+			else -- 274
+				return Color(0, 0, 255) -- 274
+			end -- 271
+		end, -- 276
+		GetPortalMat = function(self) -- 276
+			return mat_wave -- 276
+		end, -- 278
+		HUDRender = function(self) -- 278
+			local ply = LocalPlayer() -- 279
+			if not (ply:Team() == TEAM_GHOST) then -- 280
+				return false -- 280
+			end -- 280
+			local fate = self:GetFate() -- 281
+			local ct = { } -- 282
 			ct[#ct + 1] = { -- 283
-				text = RPExtraTeams[fate].description, -- 283
-				font = "Spleen_Label_Small" -- 283
+				text = RPExtraTeams[fate].name -- 283
 			} -- 283
 			ct[#ct + 1] = { -- 284
-				text = " " -- 284
+				text = RPExtraTeams[fate].description, -- 284
+				font = "Spleen_Label_Small" -- 284
 			} -- 284
-			if self:GetActive() then -- 285
-				ct[#ct + 1] = { -- 286
-					text = "A wave is gathering in T-" .. tostring(string.NiceTime(self:GetSpawnTime() - CurTime())) .. ".", -- 286
-					font = "Spleen_Label_Small" -- 286
-				} -- 286
-				if ply:GetPos():DistToSqr(self:GetPos()) < 256 ^ 2 then -- 287
-					ct[#ct + 1] = { -- 288
-						text = "Stay close to participate.", -- 288
-						font = "Spleen_Label_Small" -- 288
-					} -- 288
-				else -- 290
-					ct[#ct + 1] = { -- 290
-						text = "Come closer.", -- 290
-						font = "Spleen_Label_Small" -- 290
-					} -- 290
-				end -- 287
-			else -- 292
-				ct[#ct + 1] = { -- 292
-					text = "A wave is not gathering.", -- 292
-					font = "Spleen_Label_Small" -- 292
-				} -- 292
+			ct[#ct + 1] = { -- 285
+				text = " " -- 285
+			} -- 285
+			if self:GetActive() then -- 286
+				ct[#ct + 1] = { -- 287
+					text = "A wave is gathering in T-" .. tostring(string.NiceTime(self:GetSpawnTime() - CurTime())) .. ".", -- 287
+					font = "Spleen_Label_Small" -- 287
+				} -- 287
+				if ply:GetPos():DistToSqr(self:GetPos()) < 256 ^ 2 then -- 288
+					ct[#ct + 1] = { -- 289
+						text = "Stay close to participate.", -- 289
+						font = "Spleen_Label_Small" -- 289
+					} -- 289
+				else -- 291
+					ct[#ct + 1] = { -- 291
+						text = "Come closer.", -- 291
+						font = "Spleen_Label_Small" -- 291
+					} -- 291
+				end -- 288
+			else -- 293
 				ct[#ct + 1] = { -- 293
-					text = "You can change that, if you're ready.", -- 293
+					text = "A wave is not gathering.", -- 293
 					font = "Spleen_Label_Small" -- 293
 				} -- 293
-			end -- 285
-			return ct -- 294
-		end, -- 296
-		Use = function(self, ply) -- 296
-			if not self:IsValidEntity(ply) then -- 297
-				return -- 297
-			end -- 297
-			ply:ForcePlayerDrop() -- 298
-			if self:GetActive() then -- 299
-				return -- 299
-			end -- 299
-			self:EmitSound("WavePrepared") -- 300
-			self:SetActive(true) -- 301
-			return self:SetSpawnTime(CurTime() + self.spawn_delay) -- 302
-		end, -- 304
-		GetNearbyGhosts = function(self) -- 304
-			local ghosts = { } -- 305
-			local _list_0 = player.GetAll() -- 306
-			for _index_0 = 1, #_list_0 do -- 306
-				local ply = _list_0[_index_0] -- 306
-				if (ply:Team() == TEAM_GHOST and ply:GetPos():DistToSqr(self:GetPos()) <= 256 ^ 2) then -- 306
-					ghosts[#ghosts + 1] = ply -- 306
-				end -- 306
-			end -- 306
-			return ghosts -- 307
-		end, -- 309
-		SpawnWave = function(self) -- 309
-			local ghosts = self:GetNearbyGhosts() -- 310
-			if not (#ghosts > 0) then -- 311
-				return self:Reset() -- 313
-			end -- 311
-			for _index_0 = 1, #ghosts do -- 314
-				local g = ghosts[_index_0] -- 314
-				self:SpawnPlayer(g) -- 314
-			end -- 314
-			return self:Remove() -- 315
-		end, -- 317
-		Reset = function(self) -- 317
-			self:SetActive(false) -- 318
-			return self:SetSpawnTime(0) -- 319
-		end, -- 321
-		Think = function(self) -- 321
-			_class_0.__parent.__base.Think(self) -- 322
-			if not SERVER then -- 323
-				return -- 323
-			end -- 323
-			if self:GetActive() then -- 324
-				local ct = CurTime() -- 325
-				if not self.next_ghost_check then -- 326
-					self.next_ghost_check = ct -- 326
-				end -- 326
-				if ct >= self.next_ghost_check then -- 327
-					self.next_ghost_check = ct + 3 -- 328
-					local nearby = self:GetNearbyGhosts() -- 329
-					if not (#nearby > 0) then -- 330
-						return self:SetActive(false) -- 331
-					end -- 330
-				end -- 327
-				if ct >= self:GetSpawnTime() then -- 332
-					return self:SpawnWave() -- 333
-				end -- 332
+				ct[#ct + 1] = { -- 294
+					text = "You can change that, if you're ready.", -- 294
+					font = "Spleen_Label_Small" -- 294
+				} -- 294
+			end -- 286
+			return ct -- 295
+		end, -- 297
+		Use = function(self, ply) -- 297
+			if not self:IsValidEntity(ply) then -- 298
+				return -- 298
+			end -- 298
+			ply:ForcePlayerDrop() -- 299
+			if self:GetActive() then -- 300
+				return -- 300
+			end -- 300
+			self:EmitSound("WavePrepared") -- 301
+			self:SetActive(true) -- 302
+			return self:SetSpawnTime(CurTime() + self.spawn_delay) -- 303
+		end, -- 305
+		GetNearbyGhosts = function(self) -- 305
+			local ghosts = { } -- 306
+			local _list_0 = player.GetAll() -- 307
+			for _index_0 = 1, #_list_0 do -- 307
+				local ply = _list_0[_index_0] -- 307
+				if (ply:Team() == TEAM_GHOST and ply:GetPos():DistToSqr(self:GetPos()) <= 256 ^ 2) then -- 307
+					ghosts[#ghosts + 1] = ply -- 307
+				end -- 307
+			end -- 307
+			return ghosts -- 308
+		end, -- 310
+		SpawnWave = function(self) -- 310
+			local ghosts = self:GetNearbyGhosts() -- 311
+			if not (#ghosts > 0) then -- 312
+				return self:Reset() -- 314
+			end -- 312
+			for _index_0 = 1, #ghosts do -- 315
+				local g = ghosts[_index_0] -- 315
+				self:SpawnPlayer(g) -- 315
+			end -- 315
+			return self:Remove() -- 316
+		end, -- 318
+		Reset = function(self) -- 318
+			self:SetActive(false) -- 319
+			return self:SetSpawnTime(0) -- 320
+		end, -- 322
+		Think = function(self) -- 322
+			_class_0.__parent.__base.Think(self) -- 323
+			if not SERVER then -- 324
+				return -- 324
 			end -- 324
-		end -- 259
-	} -- 259
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 333
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 259
-			_base_0[_key_0] = _val_0 -- 259
-		end -- 259
-	end -- 333
-	if _base_0.__index == nil then -- 259
-		_base_0.__index = _base_0 -- 259
-	end -- 333
-	setmetatable(_base_0, _parent_0.__base) -- 259
-	_class_0 = setmetatable({ -- 259
-		__init = function(self, ...) -- 259
-			return _class_0.__parent.__init(self, ...) -- 259
-		end, -- 259
-		__base = _base_0, -- 259
-		__name = "Wave", -- 259
-		__parent = _parent_0 -- 259
-	}, { -- 259
-		__index = function(cls, name) -- 259
-			local val = rawget(_base_0, name) -- 259
-			if val == nil then -- 259
-				local parent = rawget(cls, "__parent") -- 259
-				if parent then -- 259
-					return parent[name] -- 259
-				end -- 259
-			else -- 259
-				return val -- 259
-			end -- 259
-		end, -- 259
-		__call = function(cls, ...) -- 259
-			local _self_0 = setmetatable({ }, _base_0) -- 259
-			cls.__init(_self_0, ...) -- 259
-			return _self_0 -- 259
-		end -- 259
-	}) -- 259
-	_base_0.__class = _class_0 -- 259
-	if _parent_0.__inherited then -- 259
-		_parent_0.__inherited(_parent_0, _class_0) -- 259
-	end -- 259
-	Wave = _class_0 -- 259
-	return _class_0 -- 333
-end -- 333
+			if self:GetActive() then -- 325
+				local ct = CurTime() -- 326
+				if not self.next_ghost_check then -- 327
+					self.next_ghost_check = ct -- 327
+				end -- 327
+				if ct >= self.next_ghost_check then -- 328
+					self.next_ghost_check = ct + 3 -- 329
+					local nearby = self:GetNearbyGhosts() -- 330
+					if not (#nearby > 0) then -- 331
+						return self:SetActive(false) -- 332
+					end -- 331
+				end -- 328
+				if ct >= self:GetSpawnTime() then -- 333
+					return self:SpawnWave() -- 334
+				end -- 333
+			end -- 325
+		end -- 260
+	} -- 260
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 334
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 260
+			_base_0[_key_0] = _val_0 -- 260
+		end -- 260
+	end -- 334
+	if _base_0.__index == nil then -- 260
+		_base_0.__index = _base_0 -- 260
+	end -- 334
+	setmetatable(_base_0, _parent_0.__base) -- 260
+	_class_0 = setmetatable({ -- 260
+		__init = function(self, ...) -- 260
+			return _class_0.__parent.__init(self, ...) -- 260
+		end, -- 260
+		__base = _base_0, -- 260
+		__name = "Wave", -- 260
+		__parent = _parent_0 -- 260
+	}, { -- 260
+		__index = function(cls, name) -- 260
+			local val = rawget(_base_0, name) -- 260
+			if val == nil then -- 260
+				local parent = rawget(cls, "__parent") -- 260
+				if parent then -- 260
+					return parent[name] -- 260
+				end -- 260
+			else -- 260
+				return val -- 260
+			end -- 260
+		end, -- 260
+		__call = function(cls, ...) -- 260
+			local _self_0 = setmetatable({ }, _base_0) -- 260
+			cls.__init(_self_0, ...) -- 260
+			return _self_0 -- 260
+		end -- 260
+	}) -- 260
+	_base_0.__class = _class_0 -- 260
+	if _parent_0.__inherited then -- 260
+		_parent_0.__inherited(_parent_0, _class_0) -- 260
+	end -- 260
+	Wave = _class_0 -- 260
+	return _class_0 -- 334
+end -- 334

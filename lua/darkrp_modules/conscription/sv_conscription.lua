@@ -9,7 +9,8 @@ conscript = function(ply) -- 2
 	ply:AddDespair(-20) -- 7
 	ply:ScreenFade(SCREENFADE.IN, Color(255, 0, 0), 2.5, 0) -- 8
 	ply:changeTeam(fate) -- 9
-	local snd = table.Random(RPExtraTeams[fate].become_sounds) -- 10
-	ply:EmitSound(snd) -- 11
-	return ply:EmitSound("npc/stalker/go_alert2.wav", 140, 40, 0.2) -- 12
+	ply:Reflect() -- 10
+	local snd = table.Random(RPExtraTeams[fate].become_sounds) -- 11
+	ply:EmitSound(snd) -- 12
+	return ply:EmitSound("npc/stalker/go_alert2.wav", 140, 40, 0.2) -- 13
 end -- 2
