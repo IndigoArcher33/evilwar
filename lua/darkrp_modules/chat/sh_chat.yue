@@ -486,7 +486,7 @@ class Meistercast extends CHAT_CMD_IC
       return
     super ply, lang, cmd, text
 
-  Process: (ply, text) => Chat.Autopretty ply, text\upper!
+  Process: (ply, text) => Chat.Autopretty ply, text\upper! -- I know I could use some polymorphism here but I don't want to bloat the code with a lot of subclasses that might not be used that much
 
 
 class Xombocast extends CHAT_CMD_IC
@@ -515,7 +515,7 @@ class Broadcast extends CHAT_CMD_IC
 
   Handle: (ply, lang, cmd, text) =>
     switch ply\Team!
-      when TEAM_DEALER
+      when TEAM_DEALER -- in the future, probably make it check the job table for the broadcast permission
         Meistercast\Handle ply, lang, cmd, text
       when TEAM_EMPEROR
         Xombocast\Handle ply, lang, cmd, text

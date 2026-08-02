@@ -17,8 +17,6 @@ open_player_menu = (ply) ->
   return unless CLIENT
   if lp\Alive!
     GAMEMODE\CreatePlayerMenu!
-  else
-    GAMEMODE\Frighten!
 
 open_action_menu = (ply) ->
   return unless CLIENT
@@ -51,7 +49,7 @@ TEAM_GHOST = DarkRP.createJob "Ghost",
   -- special_name_chance: 10000
   ShowSpare1: (ply) ->
     if CLIENT
-      GAMEMODE\Frighten!
+      ply\Notify"<c=0,200,0>YOU HAVE #{ply\GetStemCells!} STEM CELLS."
   ShowSpare2: (ply) ->
     nearby = ents.FindInSphere(ply\GetPos!, 16)
     local found
