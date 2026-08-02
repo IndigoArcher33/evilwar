@@ -508,7 +508,7 @@ TEAM_DEALER = DarkRP.createJob "Quartermaster",
     }
     return false
 
-TEAM_KORPSMAN = DarkRP.createJob "Sanitäter",
+TEAM_KORPSMAN = DarkRP.createJob "Sanitater",
   color: Color(79, 150, 150)
   model: "models/vel/evilwar/royalist.mdl"
   description: "You keep people alive in this terrible place.\nFill the blood and empty the rust."
@@ -644,6 +644,7 @@ TEAM_EMPEROR = DarkRP.createJob "Emperor",
 
 GAMEMODE.CivilProtection =
   [TEAM_PRIVATE]: true
+  [TEAM_CONSCRIPT]: true
   [TEAM_SANITAR]: true
   [TEAM_EMPEROR]: true
 

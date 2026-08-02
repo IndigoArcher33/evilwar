@@ -172,7 +172,7 @@ do -- 36
 	local _class_0 -- 36
 	local _parent_0 = CRIME -- 36
 	local _base_0 = { -- 36
-		name = "assassination", -- 38
+		name = "attempted assassination", -- 38
 		duration = 500, -- 39
 		CommittedBy = function(self, who, victim) -- 39
 			if who == victim then -- 40

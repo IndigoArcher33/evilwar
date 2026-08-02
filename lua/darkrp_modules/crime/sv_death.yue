@@ -2,18 +2,18 @@ justice = (ply, attacker, dmg) ->
   return unless ply and IsValid(ply)
   return unless ply\IsPlayer!
   return unless ply\Wanted!
-  ply\Notify"<c=0,200,0>Despicable criminal #{ply\Name!} was slain. Good riddance!"
+  Chat.Announce("GENERIC","<c=230,0,0>Despicable criminal #{ply\Name!} was slain. Good riddance!")
   ply\MakeUnwanted!
   return unless attacker and IsValid(attacker)
   return unless attacker\IsPlayer!
   return if attacker\Wanted!
-  return unless attacker\Team! == TEAM_SANITAR or attacker\Team! == TEAM_CONSCRIPT
+  return unless Gamemode.CivilProtection[attacker\Team!]
   return if attacker == ply
   attacker\Notify"<c=0,200,0>You have executed a criminal."
   attacker\AddSteamCells(2)
   cells = ply\GetStemCells!
   return unless cells > 0
-  ply\AddStemCells(-1)
+  ply\AddStemCells(-2)
   ply\Notify"<c=200,0,0>The long tentacle of the law got you."
 
 regicide = (ply, attacker, dmg) ->
@@ -23,6 +23,30 @@ regicide = (ply, attacker, dmg) ->
     return if attacker\WantedLength! <= CRIMES.regicide.duration
   
   CRIMES.regicide\CommittedBy(attacker, ply)
+
+assault_and_battery = (ent, dmg) ->
+  return unless (ent\IsPlayer! and ent\Alive!)
+  attacker = dmg\GetAttacker!
+  return unless (attacker and IsValid(attacker))
+  return unless attacker\IsPlayer!
+  return if ent\Wanted!
+  return if ent\Team! == TEAM_EMPEROR
+  if attacker\Wanted!
+    return if attacker\WantedLength! <= CRIMES.assault.duration
+  CRIMES.assault\CommittedBy(attacker, ent)
+
+attempted_assassination = (ply, dmg) ->
+  return unless (ply\IsPlayer! and ply\Alive!)
+  return unless ply\IsPlayer! and ply\Team! == TEAM_EMPEROR
+  attacker = dmg\GetAttacker!
+  return unless (attacker and IsValid(attacker))
+  return unless attacker\IsPlayer!
+  if attacker\Wanted!
+    return if attacker\WantedLength! <= CRIMES.assassination.duration
+  CRIMES.assassination\CommittedBy(attacker, ent)
+
+hook.Add "EntityTakeDamage", "evilrp_assault_and_battery", assault_and_battery
+hook.Add "EntityTakeDamage", "evilrp_assassination", attempted_assassination
 
 
 hook.Add "DoPlayerDeath", "evilrp_justice", justice

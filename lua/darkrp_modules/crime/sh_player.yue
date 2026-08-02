@@ -7,7 +7,7 @@ meta[k] = v for k, v in pairs {
     @SetWantedSince(ct)
     @SetWantedUntil(ct + dur)
     for ply in *player.GetAll!
-      ply\Notify"<c=200,0,0>#{@Name!} is WANTED for #{why}!"
+      Chat.Announce("GENERIC","<c=230,0,0>#{@Name!} is WANTED for #{why}!")
       for term in *ents.FindByClass("terminal*")
         continue unless IsValid(term)
         switch term\GetOS!
@@ -31,27 +31,4 @@ meta[k] = v for k, v in pairs {
   WantedLength: => @WantedUntil! - @WantedSince!
 }
 
-assault_and_battery = (ent, dmg) ->
-  return unless (ent\IsPlayer! and ent\Alive!)
-  attacker = dmg\GetAttacker!
-  return unless (attacker and IsValid(attacker))
-  return unless attacker\IsPlayer!
-  return if ent\Wanted!
-  return if ent\Team! == TEAM_EMPEROR
-  if attacker\Wanted!
-    return if attacker\WantedLength! <= CRIMES.assault.duration
-  CRIMES.assault\CommittedBy(attacker, ent)
-
-attempted_assassination = (ply, dmg) ->
-  return unless (ply\IsPlayer! and ply\Alive!)
-  return unless ply\IsPlayer! and ply\Team! == TEAM_EMPEROR
-  attacker = dmg\GetAttacker!
-  return unless (attacker and IsValid(attacker))
-  return unless attacker\IsPlayer!
-  if attacker\Wanted!
-    return if attacker\WantedLength! <= CRIMES.assassination.duration
-  CRIMES.assassination\CommittedBy(attacker, ent)
-
-hook.Add "EntityTakeDamage", "evilrp_assault_and_battery", assault_and_battery
-hook.Add "EntityTakeDamage", "evilrp_assassination", attempted_assassination
 

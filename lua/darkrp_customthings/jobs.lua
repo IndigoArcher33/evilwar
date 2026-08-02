@@ -870,7 +870,7 @@ TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 450
 		return false -- 509
 	end -- 492
 }) -- 449
-TEAM_KORPSMAN = DarkRP.createJob("Sanitäter", { -- 512
+TEAM_KORPSMAN = DarkRP.createJob("Sanitater", { -- 512
 	color = Color(79, 150, 150), -- 512
 	model = "models/vel/evilwar/royalist.mdl", -- 513
 	description = "You keep people alive in this terrible place.\nFill the blood and empty the rust.", -- 514
@@ -1102,7 +1102,8 @@ TEAM_EMPEROR = DarkRP.createJob("Emperor", { -- 576
 }) -- 575
 GAMEMODE.CivilProtection = { -- 646
 	[TEAM_PRIVATE] = true, -- 646
-	[TEAM_SANITAR] = true, -- 647
-	[TEAM_EMPEROR] = true -- 648
+	[TEAM_CONSCRIPT] = true, -- 647
+	[TEAM_SANITAR] = true, -- 648
+	[TEAM_EMPEROR] = true -- 649
 } -- 645
-GAMEMODE.DefaultTeam = TEAM_GHOST -- 650
+GAMEMODE.DefaultTeam = TEAM_GHOST -- 651
