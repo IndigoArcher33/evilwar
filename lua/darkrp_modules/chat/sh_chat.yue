@@ -149,6 +149,9 @@ meta.SendChat = (name, data) =>
   else
     Chat.Send name, data, @
 
+Chat.Announce = (name, text) ->
+  Chat.Send name, text, player.GetAll!
+
 Chat.StupidMistakes = {
    ["i"]: "I"
    ["u"]: "you"
@@ -269,6 +272,18 @@ class extends CHAT_CMD
 class extends CHAT_CMD
   name: "NOTICE"
   color: Color(229, 201, 98)
+  font: "Spleen_Chat"
+  OnReceive: (data) => string.format("<font=%s><c=%s>%s", @font, @color, data.text)
+
+class extends CHAT_CMD
+  name: "XOMBOKOM"
+  color: Color(230, 10, 10)
+  font: "Spleen_Chat"
+  OnReceive: (data) => string.format("<font=%s><c=%s>%s", @font, @color, data.text)
+
+class extends CHAT_CMD
+  name: "RADIO"
+  color: Color(230, 10, 10)
   font: "Spleen_Chat"
   OnReceive: (data) => string.format("<font=%s><c=%s>%s", @font, @color, data.text)
 
@@ -460,6 +475,33 @@ class DEUS extends SOUND
   level: SNDLVL_NONE
   sound: ["changes#{i}.ogg" for i=1,2]
 
+class Meistercast extends CHAT_CMD_IC
+  name: "MEISTERKOM"
+  color: Color(210, 100, 0)
+  font: "Spleen_Chat"
+
+  Handle: (ply, lang, cmd, text) =>
+    unless ply\Team! == TEAM_DEALER
+      ply\Notify"<c=200,0,0>This power is NOT FOR YOU."
+      return
+    super ply, lang, cmd, text
+
+  Process: (ply, text) => Chat.Autopretty ply, text\upper!
+
+
+class Xombocast extends CHAT_CMD_IC
+  name: "XOMBOKOM"
+  color: Color(210, 0, 0)
+  font: "Spleen_Chat"
+
+  Handle: (ply, lang, cmd, text) =>
+    unless ply\Team! == TEAM_EMPEROR
+      ply\Notify"<c=200,0,0>This power is NOT FOR YOU."
+      return
+    super ply, lang, cmd, text
+  
+  Process: (ply, text) => Chat.Autopretty ply, text\upper!
+
 class Broadcast extends CHAT_CMD_IC
   name: "Broadcast"
   desc: "Make them all listen."
@@ -471,32 +513,13 @@ class Broadcast extends CHAT_CMD_IC
 
   font: "Spleen_Chat"
 
-  Process: (ply, text) => Chat.Autopretty ply, text\upper!
-
   Handle: (ply, lang, cmd, text) =>
-    unless ply\Team! == TEAM_EMPEROR
-      ply\Notify"<c=200,0,0>This power is NOT FOR YOU."
-      return
-    super ply, lang, cmd, text
+    switch ply\Team!
+      when TEAM_DEALER
+        Meistercast\Handle ply, lang, cmd, text
+      when TEAM_EMPEROR
+        Xombocast\Handle ply, lang, cmd, text
 
-class Meistercast extends CHAT_CMD_IC
-  name: "Meistercast"
-  desc: "Make them all listen."
-  typing: "Decreeing..."
-
-  commands: {"broadcast", "meister"}
-
-  color: Color(210, 100, 0)
-
-  font: "Spleen_Chat"
-
-  Process: (ply, text) => Chat.Autopretty ply, text\upper!
-
-  Handle: (ply, lang, cmd, text) =>
-    unless ply\Team! == TEAM_DEALER
-      ply\Notify"<c=200,0,0>This power is NOT FOR YOU."
-      return
-    super ply, lang, cmd, text
 
 class Godcast extends CHAT_CMD_IC
   name: "Godcast"
@@ -518,11 +541,11 @@ class Godcast extends CHAT_CMD_IC
     super ply, lang, cmd, text
 
 if CLIENT
-  Broadcast.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[XOMBOKOM] <wiggle>#{data.text}"
+  Xombocast.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[XOMBOKOM] <wiggle>#{data.text}"
   Godcast.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[ORACLEKOM] <wiggle>#{data.text}"
   Meistercast.OnReceive = (data) => "<font=#{@font}><c=#{@color}>[MEISTERKOM] <wiggle>#{data.text}"
 if SERVER
-  Broadcast.Parse = (ply, lang, cmd, text) =>
+  Xombocast.Parse = (ply, lang, cmd, text) =>
     text = @Process ply, text
     ply\EmitSound"XOMBOKOM"
     return { :text }
@@ -611,7 +634,7 @@ class Admin extends CHAT_CMD
 
   range: 400
 
-  tabs: TABS_ADMIN
+  tabs: TAB_SOTLA
   log_category: "ooc"
 
   color: Color(210, 0, 0)
