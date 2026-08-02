@@ -167,29 +167,35 @@ do -- 29
 	end -- 29
 	Assault = _class_0 -- 29
 end -- 34
-local Murder -- 36
+local Assassination -- 36
 do -- 36
 	local _class_0 -- 36
 	local _parent_0 = CRIME -- 36
 	local _base_0 = { -- 36
-		name = "murder", -- 38
-		duration = 300 -- 36
+		name = "assassination", -- 38
+		duration = 500, -- 39
+		CommittedBy = function(self, who, victim) -- 39
+			if who == victim then -- 40
+				return -- 40
+			end -- 40
+			return _class_0.__parent.__base.CommittedBy(self, who) -- 41
+		end -- 36
 	} -- 36
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 38
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 41
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 36
 			_base_0[_key_0] = _val_0 -- 36
 		end -- 36
-	end -- 38
+	end -- 41
 	if _base_0.__index == nil then -- 36
 		_base_0.__index = _base_0 -- 36
-	end -- 38
+	end -- 41
 	setmetatable(_base_0, _parent_0.__base) -- 36
 	_class_0 = setmetatable({ -- 36
 		__init = function(self, ...) -- 36
 			return _class_0.__parent.__init(self, ...) -- 36
 		end, -- 36
 		__base = _base_0, -- 36
-		__name = "Murder", -- 36
+		__name = "Assassination", -- 36
 		__parent = _parent_0 -- 36
 	}, { -- 36
 		__index = function(cls, name) -- 36
@@ -213,6 +219,114 @@ do -- 36
 	if _parent_0.__inherited then -- 36
 		_parent_0.__inherited(_parent_0, _class_0) -- 36
 	end -- 36
-	Murder = _class_0 -- 36
-	return _class_0 -- 38
-end -- 38
+	Assassination = _class_0 -- 36
+end -- 41
+local Murder -- 43
+do -- 43
+	local _class_0 -- 43
+	local _parent_0 = CRIME -- 43
+	local _base_0 = { -- 43
+		name = "murder", -- 45
+		duration = 300, -- 46
+		CommittedBy = function(self, who, victim) -- 46
+			if who == victim then -- 47
+				return -- 47
+			end -- 47
+			return _class_0.__parent.__base.CommittedBy(self, who) -- 48
+		end -- 43
+	} -- 43
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 48
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 43
+			_base_0[_key_0] = _val_0 -- 43
+		end -- 43
+	end -- 48
+	if _base_0.__index == nil then -- 43
+		_base_0.__index = _base_0 -- 43
+	end -- 48
+	setmetatable(_base_0, _parent_0.__base) -- 43
+	_class_0 = setmetatable({ -- 43
+		__init = function(self, ...) -- 43
+			return _class_0.__parent.__init(self, ...) -- 43
+		end, -- 43
+		__base = _base_0, -- 43
+		__name = "Murder", -- 43
+		__parent = _parent_0 -- 43
+	}, { -- 43
+		__index = function(cls, name) -- 43
+			local val = rawget(_base_0, name) -- 43
+			if val == nil then -- 43
+				local parent = rawget(cls, "__parent") -- 43
+				if parent then -- 43
+					return parent[name] -- 43
+				end -- 43
+			else -- 43
+				return val -- 43
+			end -- 43
+		end, -- 43
+		__call = function(cls, ...) -- 43
+			local _self_0 = setmetatable({ }, _base_0) -- 43
+			cls.__init(_self_0, ...) -- 43
+			return _self_0 -- 43
+		end -- 43
+	}) -- 43
+	_base_0.__class = _class_0 -- 43
+	if _parent_0.__inherited then -- 43
+		_parent_0.__inherited(_parent_0, _class_0) -- 43
+	end -- 43
+	Murder = _class_0 -- 43
+end -- 48
+local Regicide -- 50
+do -- 50
+	local _class_0 -- 50
+	local _parent_0 = CRIME -- 50
+	local _base_0 = { -- 50
+		name = "regicide", -- 52
+		duration = 1000, -- 53
+		CommittedBy = function(self, who, victim) -- 53
+			if who == victim then -- 54
+				return -- 54
+			end -- 54
+			return _class_0.__parent.__base.CommittedBy(self, who) -- 55
+		end -- 50
+	} -- 50
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 55
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 50
+			_base_0[_key_0] = _val_0 -- 50
+		end -- 50
+	end -- 55
+	if _base_0.__index == nil then -- 50
+		_base_0.__index = _base_0 -- 50
+	end -- 55
+	setmetatable(_base_0, _parent_0.__base) -- 50
+	_class_0 = setmetatable({ -- 50
+		__init = function(self, ...) -- 50
+			return _class_0.__parent.__init(self, ...) -- 50
+		end, -- 50
+		__base = _base_0, -- 50
+		__name = "Regicide", -- 50
+		__parent = _parent_0 -- 50
+	}, { -- 50
+		__index = function(cls, name) -- 50
+			local val = rawget(_base_0, name) -- 50
+			if val == nil then -- 50
+				local parent = rawget(cls, "__parent") -- 50
+				if parent then -- 50
+					return parent[name] -- 50
+				end -- 50
+			else -- 50
+				return val -- 50
+			end -- 50
+		end, -- 50
+		__call = function(cls, ...) -- 50
+			local _self_0 = setmetatable({ }, _base_0) -- 50
+			cls.__init(_self_0, ...) -- 50
+			return _self_0 -- 50
+		end -- 50
+	}) -- 50
+	_base_0.__class = _class_0 -- 50
+	if _parent_0.__inherited then -- 50
+		_parent_0.__inherited(_parent_0, _class_0) -- 50
+	end -- 50
+	Regicide = _class_0 -- 50
+	return _class_0 -- 55
+end -- 55

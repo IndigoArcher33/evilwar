@@ -36,4 +36,20 @@ justice = function(ply, attacker, dmg) -- 1
 	ply:AddStemCells(-1) -- 16
 	return ply:Notify("<c=200,0,0>The long tentacle of the law got you.") -- 17
 end -- 1
-return hook.Add("DoPlayerDeath", "evilrp_justice", justice) -- 19
+local regicide -- 19
+regicide = function(ply, attacker, dmg) -- 19
+	if not (attacker:IsPlayer() and attacker:Alive()) then -- 20
+		return -- 20
+	end -- 20
+	if not (ply:IsPlayer() and ply:Team() == TEAM_EMPEROR) then -- 21
+		return -- 21
+	end -- 21
+	if attacker:Wanted() then -- 22
+		if attacker:WantedLength() <= CRIMES.regicide.duration then -- 23
+			return -- 23
+		end -- 23
+	end -- 22
+	return CRIMES.regicide:CommittedBy(attacker, ply) -- 25
+end -- 19
+hook.Add("DoPlayerDeath", "evilrp_justice", justice) -- 28
+return hook.Add("DoPlayerDeath", "evilrp_regicide", regicide) -- 29

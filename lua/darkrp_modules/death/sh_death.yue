@@ -1,15 +1,27 @@
 GAMEMODE.Deaths = -> GetGlobalInt"DEATH"
 
+class KOMDEATH extends SOUND
+  level: SNDLVL_NONE
+  sound: "kidneydagger/deadkommandant.ogg"
+
+
+emperor_death = (ply) ->
+  return unless ply\Team! == TEAM_EMPEROR
+  Chat.Announce("GENERIC","<c=230,0,0>The EMPEROR is dead. Long live the EMPEROR.")
+  ply\EmitSound"KOMDEATH"
+
 death = (ply) ->
   deaths = GAMEMODE.Deaths! + 1
   SetGlobalInt "DEATH", deaths
   bodies = "BODIES"
   bodies = "BODY" if deaths == 1
 
-  team = RPExtraTeams[ply\Team!]
-  if team == TEAM_EMPEROR
-    ply\ConCommand("say /ad THE EMPEROR HAS FALLEN. LONG LIVE THE EMPEROR.")
+  if ply\Team! == TEAM_EMPEROR
+    emperor_death ply
+  
+
 
   RunConsoleCommand "hostname", "#{string.english_number(deaths)\upper!} DEAD #{bodies} TODAY"
+
 
 hook.Add "DoPlayerDeath", "evilrp_death", death

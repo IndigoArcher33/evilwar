@@ -84,11 +84,37 @@ assault_and_battery = function(ent, dmg) -- 34
 	if ent:Wanted() then -- 39
 		return -- 39
 	end -- 39
-	if attacker:Wanted() then -- 40
-		if attacker:WantedLength() <= CRIMES.assault.duration then -- 41
-			return -- 41
-		end -- 41
+	if ent:Team() == TEAM_EMPEROR then -- 40
+		return -- 40
 	end -- 40
-	return CRIMES.assault:CommittedBy(attacker, ent) -- 42
+	if attacker:Wanted() then -- 41
+		if attacker:WantedLength() <= CRIMES.assault.duration then -- 42
+			return -- 42
+		end -- 42
+	end -- 41
+	return CRIMES.assault:CommittedBy(attacker, ent) -- 43
 end -- 34
-return hook.Add("EntityTakeDamage", "evilrp_assault_and_battery", assault_and_battery) -- 44
+local attempted_assassination -- 45
+attempted_assassination = function(ply, dmg) -- 45
+	if not (ply:IsPlayer() and ply:Alive()) then -- 46
+		return -- 46
+	end -- 46
+	if not (ply:IsPlayer() and ply:Team() == TEAM_EMPEROR) then -- 47
+		return -- 47
+	end -- 47
+	local attacker = dmg:GetAttacker() -- 48
+	if not (attacker and IsValid(attacker)) then -- 49
+		return -- 49
+	end -- 49
+	if not attacker:IsPlayer() then -- 50
+		return -- 50
+	end -- 50
+	if attacker:Wanted() then -- 51
+		if attacker:WantedLength() <= CRIMES.assassination.duration then -- 52
+			return -- 52
+		end -- 52
+	end -- 51
+	return CRIMES.assassination:CommittedBy(attacker, ent) -- 53
+end -- 45
+hook.Add("EntityTakeDamage", "evilrp_assault_and_battery", assault_and_battery) -- 55
+return hook.Add("EntityTakeDamage", "evilrp_assassination", attempted_assassination) -- 56

@@ -37,8 +37,21 @@ assault_and_battery = (ent, dmg) ->
   return unless (attacker and IsValid(attacker))
   return unless attacker\IsPlayer!
   return if ent\Wanted!
+  return if ent\Team! == TEAM_EMPEROR
   if attacker\Wanted!
     return if attacker\WantedLength! <= CRIMES.assault.duration
   CRIMES.assault\CommittedBy(attacker, ent)
 
+attempted_assassination = (ply, dmg) ->
+  return unless (ply\IsPlayer! and ply\Alive!)
+  return unless ply\IsPlayer! and ply\Team! == TEAM_EMPEROR
+  attacker = dmg\GetAttacker!
+  return unless (attacker and IsValid(attacker))
+  return unless attacker\IsPlayer!
+  if attacker\Wanted!
+    return if attacker\WantedLength! <= CRIMES.assassination.duration
+  CRIMES.assassination\CommittedBy(attacker, ent)
+
 hook.Add "EntityTakeDamage", "evilrp_assault_and_battery", assault_and_battery
+hook.Add "EntityTakeDamage", "evilrp_assassination", attempted_assassination
+

@@ -33,6 +33,23 @@ class Assault extends CRIME
     return if who == victim
     return super who
 
+class Assassination extends CRIME
+  name: "attempted assassination"
+  duration: 500
+  CommittedBy: (who, victim) =>
+    return if who == victim
+    return super who
+
 class Murder extends CRIME
   name: "murder"
   duration: 300
+  CommittedBy: (who, victim) =>
+    return if who == victim
+    return super who
+
+class Regicide extends CRIME
+  name: "regicide"
+  duration: 1000
+  CommittedBy: (who, victim) =>
+    return if who == victim
+    return super who

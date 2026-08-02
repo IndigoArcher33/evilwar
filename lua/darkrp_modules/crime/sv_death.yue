@@ -16,4 +16,14 @@ justice = (ply, attacker, dmg) ->
   ply\AddStemCells(-1)
   ply\Notify"<c=200,0,0>The long tentacle of the law got you."
 
+regicide = (ply, attacker, dmg) ->
+  return unless (attacker\IsPlayer! and attacker\Alive!)
+  return unless ply\IsPlayer! and ply\Team! == TEAM_EMPEROR
+  if attacker\Wanted!
+    return if attacker\WantedLength! <= CRIMES.regicide.duration
+  
+  CRIMES.regicide\CommittedBy(attacker, ply)
+
+
 hook.Add "DoPlayerDeath", "evilrp_justice", justice
+hook.Add "DoPlayerDeath", "evilrp_regicide", regicide
