@@ -373,8 +373,8 @@ class Obrez extends EvilRP_Weapon
   Primary: {
     Ammo: "AR2"
 
-    ClipSize: 3
-    DefaultClip: 6
+    ClipSize: 5
+    DefaultClip: 15
 
     Damage: 40
     Delay: 1.25
