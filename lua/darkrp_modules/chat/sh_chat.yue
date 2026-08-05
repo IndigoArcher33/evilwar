@@ -270,6 +270,12 @@ class extends CHAT_CMD
   OnReceive: (data) => string.format("<font=%s><c=%s>%s", @font, @color, data.text)
 
 class extends CHAT_CMD
+  name: "SMALL"
+  color: Color(200, 200, 200)
+  font: "Spleen_Label_Small"
+  OnReceive: (data) => string.format("<font=%s><c=%s>%s", @font, @color, data.text)
+
+class extends CHAT_CMD
   name: "NOTICE"
   color: Color(229, 201, 98)
   font: "Spleen_Chat"
