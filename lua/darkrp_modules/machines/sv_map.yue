@@ -44,16 +44,16 @@ global EVIL_MACHINE_POSITIONS_CURSED = {
         pos: Vector(-46, -4589, -815.7)
         ang: Angle(0, 9, 0)
     * machine:
-        pos: Vector(287.821411, -6748.479004, -860.485352)
+        pos: Vector(287, -6748, -860)
         ang: Angle(0, -90, 0)
       generator:
-        pos: Vector(202.270126, -6837.956543, -895.734802)
+        pos: Vector(202, -6837, -895)
         ang: Angle(0, 67, 0)
     * machine:
-        pos: Vector(1516.259399, -3269.026367, -27.724955)
+        pos: Vector(1516, -3269, -27)
         ang: Angle(0, -90, 0)
       generator:
-        pos: Vector(1405.752563, -3296.348389, -63.624626)
+        pos: Vector(1405, -3296, -63)
         ang: Angle(0, 45, 0)
 }
 
@@ -63,8 +63,8 @@ create_machines_and_otherwise = ->
       * pos: Vector( -972, 1153, 1 )
         ang: Angle(-0, 0, -0)
         id: "tools"
-      * pos: Vector( 209, 2618, 1 )
-        ang: Angle(-0, -47, -0)
+      * pos: Vector( -204, 2206, -63)
+        ang: Angle(-0, -155, -0)
         id: "food"
       * pos: Vector( 256, 289, 193 )
         ang: Angle( -0, 90, 0 )
@@ -84,14 +84,14 @@ create_machines_and_otherwise = ->
       * pos: Vector( -1104, 1461, 36 )
         ang: Angle(-0, -180, 0)
         cls: "machine/tools"
-      * pos: Vector( -277, 2704, 36 )
-        ang: Angle(-0, -90, 0)
+      * pos: Vector(-367, 2386, -28)
+        ang: Angle(-0, -0, 0)
         cls: "machine/food"
-      * pos: Vector( -146, 2704, 36 )
-        ang: Angle(-0, -90, 0)
+      * pos: Vector(-367, 2242, -28)
+        ang: Angle(-0, -0, 0)
         cls: "machine/food"
-      * pos: Vector( -10, 2705, 37 )
-        ang: Angle(-0, -90, 0)
+      * pos: Vector(-367, 2529, -28)
+        ang: Angle(-0, -0, 0)
         cls: "machine/food"
       * pos: Vector( 592, 275, 228 )
         ang: Angle(-0, -180, -0)
@@ -108,14 +108,11 @@ create_machines_and_otherwise = ->
       * pos: Vector(3003, 1774, -103)
         ang: Angle(19, 173, 0)
         cls: "machine/evil"
-      * pos: Vector( 323, 2401, 28 )
-        ang: Angle(-0, 90, 0)
+      * pos: Vector( -99, 2253, -36 )
+        ang: Angle(-0, -90, 0)
         cls: "refinery"
-      * pos: Vector( 323, 2147, 28 )
+      * pos: Vector( 323, 2147, -36.5 )
         ang: Angle(0, 90, -0)
-        cls: "refinery"
-      * pos: Vector( -354, 2399, 28 )
-        ang: Angle(-0, -90, -0)
         cls: "refinery"
       * pos: Vector( -1292, 1508, 28 )
         ang: Angle(0, 180, -0)
@@ -127,6 +124,9 @@ create_machines_and_otherwise = ->
         ang: Angle(0, 0, 0)
         cls: "cooker"
       * pos: Vector( 573.55, -3365.23, -815 )
+        ang: Angle(0, -180, 0)
+        cls: "cooker"
+      * pos: Vector( -154, 2429, -63)
         ang: Angle(0, -180, 0)
         cls: "cooker"
   }

@@ -1,6 +1,6 @@
 global EVIL_NEXT_TREE = 0
-EVIL_TREE_DELAY = 15
-EVIL_TREE_MAX = 5
+EVIL_TREE_DELAY = 40
+EVIL_TREE_MAX = 7
 global EVIL_TREES = {}
 EVIL_TREE_POSITIONS = {
   ["rp_liverfailure_kidneydagger"]: {
@@ -22,6 +22,12 @@ EVIL_TREE_POSITIONS = {
     Vector( 20, -4488, -220 )
     Vector( -881, -4079, -170 )
     Vector( -631, -3275, -213 )
+    Vector( 261, 1893, -79 )
+    Vector( 343, 1862, -79 )
+    Vector( -197, 1973, -79 )
+    Vector( -242, 1874, -79 )
+    Vector( -322, 1898, -79 )
+
   }
 }
 

@@ -75,21 +75,21 @@ EVIL_MACHINE_POSITIONS_CURSED = { -- 2
 		}, -- 40
 		{ -- 46
 			machine = { -- 47
-				pos = Vector(287.821411, -6748.479004, -860.485352), -- 47
+				pos = Vector(287, -6748, -860), -- 47
 				ang = Angle(0, -90, 0) -- 48
 			}, -- 46
 			generator = { -- 50
-				pos = Vector(202.270126, -6837.956543, -895.734802), -- 50
+				pos = Vector(202, -6837, -895), -- 50
 				ang = Angle(0, 67, 0) -- 51
 			} -- 49
 		}, -- 46
 		{ -- 52
 			machine = { -- 53
-				pos = Vector(1516.259399, -3269.026367, -27.724955), -- 53
+				pos = Vector(1516, -3269, -27), -- 53
 				ang = Angle(0, -90, 0) -- 54
 			}, -- 52
 			generator = { -- 56
-				pos = Vector(1405.752563, -3296.348389, -63.624626), -- 56
+				pos = Vector(1405, -3296, -63), -- 56
 				ang = Angle(0, 45, 0) -- 57
 			} -- 55
 		} -- 52
@@ -105,8 +105,8 @@ create_machines_and_otherwise = function() -- 60
 				id = "tools" -- 65
 			}, -- 63
 			{ -- 66
-				pos = Vector(209, 2618, 1), -- 66
-				ang = Angle(-0, -47, -0), -- 67
+				pos = Vector(-204, 2206, -63), -- 66
+				ang = Angle(-0, -155, -0), -- 67
 				id = "food" -- 68
 			}, -- 66
 			{ -- 69
@@ -139,18 +139,18 @@ create_machines_and_otherwise = function() -- 60
 				cls = "machine/tools" -- 86
 			}, -- 84
 			{ -- 87
-				pos = Vector(-277, 2704, 36), -- 87
-				ang = Angle(-0, -90, 0), -- 88
+				pos = Vector(-367, 2386, -28), -- 87
+				ang = Angle(-0, -0, 0), -- 88
 				cls = "machine/food" -- 89
 			}, -- 87
 			{ -- 90
-				pos = Vector(-146, 2704, 36), -- 90
-				ang = Angle(-0, -90, 0), -- 91
+				pos = Vector(-367, 2242, -28), -- 90
+				ang = Angle(-0, -0, 0), -- 91
 				cls = "machine/food" -- 92
 			}, -- 90
 			{ -- 93
-				pos = Vector(-10, 2705, 37), -- 93
-				ang = Angle(-0, -90, 0), -- 94
+				pos = Vector(-367, 2529, -28), -- 93
+				ang = Angle(-0, -0, 0), -- 94
 				cls = "machine/food" -- 95
 			}, -- 93
 			{ -- 96
@@ -179,37 +179,37 @@ create_machines_and_otherwise = function() -- 60
 				cls = "machine/evil" -- 110
 			}, -- 108
 			{ -- 111
-				pos = Vector(323, 2401, 28), -- 111
-				ang = Angle(-0, 90, 0), -- 112
+				pos = Vector(-99, 2253, -36), -- 111
+				ang = Angle(-0, -90, 0), -- 112
 				cls = "refinery" -- 113
 			}, -- 111
 			{ -- 114
-				pos = Vector(323, 2147, 28), -- 114
+				pos = Vector(323, 2147, -36.5), -- 114
 				ang = Angle(0, 90, -0), -- 115
 				cls = "refinery" -- 116
 			}, -- 114
 			{ -- 117
-				pos = Vector(-354, 2399, 28), -- 117
-				ang = Angle(-0, -90, -0), -- 118
+				pos = Vector(-1292, 1508, 28), -- 117
+				ang = Angle(0, 180, -0), -- 118
 				cls = "refinery" -- 119
 			}, -- 117
 			{ -- 120
-				pos = Vector(-1292, 1508, 28), -- 120
-				ang = Angle(0, 180, -0), -- 121
-				cls = "refinery" -- 122
+				pos = Vector(-575, 538, 48), -- 120
+				ang = Angle(0, 0, 0), -- 121
+				cls = "cooker" -- 122
 			}, -- 120
 			{ -- 123
-				pos = Vector(-575, 538, 48), -- 123
+				pos = Vector(-575, 494, 48), -- 123
 				ang = Angle(0, 0, 0), -- 124
 				cls = "cooker" -- 125
 			}, -- 123
 			{ -- 126
-				pos = Vector(-575, 494, 48), -- 126
-				ang = Angle(0, 0, 0), -- 127
+				pos = Vector(573.55, -3365.23, -815), -- 126
+				ang = Angle(0, -180, 0), -- 127
 				cls = "cooker" -- 128
 			}, -- 126
 			{ -- 129
-				pos = Vector(573.55, -3365.23, -815), -- 129
+				pos = Vector(-154, 2429, -63), -- 129
 				ang = Angle(0, -180, 0), -- 130
 				cls = "cooker" -- 131
 			} -- 129
