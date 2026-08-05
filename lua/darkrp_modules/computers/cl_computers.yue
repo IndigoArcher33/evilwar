@@ -98,6 +98,25 @@ net.Receive "evilrp_terminal_activeconsole", ->
         @SetText""
         @SetCaretPos(0)
         ent.console_text = ""
+      .OnKeyCodeTyped = (code) =>
+        @OnKeyCode code
+        switch code
+          when KEY_ENTER
+            @OnEnter!
+            return true
+          when KEY_UP
+            net.Start "evilrp_terminal_scroll"
+            net.WriteUInt idx, 16
+            net.WriteInt 1, 4
+            net.SendToServer!
+            return true
+          when KEY_DOWN
+            net.Start "evilrp_terminal_scroll"
+            net.WriteUInt idx, 16
+            net.WriteInt -1, 4
+            net.SendToServer!
+            return true
+
 
 net.Receive "evilrp_terminal_endtyping", ->
   ply = LocalPlayer!
