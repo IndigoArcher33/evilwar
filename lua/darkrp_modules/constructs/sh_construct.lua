@@ -75,351 +75,364 @@ local entity_cost = { -- 8
 			metal = 1, -- 22
 			wood = 3 -- 23
 		} -- 21
-	} -- 19
+	}, -- 19
+	{ -- 26
+		cls = "npc_manned_emplacement", -- 26
+		precursors = { -- 28
+			metal = 10, -- 28
+			wood = 5 -- 29
+		} -- 27
+	} -- 25
 } -- 7
-local getCostFromCls -- 27
-getCostFromCls = function(cls, precursor) -- 27
-	if not (cls and cls ~= "") then -- 28
-		return 0 -- 28
-	end -- 28
-	for _index_0 = 1, #entity_cost do -- 29
-		local ent = entity_cost[_index_0] -- 29
-		if ent.cls == cls then -- 30
-			return ent.precursors[precursor] or 0 -- 31
-		end -- 30
-	end -- 31
-	return 0 -- 32
-end -- 27
-local Construct -- 35
-do -- 35
-	local _class_0 -- 35
-	local _parent_0 = ITEM -- 35
-	local _base_0 = { -- 35
-		PrintName = "Construct", -- 38
-		Spawnable = true, -- 39
-		Model = Model("models/props_c17/consolebox05a.mdl"), -- 40
-		AdminSpawnable = true, -- 41
-		Interesting = true, -- 43
-		Precursors = { -- 44
-			{ -- 44
-				name = "biomass" -- 44
-			}, -- 44
-			{ -- 45
-				name = "fluid" -- 45
-			}, -- 45
-			{ -- 46
-				name = "metal" -- 46
-			}, -- 46
-			{ -- 47
-				name = "wood" -- 47
-			} -- 47
-		}, -- 49
-		ImpactSound = { -- 50
-			soft = "weapon.ImpactSoft", -- 50
-			hard = "weapon.ImpactHard" -- 51
-		}, -- 53
-		BasePay = 5, -- 55
-		SetupDataTables = function(self) -- 55
-			_class_0.__parent.__base.SetupDataTables(self) -- 56
-			self:NetworkVar("String", "EntityClass") -- 57
-			self:NetworkVar("Bool", "Started") -- 58
-			local _list_0 = self.Precursors -- 60
-			for _index_0 = 1, #_list_0 do -- 60
-				local p = _list_0[_index_0] -- 60
-				local name = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) -- 61
-				self:NetworkVar("Int", "Precursor" .. tostring(name)) -- 62
-			end -- 62
-			return self:NetworkVar("Entity", "Worker") -- 63
-		end, -- 65
-		AddPrecursor = function(self, pre, amt) -- 65
-			local cls = self:GetEntityClass() -- 66
-			if not (cls and cls ~= "") then -- 67
-				return false -- 67
-			end -- 67
-			local cost = getCostFromCls(cls, pre) -- 68
-			if cost <= 0 then -- 69
-				return false -- 69
-			end -- 69
-			local name = tostring(pre:sub(1, 1):upper()) .. tostring(pre:sub(2, -1)) -- 70
-			local current = self["GetPrecursor" .. tostring(name)](self) -- 75
-			if current >= cost then -- 76
-				return false -- 76
-			end -- 76
-			self["SetPrecursor" .. tostring(name)](self, math.min(current + amt, cost)) -- 77
-			if not self:GetStarted() then -- 78
-				self:SetStarted(true) -- 78
-			end -- 78
-			return true -- 79
-		end, -- 81
-		Touch = function(self, what) -- 81
-			if SERVER then -- 82
-				if not what.Precursor then -- 83
-					return -- 83
-				end -- 83
-				if what.Processed then -- 84
-					return -- 84
-				end -- 84
-				local pre, amt -- 86
-				local _list_0 = self.Precursors -- 87
-				for _index_0 = 1, #_list_0 do -- 87
-					local p = _list_0[_index_0] -- 87
-					for k, v in pairs(what.Precursor) do -- 88
-						if p.name == k then -- 89
-							pre = k -- 90
-							amt = v -- 91
-							if isfunction(amt) then -- 92
-								amt = amt(self) -- 92
-							end -- 92
-							break -- 93
-						end -- 89
-					end -- 93
-				end -- 93
-				if not (pre and amt) then -- 94
-					return -- 94
-				end -- 94
-				if not self:AddPrecursor(pre, amt) then -- 96
-					return -- 96
-				end -- 96
-				what.Processed = true -- 98
-				if what.SubmitSound then -- 99
-					what:EmitSound(what.SubmitSound) -- 99
-				end -- 99
-				if what.Submitted then -- 100
-					what.Submitted(what) -- 100
-				end -- 100
-				local submitter = what:GetNWEntity("evilrp_submitter", NULL) -- 102
-				local reward = math.random(10, 15) * amt -- 103
-				local rate = GAMEMODE.taxes.labor / 100 -- 104
-				local taxed = math.floor(reward * rate) -- 105
-				reward = reward - taxed -- 106
-				if taxed > 0 then -- 107
-					local _obj_0 = GAMEMODE.taxes_stored -- 107
-					_obj_0.labor = _obj_0.labor + taxed -- 107
-				end -- 107
-				reward = math.ceil(reward) -- 108
-				if submitter and IsValid(submitter) and submitter:IsPlayer() and submitter:Alive() then -- 110
-					submitter:AddMoney(reward, "The Operation") -- 111
-				else -- 113
-					if reward > 0 then -- 113
-						local _obj_0 = GAMEMODE.taxes_stored -- 113
-						_obj_0.labor = _obj_0.labor + reward -- 113
-					end -- 113
-				end -- 110
-				what:Remove() -- 115
-				if submitter and IsValid(submitter) and submitter:IsPlayer() and submitter:Team() == TEAM_PRIVATE then -- 117
-					submitter.precursor_supplied = submitter.precursor_supplied or 0 -- 118
-					submitter.precursor_supplied = submitter.precursor_supplied + amt -- 119
-					if submitter.precursor_supplied_difference and (submitter.precursor_supplied % 50) < submitter.precursor_supplied_difference then -- 120
-						submitter:Notify("<c=0,200,0>Your work ethic makes Liver Failure proud.") -- 121
-						submitter:AddStemCells(1) -- 122
-					end -- 120
-					submitter.precursor_supplied_difference = submitter.precursor_supplied % 50 -- 123
-				end -- 117
+local getCostFromCls -- 33
+getCostFromCls = function(cls, precursor) -- 33
+	if not (cls and cls ~= "") then -- 34
+		return 0 -- 34
+	end -- 34
+	for _index_0 = 1, #entity_cost do -- 35
+		local ent = entity_cost[_index_0] -- 35
+		if ent.cls == cls then -- 36
+			return ent.precursors[precursor] or 0 -- 37
+		end -- 36
+	end -- 37
+	return 0 -- 38
+end -- 33
+local Construct -- 41
+do -- 41
+	local _class_0 -- 41
+	local _parent_0 = ITEM -- 41
+	local _base_0 = { -- 41
+		PrintName = "Construct", -- 44
+		Spawnable = true, -- 45
+		Model = Model("models/props_c17/consolebox05a.mdl"), -- 46
+		AdminSpawnable = true, -- 47
+		Interesting = true, -- 49
+		Precursors = { -- 50
+			{ -- 50
+				name = "biomass" -- 50
+			}, -- 50
+			{ -- 51
+				name = "fluid" -- 51
+			}, -- 51
+			{ -- 52
+				name = "metal" -- 52
+			}, -- 52
+			{ -- 53
+				name = "wood" -- 53
+			} -- 53
+		}, -- 55
+		ImpactSound = { -- 56
+			soft = "weapon.ImpactSoft", -- 56
+			hard = "weapon.ImpactHard" -- 57
+		}, -- 59
+		BasePay = 5, -- 61
+		SetupDataTables = function(self) -- 61
+			_class_0.__parent.__base.SetupDataTables(self) -- 62
+			self:NetworkVar("String", "EntityClass") -- 63
+			self:NetworkVar("Bool", "Started") -- 64
+			local _list_0 = self.Precursors -- 66
+			for _index_0 = 1, #_list_0 do -- 66
+				local p = _list_0[_index_0] -- 66
+				local name = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) -- 67
+				self:NetworkVar("Int", "Precursor" .. tostring(name)) -- 68
+			end -- 68
+			return self:NetworkVar("Entity", "Worker") -- 69
+		end, -- 71
+		AddPrecursor = function(self, pre, amt) -- 71
+			local cls = self:GetEntityClass() -- 72
+			if not (cls and cls ~= "") then -- 73
+				return false -- 73
+			end -- 73
+			local cost = getCostFromCls(cls, pre) -- 74
+			if cost <= 0 then -- 75
+				return false -- 75
+			end -- 75
+			local name = tostring(pre:sub(1, 1):upper()) .. tostring(pre:sub(2, -1)) -- 76
+			local current = self["GetPrecursor" .. tostring(name)](self) -- 81
+			if current >= cost then -- 82
+				return false -- 82
 			end -- 82
-		end, -- 125
-		HUDRender = function(self) -- 125
-			local ct = { } -- 126
-			local cls = self:GetEntityClass() -- 127
-			local ent -- 128
-			if cls and cls ~= "" then -- 128
-				ent = scripted_ents.Get(cls) -- 128
-			end -- 128
-			local printName = "" -- 129
-			if ent and ent.PrintName then -- 130
-				printName = ent.PrintName -- 130
-			end -- 130
-			ct[#ct + 1] = "Constructing... " .. tostring(printName) -- 131
-			ct[#ct + 1] = "" -- 132
-			ct[#ct + 1] = { -- 133
-				text = "Supply the necessary materials.", -- 133
-				font = "Spleen_Label_Small" -- 133
-			} -- 133
-			return ct -- 134
-		end, -- 136
-		Draw = function(self) -- 136
-			self:DrawModel() -- 137
-			return self:Render3D2D() -- 138
-		end, -- 140
-		Render3D2D = function(self) -- 140
-			local cls = self:GetEntityClass() -- 141
-			local ent -- 142
-			if cls and cls ~= "" then -- 142
-				ent = scripted_ents.Get(cls) -- 142
-			end -- 142
-			local printName = ent and ent.PrintName or self.PrintName -- 143
-			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 145
-			if not (dist_sqr < 128 ^ 2) then -- 146
-				return -- 146
-			end -- 146
-			local font = "Spleen_Label" -- 147
-			local desp = lp:GetDespair() * 0.01 -- 148
-			local ct = CurTime() -- 149
-			local pos = self:GetPos() + (self:GetUp() * 6) - (self:GetForward() * 18) + (self:GetRight() * 13) -- 150
-			local ang = self:GetAngles() -- 151
-			ang:RotateAroundAxis(ang:Up(), 90) -- 153
-			ang:RotateAroundAxis(ang:Forward(), 0) -- 154
-			ang:RotateAroundAxis(ang:Right(), 0) -- 155
-			cam.Start3D2D(pos, ang, 0.1) -- 157
-			surface.SetMaterial(noise) -- 159
-			surface.SetDrawColor(Color(255, 255, 255, 255)) -- 160
-			surface.DrawTexturedRect(0, 0, 265, 38) -- 161
-			local txt = tostring(printName) -- 163
-			local txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 164
-			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 165
-			cam.End3D2D() -- 167
-			pos = self:GetPos() + (self:GetUp() * 6) - (self:GetForward() * 7) + (self:GetRight() * 11) -- 169
-			local _list_0 = self.Precursors -- 171
-			for _index_0 = 1, #_list_0 do -- 171
-				local p = _list_0[_index_0] -- 171
-				local _continue_0 = false -- 172
-				repeat -- 172
-					if p and p.name and getCostFromCls(cls, p.name) <= 0 then -- 173
-						_continue_0 = true -- 173
-						break -- 173
-					end -- 173
-					pos = pos + (-self:GetForward() * 3) -- 174
-					cam.Start3D2D(pos, ang, 0.1) -- 175
-					local name = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) -- 176
-					local amt = self["GetPrecursor" .. tostring(name)](self) -- 177
-					local cost = getCostFromCls(cls, p.name) -- 178
-					local amt_str -- 179
-					if amt < cost then -- 179
-						amt_str = "<c=200,0,0>" .. tostring(amt) -- 179
-					end -- 179
-					amt_str = amt_str or "<c=0,200,0>" .. tostring(amt) -- 180
-					txt = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) .. ": " .. tostring(amt_str) .. "/" .. tostring(cost) -- 181
-					txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 182
-					txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 183
-					cam.End3D2D() -- 184
-					_continue_0 = true -- 172
-				until true -- 185
-				if not _continue_0 then -- 185
-					break -- 185
-				end -- 185
-			end -- 185
-		end, -- 187
-		Sound = "Equip_Weapon", -- 189
-		IsFinished = function(self) -- 189
-			local cls = self:GetEntityClass() -- 190
-			if not (cls and cls ~= "") then -- 191
-				return false -- 191
-			end -- 191
-			local _list_0 = self.Precursors -- 193
-			for _index_0 = 1, #_list_0 do -- 193
-				local p = _list_0[_index_0] -- 193
-				local cost = getCostFromCls(cls, p.name) -- 194
-				if cost > 0 then -- 195
-					local name = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) -- 196
-					local amt = self["GetPrecursor" .. tostring(name)](self) -- 197
-					if not amt or amt < cost then -- 198
-						return false -- 199
-					end -- 198
-				end -- 195
+			self["SetPrecursor" .. tostring(name)](self, math.min(current + amt, cost)) -- 83
+			if not self:GetStarted() then -- 84
+				self:SetStarted(true) -- 84
+			end -- 84
+			return true -- 85
+		end, -- 87
+		Touch = function(self, what) -- 87
+			if SERVER then -- 88
+				if not what.Precursor then -- 89
+					return -- 89
+				end -- 89
+				if what.Processed then -- 90
+					return -- 90
+				end -- 90
+				local pre, amt -- 92
+				local _list_0 = self.Precursors -- 93
+				for _index_0 = 1, #_list_0 do -- 93
+					local p = _list_0[_index_0] -- 93
+					for k, v in pairs(what.Precursor) do -- 94
+						if p.name == k then -- 95
+							pre = k -- 96
+							amt = v -- 97
+							if isfunction(amt) then -- 98
+								amt = amt(self) -- 98
+							end -- 98
+							break -- 99
+						end -- 95
+					end -- 99
+				end -- 99
+				if not (pre and amt) then -- 100
+					return -- 100
+				end -- 100
+				if not self:AddPrecursor(pre, amt) then -- 102
+					return -- 102
+				end -- 102
+				what.Processed = true -- 104
+				if what.SubmitSound then -- 105
+					what:EmitSound(what.SubmitSound) -- 105
+				end -- 105
+				if what.Submitted then -- 106
+					what.Submitted(what) -- 106
+				end -- 106
+				local submitter = what:GetNWEntity("evilrp_submitter", NULL) -- 108
+				local reward = math.random(10, 15) * amt -- 109
+				local rate = GAMEMODE.taxes.labor / 100 -- 110
+				local taxed = math.floor(reward * rate) -- 111
+				reward = reward - taxed -- 112
+				if taxed > 0 then -- 113
+					local _obj_0 = GAMEMODE.taxes_stored -- 113
+					_obj_0.labor = _obj_0.labor + taxed -- 113
+				end -- 113
+				reward = math.ceil(reward) -- 114
+				if submitter and IsValid(submitter) and submitter:IsPlayer() and submitter:Alive() then -- 116
+					submitter:AddMoney(reward, "The Operation") -- 117
+				else -- 119
+					if reward > 0 then -- 119
+						local _obj_0 = GAMEMODE.taxes_stored -- 119
+						_obj_0.labor = _obj_0.labor + reward -- 119
+					end -- 119
+				end -- 116
+				what:Remove() -- 121
+				if submitter and IsValid(submitter) and submitter:IsPlayer() and submitter:Team() == TEAM_PRIVATE then -- 123
+					submitter.precursor_supplied = submitter.precursor_supplied or 0 -- 124
+					submitter.precursor_supplied = submitter.precursor_supplied + amt -- 125
+					if submitter.precursor_supplied_difference and (submitter.precursor_supplied % 50) < submitter.precursor_supplied_difference then -- 126
+						submitter:Notify("<c=0,200,0>Your work ethic makes Liver Failure proud.") -- 127
+						submitter:AddStemCells(1) -- 128
+					end -- 126
+					submitter.precursor_supplied_difference = submitter.precursor_supplied % 50 -- 129
+				end -- 123
+			end -- 88
+		end, -- 131
+		HUDRender = function(self) -- 131
+			local ct = { } -- 132
+			local cls = self:GetEntityClass() -- 133
+			local ent -- 134
+			if cls and cls ~= "" then -- 134
+				ent = scripted_ents.Get(cls) -- 134
+			end -- 134
+			local printName = "" -- 135
+			if ent and ent.PrintName then -- 136
+				printName = ent.PrintName -- 136
+			end -- 136
+			if cls == "npc_manned_emplacement" then -- 137
+				printName = "MG Emplacement" -- 137
+			end -- 137
+			ct[#ct + 1] = "Constructing... " .. tostring(printName) -- 138
+			ct[#ct + 1] = "" -- 139
+			ct[#ct + 1] = { -- 140
+				text = "Supply the necessary materials.", -- 140
+				font = "Spleen_Label_Small" -- 140
+			} -- 140
+			return ct -- 141
+		end, -- 143
+		Draw = function(self) -- 143
+			self:DrawModel() -- 144
+			return self:Render3D2D() -- 145
+		end, -- 147
+		Render3D2D = function(self) -- 147
+			local cls = self:GetEntityClass() -- 148
+			local ent -- 149
+			if cls and cls ~= "" then -- 149
+				ent = scripted_ents.Get(cls) -- 149
+			end -- 149
+			local printName = ent and ent.PrintName or self.PrintName -- 150
+			if cls == "npc_manned_emplacement" then -- 151
+				printName = "MG Emplacement" -- 151
+			end -- 151
+			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 153
+			if not (dist_sqr < 128 ^ 2) then -- 154
+				return -- 154
+			end -- 154
+			local font = "Spleen_Label" -- 155
+			local desp = lp:GetDespair() * 0.01 -- 156
+			local ct = CurTime() -- 157
+			local pos = self:GetPos() + (self:GetUp() * 6) - (self:GetForward() * 18) + (self:GetRight() * 13) -- 158
+			local ang = self:GetAngles() -- 159
+			ang:RotateAroundAxis(ang:Up(), 90) -- 161
+			ang:RotateAroundAxis(ang:Forward(), 0) -- 162
+			ang:RotateAroundAxis(ang:Right(), 0) -- 163
+			cam.Start3D2D(pos, ang, 0.1) -- 165
+			surface.SetMaterial(noise) -- 167
+			surface.SetDrawColor(Color(255, 255, 255, 255)) -- 168
+			surface.DrawTexturedRect(0, 0, 265, 38) -- 169
+			local txt = tostring(printName) -- 171
+			local txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 172
+			txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 173
+			cam.End3D2D() -- 175
+			pos = self:GetPos() + (self:GetUp() * 6) - (self:GetForward() * 7) + (self:GetRight() * 11) -- 177
+			local _list_0 = self.Precursors -- 179
+			for _index_0 = 1, #_list_0 do -- 179
+				local p = _list_0[_index_0] -- 179
+				local _continue_0 = false -- 180
+				repeat -- 180
+					if p and p.name and getCostFromCls(cls, p.name) <= 0 then -- 181
+						_continue_0 = true -- 181
+						break -- 181
+					end -- 181
+					pos = pos + (-self:GetForward() * 3) -- 182
+					cam.Start3D2D(pos, ang, 0.1) -- 183
+					local name = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) -- 184
+					local amt = self["GetPrecursor" .. tostring(name)](self) -- 185
+					local cost = getCostFromCls(cls, p.name) -- 186
+					local amt_str -- 187
+					if amt < cost then -- 187
+						amt_str = "<c=200,0,0>" .. tostring(amt) -- 187
+					end -- 187
+					amt_str = amt_str or "<c=0,200,0>" .. tostring(amt) -- 188
+					txt = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) .. ": " .. tostring(amt_str) .. "/" .. tostring(cost) -- 189
+					txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 190
+					txt_obj:Draw(8, 6, 1, TEXT_ALIGN_LEFT) -- 191
+					cam.End3D2D() -- 192
+					_continue_0 = true -- 180
+				until true -- 193
+				if not _continue_0 then -- 193
+					break -- 193
+				end -- 193
+			end -- 193
+		end, -- 195
+		Sound = "Equip_Weapon", -- 197
+		IsFinished = function(self) -- 197
+			local cls = self:GetEntityClass() -- 198
+			if not (cls and cls ~= "") then -- 199
+				return false -- 199
 			end -- 199
-			return true -- 200
-		end, -- 202
-		Initialize = function(self) -- 202
-			self:SetModel(self.Model) -- 203
-			if SERVER then -- 204
-				self:PhysicsInit(SOLID_VPHYSICS) -- 205
-				self:SetMoveType(MOVETYPE_VPHYSICS) -- 206
-				self:SetSolid(SOLID_VPHYSICS) -- 207
-				self:PhysWake() -- 208
-			end -- 204
-			return self:SetStarted(false) -- 209
-		end, -- 211
-		OnTakeDamage = function(self, dmg) -- 211
-			return self:TakePhysicsDamage(dmg) -- 211
-		end, -- 213
-		SetConstruct = function(self, cls) -- 213
-			self:SetEntityClass(cls) -- 214
-			local _list_0 = self.Precursors -- 215
-			for _index_0 = 1, #_list_0 do -- 215
-				local p = _list_0[_index_0] -- 215
-				local name = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) -- 216
-				local set = self["SetPrecursor" .. tostring(name)] -- 217
-				if set then -- 218
-					set(self, 0) -- 218
-				end -- 218
-			end -- 218
-		end, -- 220
-		OnUseFinish = function(self, ply) -- 220
-			self.index = self.index or 1 -- 221
-			if not self:GetStarted() then -- 222
-				if self.index >= #entity_cost then -- 223
-					self.index = 1 -- 224
-				else -- 226
-					self.index = self.index + 1 -- 226
-				end -- 223
-				self:SetConstruct(entity_cost[self.index].cls) -- 227
-				return -- 228
-			end -- 222
-			if not self:IsFinished() then -- 230
-				return -- 230
+			local _list_0 = self.Precursors -- 201
+			for _index_0 = 1, #_list_0 do -- 201
+				local p = _list_0[_index_0] -- 201
+				local cost = getCostFromCls(cls, p.name) -- 202
+				if cost > 0 then -- 203
+					local name = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) -- 204
+					local amt = self["GetPrecursor" .. tostring(name)](self) -- 205
+					if not amt or amt < cost then -- 206
+						return false -- 207
+					end -- 206
+				end -- 203
+			end -- 207
+			return true -- 208
+		end, -- 210
+		Initialize = function(self) -- 210
+			self:SetModel(self.Model) -- 211
+			if SERVER then -- 212
+				self:PhysicsInit(SOLID_VPHYSICS) -- 213
+				self:SetMoveType(MOVETYPE_VPHYSICS) -- 214
+				self:SetSolid(SOLID_VPHYSICS) -- 215
+				self:PhysWake() -- 216
+			end -- 212
+			return self:SetStarted(false) -- 217
+		end, -- 219
+		OnTakeDamage = function(self, dmg) -- 219
+			return self:TakePhysicsDamage(dmg) -- 219
+		end, -- 221
+		SetConstruct = function(self, cls) -- 221
+			self:SetEntityClass(cls) -- 222
+			local _list_0 = self.Precursors -- 223
+			for _index_0 = 1, #_list_0 do -- 223
+				local p = _list_0[_index_0] -- 223
+				local name = tostring(p.name:sub(1, 1):upper()) .. tostring(p.name:sub(2, -1)) -- 224
+				local set = self["SetPrecursor" .. tostring(name)] -- 225
+				if set then -- 226
+					set(self, 0) -- 226
+				end -- 226
+			end -- 226
+		end, -- 228
+		OnUseFinish = function(self, ply) -- 228
+			self.index = self.index or 1 -- 229
+			if not self:GetStarted() then -- 230
+				if self.index >= #entity_cost then -- 231
+					self.index = 1 -- 232
+				else -- 234
+					self.index = self.index + 1 -- 234
+				end -- 231
+				self:SetConstruct(entity_cost[self.index].cls) -- 235
+				return -- 236
 			end -- 230
-			_class_0.__parent.__base.OnUseFinish(self, ply) -- 232
-			if SERVER then -- 234
-				local cls = self:GetEntityClass() -- 235
-				local ent = ents.Create(cls) -- 236
-				if IsValid(ent) then -- 237
-					ent:SetPos(self:GetPos()) -- 239
-					ent:SetAngles(self:GetAngles()) -- 240
-					ent:Spawn() -- 241
-					ent:CPPISetOwner(ply) -- 242
-					ent:Activate() -- 243
-					return self:Remove() -- 244
-				end -- 237
-			end -- 234
-		end -- 35
-	} -- 35
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 244
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 35
-			_base_0[_key_0] = _val_0 -- 35
-		end -- 35
-	end -- 244
-	if _base_0.__index == nil then -- 35
-		_base_0.__index = _base_0 -- 35
-	end -- 244
-	setmetatable(_base_0, _parent_0.__base) -- 35
-	_class_0 = setmetatable({ -- 35
-		__init = function(self, ...) -- 35
-			return _class_0.__parent.__init(self, ...) -- 35
-		end, -- 35
-		__base = _base_0, -- 35
-		__name = "Construct", -- 35
-		__parent = _parent_0 -- 35
-	}, { -- 35
-		__index = function(cls, name) -- 35
-			local val = rawget(_base_0, name) -- 35
-			if val == nil then -- 35
-				local parent = rawget(cls, "__parent") -- 35
-				if parent then -- 35
-					return parent[name] -- 35
-				end -- 35
-			else -- 35
-				return val -- 35
-			end -- 35
-		end, -- 35
-		__call = function(cls, ...) -- 35
-			local _self_0 = setmetatable({ }, _base_0) -- 35
-			cls.__init(_self_0, ...) -- 35
-			return _self_0 -- 35
-		end -- 35
-	}) -- 35
-	_base_0.__class = _class_0 -- 35
-	local self = _class_0; -- 35
-	self.__entity = "evilrp/spawned/construct" -- 36
-	if _parent_0.__inherited then -- 35
-		_parent_0.__inherited(_parent_0, _class_0) -- 35
-	end -- 35
-	Construct = _class_0 -- 35
-end -- 244
-if SERVER then -- 246
-	local block_types = { -- 247
-		"Physgun1", -- 247
-		"Spawning1", -- 247
-		"Toolgun1" -- 247
-	} -- 247
-	FPP.AddDefaultBlocked(block_types, "evilrp/spawned/weapon") -- 248
-	return FPP.AddDefaultBlocked(block_types, "evilrp_weapon") -- 249
-end -- 246
+			if not self:IsFinished() then -- 238
+				return -- 238
+			end -- 238
+			_class_0.__parent.__base.OnUseFinish(self, ply) -- 240
+			if SERVER then -- 242
+				local cls = self:GetEntityClass() -- 243
+				local ent = ents.Create(cls) -- 244
+				if IsValid(ent) then -- 245
+					ent:SetPos(self:GetPos()) -- 247
+					ent:SetAngles(self:GetAngles()) -- 248
+					ent:Spawn() -- 249
+					ent:CPPISetOwner(ply) -- 250
+					ent:Activate() -- 251
+					return self:Remove() -- 252
+				end -- 245
+			end -- 242
+		end -- 41
+	} -- 41
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 252
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 41
+			_base_0[_key_0] = _val_0 -- 41
+		end -- 41
+	end -- 252
+	if _base_0.__index == nil then -- 41
+		_base_0.__index = _base_0 -- 41
+	end -- 252
+	setmetatable(_base_0, _parent_0.__base) -- 41
+	_class_0 = setmetatable({ -- 41
+		__init = function(self, ...) -- 41
+			return _class_0.__parent.__init(self, ...) -- 41
+		end, -- 41
+		__base = _base_0, -- 41
+		__name = "Construct", -- 41
+		__parent = _parent_0 -- 41
+	}, { -- 41
+		__index = function(cls, name) -- 41
+			local val = rawget(_base_0, name) -- 41
+			if val == nil then -- 41
+				local parent = rawget(cls, "__parent") -- 41
+				if parent then -- 41
+					return parent[name] -- 41
+				end -- 41
+			else -- 41
+				return val -- 41
+			end -- 41
+		end, -- 41
+		__call = function(cls, ...) -- 41
+			local _self_0 = setmetatable({ }, _base_0) -- 41
+			cls.__init(_self_0, ...) -- 41
+			return _self_0 -- 41
+		end -- 41
+	}) -- 41
+	_base_0.__class = _class_0 -- 41
+	local self = _class_0; -- 41
+	self.__entity = "evilrp/spawned/construct" -- 42
+	if _parent_0.__inherited then -- 41
+		_parent_0.__inherited(_parent_0, _class_0) -- 41
+	end -- 41
+	Construct = _class_0 -- 41
+end -- 252
+if SERVER then -- 254
+	local block_types = { -- 255
+		"Physgun1", -- 255
+		"Spawning1", -- 255
+		"Toolgun1" -- 255
+	} -- 255
+	FPP.AddDefaultBlocked(block_types, "evilrp/spawned/weapon") -- 256
+	return FPP.AddDefaultBlocked(block_types, "evilrp_weapon") -- 257
+end -- 254
