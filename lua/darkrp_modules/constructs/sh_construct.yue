@@ -22,6 +22,12 @@ entity_cost = {
       metal: 1
       wood: 3
   }
+  {
+    cls: "npc_manned_emplacement"
+    precursors:
+      metal: 10
+      wood: 5
+  }
 }
 
 getCostFromCls = (cls, precursor) ->
@@ -128,6 +134,7 @@ class Construct extends ITEM
     ent = scripted_ents.Get(cls) if cls and cls ~= ""
     printName = ""
     printName = ent.PrintName if ent and ent.PrintName
+    printName = "MG Emplacement" if cls == "npc_manned_emplacement" -- REALLY cheap fix, I need to rewrite the emplacement entity in yue
     ct[] = "Constructing... #{printName}"
     ct[] = ""
     ct[] = { text: "Supply the necessary materials.", font: "Spleen_Label_Small" }
@@ -141,6 +148,7 @@ class Construct extends ITEM
     cls = @GetEntityClass!
     ent = scripted_ents.Get(cls) if cls and cls ~= ""
     printName = ent and ent.PrintName or @PrintName
+    printName = "MG Emplacement" if cls == "npc_manned_emplacement" -- REALLY cheap fix, I need to rewrite the emplacement entity in yue
 
     dist_sqr = @GetPos!\DistToSqr(lp\GetPos!)
     return unless dist_sqr < 128^2

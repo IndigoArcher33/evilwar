@@ -328,18 +328,37 @@ net.Receive("evilrp_terminal_activeconsole", function() -- 41
 			self:SetCaretPos(0) -- 99
 			ent.console_text = "" -- 100
 		end -- 88
+		_with_0.OnKeyCodeTyped = function(self, code) -- 101
+			self:OnKeyCode(code) -- 102
+			if KEY_ENTER == code then -- 104
+				self:OnEnter() -- 105
+				return true -- 106
+			elseif KEY_UP == code then -- 107
+				net.Start("evilrp_terminal_scroll") -- 108
+				net.WriteUInt(idx, 16) -- 109
+				net.WriteInt(1, 4) -- 110
+				net.SendToServer() -- 111
+				return true -- 112
+			elseif KEY_DOWN == code then -- 113
+				net.Start("evilrp_terminal_scroll") -- 114
+				net.WriteUInt(idx, 16) -- 115
+				net.WriteInt(-1, 4) -- 116
+				net.SendToServer() -- 117
+				return true -- 118
+			end -- 118
+		end -- 101
 		return _with_0 -- 47
 	end -- 45
 end) -- 41
-net.Receive("evilrp_terminal_endtyping", function() -- 102
-	local ply = LocalPlayer() -- 103
-	if not IsValid(ply.gterm_textentry) then -- 104
-		return -- 104
-	end -- 104
-	ply.gterm_textentry:Remove() -- 105
-	if IsValid(ply.gterm_entity) then -- 106
-		ply.gterm_entity.console_text = "" -- 106
-	end -- 106
-	ply.gterm_entity = nil -- 107
-end) -- 102
-return MsgC(Color(255, 0, 0), "INITIALIZED EVILRP TERMINALS\n") -- 109
+net.Receive("evilrp_terminal_endtyping", function() -- 121
+	local ply = LocalPlayer() -- 122
+	if not IsValid(ply.gterm_textentry) then -- 123
+		return -- 123
+	end -- 123
+	ply.gterm_textentry:Remove() -- 124
+	if IsValid(ply.gterm_entity) then -- 125
+		ply.gterm_entity.console_text = "" -- 125
+	end -- 125
+	ply.gterm_entity = nil -- 126
+end) -- 121
+return MsgC(Color(255, 0, 0), "INITIALIZED EVILRP TERMINALS\n") -- 128

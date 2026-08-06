@@ -1,7 +1,7 @@
 -- [yue]: darkrp_modules\trees\sv_spawn.yue
 EVIL_NEXT_TREE = 0 -- 1
-local EVIL_TREE_DELAY = 15 -- 2
-local EVIL_TREE_MAX = 5 -- 3
+local EVIL_TREE_DELAY = 40 -- 2
+local EVIL_TREE_MAX = 7 -- 3
 EVIL_TREES = { } -- 4
 local EVIL_TREE_POSITIONS = { -- 6
 	["rp_liverfailure_kidneydagger"] = { -- 7
@@ -22,22 +22,27 @@ local EVIL_TREE_POSITIONS = { -- 6
 		Vector(531, -3652, -119), -- 21
 		Vector(20, -4488, -220), -- 22
 		Vector(-881, -4079, -170), -- 23
-		Vector(-631, -3275, -213) -- 24
+		Vector(-631, -3275, -213), -- 24
+		Vector(261, 1893, -79), -- 25
+		Vector(343, 1862, -79), -- 26
+		Vector(-197, 1973, -79), -- 27
+		Vector(-242, 1874, -79), -- 28
+		Vector(-322, 1898, -79) -- 29
 	} -- 18
 } -- 5
-return hook.Add("Think", "evilrp_tree_spawner", function() -- 28
-	if CurTime() >= EVIL_NEXT_TREE then -- 29
-		EVIL_NEXT_TREE = CurTime() + EVIL_TREE_DELAY + math.random(EVIL_TREE_DELAY) -- 30
-		local trees = ents.FindByClass("tree") -- 31
-		if #trees < EVIL_TREE_MAX then -- 32
-			local positions = EVIL_TREE_POSITIONS[game.GetMap()] -- 33
-			local pos = positions[math.random(#positions)] -- 34
-			local tree = ents.Create("tree") -- 35
-			tree:SetPos(pos) -- 37
-			tree:Spawn() -- 38
-			tree:Activate() -- 39
-			tree:GetPhysicsObject():EnableMotion(false) -- 40
-		end -- 32
-	end -- 29
-	return -- 41
-end) -- 41
+return hook.Add("Think", "evilrp_tree_spawner", function() -- 34
+	if CurTime() >= EVIL_NEXT_TREE then -- 35
+		EVIL_NEXT_TREE = CurTime() + EVIL_TREE_DELAY + math.random(EVIL_TREE_DELAY) -- 36
+		local trees = ents.FindByClass("tree") -- 37
+		if #trees < EVIL_TREE_MAX then -- 38
+			local positions = EVIL_TREE_POSITIONS[game.GetMap()] -- 39
+			local pos = positions[math.random(#positions)] -- 40
+			local tree = ents.Create("tree") -- 41
+			tree:SetPos(pos) -- 43
+			tree:Spawn() -- 44
+			tree:Activate() -- 45
+			tree:GetPhysicsObject():EnableMotion(false) -- 46
+		end -- 38
+	end -- 35
+	return -- 47
+end) -- 47

@@ -6,12 +6,43 @@ util.AddNetworkString msg for msg in *{
   "evilrp_terminal_endtyping"
 }
 
+charities ={
+  "the Take-A-Wish Foundation"
+  "Doktors Within Borders"
+  "The Church of Sotla"
+  "the Wastelanders' Association"
+  "the Drunk Drivers' Union"
+  "the Carcinoma Appreciation Society"
+  "the Trench Inspection Bureau"
+  "the Necroskullfuckistan Central Kitchen"
+  "the Damnation Army"
+  "the Aneurism-Lymphoma Public Affairs Committee"
+  "the Lymphoman Fashion Show"
+  "the Ministers' Lobby"
+}
+
+util.AddNetworkString "evilrp_terminal_scroll"
+
 global GetPlayerByName = (name) ->
   return nil unless name and name != ""
   name = name\lower!
   for _, ply in pairs(player.GetAll!)
     if ply\Nick!\lower!\match name
         return ply
+  return nil
+
+global GetEtabByName = (name) ->   -- this will also check if there's any actually in stock
+  return nil unless name and name != ""
+  name = name\lower!
+  for item, avail in pairs(GAMEMODE.Stocks)
+    etab = scripted_ents.Get(item)
+    unless etab
+      -- it must be a SWEP
+      etab = weapons.Get(item)
+    
+    if etab.PrintName\lower!\match(name) and avail > 0
+      return etab
+  
   return nil
 
 class TerminalPowered extends SOUND
@@ -35,6 +66,7 @@ class TerminalDeath extends SOUND
 class XOMBOTAX extends SOUND
   sound: "dysphoria/xombocom/kommandantenbefehlen.ogg"
   pitch: {80, 110}
+  volume: 2
   level: SNDLVL_NONE
   
 global GT_COL_NIL  = 0
@@ -52,6 +84,7 @@ gterm or= {}
 gterm.Broadcast = (ent, text, color_type=GT_COL_MSG, pos) =>
   return unless IsValid(ent)
   idx = ent\EntIndex!
+  ent.history or= {}
   local output
   if string.len(text) > ent.max_chars
     output = {}
@@ -60,6 +93,7 @@ gterm.Broadcast = (ent, text, color_type=GT_COL_MSG, pos) =>
       output[i+1] = string.sub(text, i * ent.max_chars, (i * ent.max_chars) + (ent.max_chars - 1))
   if output
     for k, v in ipairs(output)
+      table.insert(ent.history, {msg: v, col: color_type}) if not pos
       net.Start"evilrp_terminal_addline"
       net.WriteUInt idx, 16
       net.WriteString v
@@ -70,12 +104,16 @@ gterm.Broadcast = (ent, text, color_type=GT_COL_MSG, pos) =>
         net.WriteInt -1, 16
       net.Broadcast!
   else
+    table.insert(ent.history, {msg: text, col: color_type}) if not pos
     net.Start"evilrp_terminal_addline"
     net.WriteUInt(idx, 16)
     net.WriteString(text)
     net.WriteUInt(color_type, 8)
     net.WriteInt(pos or -1, 16)
     net.Broadcast!
+
+  while #ent.history > 200
+    table.remove(ent.history, 1)
 
 gterm.GetInput = (ent, callback) =>
   ent.accepting_input = true
@@ -308,7 +346,6 @@ class Tyrant extends OS
         cost = 500
         cmd = args[1]
         if cmd ~= ""
-          print cmd
           cply = GetPlayerByName cmd
           if not IsValid(cply)
             gterm\Broadcast term, "that person does not exist", GT_COL_ERR
@@ -327,6 +364,66 @@ class Tyrant extends OS
           gterm\Broadcast term, "new cannon fodder: #{name}", GT_COL_SUCC
       help: "Conscript your recruits."
     }
+    [":export"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_EMPEROR
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+
+        -- we sanitize the input
+        name = args[1]
+        quantity = -1
+        if tonumber(args[2])
+          quantity = tonumber(args[2])
+        elseif type(args[2]) == "string" and tonumber(args[3])
+          name = args[1] .. " " .. args[2]
+          quantity = tonumber(args[3])
+        else
+          gterm\Broadcast term, "incorrect arguments", GT_COL_ERR
+          return
+
+        if name == "" or quantity <= 0
+          gterm\Broadcast term, "incorrect arguments", GT_COL_ERR
+          return
+        -- actual logic
+        etab = GetEtabByName name
+        unless etab
+          gterm\Broadcast term, "#{name} not available", GT_COL_ERR
+          return
+        cname = etab.ClassName -- returns the class name e,g: "evilrp/whatever"
+        if GAMEMODE.Stocks[cname] < quantity
+          gterm\Broadcast term, "not enough #{etab.PrintName}s in stock", GT_COL_ERR
+          return
+        GAMEMODE.Stocks[cname] -= quantity
+        reward = (etab.Price * quantity) or (100 * quantity)
+        gterm\Broadcast term, "successfully sent x#{quantity} #{etab.PrintName} to the Derelikt.", GT_COL_SUCC
+        gterm\Broadcast term, "your reward: #{reward} bones", GT_COL_SUCC
+        quartermaster = false
+        term\EmitSound"XOMBOTAX"
+        Chat.Announce("GENERIC","<c=190,165,25>#{ply\Nick!} has exported #{quantity} #{etab.PrintName}")
+        for p in *player.GetAll!
+          continue unless p\Alive!
+          continue unless p\Team! == TEAM_DEALER
+          quartermaster = true
+          p\AddMoney (reward*0.3), "The Korruption"
+        if quartermaster
+          gterm\Broadcast term, "your quartermaster took a 30% cut", GT_COL_WRN
+        else 
+          gterm\Broadcast term, "no quartermaster available, donating 30% to: ", GT_COL_WRN
+          charity = charities[math.random(#charities)]
+          gterm\Broadcast term, "#{charity}", GT_COL_MSG
+          Chat.Announce("SMALL","<c=190,165,25>30% of the proceedings donated to #{charity}")
+        ply\AddMoney (reward*0.7), "The Korruption"
+        ply.export_value or= 0
+        ply.export_stem or= 0
+        ply.export_stem += reward
+        ply.export_value += reward
+        if ply.export_stem > 2000
+          stems = (ply.export_stem) / 2000
+          ply\AddStemCells(math.floor(stems))
+          ply.export_stem = ply.export_stem % 2000
+        gterm\Broadcast term, "your total export value is: #{ply.export_value} bones", GT_COL_INFO
+    } 
     [":broadcast"]: {
       Callback: (ply, term, args) =>
         if ply\Team! ~= TEAM_EMPEROR
@@ -336,7 +433,7 @@ class Tyrant extends OS
         text = Chat.Autopretty ply, text\upper!
         with gterm
           \Broadcast term, text, GT_COL_ERR
-        PlaySoundGlobal"XOMBOKOM"
+        EmitSound"XOMBOTAX"
         p\SendChat "Broadcast", text for p in *player.GetAll!
         for term in *ents.FindByClass("terminal*")
           continue unless IsValid(term)
@@ -382,7 +479,7 @@ class Tyrant extends OS
             taxes[tax] = new_pct
 
             SetGlobalInt("tax_#{tax}", new_pct)
-            PlaySoundGlobal"XOMBOTAX"
+            EmitSound"XOMBOTAX"
             text = "the #{tax} tax is now #{new_pct}%"
             gterm\Broadcast term, text, GT_COL_SUCC
             for term in *ents.FindByClass("terminal*")
@@ -404,6 +501,7 @@ class Tyrant extends OS
               return
             GAMEMODE.taxes_stored[tax] = 0
             gterm\Broadcast term, "#{reward} bones from #{tax} are now yours", GT_COL_SUCC
+            Chat.Announce("GENERIC","<c=190,165,25>#{ply\Nick!} has collected the #{tax} tax")
             ply\AddMoney reward, "The Power"
           else
             with gterm
@@ -730,6 +828,42 @@ net.Receive "evilrp_terminal_endconsole", (len, ply) ->
   name = sys and sys.unique_id or "unknown"
   finalized = "#{"<"\Escape!}#{name}@#{term\EntIndex!}#{">"\Escape!} #{text}"
   gterm\Broadcast(term, finalized, GT_COL_CMD)
+
+net.Receive "evilrp_terminal_scroll", (len, ply) ->
+  idx = net.ReadUInt(16)
+  dir = net.ReadInt(4) -- 1 arrow up, -1 arrow down
+  term = Entity(idx)
+  print(dir)
+  print(term)
+
+  return unless IsValid(term) and term.GetUser
+  user = term\GetUser!
+  return unless IsValid(user) and user == ply
+  
+  term.history or= {}
+  maxlines = term.max_lines or 25
+  term.offset or= 0
+  
+  if dir == 1
+    term.offset += 1
+  elseif dir == -1
+    term.offset -= 1
+    
+  maxscroll = math.max(0, #term.history - maxlines)
+  term.offset = math.Clamp(term.offset, 0, maxscroll)
+  
+  for i=0, maxlines
+    gterm\Broadcast term, "", GT_COL_NIL, i
+    
+  start = #term.history - maxlines - term.offset + 1
+  start = math.max(1, start)
+  
+  pos = 0
+  for i=start, start + maxlines - 1
+    line = term.history[i]
+    if line
+      gterm\Broadcast term, line.msg, line.col, pos
+    pos += 1
 
 MsgC Color(255,0,0), "INITIALIZED EVILRP TERMINALS\n"
 

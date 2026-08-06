@@ -685,8 +685,8 @@ do -- 354
 		Firemode = 0, -- 373
 		Primary = { -- 374
 			Ammo = "AR2", -- 374
-			ClipSize = 3, -- 376
-			DefaultClip = 6, -- 377
+			ClipSize = 5, -- 376
+			DefaultClip = 15, -- 377
 			Damage = 40, -- 379
 			Delay = 1.25, -- 380
 			Range = 300, -- 382
