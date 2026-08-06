@@ -19,6 +19,13 @@ class Medkit extends WEAPON
     Delay: 0.2
     Automatic: true
 
+  Secondary:
+    Delay: 0.2
+    Automatic: true
+    ClipSize: -1
+    DefaultClip: -1  
+
+
   TranslateWeaponAnim: (act) => act
   SendTranslatedWeaponAnim: (act) =>
     act = @TranslateWeaponAnim act
@@ -74,3 +81,20 @@ class Medkit extends WEAPON
     -- TODO: unhaunting
 
   SecondaryAttack: =>
+    @SetNextSecondaryFire CurTime! + @Secondary.Delay
+    ply = @Owner
+    return unless IsValid(ply)
+    return if CLIENT
+    shoot_pos = ply\GetShootPos!
+    aim_vec = ply\GetAimVector!
+    tr = util.TraceLine
+      start: shoot_pos
+      endpos: shoot_pos + aim_vec * 100
+      filter: ply
+      mask: MASK_SHOT
+    ent = tr.Entity
+    -- only fire if the trace actually landed on an entity, not the world
+    return unless tr.Hit and tr.HitNonWorld and IsValid(ent)
+    ply\SetHealth ply\Health! - 1
+    @ShootBullet(10, 1, 0)
+    ply\EmitSound "npc/dog/dog_idle4.wav", 150, (ply\Health! / ply\GetMaxHealth!) * 100

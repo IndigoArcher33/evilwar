@@ -36,12 +36,13 @@ class Generator extends ENTITY
     if attacker and IsValid(attacker)
       if attacker\IsPlayer!
         switch attacker\Team!
-          when TEAM_SANITAR, TEAM_CONSCRIPT
+          when TEAM_KORPSMAN, TEAM_CONSCRIPT
             rust = @GetRust!
             @SetRust math.max(0, rust - (dmg\GetDamage! * .2))
             reward = math.floor(math.abs(rust - @GetRust!) * 2.3)
             if reward > 0
               attacker\AddMoney reward, "The Cleansing"
+              attacker\SetHealth attacker\Health! + 2
       
   AddPrecursor: (p_type, amt) =>
     unless @precursor_storage[p_type]

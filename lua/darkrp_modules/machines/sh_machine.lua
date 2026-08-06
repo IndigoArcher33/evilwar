@@ -25,21 +25,21 @@ do -- 14
 			"buttons/button16.wav", -- 21
 			"buttons/button17.wav", -- 22
 			"buttons/button18.wav" -- 23
-		}, -- 24
+		}, -- 15
 		pitch = { -- 24
 			75, -- 24
 			95 -- 24
-		}, -- 25
-		level = SNDLVL_75DB -- 14
+		}, -- 24
+		level = SNDLVL_75DB -- 25
 	} -- 14
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 25
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 14
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 14
 			_base_0[_key_0] = _val_0 -- 14
 		end -- 14
-	end -- 25
+	end -- 14
 	if _base_0.__index == nil then -- 14
 		_base_0.__index = _base_0 -- 14
-	end -- 25
+	end -- 14
 	setmetatable(_base_0, _parent_0.__base) -- 14
 	_class_0 = setmetatable({ -- 14
 		__init = function(self, ...) -- 14
@@ -71,7 +71,7 @@ do -- 14
 		_parent_0.__inherited(_parent_0, _class_0) -- 14
 	end -- 14
 	MachineDing = _class_0 -- 14
-end -- 25
+end -- 14
 local MachineBite -- 27
 do -- 27
 	local _class_0 -- 27
@@ -86,20 +86,20 @@ do -- 27
 			"npc/headcrab_fast/headbite.wav", -- 33
 			"npc/barnacle/barnacle_crunch2.wav", -- 34
 			"npc/barnacle/barnacle_crunch3.wav" -- 35
-		}, -- 36
+		}, -- 28
 		pitch = { -- 36
 			75, -- 36
 			90 -- 36
-		} -- 27
+		} -- 36
 	} -- 27
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 36
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 27
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 27
 			_base_0[_key_0] = _val_0 -- 27
 		end -- 27
-	end -- 36
+	end -- 27
 	if _base_0.__index == nil then -- 27
 		_base_0.__index = _base_0 -- 27
-	end -- 36
+	end -- 27
 	setmetatable(_base_0, _parent_0.__base) -- 27
 	_class_0 = setmetatable({ -- 27
 		__init = function(self, ...) -- 27
@@ -131,7 +131,7 @@ do -- 27
 		_parent_0.__inherited(_parent_0, _class_0) -- 27
 	end -- 27
 	MachineBite = _class_0 -- 27
-end -- 36
+end -- 27
 local noise = Material("effects/tvscreen_noise001a") -- 38
 local screen = Material("glass/glasswindow017a") -- 39
 if CLIENT then -- 41
@@ -148,17 +148,17 @@ do -- 49
 	local _class_0 -- 49
 	local _parent_0 = ENTITY -- 49
 	local _base_0 = { -- 49
-		Base = "base_anim", -- 51
-		Type = "anim", -- 52
-		PrintName = "Machine", -- 53
-		Category = "EvilRP: Machines", -- 54
-		Spawnable = true, -- 55
-		AdminSpawnable = true, -- 56
-		Interesting = true, -- 58
-		Pocketable = false, -- 60
-		Precursors = { }, -- 61
-		FactoryIdentifier = "", -- 62
-		BasePay = 5, -- 64
+		Base = "base_anim", -- 50
+		Type = "anim", -- 51
+		PrintName = "Machine", -- 52
+		Category = "EvilRP: Machines", -- 53
+		Spawnable = true, -- 54
+		AdminSpawnable = true, -- 55
+		Interesting = true, -- 56
+		Pocketable = false, -- 58
+		Precursors = { }, -- 60
+		FactoryIdentifier = "", -- 61
+		BasePay = 5, -- 62
 		SetupDataTables = function(self) -- 64
 			self:NetworkVar("String", "Producing") -- 65
 			self:NetworkVar("String", "Selection") -- 66
@@ -171,17 +171,17 @@ do -- 49
 			for i = 1, 8 do -- 74
 				self:NetworkVar("Int", 8 + i, "Button" .. i) -- 75
 				self["SetButton" .. i](self, math.random(1, 3)) -- 76
-			end -- 76
+			end -- 74
 			local _list_0 = self.Precursors -- 78
 			for _index_0 = 1, #_list_0 do -- 78
 				local p = _list_0[_index_0] -- 78
 				local name = p.name -- 79
 				name = tostring(name:sub(1, 1):upper()) .. tostring(name:sub(2, -1)) -- 80
 				self:NetworkVar("Int", "Precursor" .. tostring(name)) -- 81
-			end -- 81
+			end -- 78
 			self:NetworkVar("Entity", "Worker") -- 83
 			return self:NetworkVar("Entity", "Generator") -- 84
-		end, -- 86
+		end, -- 64
 		RefreshPrecursor = function(self) -- 86
 			local gen = self:GetGenerator() -- 87
 			if gen and IsValid(gen) then -- 88
@@ -191,9 +191,9 @@ do -- 49
 					local name = p.name -- 90
 					name = tostring(name:sub(1, 1):upper()) .. tostring(name:sub(2, -1)) -- 91
 					self["SetPrecursor" .. tostring(name)](self, gen.precursor_storage[name:lower()] or 0) -- 92
-				end -- 92
+				end -- 89
 			end -- 88
-		end, -- 94
+		end, -- 86
 		Initialize = function(self) -- 94
 			self:PositionButtons() -- 95
 			if CLIENT then -- 96
@@ -207,7 +207,7 @@ do -- 49
 					MsgC(Color(0, 200, 0), tostring(self) .. " attached to " .. tostring(gen) .. ".\n") -- 103
 					break -- 104
 				end -- 101
-			end -- 104
+			end -- 100
 			local gen = self:GetGenerator() -- 105
 			if not (gen and IsValid(gen)) then -- 106
 				return -- 106
@@ -220,7 +220,7 @@ do -- 49
 			self:PhysicsInit(SOLID_VPHYSICS) -- 110
 			self:PhysWake() -- 111
 			return self:NewLight() -- 112
-		end, -- 114
+		end, -- 94
 		PositionButtons = function(self) -- 114
 			local pos = self:GetPos() -- 115
 			local f = self:GetForward() -- 116
@@ -252,7 +252,7 @@ do -- 49
 					pos + u * 18 + f * 13 + r * -15 -- 127
 				} -- 127
 			} -- 119
-		end, -- 130
+		end, -- 114
 		Think = function(self) -- 130
 			if CLIENT then -- 131
 				return -- 131
@@ -294,7 +294,7 @@ do -- 49
 									nope = true -- 153
 									break -- 154
 								end -- 152
-							end -- 154
+							end -- 150
 							if nope then -- 155
 								_continue_0 = true -- 155
 								break -- 155
@@ -304,11 +304,11 @@ do -- 49
 							break -- 158
 						end -- 142
 						_continue_0 = true -- 142
-					until true -- 158
-					if not _continue_0 then -- 158
-						break -- 158
-					end -- 158
-				end -- 158
+					until true -- 142
+					if not _continue_0 then -- 142
+						break -- 142
+					end -- 142
+				end -- 141
 				if not found then -- 159
 					self:SetQueuedItems(0) -- 160
 					util.ScreenShake(self:GetPos(), 25, 150, 1, 750) -- 161
@@ -336,7 +336,7 @@ do -- 49
 					self:SetProducing(found) -- 185
 					for t, amt in pairs(self.Products[found].precursors) do -- 186
 						self:GetGenerator():AddPrecursor(t, -amt) -- 187
-					end -- 187
+					end -- 186
 					self:SetProductionStart(CurTime()) -- 188
 					self:SetProductionEnd(CurTime() + self.Products[found].time) -- 189
 				end -- 159
@@ -350,10 +350,10 @@ do -- 49
 				self:SetProductionStart(0) -- 196
 				return self:SetProductionEnd(0) -- 197
 			end -- 190
-		end, -- 199
+		end, -- 130
 		ProduceItem = function(self, item) -- 199
 			return GAMEMODE:AddStock(item) -- 201
-		end, -- 203
+		end, -- 199
 		Touch = function(self, what) -- 203
 			if SERVER then -- 204
 				if what.Rust then -- 205
@@ -385,8 +385,8 @@ do -- 49
 							end -- 225
 							break -- 226
 						end -- 222
-					end -- 226
-				end -- 226
+					end -- 221
+				end -- 220
 				if not (pre and amt) then -- 227
 					return -- 227
 				end -- 227
@@ -430,7 +430,7 @@ do -- 49
 					end -- 246
 				end -- 230
 			end -- 204
-		end, -- 255
+		end, -- 203
 		Draw = function(self) -- 255
 			self:DrawModel() -- 256
 			local gen = self:GetGenerator() -- 257
@@ -481,7 +481,7 @@ do -- 49
 				else -- 283
 					render.DrawSprite(light[1], 4, 4, col) -- 283
 				end -- 279
-			end -- 283
+			end -- 274
 			for k, v in ipairs(self.buttons) do -- 284
 				idx = self["GetButton" .. tostring(k)](self) -- 285
 				local mats = { -- 286
@@ -509,309 +509,309 @@ do -- 49
 					end -- 294
 				end -- 288
 				render.DrawSprite(v[1], 4, 4, col) -- 304
-			end -- 304
+			end -- 284
 			return self:Render3D2D() -- 305
-		end, -- 307
+		end, -- 255
 		OnTakeDamage = function(self, dmg) -- 307
 			local attacker = dmg:GetAttacker() -- 308
 			if attacker and IsValid(attacker) then -- 309
 				if attacker:IsPlayer() then -- 310
 					local _exp_0 = attacker:Team() -- 311
-					if TEAM_SANITAR == _exp_0 or TEAM_CONSCRIPT == _exp_0 then -- 312
+					if TEAM_KORPSMAN == _exp_0 or TEAM_CONSCRIPT == _exp_0 then -- 312
 						local rust = self:GetRust() -- 313
 						self:SetRust(math.max(0, rust - (dmg:GetDamage() * .2))) -- 314
 						local reward = math.floor(math.abs(rust - self:GetRust()) * 3) -- 315
 						if reward > 0 then -- 316
-							return attacker:AddMoney(reward, "The Cleansing") -- 317
+							attacker:AddMoney(reward, "The Cleansing") -- 317
+							return attacker:SetHealth(attacker:Health() + 2) -- 318
 						end -- 316
-					end -- 317
+					end -- 311
 				end -- 310
 			end -- 309
-		end, -- 319
-		Use = function(self, ply) -- 319
-			local gen = self:GetGenerator() -- 322
-			if gen and not gen:GetOn() then -- 323
-				net.Start("evilrp_machine_fail") -- 324
-				net.WriteString("There's no power.") -- 325
-				net.Send(ply) -- 326
-				return -- 327
-			elseif not ply:CanUseMachines() then -- 329
-				net.Start("evilrp_machine_fail") -- 330
-				net.WriteString("UNAUTHORIZED PERSONNEL") -- 331
-				net.Send(ply) -- 332
-				self:EmitSound("ambient/alarms/klaxon1.wav") -- 333
-				timer.Simple(1, function() -- 334
-					local tr = util.TraceLine({ -- 336
-						start = self:GetPos(), -- 336
-						endpos = ply:EyePos(), -- 337
-						filter = self -- 338
-					}) -- 335
-					util.ParticleTracerEx("vortigaunt_beam", tr.StartPos, tr.HitPos, false, self:EntIndex(), 3) -- 340
-					self:EmitSound("beams/beamstart5.wav") -- 341
-					local dmg = DamageInfo() -- 342
-					dmg:SetDamage(65) -- 344
-					dmg:SetDamageType(DMG_SHOCK) -- 345
-					dmg:SetAttacker(self) -- 346
-					dmg:SetInflictor(self) -- 347
-					dmg:SetDamagePosition(ply:EyePos()) -- 348
-					return ply:TakeDamageInfo(dmg) -- 349
-				end) -- 334
-				return -- 350
-			end -- 323
-			if self:GetRust() >= 100 and math.random(1, 3) == 1 then -- 353
-				self:EmitSound("MachineBite") -- 354
-				ply:TakeDamage(math.random(4, 6)) -- 355
-				if math.random(1, 4) == 1 then -- 356
-					self:Ignite(math.random(3, 6), 510) -- 356
-				end -- 356
-			end -- 353
-			local button = self:GetNearestButton(ply) -- 358
-			if button then -- 359
-				if button > 0 then -- 360
-					local idx = self["GetButton" .. tostring(button)](self) -- 361
-					if idx ~= self:GetCorrectLight() and idx > 0 then -- 362
-						self:EmitSound("ambient/alarms/klaxon1.wav") -- 363
-						return timer.Simple(1, function() -- 364
-							local tr = util.TraceLine({ -- 366
-								start = self:GetPos(), -- 366
-								endpos = ply:EyePos(), -- 367
-								filter = self -- 368
-							}) -- 365
-							util.ParticleTracerEx("vortigaunt_beam", tr.StartPos, tr.HitPos, false, self:EntIndex(), 3) -- 370
-							self:EmitSound("beams/beamstart5.wav") -- 371
-							local dmg = DamageInfo() -- 372
-							dmg:SetDamage(25) -- 374
-							dmg:SetDamageType(DMG_SHOCK) -- 375
-							dmg:SetAttacker(self) -- 376
-							dmg:SetInflictor(self) -- 377
-							dmg:SetDamagePosition(ply:EyePos()) -- 378
-							return ply:TakeDamageInfo(dmg) -- 379
-						end) -- 379
-					elseif idx == 0 then -- 380
-						return self:EmitSound("buttons/button2.wav", 75, math.random(75, 95)) -- 381
-					else -- 383
-						self:EmitSound("MachineDing") -- 383
-						local left = false -- 384
-						self["SetButton" .. tostring(button)](self, 0) -- 385
-						for k, v in ipairs(self.buttons) do -- 386
-							if self["GetButton" .. tostring(k)](self) == idx then -- 387
-								left = true -- 387
-							end -- 387
+		end, -- 307
+		Use = function(self, ply) -- 320
+			local gen = self:GetGenerator() -- 323
+			if gen and not gen:GetOn() then -- 324
+				net.Start("evilrp_machine_fail") -- 325
+				net.WriteString("There's no power.") -- 326
+				net.Send(ply) -- 327
+				return -- 328
+			elseif not ply:CanUseMachines() then -- 330
+				net.Start("evilrp_machine_fail") -- 331
+				net.WriteString("UNAUTHORIZED PERSONNEL") -- 332
+				net.Send(ply) -- 333
+				self:EmitSound("ambient/alarms/klaxon1.wav") -- 334
+				timer.Simple(1, function() -- 335
+					local tr = util.TraceLine({ -- 337
+						start = self:GetPos(), -- 337
+						endpos = ply:EyePos(), -- 338
+						filter = self -- 339
+					}) -- 336
+					util.ParticleTracerEx("vortigaunt_beam", tr.StartPos, tr.HitPos, false, self:EntIndex(), 3) -- 341
+					self:EmitSound("beams/beamstart5.wav") -- 342
+					local dmg = DamageInfo() -- 343
+					dmg:SetDamage(65) -- 345
+					dmg:SetDamageType(DMG_SHOCK) -- 346
+					dmg:SetAttacker(self) -- 347
+					dmg:SetInflictor(self) -- 348
+					dmg:SetDamagePosition(ply:EyePos()) -- 349
+					return ply:TakeDamageInfo(dmg) -- 350
+				end) -- 335
+				return -- 351
+			end -- 324
+			if self:GetRust() >= 100 and math.random(1, 3) == 1 then -- 354
+				self:EmitSound("MachineBite") -- 355
+				ply:TakeDamage(math.random(4, 6)) -- 356
+				if math.random(1, 4) == 1 then -- 357
+					self:Ignite(math.random(3, 6), 510) -- 357
+				end -- 357
+			end -- 354
+			local button = self:GetNearestButton(ply) -- 359
+			if button then -- 360
+				if button > 0 then -- 361
+					local idx = self["GetButton" .. tostring(button)](self) -- 362
+					if idx ~= self:GetCorrectLight() and idx > 0 then -- 363
+						self:EmitSound("ambient/alarms/klaxon1.wav") -- 364
+						return timer.Simple(1, function() -- 365
+							local tr = util.TraceLine({ -- 367
+								start = self:GetPos(), -- 367
+								endpos = ply:EyePos(), -- 368
+								filter = self -- 369
+							}) -- 366
+							util.ParticleTracerEx("vortigaunt_beam", tr.StartPos, tr.HitPos, false, self:EntIndex(), 3) -- 371
+							self:EmitSound("beams/beamstart5.wav") -- 372
+							local dmg = DamageInfo() -- 373
+							dmg:SetDamage(25) -- 375
+							dmg:SetDamageType(DMG_SHOCK) -- 376
+							dmg:SetAttacker(self) -- 377
+							dmg:SetInflictor(self) -- 378
+							dmg:SetDamagePosition(ply:EyePos()) -- 379
+							return ply:TakeDamageInfo(dmg) -- 380
+						end) -- 365
+					elseif idx == 0 then -- 381
+						return self:EmitSound("buttons/button2.wav", 75, math.random(75, 95)) -- 382
+					else -- 384
+						self:EmitSound("MachineDing") -- 384
+						local left = false -- 385
+						self["SetButton" .. tostring(button)](self, 0) -- 386
+						for k, v in ipairs(self.buttons) do -- 387
+							if self["GetButton" .. tostring(k)](self) == idx then -- 388
+								left = true -- 388
+							end -- 388
 						end -- 387
-						local reward = self.BasePay -- 388
-						local rate = GAMEMODE.taxes.labor / 100 -- 389
-						local taxed = math.floor(reward * rate) -- 390
-						reward = reward - taxed -- 391
-						if taxed > 0 then -- 392
-							local _obj_0 = GAMEMODE.taxes_stored -- 392
-							_obj_0.labor = _obj_0.labor + taxed -- 392
-						end -- 392
-						if gen.Overload then -- 393
-							self:EmitSound("ambient/energy/zap" .. tostring(math.random(1, 3)) .. ".wav") -- 394
-							local dmg = DamageInfo() -- 395
-							dmg:SetDamage(math.random(4, 6)) -- 397
-							dmg:SetDamageType(DMG_SHOCK) -- 398
-							dmg:SetAttacker(self) -- 399
-							dmg:SetInflictor(self) -- 400
-							dmg:SetDamagePosition(self:EyePos()) -- 401
-							ply:TakeDamageInfo(dmg) -- 402
-							local vp = self:GetPos() -- 403
-							local ed = EffectData() -- 404
-							ed:SetOrigin(vp) -- 406
-							ed:SetScale(1) -- 407
-							ed:SetMagnitude(1) -- 408
-							ed:SetRadius(3) -- 409
-							util.Effect("Sparks", ed) -- 410
+						local reward = self.BasePay -- 389
+						local rate = GAMEMODE.taxes.labor / 100 -- 390
+						local taxed = math.floor(reward * rate) -- 391
+						reward = reward - taxed -- 392
+						if taxed > 0 then -- 393
+							local _obj_0 = GAMEMODE.taxes_stored -- 393
+							_obj_0.labor = _obj_0.labor + taxed -- 393
 						end -- 393
-						ply:AddMoney(reward, "The Grind") -- 411
-						self:Reward(ply) -- 412
-						if (not left) or math.random(1, 100) <= 50 then -- 413
-							return self:NewLight(ply) -- 413
-						end -- 413
-					end -- 362
-				end -- 360
-			end -- 359
-		end, -- 415
-		Reward = function(self, ply) -- 415
-			if not (ply:Team() == TEAM_PRIVATE) then -- 416
-				return -- 416
-			end -- 416
-			ply.buttons_pushed = ply.buttons_pushed or 0 -- 417
-			ply.buttons_pushed = ply.buttons_pushed + 1 -- 418
-			if ply.buttons_pushed % 50 == 0 then -- 419
-				ply:Notify("<c=0,200,0>Your work ethic makes your leader proud.") -- 420
-				return ply:AddStemCells(1) -- 421
-			end -- 419
-		end, -- 423
-		GetNearestButton = function(self, who) -- 423
-			if (not who or not IsValid(who)) then -- 424
-				who = LocalPlayer() -- 424
-			end -- 424
-			if self.buttons then -- 425
-				local start = who:GetShootPos() -- 426
-				local endpos = start + who:GetAimVector() * 96 -- 427
-				local tr = util.TraceLine({ -- 429
-					start = start, -- 429
-					endpos = endpos, -- 430
-					filter = who -- 431
-				}) -- 428
-				local HitPos = tr.HitPos -- 433
-				if HitPos then -- 434
-					for k, v in ipairs(self.buttons) do -- 435
-						if (v[1]:Distance(HitPos) <= 2) then -- 436
-							return k -- 436
-						end -- 436
-					end -- 436
-				end -- 434
+						if gen.Overload then -- 394
+							self:EmitSound("ambient/energy/zap" .. tostring(math.random(1, 3)) .. ".wav") -- 395
+							local dmg = DamageInfo() -- 396
+							dmg:SetDamage(math.random(4, 6)) -- 398
+							dmg:SetDamageType(DMG_SHOCK) -- 399
+							dmg:SetAttacker(self) -- 400
+							dmg:SetInflictor(self) -- 401
+							dmg:SetDamagePosition(self:EyePos()) -- 402
+							ply:TakeDamageInfo(dmg) -- 403
+							local vp = self:GetPos() -- 404
+							local ed = EffectData() -- 405
+							ed:SetOrigin(vp) -- 407
+							ed:SetScale(1) -- 408
+							ed:SetMagnitude(1) -- 409
+							ed:SetRadius(3) -- 410
+							util.Effect("Sparks", ed) -- 411
+						end -- 394
+						ply:AddMoney(reward, "The Grind") -- 412
+						self:Reward(ply) -- 413
+						if (not left) or math.random(1, 100) <= 50 then -- 414
+							return self:NewLight(ply) -- 414
+						end -- 414
+					end -- 363
+				end -- 361
+			end -- 360
+		end, -- 320
+		Reward = function(self, ply) -- 416
+			if not (ply:Team() == TEAM_PRIVATE) then -- 417
+				return -- 417
+			end -- 417
+			ply.buttons_pushed = ply.buttons_pushed or 0 -- 418
+			ply.buttons_pushed = ply.buttons_pushed + 1 -- 419
+			if ply.buttons_pushed % 50 == 0 then -- 420
+				ply:Notify("<c=0,200,0>Your work ethic makes your leader proud.") -- 421
+				return ply:AddStemCells(1) -- 422
+			end -- 420
+		end, -- 416
+		GetNearestButton = function(self, who) -- 424
+			if (not who or not IsValid(who)) then -- 425
+				who = LocalPlayer() -- 425
 			end -- 425
-		end, -- 438
-		NewLight = function(self, ply) -- 438
-			local olight = self:GetCorrectLight() -- 439
-			local set = { -- 440
-				1, -- 440
-				2, -- 440
-				3 -- 440
-			} -- 440
-			local forbidden = { -- 441
+			if self.buttons then -- 426
+				local start = who:GetShootPos() -- 427
+				local endpos = start + who:GetAimVector() * 96 -- 428
+				local tr = util.TraceLine({ -- 430
+					start = start, -- 430
+					endpos = endpos, -- 431
+					filter = who -- 432
+				}) -- 429
+				local HitPos = tr.HitPos -- 434
+				if HitPos then -- 435
+					for k, v in ipairs(self.buttons) do -- 436
+						if (v[1]:Distance(HitPos) <= 2) then -- 437
+							return k -- 437
+						end -- 437
+					end -- 436
+				end -- 435
+			end -- 426
+		end, -- 424
+		NewLight = function(self, ply) -- 439
+			local olight = self:GetCorrectLight() -- 440
+			local set = { -- 441
 				1, -- 441
 				2, -- 441
 				3 -- 441
 			} -- 441
-			local finished = true -- 442
-			for k, v in ipairs(self.buttons) do -- 443
-				local idx = self["GetButton" .. tostring(k)](self) -- 444
-				if idx > 0 then -- 445
-					finished = false -- 446
-					if idx ~= olight then -- 447
-						table.RemoveByValue(forbidden, idx) -- 447
-					end -- 447
-				end -- 445
-			end -- 447
-			for k, v in ipairs(forbidden) do -- 448
-				table.RemoveByValue(set, v) -- 448
-			end -- 448
-			local nlight = set[math.random(1, #set)] -- 449
-			if finished then -- 450
-				self:SetQueuedItems(self:GetQueuedItems() + 1) -- 451
-				for i = 1, 8 do -- 452
-					self["SetButton" .. tostring(i)](self, math.random(1, 3)) -- 452
-				end -- 452
-				local idx = math.random(1, 8) -- 453
-				self:EmitSound("items/suitchargeok1.wav", 75, math.random(75, 95)) -- 454
-				return self:SetCorrectLight(self["GetButton" .. tostring(idx)](self)) -- 455
-			elseif nlight then -- 456
-				self:EmitSound("ambient/tones/elev1.wav", 75, math.random(75, 95)) -- 457
-				return self:SetCorrectLight(nlight) -- 458
-			end -- 450
-		end, -- 460
-		Render3D2D = function(self) -- 460
-			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 461
-			if not (dist_sqr < 128 ^ 2) then -- 462
-				return -- 462
-			end -- 462
-			local gen = self:GetGenerator() -- 463
-			if gen and IsValid(gen) and (not gen:GetOn()) then -- 464
-				return -- 464
-			end -- 464
-			local ct = CurTime() -- 465
-			local lp = LocalPlayer() -- 466
-			local pos = self:GetPos() + self:GetUp() * 28 + self:GetForward() * 13 + self:GetRight() * 7.4 -- 467
-			local ang = self:GetAngles() -- 468
-			ang:RotateAroundAxis(ang:Up(), -90) -- 470
-			ang:RotateAroundAxis(ang:Forward(), 90) -- 471
-			ang:RotateAroundAxis(ang:Right(), -180) -- 472
-			local desp = (lp:GetDespair() * 0.01) -- 473
-			local font = "Spleen_Label" -- 475
-			cam.Start3D2D(pos, ang, 0.1) -- 476
-			local txt = self.PrintName -- 477
-			local col = HSVToColor((ct * 23) % 180, 1, 1) -- 478
-			surface.SetMaterial(noise) -- 481
-			surface.DrawTexturedRect(0, 0, 236, 78) -- 482
-			local txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 484
-			txt_obj:Draw(120, 24, 1, TEXT_ALIGN_CENTER) -- 485
-			cam.End3D2D() -- 486
-			font = "Spleen_Label_Small" -- 488
-			pos = self:GetPos() + self:GetUp() * 14.7 + self:GetForward() * 13 + self:GetRight() * 3 -- 489
-			ang = self:GetAngles() -- 490
-			ang:RotateAroundAxis(ang:Up(), -90) -- 492
-			ang:RotateAroundAxis(ang:Forward(), 90) -- 493
-			ang:RotateAroundAxis(ang:Right(), -180) -- 494
-			cam.Start3D2D(pos, ang, 0.1) -- 495
-			local py = 0 -- 496
-			local _list_0 = self.Precursors -- 497
-			for _index_0 = 1, #_list_0 do -- 497
-				local p = _list_0[_index_0] -- 497
-				local name = p.name -- 498
-				name = tostring(name:sub(1, 1):upper()) .. tostring(name:sub(2, -1)) -- 499
-				local pre_amt = self["GetPrecursor" .. tostring(name)](self) -- 500
-				txt = tostring(pre_amt) .. " " .. tostring(p.name) -- 501
-				local font -- 502
-				font = "Spleen_Autodealer" -- 502
-				txt_obj = scribe.Parse("<stutter><rgb=1,1,60><wiggle=" .. tostring(5 * desp) .. "," .. tostring(15 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(3 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 504
-				txt_obj:Draw(75, py, 1, TEXT_ALIGN_CENTER) -- 505
-				py = py + txt_obj:GetTall() -- 506
-			end -- 506
-			cam.End3D2D() -- 507
-			font = "Spleen_Label_Small" -- 509
-			pos = self:GetPos() + self:GetUp() * 10.7 + self:GetForward() * 13 + self:GetRight() * 6.15 -- 510
-			cam.Start3D2D(pos, ang, 0.1) -- 511
-			local rust = self:GetRust() -- 512
-			local empty = true -- 513
-			local _list_1 = self.Precursors -- 514
-			for _index_0 = 1, #_list_1 do -- 514
-				local p = _list_1[_index_0] -- 514
-				local name = p.name -- 515
-				name = tostring(name:sub(1, 1):upper()) .. tostring(name:sub(2, -1)) -- 516
-				local cur_amt = self["GetPrecursor" .. tostring(name)](self) -- 517
-				if cur_amt > 0 then -- 518
-					empty = false -- 519
-					break -- 520
-				end -- 518
-			end -- 520
-			txt = "i'm " .. tostring(rust) .. "% rusted" -- 521
-			if rust < 1 then -- 522
-				txt = "give me purpose" -- 522
-			end -- 522
-			if rust >= 100 then -- 523
-				txt = "I'M ROTTEN. HELP" -- 523
+			local forbidden = { -- 442
+				1, -- 442
+				2, -- 442
+				3 -- 442
+			} -- 442
+			local finished = true -- 443
+			for k, v in ipairs(self.buttons) do -- 444
+				local idx = self["GetButton" .. tostring(k)](self) -- 445
+				if idx > 0 then -- 446
+					finished = false -- 447
+					if idx ~= olight then -- 448
+						table.RemoveByValue(forbidden, idx) -- 448
+					end -- 448
+				end -- 446
+			end -- 444
+			for k, v in ipairs(forbidden) do -- 449
+				table.RemoveByValue(set, v) -- 449
+			end -- 449
+			local nlight = set[math.random(1, #set)] -- 450
+			if finished then -- 451
+				self:SetQueuedItems(self:GetQueuedItems() + 1) -- 452
+				for i = 1, 8 do -- 453
+					self["SetButton" .. tostring(i)](self, math.random(1, 3)) -- 453
+				end -- 453
+				local idx = math.random(1, 8) -- 454
+				self:EmitSound("items/suitchargeok1.wav", 75, math.random(75, 95)) -- 455
+				return self:SetCorrectLight(self["GetButton" .. tostring(idx)](self)) -- 456
+			elseif nlight then -- 457
+				self:EmitSound("ambient/tones/elev1.wav", 75, math.random(75, 95)) -- 458
+				return self:SetCorrectLight(nlight) -- 459
+			end -- 451
+		end, -- 439
+		Render3D2D = function(self) -- 461
+			local dist_sqr = self:GetPos():DistToSqr(lp:GetPos()) -- 462
+			if not (dist_sqr < 128 ^ 2) then -- 463
+				return -- 463
+			end -- 463
+			local gen = self:GetGenerator() -- 464
+			if gen and IsValid(gen) and (not gen:GetOn()) then -- 465
+				return -- 465
+			end -- 465
+			local ct = CurTime() -- 466
+			local lp = LocalPlayer() -- 467
+			local pos = self:GetPos() + self:GetUp() * 28 + self:GetForward() * 13 + self:GetRight() * 7.4 -- 468
+			local ang = self:GetAngles() -- 469
+			ang:RotateAroundAxis(ang:Up(), -90) -- 471
+			ang:RotateAroundAxis(ang:Forward(), 90) -- 472
+			ang:RotateAroundAxis(ang:Right(), -180) -- 473
+			local desp = (lp:GetDespair() * 0.01) -- 474
+			local font = "Spleen_Label" -- 476
+			cam.Start3D2D(pos, ang, 0.1) -- 477
+			local txt = self.PrintName -- 478
+			local col = HSVToColor((ct * 23) % 180, 1, 1) -- 479
+			surface.SetMaterial(noise) -- 482
+			surface.DrawTexturedRect(0, 0, 236, 78) -- 483
+			local txt_obj = scribe.Parse("<stutter><rgb=1,1,30><wiggle=" .. tostring(8 * desp) .. "," .. tostring(10 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(6 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 485
+			txt_obj:Draw(120, 24, 1, TEXT_ALIGN_CENTER) -- 486
+			cam.End3D2D() -- 487
+			font = "Spleen_Label_Small" -- 489
+			pos = self:GetPos() + self:GetUp() * 14.7 + self:GetForward() * 13 + self:GetRight() * 3 -- 490
+			ang = self:GetAngles() -- 491
+			ang:RotateAroundAxis(ang:Up(), -90) -- 493
+			ang:RotateAroundAxis(ang:Forward(), 90) -- 494
+			ang:RotateAroundAxis(ang:Right(), -180) -- 495
+			cam.Start3D2D(pos, ang, 0.1) -- 496
+			local py = 0 -- 497
+			local _list_0 = self.Precursors -- 498
+			for _index_0 = 1, #_list_0 do -- 498
+				local p = _list_0[_index_0] -- 498
+				local name = p.name -- 499
+				name = tostring(name:sub(1, 1):upper()) .. tostring(name:sub(2, -1)) -- 500
+				local pre_amt = self["GetPrecursor" .. tostring(name)](self) -- 501
+				txt = tostring(pre_amt) .. " " .. tostring(p.name) -- 502
+				local font = "Spleen_Autodealer" -- 503
+				txt_obj = scribe.Parse("<stutter><rgb=1,1,60><wiggle=" .. tostring(5 * desp) .. "," .. tostring(15 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(3 * desp) .. "," .. tostring(0.38 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 505
+				txt_obj:Draw(75, py, 1, TEXT_ALIGN_CENTER) -- 506
+				py = py + txt_obj:GetTall() -- 507
+			end -- 498
+			cam.End3D2D() -- 508
+			font = "Spleen_Label_Small" -- 510
+			pos = self:GetPos() + self:GetUp() * 10.7 + self:GetForward() * 13 + self:GetRight() * 6.15 -- 511
+			cam.Start3D2D(pos, ang, 0.1) -- 512
+			local rust = self:GetRust() -- 513
+			local empty = true -- 514
+			local _list_1 = self.Precursors -- 515
+			for _index_0 = 1, #_list_1 do -- 515
+				local p = _list_1[_index_0] -- 515
+				local name = p.name -- 516
+				name = tostring(name:sub(1, 1):upper()) .. tostring(name:sub(2, -1)) -- 517
+				local cur_amt = self["GetPrecursor" .. tostring(name)](self) -- 518
+				if cur_amt > 0 then -- 519
+					empty = false -- 520
+					break -- 521
+				end -- 519
+			end -- 515
+			txt = "i'm " .. tostring(rust) .. "% rusted" -- 522
+			if rust < 1 then -- 523
+				txt = "give me purpose" -- 523
 			end -- 523
-			if empty then -- 524
-				txt = "FEED ME" -- 524
+			if rust >= 100 then -- 524
+				txt = "I'M ROTTEN. HELP" -- 524
 			end -- 524
-			local prod = self:GetProducing() -- 525
-			if prod ~= "" then -- 526
-				local etab = scripted_ents.Get(prod) or weapons.Get(prod) -- 527
-				txt = etab.PrintName -- 528
-			end -- 526
-			surface.SetDrawColor(0, 0, 0, 255) -- 531
-			surface.DrawRect(0, 0, 209, 56) -- 532
-			local production_start = self:GetProductionStart() -- 535
-			local production_end = self:GetProductionEnd() -- 536
-			if production_end > 0 then -- 537
-				local cur = ct - production_start -- 538
-				local ending = production_end - production_start -- 539
-				surface.SetDrawColor(0, 150 + (100 * math.cos(ct)), 0, 255) -- 540
-				surface.DrawRect(0, 0, 209 * (cur / ending), 56) -- 541
-			elseif rust >= 100 then -- 542
-				surface.SetDrawColor(150 + (100 * math.cos(ct)), 0, 0, 255) -- 543
-				surface.DrawRect(0, 0, 209 * (rust / 100), 56) -- 544
-			else -- 546
-				surface.SetDrawColor(147, 58 + (29 * math.cos(ct)), 22, 255) -- 546
-				surface.DrawRect(0, 0, 209 * (rust / 100), 56) -- 547
-			end -- 537
-			txt_obj = scribe.Parse("<stutter><wiggle=" .. tostring(2 * desp) .. "," .. tostring(20 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(5 * desp) .. "," .. tostring(0.666 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 549
-			txt_obj:Draw(105, 16, 1, TEXT_ALIGN_CENTER) -- 550
-			return cam.End3D2D() -- 551
-		end -- 49
+			if empty then -- 525
+				txt = "FEED ME" -- 525
+			end -- 525
+			local prod = self:GetProducing() -- 526
+			if prod ~= "" then -- 527
+				local etab = scripted_ents.Get(prod) or weapons.Get(prod) -- 528
+				txt = etab.PrintName -- 529
+			end -- 527
+			surface.SetDrawColor(0, 0, 0, 255) -- 532
+			surface.DrawRect(0, 0, 209, 56) -- 533
+			local production_start = self:GetProductionStart() -- 536
+			local production_end = self:GetProductionEnd() -- 537
+			if production_end > 0 then -- 538
+				local cur = ct - production_start -- 539
+				local ending = production_end - production_start -- 540
+				surface.SetDrawColor(0, 150 + (100 * math.cos(ct)), 0, 255) -- 541
+				surface.DrawRect(0, 0, 209 * (cur / ending), 56) -- 542
+			elseif rust >= 100 then -- 543
+				surface.SetDrawColor(150 + (100 * math.cos(ct)), 0, 0, 255) -- 544
+				surface.DrawRect(0, 0, 209 * (rust / 100), 56) -- 545
+			else -- 547
+				surface.SetDrawColor(147, 58 + (29 * math.cos(ct)), 22, 255) -- 547
+				surface.DrawRect(0, 0, 209 * (rust / 100), 56) -- 548
+			end -- 538
+			txt_obj = scribe.Parse("<stutter><wiggle=" .. tostring(2 * desp) .. "," .. tostring(20 * desp) .. "><f=" .. tostring(font) .. "><wave=" .. tostring(5 * desp) .. "," .. tostring(0.666 * desp) .. ",2><ol=2>" .. tostring(txt)) -- 550
+			txt_obj:Draw(105, 16, 1, TEXT_ALIGN_CENTER) -- 551
+			return cam.End3D2D() -- 552
+		end -- 461
 	} -- 49
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 554
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 49
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 49
 			_base_0[_key_0] = _val_0 -- 49
 		end -- 49
-	end -- 554
+	end -- 49
 	if _base_0.__index == nil then -- 49
 		_base_0.__index = _base_0 -- 49
-	end -- 554
+	end -- 49
 	setmetatable(_base_0, _parent_0.__base) -- 49
 	_class_0 = setmetatable({ -- 49
 		__init = function(self, ...) -- 49
@@ -843,696 +843,694 @@ do -- 49
 		_parent_0.__inherited(_parent_0, _class_0) -- 49
 	end -- 49
 	Machine = _class_0 -- 49
-end -- 554
-local Tools -- 556
-do -- 556
-	local _class_0 -- 556
-	local _parent_0 = Machine -- 556
-	local _base_0 = { -- 556
+end -- 49
+local Tools -- 557
+do -- 557
+	local _class_0 -- 557
+	local _parent_0 = Machine -- 557
+	local _base_0 = { -- 557
 		PrintName = "Tool Machine", -- 558
 		BasePay = 7, -- 559
-		Precursors = { -- 560
-			{ -- 560
-				name = "metal" -- 560
-			}, -- 560
+		Precursors = { -- 561
 			{ -- 561
-				name = "wood" -- 561
-			} -- 561
-		}, -- 562
-		Reward = function(self, ply) -- 562
-			if not (ply:Team() == TEAM_PRIVATE) then -- 563
-				return -- 563
-			end -- 563
-			ply.buttons_pushed = ply.buttons_pushed or 0 -- 564
-			ply.buttons_pushed = ply.buttons_pushed + 2 -- 565
-			if ply.buttons_pushed % 50 == 0 then -- 566
-				ply:Notify("<c=0,200,0>Your work ethic makes your leader proud.") -- 567
-				return ply:AddStemCells(1) -- 568
-			end -- 566
-		end, -- 569
-		Products = { -- 570
-			["evilrp_melee/crowbar"] = { -- 571
-				precursors = { -- 572
-					metal = 3 -- 572
-				}, -- 571
-				time = 10 -- 573
-			}, -- 570
-			["evilrp_melee/knife"] = { -- 575
-				precursors = { -- 576
-					metal = 2 -- 576
-				}, -- 575
-				time = 15 -- 577
-			}, -- 574
-			["evilrp_melee/pipe"] = { -- 579
-				precursors = { -- 580
-					metal = 2 -- 580
-				}, -- 579
-				time = 10 -- 581
-			}, -- 578
-			["evilrp_melee/pickaxe"] = { -- 583
-				precursors = { -- 584
-					metal = 5, -- 584
-					wood = 2 -- 585
-				}, -- 583
-				time = 20 -- 586
-			}, -- 582
-			["evilrp_melee/shovel"] = { -- 588
-				precursors = { -- 589
-					metal = 4, -- 589
-					wood = 3 -- 590
-				}, -- 588
-				time = 20 -- 591
-			}, -- 587
-			["evilrp_melee/pot"] = { -- 593
-				precursors = { -- 594
-					metal = 1 -- 594
-				}, -- 593
-				time = 10 -- 595
-			} -- 592
-		}, -- 596
-		FactoryIdentifier = "tools" -- 556
-	} -- 556
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 596
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 556
-			_base_0[_key_0] = _val_0 -- 556
-		end -- 556
-	end -- 596
-	if _base_0.__index == nil then -- 556
-		_base_0.__index = _base_0 -- 556
-	end -- 596
-	setmetatable(_base_0, _parent_0.__base) -- 556
-	_class_0 = setmetatable({ -- 556
-		__init = function(self, ...) -- 556
-			return _class_0.__parent.__init(self, ...) -- 556
-		end, -- 556
-		__base = _base_0, -- 556
-		__name = "Tools", -- 556
-		__parent = _parent_0 -- 556
-	}, { -- 556
-		__index = function(cls, name) -- 556
-			local val = rawget(_base_0, name) -- 556
-			if val == nil then -- 556
-				local parent = rawget(cls, "__parent") -- 556
-				if parent then -- 556
-					return parent[name] -- 556
-				end -- 556
-			else -- 556
-				return val -- 556
-			end -- 556
-		end, -- 556
-		__call = function(cls, ...) -- 556
-			local _self_0 = setmetatable({ }, _base_0) -- 556
-			cls.__init(_self_0, ...) -- 556
-			return _self_0 -- 556
-		end -- 556
-	}) -- 556
-	_base_0.__class = _class_0 -- 556
-	if _parent_0.__inherited then -- 556
-		_parent_0.__inherited(_parent_0, _class_0) -- 556
-	end -- 556
-	Tools = _class_0 -- 556
-end -- 596
-local Food -- 597
-do -- 597
-	local _class_0 -- 597
-	local _parent_0 = Machine -- 597
-	local _base_0 = { -- 597
+				name = "metal" -- 561
+			}, -- 561
+			{ -- 562
+				name = "wood" -- 562
+			} -- 562
+		}, -- 560
+		Reward = function(self, ply) -- 563
+			if not (ply:Team() == TEAM_PRIVATE) then -- 564
+				return -- 564
+			end -- 564
+			ply.buttons_pushed = ply.buttons_pushed or 0 -- 565
+			ply.buttons_pushed = ply.buttons_pushed + 2 -- 566
+			if ply.buttons_pushed % 50 == 0 then -- 567
+				ply:Notify("<c=0,200,0>Your work ethic makes your leader proud.") -- 568
+				return ply:AddStemCells(1) -- 569
+			end -- 567
+		end, -- 563
+		Products = { -- 571
+			["evilrp_melee/crowbar"] = { -- 572
+				precursors = { -- 573
+					metal = 3 -- 573
+				}, -- 572
+				time = 10 -- 574
+			}, -- 571
+			["evilrp_melee/knife"] = { -- 576
+				precursors = { -- 577
+					metal = 2 -- 577
+				}, -- 576
+				time = 15 -- 578
+			}, -- 575
+			["evilrp_melee/pipe"] = { -- 580
+				precursors = { -- 581
+					metal = 2 -- 581
+				}, -- 580
+				time = 10 -- 582
+			}, -- 579
+			["evilrp_melee/pickaxe"] = { -- 584
+				precursors = { -- 585
+					metal = 5, -- 585
+					wood = 2 -- 586
+				}, -- 584
+				time = 20 -- 587
+			}, -- 583
+			["evilrp_melee/shovel"] = { -- 589
+				precursors = { -- 590
+					metal = 4, -- 590
+					wood = 3 -- 591
+				}, -- 589
+				time = 20 -- 592
+			}, -- 588
+			["evilrp_melee/pot"] = { -- 594
+				precursors = { -- 595
+					metal = 1 -- 595
+				}, -- 594
+				time = 10 -- 596
+			} -- 593
+		}, -- 570
+		FactoryIdentifier = "tools" -- 597
+	} -- 557
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 557
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 557
+			_base_0[_key_0] = _val_0 -- 557
+		end -- 557
+	end -- 557
+	if _base_0.__index == nil then -- 557
+		_base_0.__index = _base_0 -- 557
+	end -- 557
+	setmetatable(_base_0, _parent_0.__base) -- 557
+	_class_0 = setmetatable({ -- 557
+		__init = function(self, ...) -- 557
+			return _class_0.__parent.__init(self, ...) -- 557
+		end, -- 557
+		__base = _base_0, -- 557
+		__name = "Tools", -- 557
+		__parent = _parent_0 -- 557
+	}, { -- 557
+		__index = function(cls, name) -- 557
+			local val = rawget(_base_0, name) -- 557
+			if val == nil then -- 557
+				local parent = rawget(cls, "__parent") -- 557
+				if parent then -- 557
+					return parent[name] -- 557
+				end -- 557
+			else -- 557
+				return val -- 557
+			end -- 557
+		end, -- 557
+		__call = function(cls, ...) -- 557
+			local _self_0 = setmetatable({ }, _base_0) -- 557
+			cls.__init(_self_0, ...) -- 557
+			return _self_0 -- 557
+		end -- 557
+	}) -- 557
+	_base_0.__class = _class_0 -- 557
+	if _parent_0.__inherited then -- 557
+		_parent_0.__inherited(_parent_0, _class_0) -- 557
+	end -- 557
+	Tools = _class_0 -- 557
+end -- 557
+local Food -- 598
+do -- 598
+	local _class_0 -- 598
+	local _parent_0 = Machine -- 598
+	local _base_0 = { -- 598
 		PrintName = "Food Machine", -- 599
 		BasePay = 3, -- 600
-		Precursors = { -- 601
-			{ -- 601
-				name = "biomass" -- 601
-			}, -- 601
+		Precursors = { -- 602
 			{ -- 602
-				name = "fluid" -- 602
-			} -- 602
-		}, -- 603
-		Products = { -- 604
-			["item/food/soyloaf"] = { -- 605
-				precursors = { -- 606
-					biomass = 1 -- 606
-				}, -- 605
-				time = 6 -- 607
-			}, -- 604
-			["item/food/abortion"] = { -- 609
-				precursors = { -- 610
-					biomass = 3 -- 610
-				}, -- 609
-				time = 6 -- 611
-			}, -- 608
-			["item/food/drink/fearbeer"] = { -- 613
-				precursors = { -- 614
-					biomass = 3 -- 614
-				}, -- 613
-				time = 7 -- 615
-			}, -- 612
-			["item/food/drink/smearbeer"] = { -- 617
-				precursors = { -- 618
-					biomass = 4 -- 618
-				}, -- 617
-				time = 8 -- 619
-			}, -- 616
-			["item/food/drink/shake"] = { -- 621
-				precursors = { -- 622
-					biomass = 4 -- 622
-				}, -- 621
-				time = 6 -- 623
-			}, -- 620
-			["item/food/moldmelon"] = { -- 625
-				precursors = { -- 626
-					biomass = 2 -- 626
-				}, -- 625
-				time = 9 -- 627
-			}, -- 624
-			["item/food/drink/twitchel"] = { -- 629
-				precursors = { -- 630
-					biomass = 2 -- 630
-				}, -- 629
-				time = 5 -- 631
-			} -- 628
-		}, -- 632
-		FactoryIdentifier = "food" -- 597
-	} -- 597
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 632
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 597
-			_base_0[_key_0] = _val_0 -- 597
-		end -- 597
-	end -- 632
-	if _base_0.__index == nil then -- 597
-		_base_0.__index = _base_0 -- 597
-	end -- 632
-	setmetatable(_base_0, _parent_0.__base) -- 597
-	_class_0 = setmetatable({ -- 597
-		__init = function(self, ...) -- 597
-			return _class_0.__parent.__init(self, ...) -- 597
-		end, -- 597
-		__base = _base_0, -- 597
-		__name = "Food", -- 597
-		__parent = _parent_0 -- 597
-	}, { -- 597
-		__index = function(cls, name) -- 597
-			local val = rawget(_base_0, name) -- 597
-			if val == nil then -- 597
-				local parent = rawget(cls, "__parent") -- 597
-				if parent then -- 597
-					return parent[name] -- 597
-				end -- 597
-			else -- 597
-				return val -- 597
-			end -- 597
-		end, -- 597
-		__call = function(cls, ...) -- 597
-			local _self_0 = setmetatable({ }, _base_0) -- 597
-			cls.__init(_self_0, ...) -- 597
-			return _self_0 -- 597
-		end -- 597
-	}) -- 597
-	_base_0.__class = _class_0 -- 597
-	if _parent_0.__inherited then -- 597
-		_parent_0.__inherited(_parent_0, _class_0) -- 597
-	end -- 597
-	Food = _class_0 -- 597
-end -- 632
-local Weapons -- 633
-do -- 633
-	local _class_0 -- 633
-	local _parent_0 = Machine -- 633
-	local _base_0 = { -- 633
+				name = "biomass" -- 602
+			}, -- 602
+			{ -- 603
+				name = "fluid" -- 603
+			} -- 603
+		}, -- 601
+		Products = { -- 605
+			["item/food/soyloaf"] = { -- 606
+				precursors = { -- 607
+					biomass = 1 -- 607
+				}, -- 606
+				time = 6 -- 608
+			}, -- 605
+			["item/food/abortion"] = { -- 610
+				precursors = { -- 611
+					biomass = 3 -- 611
+				}, -- 610
+				time = 6 -- 612
+			}, -- 609
+			["item/food/drink/fearbeer"] = { -- 614
+				precursors = { -- 615
+					biomass = 3 -- 615
+				}, -- 614
+				time = 7 -- 616
+			}, -- 613
+			["item/food/drink/smearbeer"] = { -- 618
+				precursors = { -- 619
+					biomass = 4 -- 619
+				}, -- 618
+				time = 8 -- 620
+			}, -- 617
+			["item/food/drink/shake"] = { -- 622
+				precursors = { -- 623
+					biomass = 4 -- 623
+				}, -- 622
+				time = 6 -- 624
+			}, -- 621
+			["item/food/moldmelon"] = { -- 626
+				precursors = { -- 627
+					biomass = 2 -- 627
+				}, -- 626
+				time = 9 -- 628
+			}, -- 625
+			["item/food/drink/twitchel"] = { -- 630
+				precursors = { -- 631
+					biomass = 2 -- 631
+				}, -- 630
+				time = 5 -- 632
+			} -- 629
+		}, -- 604
+		FactoryIdentifier = "food" -- 633
+	} -- 598
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 598
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 598
+			_base_0[_key_0] = _val_0 -- 598
+		end -- 598
+	end -- 598
+	if _base_0.__index == nil then -- 598
+		_base_0.__index = _base_0 -- 598
+	end -- 598
+	setmetatable(_base_0, _parent_0.__base) -- 598
+	_class_0 = setmetatable({ -- 598
+		__init = function(self, ...) -- 598
+			return _class_0.__parent.__init(self, ...) -- 598
+		end, -- 598
+		__base = _base_0, -- 598
+		__name = "Food", -- 598
+		__parent = _parent_0 -- 598
+	}, { -- 598
+		__index = function(cls, name) -- 598
+			local val = rawget(_base_0, name) -- 598
+			if val == nil then -- 598
+				local parent = rawget(cls, "__parent") -- 598
+				if parent then -- 598
+					return parent[name] -- 598
+				end -- 598
+			else -- 598
+				return val -- 598
+			end -- 598
+		end, -- 598
+		__call = function(cls, ...) -- 598
+			local _self_0 = setmetatable({ }, _base_0) -- 598
+			cls.__init(_self_0, ...) -- 598
+			return _self_0 -- 598
+		end -- 598
+	}) -- 598
+	_base_0.__class = _class_0 -- 598
+	if _parent_0.__inherited then -- 598
+		_parent_0.__inherited(_parent_0, _class_0) -- 598
+	end -- 598
+	Food = _class_0 -- 598
+end -- 598
+local Weapons -- 634
+do -- 634
+	local _class_0 -- 634
+	local _parent_0 = Machine -- 634
+	local _base_0 = { -- 634
 		PrintName = "Weapons Machine", -- 635
 		BasePay = 10, -- 636
-		Precursors = { -- 637
-			{ -- 637
-				name = "metal" -- 637
-			}, -- 637
+		Precursors = { -- 638
 			{ -- 638
-				name = "polymer" -- 638
-			} -- 638
-		}, -- 640
-		Reward = function(self, ply) -- 640
-			if not (ply:Team() == TEAM_PRIVATE) then -- 641
-				return -- 641
-			end -- 641
-			ply.buttons_pushed = ply.buttons_pushed or 0 -- 642
-			ply.buttons_pushed = ply.buttons_pushed + 3 -- 643
-			if ply.buttons_pushed % 50 == 0 then -- 644
-				ply:Notify("<c=0,200,0>Your work ethic makes your leader proud.") -- 645
-				return ply:AddStemCells(1) -- 646
-			end -- 644
-		end, -- 647
-		Products = { -- 648
-			["evilrp_weapon/bodyguard"] = { -- 649
-				precursors = { -- 650
-					metal = 5 -- 650
-				}, -- 649
-				time = 20 -- 651
-			}, -- 648
-			["evilrp_weapon/warrant"] = { -- 653
-				precursors = { -- 654
-					metal = 5 -- 654
-				}, -- 653
-				time = 20 -- 655
-			}, -- 652
-			["evilrp_weapon/hope"] = { -- 657
-				precursors = { -- 658
-					metal = 4 -- 658
-				}, -- 657
-				time = 20 -- 659
-			}, -- 656
-			["evilrp_weapon/enforcer"] = { -- 661
-				precursors = { -- 662
-					metal = 7 -- 662
-				}, -- 661
-				time = 25 -- 663
-			}, -- 660
-			["evilrp_weapon/viper"] = { -- 665
-				precursors = { -- 666
-					metal = 6 -- 666
-				}, -- 665
-				time = 25 -- 667
-			}, -- 664
-			["evilrp_weapon/brainpaster"] = { -- 669
-				precursors = { -- 670
-					metal = 5, -- 670
-					polymer = 1 -- 671
-				}, -- 669
-				time = 20 -- 672
-			}, -- 668
-			["evilrp_weapon/subjugator"] = { -- 674
-				precursors = { -- 675
-					metal = 7, -- 675
-					polymer = 3 -- 676
-				}, -- 674
-				time = 25 -- 677
-			}, -- 673
-			["evilrp_weapon/painkiller"] = { -- 679
-				precursors = { -- 680
-					metal = 4, -- 680
-					polymer = 2 -- 681
-				}, -- 679
-				time = 20 -- 682
-			}, -- 678
-			["evilrp_weapon/candlewood"] = { -- 684
-				precursors = { -- 685
-					metal = 4, -- 685
-					polymer = 4 -- 686
-				}, -- 684
-				time = 25 -- 687
-			}, -- 683
-			["evilrp_weapon/obliterator"] = { -- 689
-				precursors = { -- 690
-					metal = 8, -- 690
-					polymer = 5 -- 691
-				}, -- 689
-				time = 30 -- 692
-			}, -- 688
-			["evilrp_weapon/trooper"] = { -- 694
-				precursors = { -- 695
-					metal = 11, -- 695
-					polymer = 7 -- 696
-				}, -- 694
-				time = 30 -- 697
-			} -- 693
-		}, -- 698
-		FactoryIdentifier = "weapons" -- 633
-	} -- 633
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 698
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 633
-			_base_0[_key_0] = _val_0 -- 633
-		end -- 633
-	end -- 698
-	if _base_0.__index == nil then -- 633
-		_base_0.__index = _base_0 -- 633
-	end -- 698
-	setmetatable(_base_0, _parent_0.__base) -- 633
-	_class_0 = setmetatable({ -- 633
-		__init = function(self, ...) -- 633
-			return _class_0.__parent.__init(self, ...) -- 633
-		end, -- 633
-		__base = _base_0, -- 633
-		__name = "Weapons", -- 633
-		__parent = _parent_0 -- 633
-	}, { -- 633
-		__index = function(cls, name) -- 633
-			local val = rawget(_base_0, name) -- 633
-			if val == nil then -- 633
-				local parent = rawget(cls, "__parent") -- 633
-				if parent then -- 633
-					return parent[name] -- 633
-				end -- 633
-			else -- 633
-				return val -- 633
-			end -- 633
-		end, -- 633
-		__call = function(cls, ...) -- 633
-			local _self_0 = setmetatable({ }, _base_0) -- 633
-			cls.__init(_self_0, ...) -- 633
-			return _self_0 -- 633
-		end -- 633
-	}) -- 633
-	_base_0.__class = _class_0 -- 633
-	if _parent_0.__inherited then -- 633
-		_parent_0.__inherited(_parent_0, _class_0) -- 633
-	end -- 633
-	Weapons = _class_0 -- 633
-end -- 698
-local Medicine -- 699
-do -- 699
-	local _class_0 -- 699
-	local _parent_0 = Machine -- 699
-	local _base_0 = { -- 699
+				name = "metal" -- 638
+			}, -- 638
+			{ -- 639
+				name = "polymer" -- 639
+			} -- 639
+		}, -- 637
+		Reward = function(self, ply) -- 641
+			if not (ply:Team() == TEAM_PRIVATE) then -- 642
+				return -- 642
+			end -- 642
+			ply.buttons_pushed = ply.buttons_pushed or 0 -- 643
+			ply.buttons_pushed = ply.buttons_pushed + 3 -- 644
+			if ply.buttons_pushed % 50 == 0 then -- 645
+				ply:Notify("<c=0,200,0>Your work ethic makes your leader proud.") -- 646
+				return ply:AddStemCells(1) -- 647
+			end -- 645
+		end, -- 641
+		Products = { -- 649
+			["evilrp_weapon/bodyguard"] = { -- 650
+				precursors = { -- 651
+					metal = 5 -- 651
+				}, -- 650
+				time = 20 -- 652
+			}, -- 649
+			["evilrp_weapon/warrant"] = { -- 654
+				precursors = { -- 655
+					metal = 5 -- 655
+				}, -- 654
+				time = 20 -- 656
+			}, -- 653
+			["evilrp_weapon/hope"] = { -- 658
+				precursors = { -- 659
+					metal = 4 -- 659
+				}, -- 658
+				time = 20 -- 660
+			}, -- 657
+			["evilrp_weapon/enforcer"] = { -- 662
+				precursors = { -- 663
+					metal = 7 -- 663
+				}, -- 662
+				time = 25 -- 664
+			}, -- 661
+			["evilrp_weapon/viper"] = { -- 666
+				precursors = { -- 667
+					metal = 6 -- 667
+				}, -- 666
+				time = 25 -- 668
+			}, -- 665
+			["evilrp_weapon/brainpaster"] = { -- 670
+				precursors = { -- 671
+					metal = 5, -- 671
+					polymer = 1 -- 672
+				}, -- 670
+				time = 20 -- 673
+			}, -- 669
+			["evilrp_weapon/subjugator"] = { -- 675
+				precursors = { -- 676
+					metal = 7, -- 676
+					polymer = 3 -- 677
+				}, -- 675
+				time = 25 -- 678
+			}, -- 674
+			["evilrp_weapon/painkiller"] = { -- 680
+				precursors = { -- 681
+					metal = 4, -- 681
+					polymer = 2 -- 682
+				}, -- 680
+				time = 20 -- 683
+			}, -- 679
+			["evilrp_weapon/candlewood"] = { -- 685
+				precursors = { -- 686
+					metal = 4, -- 686
+					polymer = 4 -- 687
+				}, -- 685
+				time = 25 -- 688
+			}, -- 684
+			["evilrp_weapon/obliterator"] = { -- 690
+				precursors = { -- 691
+					metal = 8, -- 691
+					polymer = 5 -- 692
+				}, -- 690
+				time = 30 -- 693
+			}, -- 689
+			["evilrp_weapon/trooper"] = { -- 695
+				precursors = { -- 696
+					metal = 11, -- 696
+					polymer = 7 -- 697
+				}, -- 695
+				time = 30 -- 698
+			} -- 694
+		}, -- 648
+		FactoryIdentifier = "weapons" -- 699
+	} -- 634
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 634
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 634
+			_base_0[_key_0] = _val_0 -- 634
+		end -- 634
+	end -- 634
+	if _base_0.__index == nil then -- 634
+		_base_0.__index = _base_0 -- 634
+	end -- 634
+	setmetatable(_base_0, _parent_0.__base) -- 634
+	_class_0 = setmetatable({ -- 634
+		__init = function(self, ...) -- 634
+			return _class_0.__parent.__init(self, ...) -- 634
+		end, -- 634
+		__base = _base_0, -- 634
+		__name = "Weapons", -- 634
+		__parent = _parent_0 -- 634
+	}, { -- 634
+		__index = function(cls, name) -- 634
+			local val = rawget(_base_0, name) -- 634
+			if val == nil then -- 634
+				local parent = rawget(cls, "__parent") -- 634
+				if parent then -- 634
+					return parent[name] -- 634
+				end -- 634
+			else -- 634
+				return val -- 634
+			end -- 634
+		end, -- 634
+		__call = function(cls, ...) -- 634
+			local _self_0 = setmetatable({ }, _base_0) -- 634
+			cls.__init(_self_0, ...) -- 634
+			return _self_0 -- 634
+		end -- 634
+	}) -- 634
+	_base_0.__class = _class_0 -- 634
+	if _parent_0.__inherited then -- 634
+		_parent_0.__inherited(_parent_0, _class_0) -- 634
+	end -- 634
+	Weapons = _class_0 -- 634
+end -- 634
+local Medicine -- 700
+do -- 700
+	local _class_0 -- 700
+	local _parent_0 = Machine -- 700
+	local _base_0 = { -- 700
 		PrintName = "Medicine Machine", -- 701
 		BasePay = 7, -- 702
-		Reward = function(self, ply) -- 702
-			if not (ply:Team() == TEAM_PRIVATE) then -- 703
-				return -- 703
-			end -- 703
-			ply.buttons_pushed = ply.buttons_pushed or 0 -- 704
-			ply.buttons_pushed = ply.buttons_pushed + 2 -- 705
-			if ply.buttons_pushed % 50 == 0 then -- 706
-				ply:Notify("<c=0,200,0>Your work ethic makes your leader proud.") -- 707
-				return ply:AddStemCells(1) -- 708
-			end -- 706
-		end, -- 709
-		Precursors = { -- 710
-			{ -- 710
-				name = "biomass" -- 710
-			}, -- 710
+		Reward = function(self, ply) -- 703
+			if not (ply:Team() == TEAM_PRIVATE) then -- 704
+				return -- 704
+			end -- 704
+			ply.buttons_pushed = ply.buttons_pushed or 0 -- 705
+			ply.buttons_pushed = ply.buttons_pushed + 2 -- 706
+			if ply.buttons_pushed % 50 == 0 then -- 707
+				ply:Notify("<c=0,200,0>Your work ethic makes your leader proud.") -- 708
+				return ply:AddStemCells(1) -- 709
+			end -- 707
+		end, -- 703
+		Precursors = { -- 711
 			{ -- 711
-				name = "metal" -- 711
-			} -- 711
-		}, -- 712
-		Products = { -- 713
-			["item/food/medicine/pills"] = { -- 714
-				precursors = { -- 715
-					biomass = 2, -- 715
-					metal = 1 -- 716
-				}, -- 714
-				time = 10 -- 717
-			}, -- 713
-			["item/food/medicine/ablativepaste"] = { -- 719
-				precursors = { -- 720
-					biomass = 3, -- 720
-					metal = 1 -- 721
-				}, -- 719
-				time = 10 -- 722
-			}, -- 718
-			["item/food/medicine/bleach"] = { -- 724
-				precursors = { -- 725
-					biomass = 2, -- 725
-					metal = 1 -- 726
-				}, -- 724
-				time = 10 -- 727
-			} -- 723
-		}, -- 729
-		FactoryIdentifier = "medicine" -- 699
-	} -- 699
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 729
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 699
-			_base_0[_key_0] = _val_0 -- 699
-		end -- 699
-	end -- 729
-	if _base_0.__index == nil then -- 699
-		_base_0.__index = _base_0 -- 699
-	end -- 729
-	setmetatable(_base_0, _parent_0.__base) -- 699
-	_class_0 = setmetatable({ -- 699
-		__init = function(self, ...) -- 699
-			return _class_0.__parent.__init(self, ...) -- 699
-		end, -- 699
-		__base = _base_0, -- 699
-		__name = "Medicine", -- 699
-		__parent = _parent_0 -- 699
-	}, { -- 699
-		__index = function(cls, name) -- 699
-			local val = rawget(_base_0, name) -- 699
-			if val == nil then -- 699
-				local parent = rawget(cls, "__parent") -- 699
-				if parent then -- 699
-					return parent[name] -- 699
-				end -- 699
-			else -- 699
-				return val -- 699
-			end -- 699
-		end, -- 699
-		__call = function(cls, ...) -- 699
-			local _self_0 = setmetatable({ }, _base_0) -- 699
-			cls.__init(_self_0, ...) -- 699
-			return _self_0 -- 699
-		end -- 699
-	}) -- 699
-	_base_0.__class = _class_0 -- 699
-	if _parent_0.__inherited then -- 699
-		_parent_0.__inherited(_parent_0, _class_0) -- 699
-	end -- 699
-	Medicine = _class_0 -- 699
-end -- 729
-local Evil_Squeal -- 731
-do -- 731
-	local _class_0 -- 731
-	local _parent_0 = SOUND -- 731
-	local _base_0 = { -- 731
-		sound = (function() -- 732
-			local _accum_0 = { } -- 732
-			local _len_0 = 1 -- 732
-			for i = 1, 4 do -- 732
-				_accum_0[_len_0] = "placenta/coinkeeper" .. tostring(i) .. ".wav" -- 732
-				_len_0 = _len_0 + 1 -- 732
-			end -- 732
-			return _accum_0 -- 732
+				name = "biomass" -- 711
+			}, -- 711
+			{ -- 712
+				name = "metal" -- 712
+			} -- 712
+		}, -- 710
+		Products = { -- 714
+			["item/food/medicine/pills"] = { -- 715
+				precursors = { -- 716
+					biomass = 2, -- 716
+					metal = 1 -- 717
+				}, -- 715
+				time = 10 -- 718
+			}, -- 714
+			["item/food/medicine/ablativepaste"] = { -- 720
+				precursors = { -- 721
+					biomass = 3, -- 721
+					metal = 1 -- 722
+				}, -- 720
+				time = 10 -- 723
+			}, -- 719
+			["item/food/medicine/bleach"] = { -- 725
+				precursors = { -- 726
+					biomass = 2, -- 726
+					metal = 1 -- 727
+				}, -- 725
+				time = 10 -- 728
+			} -- 724
+		}, -- 713
+		FactoryIdentifier = "medicine" -- 730
+	} -- 700
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 700
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 700
+			_base_0[_key_0] = _val_0 -- 700
+		end -- 700
+	end -- 700
+	if _base_0.__index == nil then -- 700
+		_base_0.__index = _base_0 -- 700
+	end -- 700
+	setmetatable(_base_0, _parent_0.__base) -- 700
+	_class_0 = setmetatable({ -- 700
+		__init = function(self, ...) -- 700
+			return _class_0.__parent.__init(self, ...) -- 700
+		end, -- 700
+		__base = _base_0, -- 700
+		__name = "Medicine", -- 700
+		__parent = _parent_0 -- 700
+	}, { -- 700
+		__index = function(cls, name) -- 700
+			local val = rawget(_base_0, name) -- 700
+			if val == nil then -- 700
+				local parent = rawget(cls, "__parent") -- 700
+				if parent then -- 700
+					return parent[name] -- 700
+				end -- 700
+			else -- 700
+				return val -- 700
+			end -- 700
+		end, -- 700
+		__call = function(cls, ...) -- 700
+			local _self_0 = setmetatable({ }, _base_0) -- 700
+			cls.__init(_self_0, ...) -- 700
+			return _self_0 -- 700
+		end -- 700
+	}) -- 700
+	_base_0.__class = _class_0 -- 700
+	if _parent_0.__inherited then -- 700
+		_parent_0.__inherited(_parent_0, _class_0) -- 700
+	end -- 700
+	Medicine = _class_0 -- 700
+end -- 700
+local Evil_Squeal -- 732
+do -- 732
+	local _class_0 -- 732
+	local _parent_0 = SOUND -- 732
+	local _base_0 = { -- 732
+		sound = (function() -- 733
+			local _accum_0 = { } -- 733
+			local _len_0 = 1 -- 733
+			for i = 1, 4 do -- 733
+				_accum_0[_len_0] = "placenta/coinkeeper" .. tostring(i) .. ".wav" -- 733
+				_len_0 = _len_0 + 1 -- 733
+			end -- 733
+			return _accum_0 -- 733
 		end)(), -- 733
 		level = SNDLVL_70DB, -- 734
-		pitch = { -- 734
-			70, -- 734
-			85 -- 734
-		} -- 731
-	} -- 731
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 734
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 731
-			_base_0[_key_0] = _val_0 -- 731
-		end -- 731
-	end -- 734
-	if _base_0.__index == nil then -- 731
-		_base_0.__index = _base_0 -- 731
-	end -- 734
-	setmetatable(_base_0, _parent_0.__base) -- 731
-	_class_0 = setmetatable({ -- 731
-		__init = function(self, ...) -- 731
-			return _class_0.__parent.__init(self, ...) -- 731
-		end, -- 731
-		__base = _base_0, -- 731
-		__name = "Evil_Squeal", -- 731
-		__parent = _parent_0 -- 731
-	}, { -- 731
-		__index = function(cls, name) -- 731
-			local val = rawget(_base_0, name) -- 731
-			if val == nil then -- 731
-				local parent = rawget(cls, "__parent") -- 731
-				if parent then -- 731
-					return parent[name] -- 731
-				end -- 731
-			else -- 731
-				return val -- 731
-			end -- 731
-		end, -- 731
-		__call = function(cls, ...) -- 731
-			local _self_0 = setmetatable({ }, _base_0) -- 731
-			cls.__init(_self_0, ...) -- 731
-			return _self_0 -- 731
-		end -- 731
-	}) -- 731
-	_base_0.__class = _class_0 -- 731
-	if _parent_0.__inherited then -- 731
-		_parent_0.__inherited(_parent_0, _class_0) -- 731
-	end -- 731
-	Evil_Squeal = _class_0 -- 731
-end -- 734
-local Evil -- 736
-do -- 736
-	local _class_0 -- 736
-	local _parent_0 = Machine -- 736
-	local _base_0 = { -- 736
-		PrintName = "Evil Machine", -- 738
-		Precursors = { -- 739
-			{ -- 739
-				name = "metal" -- 739
-			}, -- 739
-			{ -- 740
-				name = "wood" -- 740
-			} -- 740
-		}, -- 741
-		Products = { -- 742
-			["evilrp_weapon/mark"] = { -- 743
-				precursors = { -- 744
-					metal = 6 -- 744
-				}, -- 743
-				time = 20 -- 745
-			}, -- 742
-			["evilrp_weapon/coach"] = { -- 747
-				precursors = { -- 748
-					metal = 10, -- 748
-					wood = 5 -- 749
-				}, -- 747
-				time = 30 -- 750
-			}, -- 746
-			["evilrp_weapon/obrez"] = { -- 752
-				precursors = { -- 753
-					metal = 5, -- 753
-					wood = 3 -- 754
-				}, -- 752
-				time = 30 -- 755
-			}, -- 751
-			["evilrp_weapon/greaser"] = { -- 757
-				precursors = { -- 758
-					metal = 14 -- 758
-				}, -- 757
-				time = 35 -- 759
-			}, -- 756
-			["evilrp_weapon/owler"] = { -- 761
-				precursors = { -- 762
-					metal = 7, -- 762
-					wood = 3 -- 763
-				}, -- 761
-				time = 30 -- 764
-			}, -- 760
-			["evilrp_weapon/prettyboy"] = { -- 766
-				precursors = { -- 767
-					metal = 7, -- 767
-					wood = 2 -- 768
-				}, -- 766
-				time = 30 -- 769
-			}, -- 765
-			["evilrp_weapon/viper"] = { -- 771
-				precursors = { -- 772
-					metal = 4, -- 772
-					wood = 2 -- 773
-				}, -- 771
-				time = 30 -- 774
-			} -- 770
-		}, -- 776
-		ProduceItem = function(self, item) -- 776
-			local etab = scripted_ents.Get(item) -- 778
-			local weapon -- 779
-			if not etab then -- 780
-				etab = weapons.Get(item) -- 782
-				weapon = true -- 783
-			end -- 780
-			local product -- 784
-			if weapon then -- 785
-				product = ents.Create("evilrp/spawned/weapon") -- 786
-				product:SetModel(etab.WorldModel) -- 788
-				product:SetWeaponClass(item) -- 789
-			else -- 791
-				product = ents.Create(item) -- 791
-			end -- 785
-			product:SetPos(self:GetPos() + Vector(0, 0, -12) + (self:GetForward() * 8)) -- 792
-			product:Spawn() -- 793
-			product:Activate() -- 794
-			self:EmitSound("Evil_Squeal") -- 795
-			return product -- 796
-		end, -- 798
-		Shift = function(self) -- 798
-			if not SERVER then -- 799
-				return -- 799
-			end -- 799
-			local map = game.GetMap() -- 800
-			if not EVIL_MACHINE_POSITIONS_CURSED[map] then -- 801
-				return -- 801
-			end -- 801
-			local positions_all -- 802
-			do -- 802
-				local _tab_0 = { } -- 802
-				local _obj_0 = EVIL_MACHINE_POSITIONS_CURSED[map] -- 802
-				local _idx_0 = 1 -- 802
-				for _key_0, _value_0 in pairs(_obj_0) do -- 802
-					if _idx_0 == _key_0 then -- 802
-						_tab_0[#_tab_0 + 1] = _value_0 -- 802
-						_idx_0 = _idx_0 + 1 -- 802
-					else -- 802
-						_tab_0[_key_0] = _value_0 -- 802
-					end -- 802
-				end -- 802
-				positions_all = _tab_0 -- 802
-			end -- 802
-			local positions = { } -- 803
-			local our_pos = self:GetPos() -- 805
-			for k, v in pairs(positions_all) do -- 806
-				if not (our_pos == v.machine.pos) then -- 807
-					positions[#positions + 1] = v -- 808
-				end -- 807
+		pitch = { -- 735
+			70, -- 735
+			85 -- 735
+		} -- 735
+	} -- 732
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 732
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 732
+			_base_0[_key_0] = _val_0 -- 732
+		end -- 732
+	end -- 732
+	if _base_0.__index == nil then -- 732
+		_base_0.__index = _base_0 -- 732
+	end -- 732
+	setmetatable(_base_0, _parent_0.__base) -- 732
+	_class_0 = setmetatable({ -- 732
+		__init = function(self, ...) -- 732
+			return _class_0.__parent.__init(self, ...) -- 732
+		end, -- 732
+		__base = _base_0, -- 732
+		__name = "Evil_Squeal", -- 732
+		__parent = _parent_0 -- 732
+	}, { -- 732
+		__index = function(cls, name) -- 732
+			local val = rawget(_base_0, name) -- 732
+			if val == nil then -- 732
+				local parent = rawget(cls, "__parent") -- 732
+				if parent then -- 732
+					return parent[name] -- 732
+				end -- 732
+			else -- 732
+				return val -- 732
+			end -- 732
+		end, -- 732
+		__call = function(cls, ...) -- 732
+			local _self_0 = setmetatable({ }, _base_0) -- 732
+			cls.__init(_self_0, ...) -- 732
+			return _self_0 -- 732
+		end -- 732
+	}) -- 732
+	_base_0.__class = _class_0 -- 732
+	if _parent_0.__inherited then -- 732
+		_parent_0.__inherited(_parent_0, _class_0) -- 732
+	end -- 732
+	Evil_Squeal = _class_0 -- 732
+end -- 732
+local Evil -- 737
+local _class_0 -- 737
+local _parent_0 = Machine -- 737
+local _base_0 = { -- 737
+	PrintName = "Evil Machine", -- 738
+	Precursors = { -- 740
+		{ -- 740
+			name = "metal" -- 740
+		}, -- 740
+		{ -- 741
+			name = "wood" -- 741
+		} -- 741
+	}, -- 739
+	Products = { -- 743
+		["evilrp_weapon/mark"] = { -- 744
+			precursors = { -- 745
+				metal = 6 -- 745
+			}, -- 744
+			time = 20 -- 746
+		}, -- 743
+		["evilrp_weapon/coach"] = { -- 748
+			precursors = { -- 749
+				metal = 10, -- 749
+				wood = 5 -- 750
+			}, -- 748
+			time = 30 -- 751
+		}, -- 747
+		["evilrp_weapon/obrez"] = { -- 753
+			precursors = { -- 754
+				metal = 5, -- 754
+				wood = 3 -- 755
+			}, -- 753
+			time = 30 -- 756
+		}, -- 752
+		["evilrp_weapon/greaser"] = { -- 758
+			precursors = { -- 759
+				metal = 14 -- 759
+			}, -- 758
+			time = 35 -- 760
+		}, -- 757
+		["evilrp_weapon/owler"] = { -- 762
+			precursors = { -- 763
+				metal = 7, -- 763
+				wood = 3 -- 764
+			}, -- 762
+			time = 30 -- 765
+		}, -- 761
+		["evilrp_weapon/prettyboy"] = { -- 767
+			precursors = { -- 768
+				metal = 7, -- 768
+				wood = 2 -- 769
+			}, -- 767
+			time = 30 -- 770
+		}, -- 766
+		["evilrp_weapon/viper"] = { -- 772
+			precursors = { -- 773
+				metal = 4, -- 773
+				wood = 2 -- 774
+			}, -- 772
+			time = 30 -- 775
+		} -- 771
+	}, -- 742
+	ProduceItem = function(self, item) -- 777
+		local etab = scripted_ents.Get(item) -- 779
+		local weapon -- 780
+		if not etab then -- 781
+			etab = weapons.Get(item) -- 783
+			weapon = true -- 784
+		end -- 781
+		local product -- 785
+		if weapon then -- 786
+			product = ents.Create("evilrp/spawned/weapon") -- 787
+			product:SetModel(etab.WorldModel) -- 789
+			product:SetWeaponClass(item) -- 790
+		else -- 792
+			product = ents.Create(item) -- 792
+		end -- 786
+		product:SetPos(self:GetPos() + Vector(0, 0, -12) + (self:GetForward() * 8)) -- 793
+		product:Spawn() -- 794
+		product:Activate() -- 795
+		self:EmitSound("Evil_Squeal") -- 796
+		return product -- 797
+	end, -- 777
+	Shift = function(self) -- 799
+		if not SERVER then -- 800
+			return -- 800
+		end -- 800
+		local map = game.GetMap() -- 801
+		if not EVIL_MACHINE_POSITIONS_CURSED[map] then -- 802
+			return -- 802
+		end -- 802
+		local positions_all -- 803
+		do -- 803
+			local _tab_0 = { } -- 803
+			local _obj_0 = EVIL_MACHINE_POSITIONS_CURSED[map] -- 803
+			local _idx_0 = 1 -- 803
+			for _key_0, _value_0 in pairs(_obj_0) do -- 803
+				if _idx_0 == _key_0 then -- 803
+					_tab_0[#_tab_0 + 1] = _value_0 -- 803
+					_idx_0 = _idx_0 + 1 -- 803
+				else -- 803
+					_tab_0[_key_0] = _value_0 -- 803
+				end -- 803
+			end -- 803
+			positions_all = _tab_0 -- 803
+		end -- 803
+		local positions = { } -- 804
+		local our_pos = self:GetPos() -- 806
+		for k, v in pairs(positions_all) do -- 807
+			if not (our_pos == v.machine.pos) then -- 808
+				positions[#positions + 1] = v -- 809
 			end -- 808
-			local where = positions[math.random(#positions)] -- 809
-			local where_mach = where.machine -- 810
-			local where_gen = where.generator -- 811
-			self:EmitSound("Evil_Squeal") -- 812
-			self:SetPos(where_mach.pos) -- 813
-			self:SetAngles(where_mach.ang) -- 814
-			local gen = self:GetGenerator() -- 815
-			gen:SetPos(where_gen.pos) -- 817
-			gen:SetAngles(where_gen.ang) -- 818
-			gen:SetRust(0) -- 819
-			gen:SetFuel(0) -- 820
-			if gen:GetOn() then -- 821
-				gen:SetOn(false) -- 822
-				gen:StopLoopingSound(gen:GetSoundLoop()) -- 823
-				gen.Overload = false -- 824
-			end -- 821
-			self:PositionButtons() -- 825
-			self:SetRust(0) -- 826
-			return MsgC(Color(200, 0, 0), "The evil machine shifted.\n") -- 827
-		end, -- 829
-		Think = function(self) -- 829
-			_class_0.__parent.__base.Think(self) -- 830
-			local ct = CurTime() -- 831
-			if not self.next_shift then -- 832
-				self.next_shift = ct + 5 -- 832
-			end -- 832
-			if ct >= self.next_shift then -- 833
-				if self:GetProducing() == "" then -- 834
-					self.next_shift = ct + math.random(300, 900) -- 835
-					return self:Shift() -- 836
-				end -- 834
-			end -- 833
-		end, -- 838
-		FactoryIdentifier = "evil" -- 736
-	} -- 736
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 838
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 736
-			_base_0[_key_0] = _val_0 -- 736
-		end -- 736
-	end -- 838
-	if _base_0.__index == nil then -- 736
-		_base_0.__index = _base_0 -- 736
-	end -- 838
-	setmetatable(_base_0, _parent_0.__base) -- 736
-	_class_0 = setmetatable({ -- 736
-		__init = function(self, ...) -- 736
-			return _class_0.__parent.__init(self, ...) -- 736
-		end, -- 736
-		__base = _base_0, -- 736
-		__name = "Evil", -- 736
-		__parent = _parent_0 -- 736
-	}, { -- 736
-		__index = function(cls, name) -- 736
-			local val = rawget(_base_0, name) -- 736
-			if val == nil then -- 736
-				local parent = rawget(cls, "__parent") -- 736
-				if parent then -- 736
-					return parent[name] -- 736
-				end -- 736
-			else -- 736
-				return val -- 736
-			end -- 736
-		end, -- 736
-		__call = function(cls, ...) -- 736
-			local _self_0 = setmetatable({ }, _base_0) -- 736
-			cls.__init(_self_0, ...) -- 736
-			return _self_0 -- 736
-		end -- 736
-	}) -- 736
-	_base_0.__class = _class_0 -- 736
-	if _parent_0.__inherited then -- 736
-		_parent_0.__inherited(_parent_0, _class_0) -- 736
-	end -- 736
-	Evil = _class_0 -- 736
-	return _class_0 -- 838
-end -- 838
+		end -- 807
+		local where = positions[math.random(#positions)] -- 810
+		local where_mach = where.machine -- 811
+		local where_gen = where.generator -- 812
+		self:EmitSound("Evil_Squeal") -- 813
+		self:SetPos(where_mach.pos) -- 814
+		self:SetAngles(where_mach.ang) -- 815
+		local gen = self:GetGenerator() -- 816
+		gen:SetPos(where_gen.pos) -- 818
+		gen:SetAngles(where_gen.ang) -- 819
+		gen:SetRust(0) -- 820
+		gen:SetFuel(0) -- 821
+		if gen:GetOn() then -- 822
+			gen:SetOn(false) -- 823
+			gen:StopLoopingSound(gen:GetSoundLoop()) -- 824
+			gen.Overload = false -- 825
+		end -- 822
+		self:PositionButtons() -- 826
+		self:SetRust(0) -- 827
+		return MsgC(Color(200, 0, 0), "The evil machine shifted.\n") -- 828
+	end, -- 799
+	Think = function(self) -- 830
+		_class_0.__parent.__base.Think(self) -- 831
+		local ct = CurTime() -- 832
+		if not self.next_shift then -- 833
+			self.next_shift = ct + 5 -- 833
+		end -- 833
+		if ct >= self.next_shift then -- 834
+			if self:GetProducing() == "" then -- 835
+				self.next_shift = ct + math.random(300, 900) -- 836
+				return self:Shift() -- 837
+			end -- 835
+		end -- 834
+	end, -- 830
+	FactoryIdentifier = "evil" -- 839
+} -- 737
+for _key_0, _val_0 in pairs(_parent_0.__base) do -- 737
+	if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 737
+		_base_0[_key_0] = _val_0 -- 737
+	end -- 737
+end -- 737
+if _base_0.__index == nil then -- 737
+	_base_0.__index = _base_0 -- 737
+end -- 737
+setmetatable(_base_0, _parent_0.__base) -- 737
+_class_0 = setmetatable({ -- 737
+	__init = function(self, ...) -- 737
+		return _class_0.__parent.__init(self, ...) -- 737
+	end, -- 737
+	__base = _base_0, -- 737
+	__name = "Evil", -- 737
+	__parent = _parent_0 -- 737
+}, { -- 737
+	__index = function(cls, name) -- 737
+		local val = rawget(_base_0, name) -- 737
+		if val == nil then -- 737
+			local parent = rawget(cls, "__parent") -- 737
+			if parent then -- 737
+				return parent[name] -- 737
+			end -- 737
+		else -- 737
+			return val -- 737
+		end -- 737
+	end, -- 737
+	__call = function(cls, ...) -- 737
+		local _self_0 = setmetatable({ }, _base_0) -- 737
+		cls.__init(_self_0, ...) -- 737
+		return _self_0 -- 737
+	end -- 737
+}) -- 737
+_base_0.__class = _class_0 -- 737
+if _parent_0.__inherited then -- 737
+	_parent_0.__inherited(_parent_0, _class_0) -- 737
+end -- 737
+Evil = _class_0 -- 737
+return _class_0 -- 737
