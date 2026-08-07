@@ -1,0 +1,838 @@
+button0 = Material("icon16/lightbulb_off.png")
+button1 = Material("icon16/exclamation.png")
+button2 = Material("icon16/cancel.png")
+button3 = Material("icon16/delete.png")
+default_button = Material("sprites/glow04_noz_gmod")
+default0 = Material("sprites/glow04_noz")
+
+colors = {
+  Color(150, 150, 150)
+  Color(0, 255, 0)
+  Color(0, 0, 255)
+}
+
+class MachineDing extends SOUND
+  sound: { "buttons/blip1.wav"
+    "buttons/button1.wav"
+    "buttons/button3.wav"
+    "buttons/button5.wav"
+    "buttons/button9.wav"
+    "buttons/button14.wav"
+    "buttons/button16.wav"
+    "buttons/button17.wav"
+    "buttons/button18.wav" }
+  pitch: {75, 95}
+  level: SNDLVL_75DB
+
+class MachineBite extends SOUND
+  sound: { "npc/headcrab_poison/ph_poisonbite2.wav"
+    "npc/headcrab_poison/ph_poisonbite1.wav"
+    "npc/headcrab_poison/ph_warning1.wav"
+    "npc/headcrab_poison/ph_warning2.wav"
+    "npc/headcrab_poison/ph_warning3.wav"
+    "npc/headcrab_fast/headbite.wav"
+    "npc/barnacle/barnacle_crunch2.wav"
+    "npc/barnacle/barnacle_crunch3.wav" }
+  pitch: {75, 90}
+
+noise = Material("effects/tvscreen_noise001a")
+screen = Material("glass/glasswindow017a")
+
+if CLIENT
+  net.Receive "evilrp_machine_fail", ->
+    text = net.ReadString!
+    GAMEMODE\Frighten!
+    chat.AddNonParsedText(Color(200, 0, 0, 255), text)
+else
+  util.AddNetworkString"evilrp_machine_fail"
+
+class Machine extends ENTITY
+  Base: "base_anim"
+  Type: "anim"
+  PrintName: "Machine"
+  Category: "EvilRP: Machines"
+  Spawnable: true
+  AdminSpawnable: true
+  Interesting: true
+
+  Pocketable: false
+
+  Precursors: {}
+  FactoryIdentifier: ""
+  BasePay: 5
+
+  SetupDataTables: =>
+    @NetworkVar("String", "Producing")
+    @NetworkVar("String", "Selection")
+    @NetworkVar("Int", "ProductionStart")
+    @NetworkVar("Int", "ProductionEnd")
+    @NetworkVar("Int", "SoundLoop")
+    @NetworkVar("Int", "Rust")
+    @NetworkVar("Int", "CorrectLight")
+    @NetworkVar("Int", "QueuedItems")
+
+    for i=1, 8
+      @NetworkVar("Int", 8 + i, "Button" .. i)
+      @[ "SetButton" .. i ](@, math.random(1, 3))
+
+    for p in *@Precursors
+      name = p.name
+      name = "#{name\sub(1, 1)\upper!}#{name\sub(2, -1)}"
+      @NetworkVar("Int", "Precursor#{name}")
+
+    @NetworkVar("Entity", "Worker")
+    @NetworkVar("Entity", "Generator")
+
+  RefreshPrecursor: =>
+    gen = @GetGenerator!
+    if gen and IsValid(gen)
+      for p in *@Precursors
+        name = p.name
+        name = "#{name\sub(1, 1)\upper!}#{name\sub(2, -1)}"
+        @["SetPrecursor#{name}"] @, gen.precursor_storage[name\lower!] or 0
+
+  Initialize: =>
+    @PositionButtons!
+    return if CLIENT
+    -- the generators are expected to be spawned first
+    -- before machines; otherwise, the below for loop
+    -- would not function. see `sv_map.yue'
+    for gen in *ents.FindByClass"generator"
+      if gen\GetFactoryIdentifier! == @FactoryIdentifier
+        @SetGenerator gen
+        MsgC Color(0, 200, 0), "#{@} attached to #{gen}.\n"
+        break
+    gen = @GetGenerator!
+    return unless gen and IsValid(gen)
+    @["SetButton#{i}"] @, math.random(1,3) for i=1, 8
+    @SetUseType SIMPLE_USE
+    @SetModel"models/props_lab/reciever_cart.mdl"
+    @PhysicsInit SOLID_VPHYSICS
+    @PhysWake!
+    @NewLight!
+
+  PositionButtons: =>
+    pos = @GetPos!
+    f = @GetForward!
+    r = @GetRight!
+    u = @GetUp!
+    @buttons = {
+      { pos + u * 18 + f * 13 + r * 6 }
+      { pos + u * 18 + f * 13 + r * 3 }
+      { pos + u * 18 + f * 13 }
+      { pos + u * 18 + f * 13 + r * -3 }
+      { pos + u * 18 + f * 13 + r * -6 }
+      { pos + u * 18 + f * 13 + r * -9 }
+      { pos + u * 18 + f * 13 + r * -12 }
+      { pos + u * 18 + f * 13 + r * -15 }
+    }
+
+  Think: =>
+    return if CLIENT
+    @NewLight! if @GetSelection! ~= "" and @GetCorrectLight! == 0
+    ct = CurTime!
+    @NextMatRefresh = ct unless @NextMatRefresh
+    if ct >= @NextMatRefresh
+      @NextMatRefresh = ct + 5
+      @RefreshPrecursor!
+    if @GetProductionEnd! == 0 and @GetQueuedItems! > 0
+      found = nil
+      ks = table.GetKeys @Products
+      for i=1,#ks
+        k = ks[math.random(1, #ks)]
+        continue unless @Products[k]
+        continue if table.IsEmpty(@Products[k])
+        table.RemoveByValue ks, k
+        if GAMEMODE.Stocks[k]
+          -- add check here to continue if GAMEMODE.Stocks[k] * item's
+          -- price is above 2500
+        nope = false
+        for t, amt in pairs @Products[k].precursors
+          name = "#{t\sub(1, 1)\upper!}#{t\sub(2, -1)}"
+          if amt > @["GetPrecursor#{name}"](@)
+            nope = true
+            break
+        continue if nope
+        found = k
+        ks = nil
+        break
+      unless found
+        @SetQueuedItems 0
+        util.ScreenShake @GetPos!, 25, 150, 1, 750
+        explo = ents.Create"env_explosion"
+        with explo
+          \SetOwner @
+          \SetPos @GetPos!
+          \SetKeyValue "iMagnitude", 75
+          \SetKeyValue "iRadiusOverride", 150
+          \Spawn!
+          \Activate!
+          \Fire"Explode"
+        fire = ents.Create"env_fire"
+        with fire
+          \SetPos @GetPos!
+          \SetKeyValue "spawnflags", 1
+          \SetKeyValue "attack", tostring(math.random(10,15))
+          \SetKeyValue "firesize", tostring(math.random(100,150))
+          \Spawn!
+          \Activate!
+          \Fire "Enable", "", del
+          \Fire "StartFire", "", del
+        SafeRemoveEntityDelayed fire, math.random(60,70)
+        @GetGenerator!.Overload = true
+      else
+        @SetQueuedItems math.max(0, @GetQueuedItems! - 1)
+        @SetProducing found
+        for t, amt in pairs @Products[found].precursors
+          @GetGenerator!\AddPrecursor t, -amt
+        @SetProductionStart CurTime!
+        @SetProductionEnd CurTime! + @Products[found].time
+    if @GetProductionEnd! > 0 and CurTime! >= @GetProductionEnd!
+      @SetRust math.min(100, @GetRust! + @Products[@GetProducing!].time)
+      @ProduceItem @GetProducing!
+      @EmitSound"ambient/machines/machine1_hit#{math.random(1,2)}.wav"
+      @StopLoopingSound @GetSoundLoop!
+      @SetProducing""
+      @SetProductionStart 0
+      @SetProductionEnd 0
+
+  ProduceItem: (item) =>
+    -- default behavior of machines is to put things in stock
+    GAMEMODE\AddStock(item)
+
+  Touch: (what) =>
+    if SERVER
+      if what.Rust
+        @SetRust math.Clamp(@GetRust! + what.Rust, 0, 100)
+        @EmitSound"ambient/machines/machine1_hit1.wav"
+        pos = what\GetPos!
+        ed = EffectData!
+        with ed
+          \SetOrigin pos
+          \SetScale 1
+          \SetMagnitude 1
+          \SetRadius 3
+        util.Effect "Sparks", ed
+        what\Trash!
+        return
+      return unless what.Precursor
+      local pre, amt
+      for p in *@Precursors
+        for k, v in pairs what.Precursor
+          if p.name == k
+            pre = k
+            amt = v
+            amt = amt(@) if isfunction(amt)
+            break
+      return unless (pre and amt)
+      rewarded = false
+      submitter = what\GetNWEntity "evilrp_submitter", NULL
+      unless what.Processed
+        what.Processed = true
+        what\EmitSound what.SubmitSound if what.SubmitSound
+        @GetGenerator!\AddPrecursor pre, amt
+        what.Submitted what if what.Submitted
+        reward = math.random(10, 15) * amt
+        rate = GAMEMODE.taxes.labor / 100
+        taxed = math.floor(reward * rate)
+        reward -= taxed
+        GAMEMODE.taxes_stored.labor += taxed if taxed > 0
+        reward = math.ceil(reward)
+        if submitter and IsValid(submitter) and submitter\IsPlayer! and submitter\Alive!
+          submitter\AddMoney reward, "The Operation"
+        else
+          GAMEMODE.taxes_stored.labor += reward if reward > 0
+        what\Remove!
+        if submitter and IsValid(submitter) and submitter\IsPlayer! and submitter\Team! == TEAM_PRIVATE
+          submitter.precursor_supplied or= 0
+          submitter.precursor_supplied += amt
+          if submitter.precursor_supplied_difference and (submitter.precursor_supplied % 50) < submitter.precursor_supplied_difference
+            submitter\Notify"<c=0,200,0>Your work ethic makes Liver Failure proud."
+            submitter\AddStemCells(1)
+          submitter.precursor_supplied_difference = submitter.precursor_supplied % 50
+
+
+  Draw: =>
+    @DrawModel!
+    gen = @GetGenerator!
+    if gen and IsValid(gen)
+      return unless gen\GetOn!
+    closest = @GetNearestButton!
+    -- GET ITEM TABLE HERE, FOR RETRIEVING ITS NAME
+    pos = @GetPos!
+    f = @GetForward!
+    r = @GetRight!
+    u = @GetUp!
+    -- render the lights that indicate which one is the correct one to press
+    light_spots = {
+      { pos + u * 0.5 + f * 14.5 + r * -1, Color(150, 150, 150), "r", button1 }
+      { pos + u * 0.5 + f * 14.5 + r * -6, Color(0, 150, 0), "g", button2 }
+      { pos + u * 0.5 + f * 14.5 + r * -11.5, Color(0, 0, 150), "b", button3 }
+    }
+    idx = 0
+    ct = CurTime!
+    for light in *light_spots
+      idx += 1
+      import r, g, b from light[2]
+      col = Color(r, g, b, 255)
+      render.SetMaterial light[4]
+      if @GetCorrectLight! == idx
+        -- col.a = (255 * math.sin(ct * 3))
+        render.DrawSprite light[1], 4 + math.abs(math.sin(ct)*4), 4 + math.abs(math.sin(ct)*4), col
+      else
+        render.DrawSprite light[1], 4, 4, col
+    for k, v in ipairs @buttons
+      idx = @["GetButton#{k}"] @
+      mats = { button1, button2, button3 }
+      local col
+      if idx == 0
+        render.SetMaterial default0
+        col = Color 100, 100, 100, 255
+      else
+        render.SetMaterial mats[idx]
+        col = colors[idx]
+        if k == closest
+          r = math.max 0, col.r + (50 * math.sin(ct * 3))
+          g = math.max 0, col.g + (50 * math.sin(ct * 3))
+          b = math.max 0, col.b + (50 * math.sin(ct * 3))
+          col = Color r, g, b
+        else
+          r = math.max 0, col.r + (100 * math.cos(ct))
+          g = math.max 0, col.g + (100 * math.cos(ct))
+          b = math.max 0, col.b + (100 * math.cos(ct))
+          col = Color r, g, b
+      render.DrawSprite v[1], 4, 4, col
+    @Render3D2D!
+
+  OnTakeDamage: (dmg) =>
+    attacker = dmg\GetAttacker!
+    if attacker and IsValid(attacker)
+      if attacker\IsPlayer!
+        switch attacker\Team!
+          when TEAM_SANITAR, TEAM_CONSCRIPT
+            rust = @GetRust!
+            @SetRust math.max(0, rust - (dmg\GetDamage! * .2))
+            reward = math.floor(math.abs(rust - @GetRust!) * 3)
+            if reward > 0
+              attacker\AddMoney reward, "The Cleansing"
+
+  Use: (ply) =>
+    -- ADD HAUNTING HERE
+    -- MAYBE ADD BOURGEOISIE CRAP HERE
+    gen = @GetGenerator!
+    if gen and not gen\GetOn!
+      net.Start"evilrp_machine_fail"
+      net.WriteString"There's no power."
+      net.Send ply
+      return
+    -- elseif @haunted
+    elseif not ply\CanUseMachines!
+      net.Start"evilrp_machine_fail"
+      net.WriteString"UNAUTHORIZED PERSONNEL"
+      net.Send ply
+      @EmitSound"ambient/alarms/klaxon1.wav"
+      timer.Simple 1, ->
+        tr = util.TraceLine {
+          start: @GetPos!
+          endpos: ply\EyePos!
+          filter: @
+        }
+        util.ParticleTracerEx "vortigaunt_beam", tr.StartPos, tr.HitPos, false, @EntIndex!, 3
+        @EmitSound"beams/beamstart5.wav"
+        dmg = DamageInfo!
+        with dmg
+          \SetDamage 65
+          \SetDamageType DMG_SHOCK
+          \SetAttacker @
+          \SetInflictor @
+          \SetDamagePosition ply\EyePos!
+        ply\TakeDamageInfo dmg
+      return
+
+    -- add a max queue warning somewhere
+    if @GetRust! >= 100 and math.random(1, 3) == 1
+      @EmitSound"MachineBite"
+      ply\TakeDamage math.random(4,6)
+      @Ignite math.random(3,6), 510 if math.random(1,4) == 1
+
+    button = @GetNearestButton ply
+    if button
+      if button > 0
+        idx = @["GetButton#{button}"] @
+        if idx ~= @GetCorrectLight! and idx > 0
+          @EmitSound"ambient/alarms/klaxon1.wav"
+          timer.Simple 1, ->
+            tr = util.TraceLine {
+              start: @GetPos!
+              endpos: ply\EyePos!
+              filter: @
+            }
+            util.ParticleTracerEx "vortigaunt_beam", tr.StartPos, tr.HitPos, false, @EntIndex!, 3
+            @EmitSound"beams/beamstart5.wav"
+            dmg = DamageInfo!
+            with dmg
+              \SetDamage 25
+              \SetDamageType DMG_SHOCK
+              \SetAttacker @
+              \SetInflictor @
+              \SetDamagePosition ply\EyePos!
+            ply\TakeDamageInfo dmg
+        elseif idx == 0
+          @EmitSound "buttons/button2.wav", 75, math.random(75,95)
+        else
+          @EmitSound"MachineDing"
+          left = false
+          @["SetButton#{button}"] @, 0
+          for k, v in ipairs @buttons
+            left = true if @["GetButton#{k}"](@) == idx
+          reward = @BasePay
+          rate = GAMEMODE.taxes.labor / 100
+          taxed = math.floor(reward * rate)
+          reward -= taxed
+          GAMEMODE.taxes_stored.labor += taxed if taxed > 0
+          if gen.Overload
+            @EmitSound"ambient/energy/zap#{math.random 1,3}.wav"
+            dmg = DamageInfo!
+            with dmg
+              \SetDamage math.random(4,6)
+              \SetDamageType DMG_SHOCK
+              \SetAttacker @
+              \SetInflictor @
+              \SetDamagePosition @EyePos!
+            ply\TakeDamageInfo dmg
+            vp = @GetPos!
+            ed = EffectData!
+            with ed
+              \SetOrigin vp
+              \SetScale 1
+              \SetMagnitude 1
+              \SetRadius 3
+            util.Effect "Sparks", ed
+          ply\AddMoney reward, "The Grind"
+          @Reward ply
+          @NewLight(ply) if (not left) or math.random(1,100) <= 50
+
+  Reward: (ply) =>
+    return unless ply\Team! == TEAM_PRIVATE
+    ply.buttons_pushed or= 0
+    ply.buttons_pushed += 1
+    if ply.buttons_pushed % 50 == 0
+      ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
+      ply\AddStemCells(1)
+
+  GetNearestButton: (who) =>
+    who = LocalPlayer! if (not who or not IsValid(who))
+    if @buttons
+      start = who\GetShootPos!
+      endpos = start + who\GetAimVector! * 96
+      tr = util.TraceLine {
+        :start
+        :endpos
+        filter: who
+      }
+      import HitPos from tr
+      if HitPos
+        for k, v in ipairs @buttons
+          return k if (v[1]\Distance(HitPos) <= 2)
+
+  NewLight: (ply) =>
+    olight = @GetCorrectLight!
+    set = {1, 2, 3}
+    forbidden = {1, 2, 3}
+    finished = true
+    for k, v in ipairs @buttons
+      idx = @["GetButton#{k}"] @
+      if idx > 0
+        finished = false
+        table.RemoveByValue(forbidden, idx) if idx ~= olight
+    table.RemoveByValue(set, v) for k, v in ipairs forbidden
+    nlight = set[math.random(1, #set)]
+    if finished
+      @SetQueuedItems @GetQueuedItems! + 1
+      @["SetButton#{i}"](@, math.random(1,3)) for i=1,8
+      idx = math.random(1,8)
+      @EmitSound "items/suitchargeok1.wav", 75, math.random(75,95)
+      @SetCorrectLight @["GetButton#{idx}"](@)
+    elseif nlight
+      @EmitSound "ambient/tones/elev1.wav", 75, math.random(75,95)
+      @SetCorrectLight nlight
+
+  Render3D2D: =>
+    dist_sqr = @GetPos!\DistToSqr(lp\GetPos!)
+    return unless dist_sqr < 128^2
+    gen = @GetGenerator!
+    return if gen and IsValid(gen) and (not gen\GetOn!)
+    ct = CurTime!
+    lp = LocalPlayer!
+    pos = @GetPos! + @GetUp! * 28 + @GetForward! * 13 + @GetRight! * 7.4
+    ang = @GetAngles!
+    with ang
+      \RotateAroundAxis \Up!, -90
+      \RotateAroundAxis \Forward!, 90
+      \RotateAroundAxis \Right!, -180
+    desp = (lp\GetDespair! * 0.01)
+    -- 1. Draw the machine's name.
+    font = "Spleen_Label"
+    cam.Start3D2D pos, ang, 0.1
+    txt = @PrintName
+    col = HSVToColor (ct * 23) % 180, 1, 1
+    -- Draw a rectangle. This has to be done before drawing the text,
+    -- to prevent overlapping.
+    surface.SetMaterial noise
+    surface.DrawTexturedRect 0, 0, 236, 78
+    -- Draw some text.
+    txt_obj = scribe.Parse "<stutter><rgb=1,1,30><wiggle=#{8 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+    txt_obj\Draw 120, 24, 1, TEXT_ALIGN_CENTER
+    cam.End3D2D!
+    -- 2. Render precursors.
+    font = "Spleen_Label_Small"
+    pos = @GetPos! + @GetUp! * 14.7 + @GetForward! * 13 + @GetRight! * 3
+    ang = @GetAngles!
+    with ang
+      \RotateAroundAxis \Up!, -90
+      \RotateAroundAxis \Forward!, 90
+      \RotateAroundAxis \Right!, -180
+    cam.Start3D2D pos, ang, 0.1
+    py = 0
+    for p in *@Precursors
+      name = p.name
+      name = "#{name\sub(1, 1)\upper!}#{name\sub(2, -1)}"
+      pre_amt = @["GetPrecursor#{name}"](@)
+      txt = "#{pre_amt} #{p.name}"
+      local font = "Spleen_Autodealer"
+      -- Draw some text.
+      txt_obj = scribe.Parse "<stutter><rgb=1,1,60><wiggle=#{5 * desp},#{15 * desp}><f=#{font}><wave=#{3 * desp},#{0.38 * desp},2><ol=2>#{txt}"
+      txt_obj\Draw 75, py, 1, TEXT_ALIGN_CENTER
+      py += txt_obj\GetTall!
+    cam.End3D2D!
+    -- 3. Draw activity screen, which renders rust/current production.
+    font = "Spleen_Label_Small"
+    pos = @GetPos! + @GetUp! * 10.7 + @GetForward! * 13 + @GetRight! * 6.15
+    cam.Start3D2D pos, ang, 0.1
+    rust = @GetRust!
+    empty = true
+    for p in *@Precursors
+      name = p.name
+      name = "#{name\sub(1, 1)\upper!}#{name\sub(2, -1)}"
+      cur_amt = @["GetPrecursor#{name}"](@)
+      if cur_amt > 0
+        empty = false
+        break
+    txt = "i'm #{rust}% rusted"
+    txt = "give me purpose" if rust < 1
+    txt = "I'M ROTTEN. HELP" if rust >= 100
+    txt = "FEED ME" if empty
+    prod = @GetProducing!
+    if prod ~= ""
+      etab = scripted_ents.Get(prod) or weapons.Get(prod)
+      txt = etab.PrintName
+    -- Draw a rectangle. This has to be done before drawing the text,
+    -- to prevent overlapping.
+    surface.SetDrawColor 0, 0, 0, 255
+    surface.DrawRect 0, 0, 209, 56
+    -- Using the same 3D2D context, we'll render a bar that visualizes
+    -- progress of an item in production.
+    production_start = @GetProductionStart!
+    production_end = @GetProductionEnd!
+    if production_end > 0
+      cur = ct - production_start
+      ending = production_end - production_start
+      surface.SetDrawColor 0, 150 + (100 * math.cos(ct)), 0, 255
+      surface.DrawRect 0, 0, 209 * (cur / ending), 56
+    elseif rust >= 100
+      surface.SetDrawColor 150 + (100 * math.cos(ct)), 0, 0, 255
+      surface.DrawRect 0, 0, 209 * (rust / 100), 56
+    else
+      surface.SetDrawColor 147, 58 + (29 * math.cos(ct)), 22, 255
+      surface.DrawRect 0, 0, 209 * (rust / 100), 56
+    -- Finally draw our text.
+    txt_obj = scribe.Parse "<stutter><wiggle=#{2 * desp},#{20 * desp}><f=#{font}><wave=#{5 * desp},#{0.666 * desp},2><ol=2>#{txt}"
+    txt_obj\Draw 105, 16, 1, TEXT_ALIGN_CENTER
+    cam.End3D2D!
+
+    -- TODO
+    -- 4. Display `taking a break after this' or remaining queued items.
+
+class Tools extends Machine
+  PrintName: "Tool Machine"
+  BasePay: 7
+  Precursors:
+    * name: "metal"
+    * name: "wood"
+  Reward: (ply) =>
+    return unless ply\Team! == TEAM_PRIVATE
+    ply.buttons_pushed or= 0
+    ply.buttons_pushed += 2
+    if ply.buttons_pushed % 50 == 0
+      ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
+      ply\AddStemCells(1)
+  Products:
+    ["evilrp_melee/crowbar"]: {
+      precursors:
+        metal: 3
+      time: 10 }
+    ["evilrp_melee/knife"]: {
+      precursors:
+        metal: 2
+      time: 15 }
+    ["evilrp_melee/pipe"]: {
+      precursors:
+        metal: 2
+      time: 10 }
+    ["evilrp_melee/pickaxe"]: {
+      precursors:
+        metal: 5
+        wood: 2
+      time: 20 }
+    ["evilrp_melee/shovel"]: {
+      precursors:
+        metal: 4
+        wood: 3
+      time: 20 }
+    ["evilrp_melee/pot"]: {
+      precursors:
+        metal: 1
+      time: 10 }
+  FactoryIdentifier: "tools"
+class Food extends Machine
+  PrintName: "Food Machine"
+  BasePay: 3
+  Precursors:
+    * name: "biomass"
+    * name: "fluid"
+  Products:
+    ["item/food/soyloaf"]: {
+      precursors:
+        biomass: 1
+      time: 6 }
+    ["item/food/abortion"]: {
+      precursors:
+        biomass: 3
+      time: 6 }
+    ["item/food/drink/fearbeer"]: {
+      precursors:
+        biomass: 3
+      time: 7 }
+    ["item/food/drink/smearbeer"]: {
+      precursors:
+        biomass: 4
+      time: 8 }
+    ["item/food/drink/shake"]: {
+      precursors:
+        biomass: 4
+      time: 6 }
+    ["item/food/moldmelon"]: {
+      precursors:
+        biomass: 2
+      time: 9 }
+    ["item/food/drink/twitchel"]: {
+      precursors:
+        biomass: 2
+      time: 5 }
+  FactoryIdentifier: "food"
+class Weapons extends Machine
+  PrintName: "Weapons Machine"
+  BasePay: 10
+  Precursors:
+    * name: "metal"
+    * name: "polymer"
+
+  Reward: (ply) =>
+    return unless ply\Team! == TEAM_PRIVATE
+    ply.buttons_pushed or= 0
+    ply.buttons_pushed += 3
+    if ply.buttons_pushed % 50 == 0
+      ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
+      ply\AddStemCells(1)
+  Products:
+    ["evilrp_weapon/bodyguard"]: {
+      precursors:
+        metal: 5
+      time: 20 }
+    ["evilrp_weapon/warrant"]: {
+      precursors:
+        metal: 5
+      time: 20 }
+    ["evilrp_weapon/hope"]: {
+      precursors:
+        metal: 4
+      time: 20 }
+    ["evilrp_weapon/enforcer"]: {
+      precursors:
+        metal: 7
+      time: 25 }
+    ["evilrp_weapon/viper"]: {
+      precursors:
+        metal: 6
+      time: 25 }
+    ["evilrp_weapon/brainpaster"]: {
+      precursors:
+        metal: 5
+        polymer: 1
+      time: 20 }
+    ["evilrp_weapon/subjugator"]: {
+      precursors:
+        metal: 7
+        polymer: 3
+      time: 25 }
+    ["evilrp_weapon/painkiller"]: {
+      precursors:
+        metal: 4
+        polymer: 2
+      time: 20 }
+    ["evilrp_weapon/candlewood"]: {
+      precursors:
+        metal: 4
+        polymer: 4
+      time: 25 }
+    ["evilrp_weapon/obliterator"]: {
+      precursors:
+        metal: 8
+        polymer: 5
+      time: 30 }
+    ["evilrp_weapon/trooper"]: {
+      precursors:
+        metal: 11
+        polymer: 7
+      time: 30 }
+  FactoryIdentifier: "weapons"
+class Medicine extends Machine
+  PrintName: "Medicine Machine"
+  BasePay: 7
+  Reward: (ply) =>
+    return unless ply\Team! == TEAM_PRIVATE
+    ply.buttons_pushed or= 0
+    ply.buttons_pushed += 2
+    if ply.buttons_pushed % 50 == 0
+      ply\Notify"<c=0,200,0>Your work ethic makes your leader proud."
+      ply\AddStemCells(1)
+  Precursors:
+    * name: "biomass"
+    * name: "metal"
+  Products:
+    ["item/food/medicine/pills"]: {
+      precursors:
+        biomass: 2
+        metal: 1
+      time: 10 }
+    ["item/food/medicine/ablativepaste"]: {
+      precursors:
+        biomass: 3
+        metal: 1
+      time: 10 }
+    ["item/food/medicine/bleach"]: {
+      precursors:
+        biomass: 2
+        metal: 1 
+      time: 10 }
+
+  FactoryIdentifier: "medicine"
+
+class Evil_Squeal extends SOUND
+  sound: ["placenta/coinkeeper#{i}.wav" for i=1,4]
+  level: SNDLVL_70DB
+  pitch: {70, 85}
+
+class Evil extends Machine
+  PrintName: "Evil Machine"
+  Precursors:
+    * name: "metal"
+    * name: "wood"
+  Products:
+    ["evilrp_weapon/mark"]: {
+      precursors:
+        metal: 6
+      time: 20 }
+    ["evilrp_weapon/coach"]: {
+      precursors:
+        metal: 10
+        wood: 5
+      time: 30 }
+    ["evilrp_weapon/obrez"]: {
+      precursors:
+        metal: 5
+        wood: 3
+      time: 30 }
+    ["evilrp_weapon/greaser"]: {
+      precursors:
+        metal: 14
+      time: 35 }
+    ["evilrp_weapon/owler"]: {
+      precursors:
+        metal: 7
+        wood: 3
+      time: 30 }
+    ["evilrp_weapon/prettyboy"]: {
+      precursors:
+        metal: 7
+        wood: 2
+      time: 30 }
+    ["evilrp_weapon/viper"]: {
+      precursors:
+        metal: 4
+        wood: 2
+      time: 30 }
+
+  ProduceItem: (item) =>
+    -- the evil machine drops items directly
+    etab = scripted_ents.Get(item)
+    local weapon
+    unless etab
+      -- it must be a SWEP
+      etab = weapons.Get(item)
+      weapon = true
+    local product
+    if weapon
+      product = ents.Create"evilrp/spawned/weapon"
+      with product
+        \SetModel etab.WorldModel
+        \SetWeaponClass item
+    else
+      product = ents.Create item
+    product\SetPos(@GetPos! + Vector(0,0,-12) + (@GetForward! * 8))
+    product\Spawn!
+    product\Activate!
+    @EmitSound"Evil_Squeal"
+    return product
+
+  Shift: =>
+    return unless SERVER
+    map = game.GetMap!
+    return unless EVIL_MACHINE_POSITIONS_CURSED[map]
+    positions_all = {...EVIL_MACHINE_POSITIONS_CURSED[map]}
+    positions = {}
+    -- hacky way of building this
+    our_pos = @GetPos!
+    for k, v in pairs(positions_all)
+      unless our_pos == v.machine.pos
+        positions[] = v
+    where = positions[math.random(#positions)]
+    where_mach = where.machine
+    where_gen = where.generator
+    @EmitSound"Evil_Squeal"
+    @SetPos(where_mach.pos)
+    @SetAngles(where_mach.ang)
+    gen = @GetGenerator!
+    with gen
+      \SetPos(where_gen.pos)
+      \SetAngles(where_gen.ang)
+      \SetRust(0)
+      \SetFuel(0)
+      if \GetOn!
+        \SetOn false
+        \StopLoopingSound \GetSoundLoop!
+        .Overload = false
+    @PositionButtons!
+    @SetRust(0)
+    MsgC Color(200,0,0), "The evil machine shifted.\n"
+
+  Think: =>
+    super!
+    ct = CurTime!
+    @next_shift = ct + 5 unless @next_shift
+    if ct >= @next_shift
+      if @GetProducing! == ""
+        @next_shift = ct + math.random(300,900)
+        @Shift!
+
+  FactoryIdentifier: "evil"

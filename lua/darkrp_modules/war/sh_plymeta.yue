@@ -1,0 +1,9 @@
+meta = FindMetaTable"Player"
+meta[k] = v for k, v in pairs {
+  CanUseMachines: =>
+    job = RPExtraTeams[@Team!]
+    if job and job.use_machines
+      return true
+
+    return false
+}

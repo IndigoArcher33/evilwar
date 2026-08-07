@@ -1,0 +1,41 @@
+import Round, Rand, random from math
+
+class LFR_GeneratorSmoke extends FX
+  Init: (data) =>
+    local pos, speed, ang, scale
+    with data
+      pos = \GetOrigin!
+      speed = \GetStart!
+      ang = \GetNormal!
+      scale = \GetScale!
+    for i=1,3
+      chance = Round Rand(1,3)
+      local particle_mat
+      switch chance
+        when 1
+          particle_mat = "sprites/heatwave"
+        else
+          particle_mat = "particle/smokesprites_000#{Round(Rand(1,9))}"
+      if GAMEMODE.Emitter2D
+        particle = GAMEMODE.Emitter2D\Add particle_mat, pos
+        with particle
+          vel = ((ang * 2) * i) * 1
+          vel = vel + Vector(random(-4,-14), random(-4,4), random(-4,4))
+          \SetVelocity vel
+          \SetDieTime Rand(1,4)
+          \SetEndAlpha 0
+          \SetDieTime Rand(1,4)
+          \SetEndAlpha 0
+          \SetStartSize 1 * scale
+          \SetEndSize random(2, 4) * scale
+          \SetRoll Rand(-10, 10)
+          \SetRollDelta Rand(-0.2, 0.2)
+          color_num = Rand(20, 75)
+          \SetColor color_num, color_num, color_num
+          \SetStartAlpha color_num
+          \SetGravity Vector(0, 0, random(60, 120))
+          \SetCollide true
+          \SetAirResistance 300
+          \SetBounce 2
+  Render: =>
+  Think: => false

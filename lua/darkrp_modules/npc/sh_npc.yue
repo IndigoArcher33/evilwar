@@ -1,0 +1,434 @@
+import Register from scripted_ents
+import lower, Left from string
+
+global class NEXTBOT
+  @__inherited: (child) =>
+    child.__barcode = lower(rawget(child, '__nextbot') or child.__name)
+
+    fields = {k,v for k,v in pairs(child.__base) when Left(k, 2) != "__"}
+
+    fields.Base = rawget(child.__base, 'Base') or @__barcode or "base_nextbot"
+    fields.Type = "nextbot"
+
+    with getmetatable child
+      .__call = (where, ...) =>
+        local ent
+        if isvector where
+          ent = ents.Create child.__barcode
+          if IsValid ent
+            ent\SetPos where
+            ent\Spawn!
+        return ent
+
+    Register fields, child.__barcode
+    MsgC Color(0, 200, 200), "+NEXTBOT: #{child.__barcode} (Base: #{fields.Base})\n"
+
+    if fields.Spawnable
+      list.Set "NPC", child.__barcode, {
+        Name: fields.PrintName or child.__name
+        Class: child.__barcode
+        Category: fields.Category or "Nextbots"
+      }
+
+DEFINE_BASECLASS"base_nextbot"
+
+class EvilRP_NPC extends NEXTBOT
+  __nextbot: "evil_npc"
+  Base: "base_nextbot"
+  Faction: "evil"
+  Category: "EvilRP"
+  PrintName: "Evil NPC"
+  Spawnable: true
+  Reward: 100
+  Weapon: "evilrp_weapon/obrez"
+  LootTable: {"item/loot/spareammo", "item_healthvial"}
+
+  IdleSound:["placenta/speech/prole#{i}.wav" for i=1,3]
+  DeathSound:["placenta/death/prole#{i}.wav" for i=1,3]
+  HurtSound:["placenta/pain/prole#{i}.wav" for i=1,5]
+
+
+  Initialize: =>
+    @SetModel "models/vel/evilwar/royalist.mdl"
+    @SetHealth 100
+    @LoseTargetDist = 1200
+    @SearchRadius = 1800
+    
+    @NextFire = CurTime!
+    
+    @Give @Weapon
+
+  -- the following weapon code has been mostly taken and written into Yue from Raid by Melt
+
+  Give: (wepname) =>
+    return if CLIENT
+    if IsValid(@GetActiveLuaWeapon!)
+      @GetActiveLuaWeapon!\Remove!
+
+    wep = ents.Create wepname
+    if IsValid wep
+      wep\SetPos @GetPos!
+      wep\SetOwner @
+      wep\Spawn!
+      wep\Activate!
+      @SetupWeapon wep
+
+  SetupWeapon: (wep) =>
+    return unless IsValid wep
+    @m_ActualWeapon = wep
+
+    wep\SetVelocity vector_origin
+    wep\RemoveSolidFlags FSOLID_TRIGGER
+    wep\SetOwner @
+    wep\RemoveEffects EF_ITEM_BLINK
+    wep\PhysicsDestroy!
+    
+    wep\SetParent @
+    wep\SetMoveType MOVETYPE_NONE
+    wep\AddEffects EF_BONEMERGE
+    wep\AddSolidFlags FSOLID_NOT_SOLID
+    wep\SetLocalPos vector_origin
+    wep\SetLocalAngles angle_zero
+    wep\SetTransmitWithParent true
+    
+    clipSize = (wep.Primary and wep.Primary.ClipSize) or 30
+    wep.CurAmmo = clipSize
+    wep.MaxClip = clipSize
+    wep.Reloading = false
+
+  OnInjured: (dmginfo) =>
+    @EmitSound @HurtSound[math.random(1, #@HurtSound)] if @HurtSound
+    return
+
+  OnTakeDamage: (dmginfo) =>
+    attacker = dmginfo\GetAttacker!
+    @SetEnemy attacker if IsValid(attacker) and attacker != @
+    return
+
+  OnTraceAttack: (dmginfo, dir, trace) =>
+    if trace.HitGroup == HITGROUP_HEAD
+      dmginfo\ScaleDamage 3.0
+
+    elseif trace.HitGroup == HITGROUP_LEFTARM or trace.HitGroup == HITGROUP_RIGHTARM
+      dmginfo\ScaleDamage 0.7
+
+  OnKilled: (dmginfo) =>
+    @EmitSound @DeathSound[math.random(1, #@DeathSound)] if @DeathSound
+    attacker = dmginfo\GetAttacker!
+    if IsValid(attacker) and attacker\IsPlayer!
+      job = RPExtraTeams[attacker\Team!]
+      if job and job.category == @Faction
+        attacker\Notify "<color=255,0,0> My own brother!"
+        net.Start "evilrp_jumpscare"
+        net.Send attacker
+      attacker\AddMoney @Reward
+      
+    @BecomeRagdoll dmginfo
+    @Drop!
+    return
+
+  Drop: =>
+    for i=1,math.random(1,2)
+        cls = @LootTable[math.random 1, #@LootTable]
+        loot = ents.Create cls
+        with loot
+          \Spawn!
+          \Activate!
+          \SetPos @GetPos! + Vector(math.random(-10, 10), math.random(-10, 10), 0)
+    
+    weapon = @GetActiveLuaWeapon!
+    etab = weapons.Get(weapon)
+    if weapon and etab
+      product = ents.Create"evilrp/spawned/weapon"
+      with product
+        \SetModel etab.WorldModel
+        \SetWeaponClass weapon
+        \SetPos @GetPos! + Vector(math.random(-10, 10), math.random(-10, 10), 0)
+        \Spawn!
+
+
+  GetActiveLuaWeapon: =>
+    return @m_ActualWeapon or NULL
+
+  WeaponPrimaryAttack: =>
+    if @NextFire > CurTime! 
+      return
+    if not @HaveEnemy! 
+      return
+
+    wep = @GetActiveLuaWeapon!
+    if not IsValid wep 
+      return
+
+    if wep.CurAmmo <= 0
+      @Reload!
+      return
+
+    myEyePos = @GetPos! + Vector(0, 0, 50)
+    enemyChestPos = @GetEnemy!\GetPos! + Vector(0, 0, 45)
+
+    trace = 
+      start: myEyePos
+      endpos: enemyChestPos
+      filter: {@, wep}
+      
+    tr = util.TraceLine trace
+    if IsValid(tr.Entity) and tr.Entity\GetClass! == @GetClass!
+      return
+
+    @SetPoseParameter "aim_pitch", 0
+
+    delay = (wep.Primary and wep.Primary.Delay) or 0.1
+    @NextFire = CurTime! + delay + math.random(-delay / 10, delay / 10)
+    
+    snd = (wep.Primary and wep.Primary.Sound) or "Weapon_SMG1.Single"
+    if type(snd) == "table" then snd = table.Random snd
+    @EmitSound snd, 75, 100, 5
+    
+    @RestartGesture ACT_HL2MP_GESTURE_RANGE_ATTACK_AR2
+    
+    acc = if wep.GetSpread then wep\GetSpread! else Vector(0.05, 0.05, 0)
+    bullet = 
+      Num: (wep.Primary and wep.Primary.NumBullets) or 1
+      Src: myEyePos
+      Dir: (enemyChestPos - myEyePos)\GetNormalized!
+      Spread: acc*3
+      Tracer: 1
+      Force: (wep.Primary and wep.Primary.Damage) or 10
+      Damage: (wep.Primary and wep.Primary.Damage) or 10
+      AmmoType: (wep.Primary and wep.Primary.Ammo) or "smg1"
+      Attacker: @
+      Inflictor: wep
+
+    @FireBullets bullet
+    wep.CurAmmo -= 1
+    wep\MuzzleFlash!
+
+  IsMelee: =>
+    wep = @GetActiveLuaWeapon!
+    if not IsValid wep 
+      return true 
+    
+    holdType = (wep.GetHoldType and wep\GetHoldType!) or "smg"
+    return holdType == "melee" or holdType == "fist" or holdType == "knife" or holdType == "grenade"
+
+  Reload: =>
+    wep = @GetActiveLuaWeapon!
+    if not IsValid(wep) or wep.Reloading 
+      return
+    
+    @RestartGesture ACT_HL2MP_GESTURE_RELOAD_AR2
+    wep.Reloading = true
+    @EmitSound "weapons/smg1/smg1_reload.wav"
+    
+    timer.Simple 2.5, ->
+      if IsValid(@) and IsValid(wep)
+        wep.CurAmmo = wep.MaxClip
+        wep.Reloading = false
+
+  GetAnim: (state) =>
+    wep = @GetActiveLuaWeapon!
+    if not IsValid wep 
+      return _G["ACT_HL2MP_" .. state]
+    
+    holdType = (wep.GetHoldType and wep\GetHoldType!) or "smg"
+    
+    translations = 
+      pistol: "PISTOL"
+      revolver: "REVOLVER"
+      smg: "SMG1"
+      ar2: "AR2"
+      shotgun: "SHOTGUN"
+      crossbow: "CROSSBOW"
+      rpg: "RPG"
+      grenade: "GRENADE"
+      melee: "MELEE"
+      
+    suffix = translations[holdType] or "SMG1"
+    return _G["ACT_HL2MP_" .. state .. "_" .. suffix]
+
+  BodyUpdate: =>
+    act = @GetActivity!
+    if act == @GetAnim("RUN") or act == @GetAnim("WALK")
+      @BodyMoveXY!
+    else
+      @FrameAdvance!
+
+  SetEnemy: (ent) => @Enemy = ent
+  GetEnemy: => @Enemy
+
+  HaveEnemy: =>
+    enemy = @GetEnemy!
+    if IsValid enemy
+      if @GetRangeTo(enemy\GetPos!) > @LoseTargetDist
+        return @FindEnemy!
+      elseif enemy\IsPlayer! and not enemy\Alive!
+        return @FindEnemy!
+      elseif enemy\GetClass! == @GetClass!
+        return @FindEnemy!
+      elseif enemy\Team! == TEAM_GHOST
+        return @FindEnemy!
+      return true
+    return @FindEnemy!
+
+  FindEnemy: =>
+    entsInCone = ents.FindInCone @GetPos!, @GetForward!, @SearchRadius, 0.707
+    for v in *entsInCone
+      if v.Faction and v.Faction == @Faction
+        continue
+      
+
+      if (v\IsNPC! or v\IsNextBot! or v\IsPlayer!) and @Visible(v)
+        if v\Health! > 0
+          @SetEnemy v
+          return true
+        
+    @SetEnemy nil
+    return false
+
+  RunBehaviour: =>
+    while true
+      if @HaveEnemy!
+        if @IsMelee!
+          @StartActivity @GetAnim("RUN")
+          @loco\SetDesiredSpeed 150
+          @ChaseEnemy!
+        else
+          @StartActivity @GetAnim("IDLE")
+          
+          while @HaveEnemy! and not @IsMelee!
+            target = @GetEnemy!
+            if not IsValid(target) then break
+            
+            if not @Visible(target)
+              @StartActivity @GetAnim("RUN")
+              @loco\SetDesiredSpeed 150
+              
+              path = Path "Follow"
+              path\SetMinLookAheadDistance 300
+              path\SetGoalTolerance 20
+              path\Compute @, target\GetPos!
+              
+              if not path\IsValid!
+                coroutine.wait(1)
+              else
+                nextPath = CurTime! + 5
+                while path\IsValid! and @HaveEnemy! and CurTime! < nextPath
+                  target = @GetEnemy!
+                  if not IsValid(target) or @Visible(target) then break 
+                  
+                  if path\GetAge! > 0.1 then path\Compute @, target\GetPos!
+                  path\Update @
+                  
+                  if @loco\IsStuck! then @HandleStuck!
+                  coroutine.yield!
+                
+            elseif @GetRangeTo(target\GetPos!) > 800
+              @StartActivity @GetAnim("WALK")
+              @loco\SetDesiredSpeed 100
+              
+              dir = (target\GetPos! - @GetPos!)\GetNormalized!
+              pos = @GetPos! + dir * 250
+              
+              @MoveToPos pos
+              
+              @StartActivity @GetAnim("IDLE")
+              
+              stop = CurTime! + math.Rand(1.0, 2.5)
+              while CurTime! < stop
+                target = @GetEnemy!
+                if not IsValid(target) or not @Visible(target) then break
+                
+                @loco\FaceTowards target\GetPos!
+                @WeaponPrimaryAttack!
+                coroutine.yield!
+                
+            else
+              @StartActivity @GetAnim("IDLE")
+              @loco\FaceTowards target\GetPos!
+              @WeaponPrimaryAttack!
+              coroutine.yield!
+      else
+        @StartActivity @GetAnim("WALK")
+        @EmitSound @IdleSound[math.random(1, #@IdleSound)] if @IdleSound
+        @loco\SetDesiredSpeed 100
+        
+        wander = @GetPos! + Vector(math.Rand(-1, 1), math.Rand(-1, 1), 0) * 400
+        if navmesh.IsLoaded! and navmesh.GetNearestNavArea(wander, false)
+          @MoveToPos wander
+        else
+          coroutine.wait(1)
+          
+        @StartActivity @GetAnim("IDLE")
+        
+      coroutine.wait 0.5
+
+
+  ChaseEnemy: =>
+    path = Path "Follow"
+    path\SetMinLookAheadDistance 300
+    path\SetGoalTolerance 20
+    path\Compute @, @GetEnemy!\GetPos!
+
+    return "failed" unless path\IsValid!
+
+    while path\IsValid! and @HaveEnemy!
+      if path\GetAge! > 0.1
+        path\Compute @, @GetEnemy!\GetPos!
+        
+      @loco\FaceTowards @GetEnemy!\GetPos!
+      @WeaponPrimaryAttack!
+        
+      path\Update @
+      
+      if @loco\IsStuck!
+        @HandleStuck!
+        return "stuck"
+
+      coroutine.yield!
+
+    return "ok"
+
+
+DEFINE_BASECLASS "evil_npc"
+class RoyalConscript extends EvilRP_NPC
+  __nextbot: "royalconscript"
+  Base: "evil_npc"
+  Faction: "Royalists"
+  Category: "EvilRP"
+  PrintName: "Conscript"
+  Spawnable: true
+  Reward: 100
+  Weapon: {"evilrp_weapon/obrez", "evilrp_weapon/pacifier", "evilrp_weapon/warrant", "evilrp_weapon/viper"}
+
+  IdleSound:["placenta/speech/prole#{i}.wav" for i=1,3]
+  DeathSound:["placenta/death/prole#{i}.wav" for i=1,3]
+  HurtSound:["placenta/pain/prole#{i}.wav" for i=1,5]
+
+
+  Initialize: =>
+    @SetModel "models/vel/evilwar/royalist.mdl"
+    @SetHealth 100
+    @LoseTargetDist = 1200
+    @SearchRadius = 1800
+    
+    @NextFire = CurTime!
+    
+    @Give @Weapon[math.random(1, #@Weapon)]
+
+  HaveEnemy: =>
+      enemy = @GetEnemy!
+      if IsValid enemy
+        if @GetRangeTo(enemy\GetPos!) > @LoseTargetDist
+          return @FindEnemy!
+        elseif enemy\IsPlayer!
+          if not enemy\Alive! or enemy\Team! == TEAM_GHOST
+            return @FindEnemy!
+          job = RPExtraTeams[enemy\Team!]
+          if job and job.category == "Royalists"
+            return @FindEnemy!
+          return true
+        elseif enemy\GetClass! == @GetClass!
+          return @FindEnemy!
+        return true
+      return @FindEnemy!
