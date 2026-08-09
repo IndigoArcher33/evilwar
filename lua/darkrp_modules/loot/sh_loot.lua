@@ -364,29 +364,28 @@ do -- 103
 			end -- 121
 			local op = GAMEMODE.War.active_operation -- 124
 			if op then -- 126
-				ply:AddStemCells(2) -- 127
-				op:AddIntel(op.Attacker) -- 128
-				ply:Notify("<c=0,200,0>Our operation will benefit from this knowledge.") -- 129
-				if not self.PersistAfterEat then -- 130
-					self:Trash() -- 130
-				end -- 130
-				return -- 131
-			else -- 133
-				ply:Notify("<c=200,0,0>You must start an operation to exploit this knowledge.") -- 133
-				net.Start("evilrp_frighten") -- 134
-				net.Send(ply) -- 135
-				return -- 136
+				op:AddIntel(op.Attacker) -- 127
+				ply:Notify("<c=0,200,0>Our operation might benefit from this knowledge.") -- 128
+				if not self.PersistAfterEat then -- 129
+					self:Trash() -- 129
+				end -- 129
+				return -- 130
+			else -- 132
+				ply:Notify("<c=200,0,0>You must start an operation to exploit this knowledge.") -- 132
+				net.Start("evilrp_frighten") -- 133
+				net.Send(ply) -- 134
+				return -- 135
 			end -- 126
 		end -- 103
 	} -- 103
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 137
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 136
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 103
 			_base_0[_key_0] = _val_0 -- 103
 		end -- 103
-	end -- 137
+	end -- 136
 	if _base_0.__index == nil then -- 103
 		_base_0.__index = _base_0 -- 103
-	end -- 137
+	end -- 136
 	setmetatable(_base_0, _parent_0.__base) -- 103
 	_class_0 = setmetatable({ -- 103
 		__init = function(self, ...) -- 103
@@ -418,5 +417,5 @@ do -- 103
 		_parent_0.__inherited(_parent_0, _class_0) -- 103
 	end -- 103
 	Intel = _class_0 -- 103
-	return _class_0 -- 137
-end -- 137
+	return _class_0 -- 136
+end -- 136

@@ -124,9 +124,8 @@ class Intel extends Loot
     op = GAMEMODE.War.active_operation
 
     if op
-      ply\AddStemCells 2
       op\AddIntel op.Attacker -- make intel dynamic for the 2 sides in the future
-      ply\Notify"<c=0,200,0>Our operation will benefit from this knowledge."
+      ply\Notify"<c=0,200,0>Our operation might benefit from this knowledge."
       @Trash! if not @PersistAfterEat
       return
     else

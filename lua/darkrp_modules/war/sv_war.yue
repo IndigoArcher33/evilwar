@@ -198,14 +198,17 @@ global class Operation
           emperor\SendChat "NOTICE", "[WAR] The intelligence was outdated, our teams found nothing of value."
         elseif roll == 2
           emperor\SendChat "NOTICE", "[WAR] The intelligence was only partially useful, the balance shifts #{points} points in our favor"
+          emperor\AddStemCells 1
           @Balance += math.floor points/2
         elseif roll == 3
           lost = math.random 20, 60
           emperor\SendChat "NOTICE", "[WAR] The folder was a trap, our teams were compromised. We have lost #{lost} troops."
+          emperor\AddStemCells -1
           @AttackingTroops -= lost
           @AttackerCasualties += lost
         else
           emperor\SendChat "SUCCESS", "[WAR] We have successfuly acted on our intelligence, the balance shifts #{points} points in our favor."
+          emperor\AddStemCells 2
         @Balance += points
       elseif side == @Defender
         emperor\SendChat "NOTICE", "[WAR] Enemy intelligence shifts the balance #{points} points against us."

@@ -396,122 +396,125 @@ do -- 150
 						emperor:SendChat("NOTICE", "[WAR] The intelligence was outdated, our teams found nothing of value.") -- 198
 					elseif roll == 2 then -- 199
 						emperor:SendChat("NOTICE", "[WAR] The intelligence was only partially useful, the balance shifts " .. tostring(points) .. " points in our favor") -- 200
-						self.Balance = self.Balance + math.floor(points / 2) -- 201
-					elseif roll == 3 then -- 202
-						local lost = math.random(20, 60) -- 203
-						emperor:SendChat("NOTICE", "[WAR] The folder was a trap, our teams were compromised. We have lost " .. tostring(lost) .. " troops.") -- 204
-						self.AttackingTroops = self.AttackingTroops - lost -- 205
-						self.AttackerCasualties = self.AttackerCasualties + lost -- 206
-					else -- 208
-						emperor:SendChat("SUCCESS", "[WAR] We have successfuly acted on our intelligence, the balance shifts " .. tostring(points) .. " points in our favor.") -- 208
+						emperor:AddStemCells(1) -- 201
+						self.Balance = self.Balance + math.floor(points / 2) -- 202
+					elseif roll == 3 then -- 203
+						local lost = math.random(20, 60) -- 204
+						emperor:SendChat("NOTICE", "[WAR] The folder was a trap, our teams were compromised. We have lost " .. tostring(lost) .. " troops.") -- 205
+						emperor:AddStemCells(-1) -- 206
+						self.AttackingTroops = self.AttackingTroops - lost -- 207
+						self.AttackerCasualties = self.AttackerCasualties + lost -- 208
+					else -- 210
+						emperor:SendChat("SUCCESS", "[WAR] We have successfuly acted on our intelligence, the balance shifts " .. tostring(points) .. " points in our favor.") -- 210
+						emperor:AddStemCells(2) -- 211
 					end -- 197
-					self.Balance = self.Balance + points -- 209
-				elseif side == self.Defender then -- 210
-					emperor:SendChat("NOTICE", "[WAR] Enemy intelligence shifts the balance " .. tostring(points) .. " points against us.") -- 211
-					self.Balance = self.Balance - points -- 212
+					self.Balance = self.Balance + points -- 212
+				elseif side == self.Defender then -- 213
+					emperor:SendChat("NOTICE", "[WAR] Enemy intelligence shifts the balance " .. tostring(points) .. " points against us.") -- 214
+					self.Balance = self.Balance - points -- 215
 				end -- 196
-			end) -- 212
-		end, -- 214
-		Status = function(self) -- 214
-			if self.Balance >= 100 then -- 215
-				return OP_SUCC -- 216
-			elseif self.Balance <= 0 then -- 217
-				return OP_FAIL -- 218
-			else -- 220
-				return OP_ONGOING -- 220
-			end -- 215
-		end, -- 222
-		Tick = function(self) -- 222
-			local emperor -- 223
-			emperor = nil -- 223
-			local _list_0 = player.GetAll() -- 224
-			for _index_0 = 1, #_list_0 do -- 224
-				local ply = _list_0[_index_0] -- 224
-				if ply:Team() == TEAM_EMPEROR then -- 225
-					emperor = ply -- 226
-				end -- 225
-			end -- 227
-			local _exp_0 = self:Status() -- 228
-			if OP_ONGOING == _exp_0 then -- 229
-				local adv_def = math.Clamp(math.Round(-2 * (self.DefendingTroops / self.AttackingTroops)), -7, 0) -- 230
-				local adv_atk = math.Clamp(math.Round(2 * (self.AttackingTroops / self.DefendingTroops)), 0, 7) -- 231
-				if emperor then -- 232
-					adv_atk = adv_atk + 1 -- 232
-				end -- 232
-				print("Advantage Def: " .. tostring(adv_def) .. " | Advantage Atk: " .. tostring(adv_atk)) -- 234
-				local push = math.random(adv_def, adv_atk) -- 236
-				self.Balance = math.Clamp(self.Balance + push * 3, 0, 100) -- 237
-				local atk_min, atk_max, def_min, def_max -- 239
-				if math.abs(push) <= 1 then -- 241
-					if emperor then -- 242
-						emperor:SendChat("NOTICE", "[WAR] " .. tostring(self.Name) .. " remains a stalemate.") -- 243
-					end -- 242
-					atk_min, atk_max = 10, 5 -- 244
-					def_min, def_max = 12, 7 -- 245
-				elseif push > 1 then -- 247
-					if emperor then -- 248
-						emperor:SendChat("SUCCESS", "[WAR] The offensive at " .. tostring(self.Target.Name) .. " experienced a successful push.") -- 249
-						emperor:AddStemCells(1) -- 250
-					end -- 248
-					atk_min, atk_max = 20, 10 -- 251
-					def_min, def_max = 8, 4 -- 252
-				else -- 255
-					if emperor then -- 255
-						emperor:SendChat("NOTICE", "[WAR] We have been driven back at " .. tostring(self.Target.Name) .. ".") -- 256
-						emperor:AddStemCells(-1) -- 257
-					end -- 255
-					atk_min, atk_max = 8, 4 -- 258
-					def_min, def_max = 20, 10 -- 259
-				end -- 241
-				local atkloss = math.random(math.floor(self.AttackingTroops / atk_min), math.floor(self.AttackingTroops / atk_max)) -- 261
-				local defloss = math.random(math.floor(self.DefendingTroops / def_min), math.floor(self.DefendingTroops / def_max)) -- 262
-				self.AttackingTroops = self.AttackingTroops - atkloss -- 264
-				self.AttackerCasualties = self.AttackerCasualties + atkloss -- 265
-				self.DefendingTroops = self.DefendingTroops - defloss -- 266
-				self.DefenderCasualties = self.DefenderCasualties + defloss -- 267
-			elseif OP_FAIL == _exp_0 then -- 269
-				if emperor then -- 270
-					emperor:SendChat("NOTICE", "[WAR] We have failed to annex " .. tostring(self.Target.Name) .. ".") -- 271
-					emperor:AddStemCells(-3) -- 272
-				end -- 270
-				local atkloss = math.random(200, 500) -- 273
-				local defloss = math.random(50, 300) -- 274
-				local _obj_0 = self.Defender -- 275
-				_obj_0.Troops = _obj_0.Troops - atkloss -- 275
-				self.Defender.Troops = math.max(self.Defender.Troops, 0) -- 276
-				self.DefenderCasualties = self.DefenderCasualties + defloss -- 277
-				local _obj_1 = self.Attacker -- 278
-				_obj_1.Troops = _obj_1.Troops - defloss -- 278
-				self.Attacker.Troops = math.max(self.Attacker.Troops, 0) -- 279
-				self.AttackerCasualties = self.AttackerCasualties + atkloss -- 280
-				GAMEMODE.War.active_operation = nil -- 281
-				local INTERVAL_REINFORCE = 3 -- 282
-			elseif OP_SUCC == _exp_0 then -- 283
-				if emperor then -- 284
-					emperor:SendChat("SUCCESS", "[WAR] " .. tostring(self.Target.Name) .. " has been brought in to the fold.") -- 285
-					Chat.Announce("GENERIC", "<c=0,200,0>" .. tostring(self.Target.Name) .. " has been annexed by the " .. tostring(self.Attacker.Name) .. ".") -- 286
-					emperor:AddStemCells(3) -- 287
-				end -- 284
-				self.Attacker:AnnexCity(self.Target) -- 289
-				self.Defender:RemoveCity(self.Target) -- 290
-				local atkloss = math.random(100, 300) -- 292
-				local defloss = math.random(300, 500) -- 293
-				local _obj_0 = self.Defender -- 294
-				_obj_0.Troops = _obj_0.Troops - atkloss -- 294
-				self.Defender.Troops = math.max(self.Defender.Troops, 0) -- 295
-				self.DefenderCasualties = self.DefenderCasualties + defloss -- 296
-				local _obj_1 = self.Attacker -- 297
-				_obj_1.Troops = _obj_1.Troops - defloss -- 297
-				self.Attacker.Troops = math.max(self.Attacker.Troops, 0) -- 298
-				self.AttackerCasualties = self.AttackerCasualties + atkloss -- 299
-				GAMEMODE.War.active_operation = nil -- 300
-				local INTERVAL_REINFORCE = 3 -- 301
-			end -- 301
+			end) -- 215
+		end, -- 217
+		Status = function(self) -- 217
+			if self.Balance >= 100 then -- 218
+				return OP_SUCC -- 219
+			elseif self.Balance <= 0 then -- 220
+				return OP_FAIL -- 221
+			else -- 223
+				return OP_ONGOING -- 223
+			end -- 218
+		end, -- 225
+		Tick = function(self) -- 225
+			local emperor -- 226
+			emperor = nil -- 226
+			local _list_0 = player.GetAll() -- 227
+			for _index_0 = 1, #_list_0 do -- 227
+				local ply = _list_0[_index_0] -- 227
+				if ply:Team() == TEAM_EMPEROR then -- 228
+					emperor = ply -- 229
+				end -- 228
+			end -- 230
+			local _exp_0 = self:Status() -- 231
+			if OP_ONGOING == _exp_0 then -- 232
+				local adv_def = math.Clamp(math.Round(-2 * (self.DefendingTroops / self.AttackingTroops)), -7, 0) -- 233
+				local adv_atk = math.Clamp(math.Round(2 * (self.AttackingTroops / self.DefendingTroops)), 0, 7) -- 234
+				if emperor then -- 235
+					adv_atk = adv_atk + 1 -- 235
+				end -- 235
+				print("Advantage Def: " .. tostring(adv_def) .. " | Advantage Atk: " .. tostring(adv_atk)) -- 237
+				local push = math.random(adv_def, adv_atk) -- 239
+				self.Balance = math.Clamp(self.Balance + push * 3, 0, 100) -- 240
+				local atk_min, atk_max, def_min, def_max -- 242
+				if math.abs(push) <= 1 then -- 244
+					if emperor then -- 245
+						emperor:SendChat("NOTICE", "[WAR] " .. tostring(self.Name) .. " remains a stalemate.") -- 246
+					end -- 245
+					atk_min, atk_max = 10, 5 -- 247
+					def_min, def_max = 12, 7 -- 248
+				elseif push > 1 then -- 250
+					if emperor then -- 251
+						emperor:SendChat("SUCCESS", "[WAR] The offensive at " .. tostring(self.Target.Name) .. " experienced a successful push.") -- 252
+						emperor:AddStemCells(1) -- 253
+					end -- 251
+					atk_min, atk_max = 20, 10 -- 254
+					def_min, def_max = 8, 4 -- 255
+				else -- 258
+					if emperor then -- 258
+						emperor:SendChat("NOTICE", "[WAR] We have been driven back at " .. tostring(self.Target.Name) .. ".") -- 259
+						emperor:AddStemCells(-1) -- 260
+					end -- 258
+					atk_min, atk_max = 8, 4 -- 261
+					def_min, def_max = 20, 10 -- 262
+				end -- 244
+				local atkloss = math.random(math.floor(self.AttackingTroops / atk_min), math.floor(self.AttackingTroops / atk_max)) -- 264
+				local defloss = math.random(math.floor(self.DefendingTroops / def_min), math.floor(self.DefendingTroops / def_max)) -- 265
+				self.AttackingTroops = self.AttackingTroops - atkloss -- 267
+				self.AttackerCasualties = self.AttackerCasualties + atkloss -- 268
+				self.DefendingTroops = self.DefendingTroops - defloss -- 269
+				self.DefenderCasualties = self.DefenderCasualties + defloss -- 270
+			elseif OP_FAIL == _exp_0 then -- 272
+				if emperor then -- 273
+					emperor:SendChat("NOTICE", "[WAR] We have failed to annex " .. tostring(self.Target.Name) .. ".") -- 274
+					emperor:AddStemCells(-3) -- 275
+				end -- 273
+				local atkloss = math.random(200, 500) -- 276
+				local defloss = math.random(50, 300) -- 277
+				local _obj_0 = self.Defender -- 278
+				_obj_0.Troops = _obj_0.Troops - atkloss -- 278
+				self.Defender.Troops = math.max(self.Defender.Troops, 0) -- 279
+				self.DefenderCasualties = self.DefenderCasualties + defloss -- 280
+				local _obj_1 = self.Attacker -- 281
+				_obj_1.Troops = _obj_1.Troops - defloss -- 281
+				self.Attacker.Troops = math.max(self.Attacker.Troops, 0) -- 282
+				self.AttackerCasualties = self.AttackerCasualties + atkloss -- 283
+				GAMEMODE.War.active_operation = nil -- 284
+				local INTERVAL_REINFORCE = 3 -- 285
+			elseif OP_SUCC == _exp_0 then -- 286
+				if emperor then -- 287
+					emperor:SendChat("SUCCESS", "[WAR] " .. tostring(self.Target.Name) .. " has been brought in to the fold.") -- 288
+					Chat.Announce("GENERIC", "<c=0,200,0>" .. tostring(self.Target.Name) .. " has been annexed by the " .. tostring(self.Attacker.Name) .. ".") -- 289
+					emperor:AddStemCells(3) -- 290
+				end -- 287
+				self.Attacker:AnnexCity(self.Target) -- 292
+				self.Defender:RemoveCity(self.Target) -- 293
+				local atkloss = math.random(100, 300) -- 295
+				local defloss = math.random(300, 500) -- 296
+				local _obj_0 = self.Defender -- 297
+				_obj_0.Troops = _obj_0.Troops - atkloss -- 297
+				self.Defender.Troops = math.max(self.Defender.Troops, 0) -- 298
+				self.DefenderCasualties = self.DefenderCasualties + defloss -- 299
+				local _obj_1 = self.Attacker -- 300
+				_obj_1.Troops = _obj_1.Troops - defloss -- 300
+				self.Attacker.Troops = math.max(self.Attacker.Troops, 0) -- 301
+				self.AttackerCasualties = self.AttackerCasualties + atkloss -- 302
+				GAMEMODE.War.active_operation = nil -- 303
+				local INTERVAL_REINFORCE = 3 -- 304
+			end -- 304
 		end -- 150
 	} -- 150
 	if _base_0.__index == nil then -- 150
 		_base_0.__index = _base_0 -- 150
-	end -- 301
+	end -- 304
 	_class_0 = setmetatable({ -- 150
 		__init = function(self, target, attacker) -- 153
 			if attacker.Troops <= 500 then -- 154
@@ -550,61 +553,61 @@ do -- 150
 	}) -- 150
 	_base_0.__class = _class_0 -- 150
 	Operation = _class_0 -- 150
-end -- 301
-NEXT_PUSH = NEXT_PUSH or 0 -- 304
-local INTERVAL_PUSH -- 305
-INTERVAL_PUSH = 120 -- 305
-local REINFORCE -- 306
-REINFORCE = 0 -- 306
-local INTERVAL_REINFORCE -- 307
-INTERVAL_REINFORCE = 3 -- 307
-return hook.Add("Think", "evilrp_war", function() -- 309
-	if CurTime() >= NEXT_PUSH then -- 310
-		NEXT_PUSH = CurTime() + INTERVAL_PUSH + math.random(INTERVAL_PUSH) -- 311
-		for _, n in pairs(GAMEMODE.War.nations) do -- 312
-			n.Troops = n.Troops + 100 -- 313
-		end -- 313
-		if GAMEMODE.War.active_operation then -- 314
-			REINFORCE = REINFORCE + 1 -- 315
-			if REINFORCE >= INTERVAL_REINFORCE then -- 316
-				REINFORCE = 0 -- 317
-				INTERVAL_REINFORCE = INTERVAL_REINFORCE + 1 -- 318
-				local op = GAMEMODE.War.active_operation -- 319
-				if op.Defender.Troops > 0 then -- 320
-					local reinforce = math.floor(math.random(0.02, 0.06) * op.Defender.Troops) -- 321
-					op:Reinforce(op.Defender, reinforce) -- 322
-				end -- 320
-				local emperor -- 323
-				emperor = nil -- 323
-				local _list_0 = player.GetAll() -- 324
-				for _index_0 = 1, #_list_0 do -- 324
-					local ply = _list_0[_index_0] -- 324
-					if ply:Team() == TEAM_EMPEROR then -- 325
-						emperor = ply -- 326
-					end -- 325
-				end -- 326
-				if emperor then -- 327
-					emperor:SendChat("NOTICE", "[WAR] " .. tostring(op.Target.Name) .. " has received enemy reinforcements.") -- 328
-				end -- 327
-			end -- 316
-			local op = GAMEMODE.War.active_operation -- 329
-			op:Tick() -- 330
-		else -- 332
-			local emperor -- 332
-			emperor = nil -- 332
-			local _list_0 = player.GetAll() -- 333
-			for _index_0 = 1, #_list_0 do -- 333
-				local ply = _list_0[_index_0] -- 333
-				if ply:Team() == TEAM_EMPEROR then -- 334
-					emperor = ply -- 335
-				end -- 334
-			end -- 335
-			if emperor then -- 336
-				emperor:SendChat("NOTICE", "[WAR] The troops are mutinying, they have nothing to do.") -- 337
-				emperor:AddStemCells(-1) -- 338
-				emperor:Notify("<c=200,0,0>Lymphoma must wage war.") -- 339
-			end -- 336
-		end -- 314
-	end -- 310
-	return -- 340
-end) -- 340
+end -- 304
+NEXT_PUSH = NEXT_PUSH or 0 -- 307
+local INTERVAL_PUSH -- 308
+INTERVAL_PUSH = 120 -- 308
+local REINFORCE -- 309
+REINFORCE = 0 -- 309
+local INTERVAL_REINFORCE -- 310
+INTERVAL_REINFORCE = 3 -- 310
+return hook.Add("Think", "evilrp_war", function() -- 312
+	if CurTime() >= NEXT_PUSH then -- 313
+		NEXT_PUSH = CurTime() + INTERVAL_PUSH + math.random(INTERVAL_PUSH) -- 314
+		for _, n in pairs(GAMEMODE.War.nations) do -- 315
+			n.Troops = n.Troops + 100 -- 316
+		end -- 316
+		if GAMEMODE.War.active_operation then -- 317
+			REINFORCE = REINFORCE + 1 -- 318
+			if REINFORCE >= INTERVAL_REINFORCE then -- 319
+				REINFORCE = 0 -- 320
+				INTERVAL_REINFORCE = INTERVAL_REINFORCE + 1 -- 321
+				local op = GAMEMODE.War.active_operation -- 322
+				if op.Defender.Troops > 0 then -- 323
+					local reinforce = math.floor(math.random(0.02, 0.06) * op.Defender.Troops) -- 324
+					op:Reinforce(op.Defender, reinforce) -- 325
+				end -- 323
+				local emperor -- 326
+				emperor = nil -- 326
+				local _list_0 = player.GetAll() -- 327
+				for _index_0 = 1, #_list_0 do -- 327
+					local ply = _list_0[_index_0] -- 327
+					if ply:Team() == TEAM_EMPEROR then -- 328
+						emperor = ply -- 329
+					end -- 328
+				end -- 329
+				if emperor then -- 330
+					emperor:SendChat("NOTICE", "[WAR] " .. tostring(op.Target.Name) .. " has received enemy reinforcements.") -- 331
+				end -- 330
+			end -- 319
+			local op = GAMEMODE.War.active_operation -- 332
+			op:Tick() -- 333
+		else -- 335
+			local emperor -- 335
+			emperor = nil -- 335
+			local _list_0 = player.GetAll() -- 336
+			for _index_0 = 1, #_list_0 do -- 336
+				local ply = _list_0[_index_0] -- 336
+				if ply:Team() == TEAM_EMPEROR then -- 337
+					emperor = ply -- 338
+				end -- 337
+			end -- 338
+			if emperor then -- 339
+				emperor:SendChat("NOTICE", "[WAR] The troops are mutinying, they have nothing to do.") -- 340
+				emperor:AddStemCells(-1) -- 341
+				emperor:Notify("<c=200,0,0>Lymphoma must wage war.") -- 342
+			end -- 339
+		end -- 317
+	end -- 313
+	return -- 343
+end) -- 343
