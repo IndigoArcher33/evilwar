@@ -132,8 +132,8 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 88
 	speech_sounds = (function() -- 102
 		local _accum_0 = { } -- 102
 		local _len_0 = 1 -- 102
-		for i = 1, 9 do -- 102
-			_accum_0[_len_0] = "placenta/cultspawn" .. tostring(i) .. ".wav" -- 102
+		for i = 1, 4 do -- 102
+			_accum_0[_len_0] = "speech/gruffprole" .. tostring(i) .. ".wav" -- 102
 			_len_0 = _len_0 + 1 -- 102
 		end -- 102
 		return _accum_0 -- 102
@@ -211,7 +211,7 @@ TEAM_STALKER = DarkRP.createJob("Stalker", { -- 88
 	ShowSpare1 = open_player_menu, -- 132
 	ShowSpare2 = open_action_menu, -- 133
 	Reflect = function(ply) -- 134
-		return ply:SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am a Stalker, an unpatriotic wastelander. I pawn off the Wasteland's treasures to the highest bidder. Unlike everyone else, I am talented at digging through trash.") -- 135
+		return ply:SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am a Stalker, an unpatriotic wastelander. I pawn off the Wasteland's treasures to the highest bidder. Unlike everyone else, I am talented at digging through trash. Bone capsules are of great use to me, I can use their contents for nutritious recipes that quench the soul") -- 135
 	end, -- 134
 	PlayerLoadout = function(ply) -- 136
 		ply:ClearOddities() -- 137

@@ -99,7 +99,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   hasLicense: false
   candemote: false
   use_machines: false
-  speech_sounds: ["placenta/cultspawn#{i}.wav" for i=1,9]
+  speech_sounds: ["speech/gruffprole#{i}.wav" for i=1,4]
   hurt_sounds: ["placenta/pain/cult#{i}.wav" for i=1,6]
   become_sounds: ["npc/zombie/zombie_alert#{i}.wav" for i=1,3]
   death_sounds: ["placenta/death/cult#{i}.wav" for i=1,4]
@@ -132,7 +132,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   ShowSpare1: open_player_menu
   ShowSpare2: open_action_menu
   Reflect: (ply) ->
-    ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am a Stalker, an unpatriotic wastelander. I pawn off the Wasteland's treasures to the highest bidder. Unlike everyone else, I am talented at digging through trash.")
+    ply\SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am a Stalker, an unpatriotic wastelander. I pawn off the Wasteland's treasures to the highest bidder. Unlike everyone else, I am talented at digging through trash. Bone capsules are of great use to me, I can use their contents for nutritious recipes that quench the soul")
   PlayerLoadout: (ply) ->
     ply\ClearOddities!
     ply\AddOddity ODDITY.list[math.random(#ODDITY.list)]

@@ -355,3 +355,26 @@ class Xombokom extends Terminal
   max_chars: 50
   screensaver: Material("models/props_lab/warp_sheet")
   noise: Material("models/spawn_effect2")
+class Polemarch extends Terminal
+  Model: Model"models/props_lab/labmonitor002a.mdl"
+  GetScreenPos: =>
+    ang = @GetAngles!
+    offset = (ang\Up! * 5) + (ang\Forward! * 13) + (ang\Right! * 7.4)
+    return @GetPos! + offset
+  GetScreenAngles: =>
+    ang = @GetAngles!
+    with ang
+      \RotateAroundAxis \Forward!, 180
+      \RotateAroundAxis \Right!, 270
+      \RotateAroundAxis \Up!, 270
+    return ang
+  Initialize: =>
+    super!
+    @os = "polemarch"
+  
+  scrW: 680
+  scrH: 600
+  max_lines: 18
+  max_chars: 50
+  screensaver: Material("halflife/lab1_cmpm3000")
+  noise: Material("models/spawn_effect2")

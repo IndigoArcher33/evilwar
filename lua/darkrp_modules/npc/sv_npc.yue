@@ -1,11 +1,19 @@
 global EVIL_NEXT_NPC = 0
-EVIL_NPC_DELAY = 5
+EVIL_NPC_DELAY = 40
 EVIL_NPC_MAX = 7
-global EVIL_NPCS = {}
 WASTELAND_SPAWNS = {
   ["rp_lymphoma"]: 
-    * pos: Vector( -881, -4079, -170 )
-      cls: "evil_npc"
+    * pos: 
+        *Vector( 3851, -8322, -9 )
+      cls: "evilrp_npc"
+      max: 2
+    * pos: 
+        *Vector( 516, -5454, -72 )
+        *Vector( -690, -5391, -133 )
+        *Vector( -91, -6663, -202 )
+        *Vector( 15, -5648, -61 )
+      cls: "npc_antlion"
+      max: 3
   
 }
 
@@ -13,12 +21,13 @@ hook.Add "Think", "evilrp_npc_spawner", ->
   if CurTime! >= EVIL_NEXT_NPC
     EVIL_NEXT_NPC = CurTime! + EVIL_NPC_DELAY + math.random(EVIL_NPC_DELAY)
     map = game.GetMap!
-    spawns = WASTELAND_SPAWNS[map]
-    if spawns
-      for k in *spawns
-        npc = ents.Create k.cls
-        if IsValid npc
-          npc\SetPos pos
-          npc\SetAngles Angle(0, 0, 0)
-          npc\Spawn!
+    if WASTELAND_SPAWNS[map]
+      for spawn in *WASTELAND_SPAWNS[map]
+        amt = ents.FindByClass spawn.cls
+        if #amt < spawn.max
+          npc = ents.Create spawn.cls
+          with npc
+            \SetPos spawn.pos[math.random(#spawn.pos)]
+            \Spawn!
+            \Activate!
   return
