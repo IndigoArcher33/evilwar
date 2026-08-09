@@ -1289,161 +1289,165 @@ do -- 641
 					end -- 696
 					local taxes = GAMEMODE.taxes -- 699
 					local targets = { } -- 700
-					local _list_1 = GAMEMODE.War.nations["Wasteland"].Cities -- 701
+					local _list_1 = GAMEMODE.War.nations -- 701
 					for _index_0 = 1, #_list_1 do -- 701
-						local c = _list_1[_index_0] -- 701
-						targets[c.Name:lower()] = c -- 702
-					end -- 702
-					local cmd = args[1] -- 703
-					if "begin" == cmd then -- 705
-						local t = args[2]:lower() -- 706
-						local city = targets[t] -- 707
-						if not (t and city) then -- 708
-							gterm:Broadcast(term, "invalid target", GT_COL_ERR) -- 709
-							return -- 710
-						end -- 708
-						if GAMEMODE.War.active_operation then -- 711
-							gterm:Broadcast(term, "there already is an active operation", GT_COL_ERR) -- 712
-							return -- 713
-						end -- 711
-						local op = Operation(city, GAMEMODE.War.nations["Lymphoma"]) -- 714
-						term:EmitSound("war/dethcon.wav") -- 715
-						gterm:Broadcast(term, "'" .. tostring(op.Name) .. "' has begun with objective: " .. tostring(city.Name), GT_COL_SUCC) -- 716
-						Chat.Announce("GENERIC", "<c=190,165,25>" .. tostring(ply:Nick()) .. " has begun '" .. tostring(op.Name) .. "' against the " .. tostring(city.Owner.Name)) -- 717
-						return term:EmitSound("XOMBO") -- 718
-					elseif "targets" == cmd then -- 719
-						for name, c in pairs(targets) do -- 720
-							gterm:Broadcast(term, c:Print(), GT_COL_SUCC) -- 721
-						end -- 721
-					elseif "info" == cmd then -- 722
-						local op = GAMEMODE.War.active_operation -- 723
-						if not op then -- 724
-							gterm:Broadcast(term, "there is no active operation", GT_COL_ERR) -- 725
-							return -- 726
-						end -- 724
-						do -- 728
-							local _with_0 = gterm -- 728
-							_with_0:Broadcast(term, "OPERATION INFO:", GT_COL_INFO) -- 729
-							_with_0:Broadcast(term, "  Name: " .. tostring(op.Name)) -- 730
-							_with_0:Broadcast(term, "  Objective: " .. tostring(op.Target.Name)) -- 731
-							_with_0:Broadcast(term, "  Balance of Power: " .. tostring(op.Balance)) -- 732
-							_with_0:Broadcast(term, "  Troops: " .. tostring(op.AttackingTroops) .. " (Us) | " .. tostring(op.DefendingTroops) .. " (Them)") -- 733
-							_with_0:Broadcast(term, "  Casualties: " .. tostring(op.AttackerCasualties) .. " (Us) | " .. tostring(op.DefenderCasualties) .. " (Them)") -- 734
-							_with_0:Broadcast(term, "end list", GT_COL_INTL) -- 735
-						end -- 728
-						return -- 736
-					elseif "reinforce" == cmd then -- 737
-						local amount = tonumber(args[2]) -- 738
-						if not (amount and amount > 0) then -- 739
-							gterm:Broadcast(term, "invalid amount", GT_COL_ERR) -- 740
-							return -- 741
-						end -- 739
-						local op = GAMEMODE.War.active_operation -- 742
-						if not op then -- 743
-							gterm:Broadcast(term, "there is no active operation", GT_COL_ERR) -- 744
-							return -- 745
-						end -- 743
-						if not (op.Attacker.Troops >= amount) then -- 746
-							gterm:Broadcast(term, "you do not have enough troops", GT_COL_ERR) -- 747
-							gterm:Broadcast(term, "your troops: " .. tostring(op.Attacker.Troops), GT_COL_ERR) -- 748
-							return -- 749
-						end -- 746
-						local cost = amount * 2 -- 750
-						local money = ply:getDarkRPVar("money") -- 751
-						if not (money >= cost) then -- 752
-							gterm:Broadcast(term, "you do not have enough bones", GT_COL_ERR) -- 753
-							return -- 754
-						end -- 752
-						ply:AddMoney(-cost, "The War") -- 755
-						op:Reinforce(op.Attacker, amount) -- 756
-						return gterm:Broadcast(term, "sent " .. tostring(amount) .. " troops to die", GT_COL_INFO) -- 757
-					else -- 759
-						local _with_0 = gterm -- 759
-						_with_0:Broadcast(term, "OPERATIONS INTERFACE", GT_COL_INFO) -- 760
-						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 761
-						_with_0:Broadcast(term, "    the reason for your existence, war is peace") -- 762
-						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 763
-						_with_0:Broadcast(term, "    :operation begin TARGET - send your men to die in exchange of land") -- 764
-						_with_0:Broadcast(term, "    :operation targets - see what you can currently attack") -- 765
-						_with_0:Broadcast(term, "    :operation info - check the status of an operation") -- 766
-						_with_0:Broadcast(term, "    :operation reinforce AMOUNT - perpetuate the meat grinder") -- 767
-						return _with_0 -- 759
-					end -- 767
+						local n = _list_1[_index_0] -- 701
+						local _list_2 = n.Cities -- 702
+						for _index_1 = 1, #_list_2 do -- 702
+							local c = _list_2[_index_1] -- 702
+							targets[c:Name():lower()] = c -- 703
+						end -- 703
+					end -- 703
+					local cmd = args[1] -- 704
+					if "begin" == cmd then -- 706
+						local t = args[2]:lower() -- 707
+						local city = targets[t] -- 708
+						if not (t and city) then -- 709
+							gterm:Broadcast(term, "invalid target", GT_COL_ERR) -- 710
+							return -- 711
+						end -- 709
+						if GAMEMODE.War.active_operation then -- 712
+							gterm:Broadcast(term, "there already is an active operation", GT_COL_ERR) -- 713
+							return -- 714
+						end -- 712
+						local op = Operation(city, GAMEMODE.War.nations["Lymphoma"]) -- 715
+						term:EmitSound("war/dethcon.wav") -- 716
+						gterm:Broadcast(term, "'" .. tostring(op.Name) .. "' has begun with objective: " .. tostring(city.Name), GT_COL_SUCC) -- 717
+						Chat.Announce("GENERIC", "<c=190,165,25>" .. tostring(ply:Nick()) .. " has begun '" .. tostring(op.Name) .. "' against the " .. tostring(city.Owner.Name)) -- 718
+						return term:EmitSound("XOMBO") -- 719
+					elseif "targets" == cmd then -- 720
+						for name, c in pairs(targets) do -- 721
+							gterm:Broadcast(term, c:Print(), GT_COL_SUCC) -- 722
+						end -- 722
+					elseif "info" == cmd then -- 723
+						local op = GAMEMODE.War.active_operation -- 724
+						if not op then -- 725
+							gterm:Broadcast(term, "there is no active operation", GT_COL_ERR) -- 726
+							return -- 727
+						end -- 725
+						do -- 729
+							local _with_0 = gterm -- 729
+							_with_0:Broadcast(term, "OPERATION INFO:", GT_COL_INFO) -- 730
+							_with_0:Broadcast(term, "  Name: " .. tostring(op.Name)) -- 731
+							_with_0:Broadcast(term, "  Objective: " .. tostring(op.Target.Name)) -- 732
+							_with_0:Broadcast(term, "  Balance of Power: " .. tostring(op.Balance)) -- 733
+							_with_0:Broadcast(term, "  Troops: " .. tostring(op.AttackingTroops) .. " (Us) | " .. tostring(op.DefendingTroops) .. " (Them)") -- 734
+							_with_0:Broadcast(term, "  Casualties: " .. tostring(op.AttackerCasualties) .. " (Us) | " .. tostring(op.DefenderCasualties) .. " (Them)") -- 735
+							_with_0:Broadcast(term, "end list", GT_COL_INTL) -- 736
+						end -- 729
+						return -- 737
+					elseif "reinforce" == cmd then -- 738
+						local amount = tonumber(args[2]) -- 739
+						if not (amount and amount > 0) then -- 740
+							gterm:Broadcast(term, "invalid amount", GT_COL_ERR) -- 741
+							return -- 742
+						end -- 740
+						local op = GAMEMODE.War.active_operation -- 743
+						if not op then -- 744
+							gterm:Broadcast(term, "there is no active operation", GT_COL_ERR) -- 745
+							return -- 746
+						end -- 744
+						if not (op.Attacker.Troops >= amount) then -- 747
+							gterm:Broadcast(term, "you do not have enough troops", GT_COL_ERR) -- 748
+							gterm:Broadcast(term, "your troops: " .. tostring(op.Attacker.Troops), GT_COL_ERR) -- 749
+							return -- 750
+						end -- 747
+						local cost = amount * 2 -- 751
+						local money = ply:getDarkRPVar("money") -- 752
+						if not (money >= cost) then -- 753
+							gterm:Broadcast(term, "you do not have enough bones", GT_COL_ERR) -- 754
+							return -- 755
+						end -- 753
+						ply:AddMoney(-cost, "The War") -- 756
+						op:Reinforce(op.Attacker, amount) -- 757
+						return gterm:Broadcast(term, "sent " .. tostring(amount) .. " troops to die", GT_COL_INFO) -- 758
+					else -- 760
+						local _with_0 = gterm -- 760
+						_with_0:Broadcast(term, "OPERATIONS INTERFACE", GT_COL_INFO) -- 761
+						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 762
+						_with_0:Broadcast(term, "    the reason for your existence, war is peace") -- 763
+						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 764
+						_with_0:Broadcast(term, "    :operation begin TARGET - send your men to die in exchange of land") -- 765
+						_with_0:Broadcast(term, "    :operation targets - see what you can currently attack") -- 766
+						_with_0:Broadcast(term, "    :operation info - check the status of an operation") -- 767
+						_with_0:Broadcast(term, "    :operation reinforce AMOUNT - perpetuate the meat grinder") -- 768
+						return _with_0 -- 760
+					end -- 768
 				end, -- 695
-				help = "View information about ongoing operations." -- 768
+				help = "View information about ongoing operations." -- 769
 			}, -- 694
-			[":nation"] = { -- 771
-				Callback = function(self, ply, term, args) -- 771
-					if ply:Team() ~= TEAM_EMPEROR then -- 772
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 773
-						return -- 774
-					end -- 772
-					local cmd = args[1] -- 775
-					if "info" == cmd then -- 777
-						local nation -- 778
-						if not (args[2] == "") then -- 778
-							nation = args[2]:lower() -- 778
-						end -- 778
-						local found = false -- 779
-						for k, v in pairs(GAMEMODE.War.nations) do -- 780
-							if v.Name:lower():match(nation) then -- 781
-								found = true -- 782
-								gterm:Broadcast(term, "========== The " .. tostring(v.Name) .. " ==========", GT_COL_INFO) -- 783
-								gterm:Broadcast(term, "  " .. tostring(v.Description)) -- 784
-								gterm:Broadcast(term, "  Troops: " .. tostring(v.Troops), GT_COL_INFO) -- 785
-								gterm:Broadcast(term, "  Cities:", GT_COL_INFO) -- 786
-								local _list_1 = v.Cities -- 787
-								for _index_0 = 1, #_list_1 do -- 787
-									local c = _list_1[_index_0] -- 787
-									gterm:Broadcast(term, "    " .. tostring(c:Print())) -- 788
-								end -- 788
-								return -- 789
-							end -- 781
-						end -- 789
-						if not found then -- 790
-							gterm:Broadcast(term, "pick a correct nation", GT_COL_ERR) -- 791
-							return -- 792
+			[":nation"] = { -- 772
+				Callback = function(self, ply, term, args) -- 772
+					if ply:Team() ~= TEAM_EMPEROR then -- 773
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 774
+						return -- 775
+					end -- 773
+					local cmd = args[1] -- 776
+					if "info" == cmd then -- 778
+						local nation -- 779
+						if not (args[2] == "") then -- 779
+							nation = args[2]:lower() -- 779
+						end -- 779
+						local found = false -- 780
+						for k, v in pairs(GAMEMODE.War.nations) do -- 781
+							if v.Name:lower():match(nation) then -- 782
+								found = true -- 783
+								gterm:Broadcast(term, "========== The " .. tostring(v.Name) .. " ==========", GT_COL_INFO) -- 784
+								gterm:Broadcast(term, "  " .. tostring(v.Description)) -- 785
+								gterm:Broadcast(term, "  Troops: " .. tostring(v.Troops), GT_COL_INFO) -- 786
+								gterm:Broadcast(term, "  Cities:", GT_COL_INFO) -- 787
+								local _list_1 = v.Cities -- 788
+								for _index_0 = 1, #_list_1 do -- 788
+									local c = _list_1[_index_0] -- 788
+									gterm:Broadcast(term, "    " .. tostring(c:Print())) -- 789
+								end -- 789
+								return -- 790
+							end -- 782
 						end -- 790
-					elseif "list" == cmd then -- 793
-						local argument = args[2] -- 794
-						local verbose = false -- 795
-						if argument == "verbose" then -- 796
-							verbose = true -- 797
-						end -- 796
-						gterm:Broadcast(term, "ENEMIES OF THE LAND:", GT_COL_INFO) -- 799
-						for k, v in pairs(GAMEMODE.War.nations) do -- 800
-							gterm:Broadcast(term, "  " .. tostring(v.Name) .. " - Troops: " .. tostring(v.Troops)) -- 801
-							local op = GAMEMODE.War.active_operation -- 802
-							if verbose and op and op.Defender == v then -- 803
-								gterm:Broadcast(term, "     > " .. tostring(op.Name) .. " - BoP: " .. tostring(op.Balance), GT_COL_INFO) -- 804
-							end -- 803
-						end -- 804
-						gterm:Broadcast(term, "end list", GT_COL_INTL) -- 805
-						return -- 806
-					else -- 808
-						local _with_0 = gterm -- 808
-						_with_0:Broadcast(term, "NATIONS INTERFACE", GT_COL_INFO) -- 809
-						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 810
-						_with_0:Broadcast(term, "    lymphoma is the only thing that matters, it's better to stay informed about those who seek to destroy it") -- 811
-						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 812
-						_with_0:Broadcast(term, "    :nation info TARGET - stay informed about the status of a specific enemy") -- 813
-						_with_0:Broadcast(term, "    :nation list - know your neighbors") -- 814
-						_with_0:Broadcast(term, "    :nation list verbose - know your neighbors, and everything they possess") -- 815
-						return _with_0 -- 808
-					end -- 815
-				end, -- 771
-				help = "Know your enemies." -- 816
-			} -- 770
+						if not found then -- 791
+							gterm:Broadcast(term, "pick a correct nation", GT_COL_ERR) -- 792
+							return -- 793
+						end -- 791
+					elseif "list" == cmd then -- 794
+						local argument = args[2] -- 795
+						local verbose = false -- 796
+						if argument == "verbose" then -- 797
+							verbose = true -- 798
+						end -- 797
+						gterm:Broadcast(term, "ENEMIES OF THE LAND:", GT_COL_INFO) -- 800
+						for k, v in pairs(GAMEMODE.War.nations) do -- 801
+							gterm:Broadcast(term, "  " .. tostring(v.Name) .. " - Troops: " .. tostring(v.Troops)) -- 802
+							local op = GAMEMODE.War.active_operation -- 803
+							if verbose and op and op.Defender == v then -- 804
+								gterm:Broadcast(term, "     > " .. tostring(op.Name) .. " - BoP: " .. tostring(op.Balance), GT_COL_INFO) -- 805
+							end -- 804
+						end -- 805
+						gterm:Broadcast(term, "end list", GT_COL_INTL) -- 806
+						return -- 807
+					else -- 809
+						local _with_0 = gterm -- 809
+						_with_0:Broadcast(term, "NATIONS INTERFACE", GT_COL_INFO) -- 810
+						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 811
+						_with_0:Broadcast(term, "    lymphoma is the only thing that matters, it's better to stay informed about those who seek to destroy it") -- 812
+						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 813
+						_with_0:Broadcast(term, "    :nation info TARGET - stay informed about the status of a specific enemy") -- 814
+						_with_0:Broadcast(term, "    :nation list - know your neighbors") -- 815
+						_with_0:Broadcast(term, "    :nation list verbose - know your neighbors, and everything they possess") -- 816
+						return _with_0 -- 809
+					end -- 816
+				end, -- 772
+				help = "Know your enemies." -- 817
+			} -- 771
 		} -- 641
 	} -- 641
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 817
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 818
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 641
 			_base_0[_key_0] = _val_0 -- 641
 		end -- 641
-	end -- 817
+	end -- 818
 	if _base_0.__index == nil then -- 641
 		_base_0.__index = _base_0 -- 641
-	end -- 817
+	end -- 818
 	setmetatable(_base_0, _parent_0.__base) -- 641
 	_class_0 = setmetatable({ -- 641
 		__init = function(self, ...) -- 641
@@ -1475,406 +1479,406 @@ do -- 641
 		_parent_0.__inherited(_parent_0, _class_0) -- 641
 	end -- 641
 	Polemarch = _class_0 -- 641
-end -- 817
-local Public -- 821
-do -- 821
-	local _class_0 -- 821
-	local _parent_0 = OS -- 821
-	local _base_0 = { -- 821
-		greeting = { -- 823
-			"boot sequence now", -- 823
-			"finalizing public system", -- 824
-			"greetings citizen", -- 825
-			"LONG LIVE THE EMPEROR." -- 826
-		}, -- 829
-		advice = { -- 830
-			"One corpse's trash is another corpse's treasure.", -- 830
-			"Bottles are useful. Don't smash them.", -- 831
-			"Snorting broken glass may give you special powers.", -- 832
-			"Burn your trash, eat your plastic, never stop smoking.", -- 833
-			"Liver Failure doesn't take kindly to slackers.", -- 834
-			"You live because you are useful enough to be exploited.", -- 835
-			"Chew with your good teeth.", -- 836
-			"Violence doesn't solve every problem, only some of them.", -- 837
-			"Flesh capsules are very delicate, be careful with them.", -- 838
-			"You do not need a gun. You do not want a gun.", -- 839
-			"Don't venture too far into the tunnels.", -- 840
-			"Evil things are bad.", -- 841
-			"Play catch with people.", -- 842
-			"Playing is fun.", -- 843
-			"Play teeth. Teeth is fun.", -- 844
-			"Rules are the rules.", -- 845
-			"M y  h e a d ... M y  b r a i n ... M y  b e e r ...", -- 846
-			"Eat and drink before taking your medicine.", -- 847
-			"Bodily fluids can spread pathogens.", -- 848
-			"Your safety is not a priority.", -- 849
-			"It's what you wanted", -- 850
-			"Radar spelled backwards is Radar.", -- 851
-			"You're thinking about it, aren't you?", -- 852
-			"But seriously though,", -- 853
-			"At least you're not dead yet.", -- 854
-			"At least you're not teeth yet.", -- 855
-			"I wanna go home.", -- 856
-			"Please", -- 857
-			"You will get what you deserve.", -- 858
-			"Booze loves company.", -- 859
-			"Misery loves company.", -- 860
-			"Teeth love company.", -- 861
-			"Corpses love company.", -- 862
-			"The things you put in your mouth can hurt you.", -- 863
-			"Make sure you're ready for the hangover tomorrow.", -- 864
-			"Buying things feels so good, doesn't it?", -- 865
-			"We work until we die, and that's the way we like it.", -- 866
-			"Blood brothers protect each other.", -- 867
-			"You can't trust that people are what they say.", -- 868
-			"Some people don't look like you. This is a problem.", -- 869
-			"What's a little brawl between friends?", -- 870
-			"It's too late now.", -- 871
-			"you work to rent a bed so can rest for work tomorrow" -- 872
-		}, -- 875
-		commands = { -- 876
-			[":help"] = { -- 877
-				Callback = function(self, ply, term, args) -- 877
-					local _with_0 = gterm -- 878
-					_with_0:Broadcast(term, "  COMMANDS:") -- 881
-					for k, v in SortedPairs(self:GetCommands()) do -- 882
-						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 883
-						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 884
-					end -- 884
-					_with_0:Broadcast(term, "  end list", GT_COL_INTL) -- 885
-					return _with_0 -- 878
-				end, -- 877
-				help = "Basic usage instructions." -- 886
-			}, -- 876
-			[":cls"] = { -- 889
-				Callback = function(self, ply, term) -- 889
-					for i = 0, term.max_lines do -- 890
-						local time = math.Rand(0.01, 0.04) -- 891
-						timer.Simple(i * time, function() -- 892
-							if IsValid(term) then -- 893
-								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 893
-							end -- 893
-						end) -- 892
-					end -- 893
-					return -- 894
-				end, -- 889
-				help = "Clear the screen." -- 895
-			}, -- 888
-			[":advice"] = { -- 898
-				Callback = function(self, ply, term) -- 898
-					local advice = self.advice[math.random(#self.advice)] -- 899
-					if IsValid(term) then -- 900
-						return gterm:Broadcast(term, advice, MSG_COL_INFO) -- 900
-					end -- 900
-				end, -- 898
-				help = "Consult the infinite wisdom." -- 901
-			}, -- 897
-			[":taxes"] = { -- 904
-				Callback = function(self, ply, term, args) -- 904
-					local taxes = GAMEMODE.taxes -- 905
-					gterm:Broadcast(term, "TAXES OF THE LAND:", GT_COL_INFO) -- 906
-					for k, v in pairs(taxes) do -- 907
-						gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 907
-					end -- 907
-					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 908
-				end, -- 904
-				help = "View what you people owe." -- 909
-			}, -- 903
-			[":laws"] = { -- 912
-				Callback = function(self, ply, term, args) -- 912
-					local laws = GAMEMODE:Laws() -- 913
-					gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 914
-					for k, v in ipairs(laws) do -- 915
-						gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v), GT_COL_WRN) -- 915
-					end -- 915
-					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 916
-				end, -- 912
-				help = "View the laws of this land." -- 917
-			}, -- 911
-			[":nation"] = { -- 920
-				Callback = function(self, ply, term, args) -- 920
-					if ply:Team() ~= TEAM_EMPEROR then -- 921
-						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 922
-						return -- 923
-					end -- 921
-					local cmd = args[1] -- 924
-					if "info" == cmd then -- 926
-						local nation -- 927
-						if not (args[2] == "") then -- 927
-							nation = args[2]:lower() -- 927
-						end -- 927
-						local found = false -- 928
-						for k, v in pairs(GAMEMODE.War.nations) do -- 929
-							if v.Name:lower():match(nation) then -- 930
-								found = true -- 931
-								local troops = v.Troops / math.random(4, 8) -- 932
-								if k == "Lymphoma" then -- 933
-									troops = v.Troops * math.random(4, 8) -- 933
-								end -- 933
-								troops = math.floor(troops) -- 934
-								gterm:Broadcast(term, "========== The " .. tostring(v.Name) .. " ==========", GT_COL_INFO) -- 935
-								gterm:Broadcast(term, "  " .. tostring(v.Description)) -- 936
-								gterm:Broadcast(term, "  Troops: " .. tostring(troops), GT_COL_INFO) -- 937
-								gterm:Broadcast(term, "  Cities:", GT_COL_INFO) -- 938
-								local _list_1 = v.Cities -- 939
-								for _index_0 = 1, #_list_1 do -- 939
-									local c = _list_1[_index_0] -- 939
-									gterm:Broadcast(term, "    " .. tostring(c:Print())) -- 940
-								end -- 940
-								return -- 941
-							end -- 930
-						end -- 941
-						if not found then -- 942
-							gterm:Broadcast(term, "pick a correct nation", GT_COL_ERR) -- 943
-							return -- 944
+end -- 818
+local Public -- 822
+do -- 822
+	local _class_0 -- 822
+	local _parent_0 = OS -- 822
+	local _base_0 = { -- 822
+		greeting = { -- 824
+			"boot sequence now", -- 824
+			"finalizing public system", -- 825
+			"greetings citizen", -- 826
+			"LONG LIVE THE EMPEROR." -- 827
+		}, -- 830
+		advice = { -- 831
+			"One corpse's trash is another corpse's treasure.", -- 831
+			"Bottles are useful. Don't smash them.", -- 832
+			"Snorting broken glass may give you special powers.", -- 833
+			"Burn your trash, eat your plastic, never stop smoking.", -- 834
+			"Liver Failure doesn't take kindly to slackers.", -- 835
+			"You live because you are useful enough to be exploited.", -- 836
+			"Chew with your good teeth.", -- 837
+			"Violence doesn't solve every problem, only some of them.", -- 838
+			"Flesh capsules are very delicate, be careful with them.", -- 839
+			"You do not need a gun. You do not want a gun.", -- 840
+			"Don't venture too far into the tunnels.", -- 841
+			"Evil things are bad.", -- 842
+			"Play catch with people.", -- 843
+			"Playing is fun.", -- 844
+			"Play teeth. Teeth is fun.", -- 845
+			"Rules are the rules.", -- 846
+			"M y  h e a d ... M y  b r a i n ... M y  b e e r ...", -- 847
+			"Eat and drink before taking your medicine.", -- 848
+			"Bodily fluids can spread pathogens.", -- 849
+			"Your safety is not a priority.", -- 850
+			"It's what you wanted", -- 851
+			"Radar spelled backwards is Radar.", -- 852
+			"You're thinking about it, aren't you?", -- 853
+			"But seriously though,", -- 854
+			"At least you're not dead yet.", -- 855
+			"At least you're not teeth yet.", -- 856
+			"I wanna go home.", -- 857
+			"Please", -- 858
+			"You will get what you deserve.", -- 859
+			"Booze loves company.", -- 860
+			"Misery loves company.", -- 861
+			"Teeth love company.", -- 862
+			"Corpses love company.", -- 863
+			"The things you put in your mouth can hurt you.", -- 864
+			"Make sure you're ready for the hangover tomorrow.", -- 865
+			"Buying things feels so good, doesn't it?", -- 866
+			"We work until we die, and that's the way we like it.", -- 867
+			"Blood brothers protect each other.", -- 868
+			"You can't trust that people are what they say.", -- 869
+			"Some people don't look like you. This is a problem.", -- 870
+			"What's a little brawl between friends?", -- 871
+			"It's too late now.", -- 872
+			"you work to rent a bed so can rest for work tomorrow" -- 873
+		}, -- 876
+		commands = { -- 877
+			[":help"] = { -- 878
+				Callback = function(self, ply, term, args) -- 878
+					local _with_0 = gterm -- 879
+					_with_0:Broadcast(term, "  COMMANDS:") -- 882
+					for k, v in SortedPairs(self:GetCommands()) do -- 883
+						_with_0:Broadcast(term, "  * " .. tostring(k), GT_COL_INFO) -- 884
+						_with_0:Broadcast(term, "    " .. tostring(v.help)) -- 885
+					end -- 885
+					_with_0:Broadcast(term, "  end list", GT_COL_INTL) -- 886
+					return _with_0 -- 879
+				end, -- 878
+				help = "Basic usage instructions." -- 887
+			}, -- 877
+			[":cls"] = { -- 890
+				Callback = function(self, ply, term) -- 890
+					for i = 0, term.max_lines do -- 891
+						local time = math.Rand(0.01, 0.04) -- 892
+						timer.Simple(i * time, function() -- 893
+							if IsValid(term) then -- 894
+								return gterm:Broadcast(term, "", MSG_COL_NIL, i) -- 894
+							end -- 894
+						end) -- 893
+					end -- 894
+					return -- 895
+				end, -- 890
+				help = "Clear the screen." -- 896
+			}, -- 889
+			[":advice"] = { -- 899
+				Callback = function(self, ply, term) -- 899
+					local advice = self.advice[math.random(#self.advice)] -- 900
+					if IsValid(term) then -- 901
+						return gterm:Broadcast(term, advice, MSG_COL_INFO) -- 901
+					end -- 901
+				end, -- 899
+				help = "Consult the infinite wisdom." -- 902
+			}, -- 898
+			[":taxes"] = { -- 905
+				Callback = function(self, ply, term, args) -- 905
+					local taxes = GAMEMODE.taxes -- 906
+					gterm:Broadcast(term, "TAXES OF THE LAND:", GT_COL_INFO) -- 907
+					for k, v in pairs(taxes) do -- 908
+						gterm:Broadcast(term, "  " .. tostring(k) .. " tax is " .. tostring(v) .. "%", GT_COL_SUCC) -- 908
+					end -- 908
+					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 909
+				end, -- 905
+				help = "View what you people owe." -- 910
+			}, -- 904
+			[":laws"] = { -- 913
+				Callback = function(self, ply, term, args) -- 913
+					local laws = GAMEMODE:Laws() -- 914
+					gterm:Broadcast(term, "LAWS OF THE LAND:", GT_COL_INFO) -- 915
+					for k, v in ipairs(laws) do -- 916
+						gterm:Broadcast(term, "  " .. tostring(k) .. ". " .. tostring(v), GT_COL_WRN) -- 916
+					end -- 916
+					return gterm:Broadcast(term, "end list", GT_COL_INTL) -- 917
+				end, -- 913
+				help = "View the laws of this land." -- 918
+			}, -- 912
+			[":nation"] = { -- 921
+				Callback = function(self, ply, term, args) -- 921
+					if ply:Team() ~= TEAM_EMPEROR then -- 922
+						gterm:Broadcast(term, "begone with you", GT_COL_ERR) -- 923
+						return -- 924
+					end -- 922
+					local cmd = args[1] -- 925
+					if "info" == cmd then -- 927
+						local nation -- 928
+						if not (args[2] == "") then -- 928
+							nation = args[2]:lower() -- 928
+						end -- 928
+						local found = false -- 929
+						for k, v in pairs(GAMEMODE.War.nations) do -- 930
+							if v.Name:lower():match(nation) then -- 931
+								found = true -- 932
+								local troops = v.Troops / math.random(4, 8) -- 933
+								if k == "Lymphoma" then -- 934
+									troops = v.Troops * math.random(4, 8) -- 934
+								end -- 934
+								troops = math.floor(troops) -- 935
+								gterm:Broadcast(term, "========== The " .. tostring(v.Name) .. " ==========", GT_COL_INFO) -- 936
+								gterm:Broadcast(term, "  " .. tostring(v.Description)) -- 937
+								gterm:Broadcast(term, "  Troops: " .. tostring(troops), GT_COL_INFO) -- 938
+								gterm:Broadcast(term, "  Cities:", GT_COL_INFO) -- 939
+								local _list_1 = v.Cities -- 940
+								for _index_0 = 1, #_list_1 do -- 940
+									local c = _list_1[_index_0] -- 940
+									gterm:Broadcast(term, "    " .. tostring(c:Print())) -- 941
+								end -- 941
+								return -- 942
+							end -- 931
 						end -- 942
-					elseif "list" == cmd then -- 945
-						local argument = args[2] -- 946
-						local verbose = false -- 947
-						if argument == "verbose" then -- 948
-							verbose = true -- 949
-						end -- 948
-						gterm:Broadcast(term, "ENEMIES OF THE LAND:", GT_COL_INFO) -- 951
-						for k, v in pairs(GAMEMODE.War.nations) do -- 952
-							local troops = v.Troops / math.random(4, 8) -- 953
-							if k == "Lymphoma" then -- 954
-								troops = v.Troops * math.random(4, 8) -- 954
-							end -- 954
-							troops = math.floor(troops) -- 955
-							gterm:Broadcast(term, "  " .. tostring(v.Name) .. " - Troops: " .. tostring(troops)) -- 956
-							local op = GAMEMODE.War.active_operation -- 957
-							if verbose and op and op.Defender == v then -- 958
-								gterm:Broadcast(term, "     > " .. tostring(op.Name) .. " - BoP: " .. tostring(op.Balance), GT_COL_INFO) -- 959
-							end -- 958
-						end -- 959
-						gterm:Broadcast(term, "end list", GT_COL_INTL) -- 960
-						return -- 961
-					else -- 963
-						local _with_0 = gterm -- 963
-						_with_0:Broadcast(term, "NATIONS INTERFACE", GT_COL_INFO) -- 964
-						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 965
-						_with_0:Broadcast(term, "    lymphoma is the only thing that matters, it's better to stay informed about those who seek to destroy it") -- 966
-						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 967
-						_with_0:Broadcast(term, "    :nation info TARGET - stay informed about the status of a specific enemy") -- 968
-						_with_0:Broadcast(term, "    :nation list - know your neighbors") -- 969
-						_with_0:Broadcast(term, "    :nation list verbose - know your neighbors, and everything they possess") -- 970
-						return _with_0 -- 963
-					end -- 970
-				end, -- 920
-				help = "Know your enemies." -- 971
-			}, -- 919
-			[":whoami"] = { -- 974
-				Callback = function(self, ply, term, args) -- 974
-					gterm:Broadcast(term, "this experimental feature is still in testing", GT_COL_WRN) -- 975
-					return gterm:Broadcast(term, "try later", GT_COL_WRN) -- 976
-				end, -- 974
-				help = "View social information." -- 977
-			} -- 973
-		}, -- 980
-		lifetime = 60 * 3, -- 981
-		Initialized = function(self, term) -- 981
-			_class_0.__parent.__base.Initialized(self, term) -- 982
-			term.live_until = CurTime() + self.lifetime -- 983
-			return gterm:Broadcast(term, "DEATH when idle time exceeds " .. tostring(string.NiceTime(self.lifetime)), GT_COL_INFO) -- 984
-		end, -- 985
-		ReceiveInput = function(self, term, ply) -- 985
-			term.live_until = CurTime() + self.lifetime -- 986
-		end, -- 987
-		Think = function(self, term) -- 987
-			local ct = CurTime() -- 988
-			if not term:GetActive() then -- 989
-				return -- 989
-			end -- 989
-			if term.warn_cooldown and ct < term.warn_cooldown then -- 990
+						if not found then -- 943
+							gterm:Broadcast(term, "pick a correct nation", GT_COL_ERR) -- 944
+							return -- 945
+						end -- 943
+					elseif "list" == cmd then -- 946
+						local argument = args[2] -- 947
+						local verbose = false -- 948
+						if argument == "verbose" then -- 949
+							verbose = true -- 950
+						end -- 949
+						gterm:Broadcast(term, "ENEMIES OF THE LAND:", GT_COL_INFO) -- 952
+						for k, v in pairs(GAMEMODE.War.nations) do -- 953
+							local troops = v.Troops / math.random(4, 8) -- 954
+							if k == "Lymphoma" then -- 955
+								troops = v.Troops * math.random(4, 8) -- 955
+							end -- 955
+							troops = math.floor(troops) -- 956
+							gterm:Broadcast(term, "  " .. tostring(v.Name) .. " - Troops: " .. tostring(troops)) -- 957
+							local op = GAMEMODE.War.active_operation -- 958
+							if verbose and op and op.Defender == v then -- 959
+								gterm:Broadcast(term, "     > " .. tostring(op.Name) .. " - BoP: " .. tostring(op.Balance), GT_COL_INFO) -- 960
+							end -- 959
+						end -- 960
+						gterm:Broadcast(term, "end list", GT_COL_INTL) -- 961
+						return -- 962
+					else -- 964
+						local _with_0 = gterm -- 964
+						_with_0:Broadcast(term, "NATIONS INTERFACE", GT_COL_INFO) -- 965
+						_with_0:Broadcast(term, "  INFO:", GT_COL_INFO) -- 966
+						_with_0:Broadcast(term, "    lymphoma is the only thing that matters, it's better to stay informed about those who seek to destroy it") -- 967
+						_with_0:Broadcast(term, "  HELP:", GT_COL_INFO) -- 968
+						_with_0:Broadcast(term, "    :nation info TARGET - stay informed about the status of a specific enemy") -- 969
+						_with_0:Broadcast(term, "    :nation list - know your neighbors") -- 970
+						_with_0:Broadcast(term, "    :nation list verbose - know your neighbors, and everything they possess") -- 971
+						return _with_0 -- 964
+					end -- 971
+				end, -- 921
+				help = "Know your enemies." -- 972
+			}, -- 920
+			[":whoami"] = { -- 975
+				Callback = function(self, ply, term, args) -- 975
+					gterm:Broadcast(term, "this experimental feature is still in testing", GT_COL_WRN) -- 976
+					return gterm:Broadcast(term, "try later", GT_COL_WRN) -- 977
+				end, -- 975
+				help = "View social information." -- 978
+			} -- 974
+		}, -- 981
+		lifetime = 60 * 3, -- 982
+		Initialized = function(self, term) -- 982
+			_class_0.__parent.__base.Initialized(self, term) -- 983
+			term.live_until = CurTime() + self.lifetime -- 984
+			return gterm:Broadcast(term, "DEATH when idle time exceeds " .. tostring(string.NiceTime(self.lifetime)), GT_COL_INFO) -- 985
+		end, -- 986
+		ReceiveInput = function(self, term, ply) -- 986
+			term.live_until = CurTime() + self.lifetime -- 987
+		end, -- 988
+		Think = function(self, term) -- 988
+			local ct = CurTime() -- 989
+			if not term:GetActive() then -- 990
 				return -- 990
 			end -- 990
-			if not term.live_until then -- 991
-				term.live_until = ct + self.lifetime -- 991
+			if term.warn_cooldown and ct < term.warn_cooldown then -- 991
+				return -- 991
 			end -- 991
-			local time_left = term.live_until - CurTime() -- 992
-			if math.floor(time_left) % 60 == 0 then -- 993
-				if math.floor(time_left) <= 1 then -- 994
-					gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 995
-					return timer.Simple(math.Rand(2, 5), function() -- 996
-						if IsValid(term) and term:GetActive() then -- 997
-							for i = 0, term.max_lines do -- 998
-								if IsValid(term) then -- 999
-									gterm:Broadcast(term, "", nil, i) -- 999
-								end -- 999
-							end -- 999
-							return gterm.OS:Call(term, "ShutDown") -- 1000
-						end -- 997
-					end) -- 1000
-				else -- 1002
-					return gterm:Broadcast(term, "DEATH in " .. tostring(string.NiceTime(time_left)), GT_COL_INFO) -- 1002
-				end -- 994
-			end -- 993
-		end -- 821
-	} -- 821
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 1003
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 821
-			_base_0[_key_0] = _val_0 -- 821
-		end -- 821
-	end -- 1003
-	if _base_0.__index == nil then -- 821
-		_base_0.__index = _base_0 -- 821
-	end -- 1003
-	setmetatable(_base_0, _parent_0.__base) -- 821
-	_class_0 = setmetatable({ -- 821
-		__init = function(self, ...) -- 821
-			return _class_0.__parent.__init(self, ...) -- 821
-		end, -- 821
-		__base = _base_0, -- 821
-		__name = "Public", -- 821
-		__parent = _parent_0 -- 821
-	}, { -- 821
-		__index = function(cls, name) -- 821
-			local val = rawget(_base_0, name) -- 821
-			if val == nil then -- 821
-				local parent = rawget(cls, "__parent") -- 821
-				if parent then -- 821
-					return parent[name] -- 821
-				end -- 821
-			else -- 821
-				return val -- 821
-			end -- 821
-		end, -- 821
-		__call = function(cls, ...) -- 821
-			local _self_0 = setmetatable({ }, _base_0) -- 821
-			cls.__init(_self_0, ...) -- 821
-			return _self_0 -- 821
-		end -- 821
-	}) -- 821
-	_base_0.__class = _class_0 -- 821
-	if _parent_0.__inherited then -- 821
-		_parent_0.__inherited(_parent_0, _class_0) -- 821
-	end -- 821
-	Public = _class_0 -- 821
-end -- 1003
-net.Receive("evilrp_terminal_endconsole", function(len, ply) -- 1004
-	local idx = net.ReadUInt(16) -- 1005
-	local term = Entity(idx) -- 1006
-	local text = net.ReadString() -- 1007
-	if not (IsValid(term) and term.GetUser) then -- 1008
-		return -- 1008
-	end -- 1008
-	local user = term:GetUser() -- 1009
-	if not (IsValid(user) and user == ply) then -- 1010
-		return -- 1010
-	end -- 1010
-	if (text == "") or (text == " ") then -- 1011
-		term:SetUser(nil) -- 1012
-		net.Start("evilrp_terminal_endtyping") -- 1013
-		net.Send(ply) -- 1014
-		return -- 1015
+			if not term.live_until then -- 992
+				term.live_until = ct + self.lifetime -- 992
+			end -- 992
+			local time_left = term.live_until - CurTime() -- 993
+			if math.floor(time_left) % 60 == 0 then -- 994
+				if math.floor(time_left) <= 1 then -- 995
+					gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 996
+					return timer.Simple(math.Rand(2, 5), function() -- 997
+						if IsValid(term) and term:GetActive() then -- 998
+							for i = 0, term.max_lines do -- 999
+								if IsValid(term) then -- 1000
+									gterm:Broadcast(term, "", nil, i) -- 1000
+								end -- 1000
+							end -- 1000
+							return gterm.OS:Call(term, "ShutDown") -- 1001
+						end -- 998
+					end) -- 1001
+				else -- 1003
+					return gterm:Broadcast(term, "DEATH in " .. tostring(string.NiceTime(time_left)), GT_COL_INFO) -- 1003
+				end -- 995
+			end -- 994
+		end -- 822
+	} -- 822
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 1004
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 822
+			_base_0[_key_0] = _val_0 -- 822
+		end -- 822
+	end -- 1004
+	if _base_0.__index == nil then -- 822
+		_base_0.__index = _base_0 -- 822
+	end -- 1004
+	setmetatable(_base_0, _parent_0.__base) -- 822
+	_class_0 = setmetatable({ -- 822
+		__init = function(self, ...) -- 822
+			return _class_0.__parent.__init(self, ...) -- 822
+		end, -- 822
+		__base = _base_0, -- 822
+		__name = "Public", -- 822
+		__parent = _parent_0 -- 822
+	}, { -- 822
+		__index = function(cls, name) -- 822
+			local val = rawget(_base_0, name) -- 822
+			if val == nil then -- 822
+				local parent = rawget(cls, "__parent") -- 822
+				if parent then -- 822
+					return parent[name] -- 822
+				end -- 822
+			else -- 822
+				return val -- 822
+			end -- 822
+		end, -- 822
+		__call = function(cls, ...) -- 822
+			local _self_0 = setmetatable({ }, _base_0) -- 822
+			cls.__init(_self_0, ...) -- 822
+			return _self_0 -- 822
+		end -- 822
+	}) -- 822
+	_base_0.__class = _class_0 -- 822
+	if _parent_0.__inherited then -- 822
+		_parent_0.__inherited(_parent_0, _class_0) -- 822
+	end -- 822
+	Public = _class_0 -- 822
+end -- 1004
+net.Receive("evilrp_terminal_endconsole", function(len, ply) -- 1005
+	local idx = net.ReadUInt(16) -- 1006
+	local term = Entity(idx) -- 1007
+	local text = net.ReadString() -- 1008
+	if not (IsValid(term) and term.GetUser) then -- 1009
+		return -- 1009
+	end -- 1009
+	local user = term:GetUser() -- 1010
+	if not (IsValid(user) and user == ply) then -- 1011
+		return -- 1011
 	end -- 1011
-	gterm.OS:Call(term, "ReceiveInput", ply) -- 1016
-	if term.password and not client["pass_authed_" .. tostring(idx)] then -- 1017
-		if text == term.password then -- 1018
-			ply["pass_authed_" .. tostring(idx)] = true -- 1019
-			gterm:Broadcast(term, "password accepted", GT_COL_INFO) -- 1020
-			return -- 1021
-		else -- 1023
-			gterm:Broadcast(term, "password required", GT_COL_INFO) -- 1023
-			return -- 1024
-		end -- 1018
-	end -- 1017
-	if string.sub(text, 1, 1) == ":" then -- 1025
-		local sys = OS.distros[term:GetOS()] -- 1026
-		if sys then -- 1027
-			for k, v in pairs(sys:GetCommands()) do -- 1028
-				local cmd = string.sub(string.lower(text), 1, string.len(k)) -- 1029
-				if k == cmd then -- 1030
-					local text2 = string.sub(text, string.len(cmd) + 2) -- 1031
-					local quote = (string.sub(text2, 1, 1) ~= "\"") -- 1032
-					local args = { } -- 1033
-					for chunk in string.gmatch(text2, "[^\"]+") do -- 1034
-						quote = not quote -- 1035
-						if quote then -- 1036
-							args[#args + 1] = chunk -- 1037
-						else -- 1039
-							for chunk in string.gmatch(chunk, "[^ ]+") do -- 1039
-								args[#args + 1] = chunk -- 1039
-							end -- 1039
-						end -- 1036
-					end -- 1039
-					local success, value = pcall(v.Callback, sys, ply, term, args) -- 1040
-					if success then -- 1041
-						gterm:Broadcast(term, text, GT_COL_CMD) -- 1042
-					else -- 1044
-						gterm:Broadcast(term, value, GT_COL_ERR) -- 1044
-					end -- 1041
-					return -- 1045
-				end -- 1030
-			end -- 1045
-			text = tostring(string.sub(text, 2)) .. ": command not found" -- 1046
-			gterm:Broadcast(term, text, GT_COL_ERR) -- 1047
-			return -- 1048
-		else -- 1050
-			gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 1052
-		end -- 1027
-		if term.accepting_input then -- 1053
-			local quote = (string.sub(text, 1, 1) ~= "\"") -- 1054
-			local args = { } -- 1055
-			for chunk in string.match(text, "[^\"]+") do -- 1056
-				quote = not quote -- 1057
-				if quote then -- 1058
-					args[#args + 1] = chunk -- 1059
-				else -- 1061
-					for chunk in string.gmatch(chunk, "[^ ]+") do -- 1061
-						args[#args + 1] = chunk -- 1061
-					end -- 1061
-				end -- 1058
-			end -- 1061
-			local callback = term.input_callback -- 1062
-			if callback and args then -- 1063
-				callback(ply, args) -- 1063
-			end -- 1063
-			term.accepting_input = nil -- 1064
-			term.input_callback = nil -- 1065
-			return -- 1066
-		end -- 1053
-	end -- 1025
-	local sys = OS.distros[term:GetOS()] -- 1067
-	local name = sys and sys.unique_id or "unknown" -- 1068
-	local finalized = tostring(("<"):Escape()) .. tostring(name) .. "@" .. tostring(term:EntIndex()) .. tostring((">"):Escape()) .. " " .. tostring(text) -- 1069
-	return gterm:Broadcast(term, finalized, GT_COL_CMD) -- 1070
-end) -- 1004
-net.Receive("evilrp_terminal_scroll", function(len, ply) -- 1072
-	local idx = net.ReadUInt(16) -- 1073
-	local dir = net.ReadInt(4) -- 1074
-	local term = Entity(idx) -- 1075
-	print(dir) -- 1076
-	print(term) -- 1077
-	if not (IsValid(term) and term.GetUser) then -- 1079
-		return -- 1079
-	end -- 1079
-	local user = term:GetUser() -- 1080
-	if not (IsValid(user) and user == ply) then -- 1081
-		return -- 1081
-	end -- 1081
-	term.history = term.history or { } -- 1083
-	local maxlines = term.max_lines or 25 -- 1084
-	term.offset = term.offset or 0 -- 1085
-	if dir == 1 then -- 1087
-		term.offset = term.offset + 1 -- 1088
-	elseif dir == -1 then -- 1089
-		term.offset = term.offset - 1 -- 1090
-	end -- 1087
-	local maxscroll = math.max(0, #term.history - maxlines) -- 1092
-	term.offset = math.Clamp(term.offset, 0, maxscroll) -- 1093
-	for i = 0, maxlines do -- 1095
-		gterm:Broadcast(term, "", GT_COL_NIL, i) -- 1096
-	end -- 1097
-	local start = #term.history - maxlines - term.offset + 1 -- 1098
-	start = math.max(1, start) -- 1099
-	local pos = 0 -- 1101
-	for i = start, start + maxlines - 1 do -- 1102
-		local line = term.history[i] -- 1103
-		if line then -- 1104
-			gterm:Broadcast(term, line.msg, line.col, pos) -- 1105
-		end -- 1104
-		pos = pos + 1 -- 1106
-	end -- 1106
-end) -- 1072
-return MsgC(Color(255, 0, 0), "INITIALIZED EVILRP TERMINALS\n") -- 1108
+	if (text == "") or (text == " ") then -- 1012
+		term:SetUser(nil) -- 1013
+		net.Start("evilrp_terminal_endtyping") -- 1014
+		net.Send(ply) -- 1015
+		return -- 1016
+	end -- 1012
+	gterm.OS:Call(term, "ReceiveInput", ply) -- 1017
+	if term.password and not client["pass_authed_" .. tostring(idx)] then -- 1018
+		if text == term.password then -- 1019
+			ply["pass_authed_" .. tostring(idx)] = true -- 1020
+			gterm:Broadcast(term, "password accepted", GT_COL_INFO) -- 1021
+			return -- 1022
+		else -- 1024
+			gterm:Broadcast(term, "password required", GT_COL_INFO) -- 1024
+			return -- 1025
+		end -- 1019
+	end -- 1018
+	if string.sub(text, 1, 1) == ":" then -- 1026
+		local sys = OS.distros[term:GetOS()] -- 1027
+		if sys then -- 1028
+			for k, v in pairs(sys:GetCommands()) do -- 1029
+				local cmd = string.sub(string.lower(text), 1, string.len(k)) -- 1030
+				if k == cmd then -- 1031
+					local text2 = string.sub(text, string.len(cmd) + 2) -- 1032
+					local quote = (string.sub(text2, 1, 1) ~= "\"") -- 1033
+					local args = { } -- 1034
+					for chunk in string.gmatch(text2, "[^\"]+") do -- 1035
+						quote = not quote -- 1036
+						if quote then -- 1037
+							args[#args + 1] = chunk -- 1038
+						else -- 1040
+							for chunk in string.gmatch(chunk, "[^ ]+") do -- 1040
+								args[#args + 1] = chunk -- 1040
+							end -- 1040
+						end -- 1037
+					end -- 1040
+					local success, value = pcall(v.Callback, sys, ply, term, args) -- 1041
+					if success then -- 1042
+						gterm:Broadcast(term, text, GT_COL_CMD) -- 1043
+					else -- 1045
+						gterm:Broadcast(term, value, GT_COL_ERR) -- 1045
+					end -- 1042
+					return -- 1046
+				end -- 1031
+			end -- 1046
+			text = tostring(string.sub(text, 2)) .. ": command not found" -- 1047
+			gterm:Broadcast(term, text, GT_COL_ERR) -- 1048
+			return -- 1049
+		else -- 1051
+			gterm:Broadcast(term, "DEATH", GT_COL_INTL) -- 1053
+		end -- 1028
+		if term.accepting_input then -- 1054
+			local quote = (string.sub(text, 1, 1) ~= "\"") -- 1055
+			local args = { } -- 1056
+			for chunk in string.match(text, "[^\"]+") do -- 1057
+				quote = not quote -- 1058
+				if quote then -- 1059
+					args[#args + 1] = chunk -- 1060
+				else -- 1062
+					for chunk in string.gmatch(chunk, "[^ ]+") do -- 1062
+						args[#args + 1] = chunk -- 1062
+					end -- 1062
+				end -- 1059
+			end -- 1062
+			local callback = term.input_callback -- 1063
+			if callback and args then -- 1064
+				callback(ply, args) -- 1064
+			end -- 1064
+			term.accepting_input = nil -- 1065
+			term.input_callback = nil -- 1066
+			return -- 1067
+		end -- 1054
+	end -- 1026
+	local sys = OS.distros[term:GetOS()] -- 1068
+	local name = sys and sys.unique_id or "unknown" -- 1069
+	local finalized = tostring(("<"):Escape()) .. tostring(name) .. "@" .. tostring(term:EntIndex()) .. tostring((">"):Escape()) .. " " .. tostring(text) -- 1070
+	return gterm:Broadcast(term, finalized, GT_COL_CMD) -- 1071
+end) -- 1005
+net.Receive("evilrp_terminal_scroll", function(len, ply) -- 1073
+	local idx = net.ReadUInt(16) -- 1074
+	local dir = net.ReadInt(4) -- 1075
+	local term = Entity(idx) -- 1076
+	print(dir) -- 1077
+	print(term) -- 1078
+	if not (IsValid(term) and term.GetUser) then -- 1080
+		return -- 1080
+	end -- 1080
+	local user = term:GetUser() -- 1081
+	if not (IsValid(user) and user == ply) then -- 1082
+		return -- 1082
+	end -- 1082
+	term.history = term.history or { } -- 1084
+	local maxlines = term.max_lines or 25 -- 1085
+	term.offset = term.offset or 0 -- 1086
+	if dir == 1 then -- 1088
+		term.offset = term.offset + 1 -- 1089
+	elseif dir == -1 then -- 1090
+		term.offset = term.offset - 1 -- 1091
+	end -- 1088
+	local maxscroll = math.max(0, #term.history - maxlines) -- 1093
+	term.offset = math.Clamp(term.offset, 0, maxscroll) -- 1094
+	for i = 0, maxlines do -- 1096
+		gterm:Broadcast(term, "", GT_COL_NIL, i) -- 1097
+	end -- 1098
+	local start = #term.history - maxlines - term.offset + 1 -- 1099
+	start = math.max(1, start) -- 1100
+	local pos = 0 -- 1102
+	for i = start, start + maxlines - 1 do -- 1103
+		local line = term.history[i] -- 1104
+		if line then -- 1105
+			gterm:Broadcast(term, line.msg, line.col, pos) -- 1106
+		end -- 1105
+		pos = pos + 1 -- 1107
+	end -- 1107
+end) -- 1073
+return MsgC(Color(255, 0, 0), "INITIALIZED EVILRP TERMINALS\n") -- 1109
