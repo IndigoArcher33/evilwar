@@ -40,7 +40,7 @@ class EvilRP_NPC extends NEXTBOT
   PrintName: "Evil NPC"
   Spawnable: true
   Reward: 100
-  Weapon: "evilrp_weapon/obrez"
+  Weapon: {"evilrp_weapon/obrez", "evilrp_weapon/pacifier", "evilrp_weapon/warrant", "evilrp_weapon/viper"}
   LootTable: {"item/loot/spareammo", "item_healthvial"}
 
   IdleSound:["placenta/speech/prole#{i}.wav" for i=1,3]
@@ -56,7 +56,7 @@ class EvilRP_NPC extends NEXTBOT
     
     @NextFire = CurTime!
     
-    @Give @Weapon
+    @Give @Weapon[math.random(1, #@Weapon)]
 
   -- the following weapon code has been mostly taken and written into Yue from Raid by Melt
 
@@ -122,7 +122,12 @@ class EvilRP_NPC extends NEXTBOT
         net.Start "evilrp_jumpscare"
         net.Send attacker
       attacker\AddMoney @Reward
-      
+    
+    operation = GAMEMODE.War.active_operation
+    if operation
+      operation\Reinforce operation.Defender, -10
+    else
+      GAMEMODE.War.nations["Wasteland"].Troops -= 10
     @BecomeRagdoll dmginfo
     @Drop!
     return
@@ -136,8 +141,8 @@ class EvilRP_NPC extends NEXTBOT
           \Activate!
           \SetPos @GetPos! + Vector(math.random(-10, 10), math.random(-10, 10), 0)
     
-    weapon = @GetActiveLuaWeapon!
-    etab = weapons.Get(weapon)
+    etab = @GetActiveLuaWeapon!
+    weapon = etab\GetClass!
     if weapon and etab
       product = ents.Create"evilrp/spawned/weapon"
       with product

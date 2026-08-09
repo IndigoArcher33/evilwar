@@ -581,5 +581,74 @@ do -- 335
 		_parent_0.__inherited(_parent_0, _class_0) -- 335
 	end -- 335
 	Xombokom = _class_0 -- 335
-	return _class_0 -- 357
 end -- 357
+local Polemarch -- 358
+do -- 358
+	local _class_0 -- 358
+	local _parent_0 = Terminal -- 358
+	local _base_0 = { -- 358
+		Model = Model("models/props_lab/labmonitor002a.mdl"), -- 360
+		GetScreenPos = function(self) -- 360
+			local ang = self:GetAngles() -- 361
+			local offset = (ang:Up() * 5) + (ang:Forward() * 13) + (ang:Right() * 7.4) -- 362
+			return self:GetPos() + offset -- 363
+		end, -- 364
+		GetScreenAngles = function(self) -- 364
+			local ang = self:GetAngles() -- 365
+			ang:RotateAroundAxis(ang:Forward(), 180) -- 367
+			ang:RotateAroundAxis(ang:Right(), 270) -- 368
+			ang:RotateAroundAxis(ang:Up(), 270) -- 369
+			return ang -- 370
+		end, -- 371
+		Initialize = function(self) -- 371
+			_class_0.__parent.__base.Initialize(self) -- 372
+			self.os = "polemarch" -- 373
+		end, -- 375
+		scrW = 680, -- 376
+		scrH = 600, -- 377
+		max_lines = 18, -- 378
+		max_chars = 50, -- 379
+		screensaver = Material("halflife/lab1_cmpm3000"), -- 380
+		noise = Material("models/spawn_effect2") -- 358
+	} -- 358
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 380
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 358
+			_base_0[_key_0] = _val_0 -- 358
+		end -- 358
+	end -- 380
+	if _base_0.__index == nil then -- 358
+		_base_0.__index = _base_0 -- 358
+	end -- 380
+	setmetatable(_base_0, _parent_0.__base) -- 358
+	_class_0 = setmetatable({ -- 358
+		__init = function(self, ...) -- 358
+			return _class_0.__parent.__init(self, ...) -- 358
+		end, -- 358
+		__base = _base_0, -- 358
+		__name = "Polemarch", -- 358
+		__parent = _parent_0 -- 358
+	}, { -- 358
+		__index = function(cls, name) -- 358
+			local val = rawget(_base_0, name) -- 358
+			if val == nil then -- 358
+				local parent = rawget(cls, "__parent") -- 358
+				if parent then -- 358
+					return parent[name] -- 358
+				end -- 358
+			else -- 358
+				return val -- 358
+			end -- 358
+		end, -- 358
+		__call = function(cls, ...) -- 358
+			local _self_0 = setmetatable({ }, _base_0) -- 358
+			cls.__init(_self_0, ...) -- 358
+			return _self_0 -- 358
+		end -- 358
+	}) -- 358
+	_base_0.__class = _class_0 -- 358
+	if _parent_0.__inherited then -- 358
+		_parent_0.__inherited(_parent_0, _class_0) -- 358
+	end -- 358
+	Polemarch = _class_0 -- 358
+	return _class_0 -- 380
+end -- 380

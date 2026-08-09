@@ -1,186 +1,291 @@
-global EVIL_MACHINE_POSITIONS_CURSED = {
-  ["rp_liverfailure_kidneydagger"]:
-    * machine:
-        pos: Vector(3958, 393, 100)
-        ang: Angle(0, 94, 0)
-      generator:
-        pos: Vector(3864, 513, 65)
-        ang: Angle(0, 19, 0)
-    * machine:
-        pos: Vector(3986, 4822, 101)
-        ang: Angle(0, -176, 0)
-      generator:
-        pos: Vector(3965, 4708, 66)
-        ang: Angle(0, -104, 0)
-    * machine:
-        pos: Vector(2412, 3078, 148)
-        ang: Angle(0, -90, 0)
-      generator:
-        pos: Vector(2307, 2830, 113)
-        ang: Angle(-0, 135, 0)
-    * machine:
-        pos: Vector(-142, 1584, 365)
-        ang: Angle(-0, -91, 1)
-      generator:
-        pos: Vector(-14, 1617, 329)
-        ang: Angle(-0, -6, -0)
-    * machine:
-        pos: Vector(3584, 795, -364)
-        ang: Angle(-0, 180, -0)
-      generator:
-        pos: Vector(3586, 843, -399)
-        ang: Angle(-0, -18, 1)
-    * machine: 
-        pos: Vector(1977, -380, 100)
-        ang: Angle(-0, -1, 1)
-      generator:
-        pos: Vector(2251, -374, 65)
-        ang: Angle(-0, 117, -0)
-  ["rp_lymphoma"]:
-    * machine:
-        pos: Vector(-101, -4665, -780.5)
-        ang: Angle(0, 0, 0)
-      generator:
-        pos: Vector(-46, -4589, -815.7)
-        ang: Angle(0, 9, 0)
-    * machine:
-        pos: Vector(287, -6748, -860)
-        ang: Angle(0, -90, 0)
-      generator:
-        pos: Vector(202, -6837, -895)
-        ang: Angle(0, 67, 0)
-    * machine:
-        pos: Vector(1516, -3269, -27)
-        ang: Angle(0, -90, 0)
-      generator:
-        pos: Vector(1405, -3296, -63)
-        ang: Angle(0, 45, 0)
+
+operation_prefix= {
+  "Operation"
+  "Plan"
 }
 
-create_machines_and_otherwise = ->
-  EVIL_GENERATOR_POSITIONS = {
-    ["rp_lymphoma"]:
-      * pos: Vector( -972, 1153, 1 )
-        ang: Angle(-0, 0, -0)
-        id: "tools"
-      * pos: Vector( -204, 2206, -63)
-        ang: Angle(-0, -155, -0)
-        id: "food"
-      * pos: Vector( 256, 289, 193 )
-        ang: Angle( -0, 90, 0 )
-        id: "weapons"
-      * pos: Vector( 1529, 769, 1 )
-        ang: Angle(-0, -0, 0)
-        id: "medicine"
-      * pos: Vector(3041, 1784, -103)
-        ang: Angle(8, 126, 0)
-        id: "evil"
-    }
-  EVIL_MACHINE_POSITIONS = {
-    ["rp_lymphoma"]:
-      * pos: Vector( -1104, 1264, 36 )
-        ang: Angle(-0, -180, 0)
-        cls: "machine/tools"
-      * pos: Vector( -1104, 1461, 36 )
-        ang: Angle(-0, -180, 0)
-        cls: "machine/tools"
-      * pos: Vector(-367, 2386, -28)
-        ang: Angle(-0, -0, 0)
-        cls: "machine/food"
-      * pos: Vector(-367, 2242, -28)
-        ang: Angle(-0, -0, 0)
-        cls: "machine/food"
-      * pos: Vector(-367, 2529, -28)
-        ang: Angle(-0, -0, 0)
-        cls: "machine/food"
-      * pos: Vector( 592, 275, 228 )
-        ang: Angle(-0, -180, -0)
-        cls: "machine/weapons"
-      * pos: Vector( 592, 400, 228 )
-        ang: Angle(-0, -180, -0)
-        cls: "machine/weapons"
-      * pos: Vector( 1712, 736, 36 )
-        ang: Angle(-0, -180, 0)
-        cls: "machine/medicine"
-      * pos: Vector( 1712, 548, 36 )
-        ang: Angle(-0, -180, 0)
-        cls: "machine/medicine"
-      * pos: Vector(3003, 1774, -103)
-        ang: Angle(19, 173, 0)
-        cls: "machine/evil"
-      * pos: Vector( -99, 2253, -36 )
-        ang: Angle(-0, -90, 0)
-        cls: "refinery"
-      * pos: Vector( 323, 2147, -36.5 )
-        ang: Angle(0, 90, -0)
-        cls: "refinery"
-      * pos: Vector( -1292, 1508, 28 )
-        ang: Angle(0, 180, -0)
-        cls: "refinery"
-      * pos: Vector( -575, 538, 48 )
-        ang: Angle(0, 0, 0)
-        cls: "cooker"
-      * pos: Vector( -575, 494, 48 )
-        ang: Angle(0, 0, 0)
-        cls: "cooker"
-      * pos: Vector( 573.55, -3365.23, -815 )
-        ang: Angle(0, -180, 0)
-        cls: "cooker"
-      * pos: Vector( -154, 2429, -63)
-        ang: Angle(0, -180, 0)
-        cls: "cooker"
-  }
-  map = game.GetMap!
-  for gen in *ents.FindByClass"generator"
-    gen\Remove!
-  if EVIL_GENERATOR_POSITIONS[map]
-    for v in *EVIL_GENERATOR_POSITIONS[map]
-      sp = ents.Create"generator"
-      with sp
-        \SetPos v.pos
-        \SetAngles v.ang
-        \SetFactoryIdentifier v.id
-        \Spawn!
-        \Activate!
-        \GetPhysicsObject!\EnableMotion false
-      MsgC Color(0, 200, 0),
-        "#{sp} spawned with factory identifier '",
-        Color(200, 200, 200),
-        v.id,
-        Color(0, 200, 0),
-        "'.\n"
-    -- this is nested inside the if condition for generator positions
-    -- existing for a particular map, because machines shouldn't be
-    -- spawned if there are no generators to support them.  though,
-    -- strictly speaking, there shouldn't be one without the other in
-    -- any case
-    for mach in *ents.FindByClass"machine/*"
-      mach\Remove!
-    for ref in *ents.FindByClass"refinery"
-      ref\Remove!
-    timer.Simple 1, ->
-      if EVIL_MACHINE_POSITIONS[map]
-        for v in *EVIL_MACHINE_POSITIONS[map]
-          sp = ents.Create v.cls
-          with sp
-            \SetPos v.pos
-            \SetAngles v.ang
-            \Spawn!
-            \Activate!
-            phys = \GetPhysicsObject!
-            phys\EnableMotion false if IsValid(phys)
-            MsgC Color(0, 200, 0),
-              "#{sp} spawned.\n"
-      if EVIL_MACHINE_POSITIONS_CURSED[map]
-        sp = ents.Create "machine/evil"
-        with sp
-          \Spawn!
-          \Activate!
-          phys = \GetPhysicsObject!
-          phys\EnableMotion false if IsValid(phys)
-          MsgC Color(200, 0, 0),
-            "#{sp} SPAWNED.\n"
-          \Shift!
-      return
+plan_names= {
+  "Red"
+  "Blue"
+  "Green"
+  "Yellow"
+}
 
-hook.Add "InitPostEntity", "evilrp_create_machines_and_otherwise", create_machines_and_otherwise
+operation_names= {
+  "Caesar"
+  "Augustus"
+  "Napoleon"
+  "Flamingo"
+  "Strike"
+  "Rot"
+  "Rust"
+  "Flesh"
+  "Stahl"
+  "Wind"
+  "Steel"
+  "Hannibal"
+  "Eisen"
+  "Lymphocyte"
+}
+
+operation_adjectives= {
+  "Screaming"
+  "Burning"
+  "Furious"
+  "Northern"
+  "Western"
+  "Scorched"
+  "Eastern"
+  "Rising"
+  "Fallen"
+}
+
+
+GetOperationName = ->
+  prefix = operation_prefix[math.random(#operation_prefix)]
+  
+  switch prefix
+    when "Operation"
+      roll = math.random(100)
+      if roll <= 50
+        return  prefix .. " ".. operation_names[math.random(#operation_names)]
+      else
+        return prefix .. " " .. operation_adjectives[math.random(#operation_adjectives)] .. " " .. operation_names[math.random(#operation_names)]
+    when "Plan"
+      return  prefix .. " ".. plan_names[math.random(#plan_names)]
+
+class Nation
+  Name: "Nation"
+  Description: "A nation"
+  Troops: 1000
+  Fuel: 100
+  Supplies: 100
+  Missiles: 0
+
+  RemoveCity: (city) =>
+    for i, c in pairs @Cities
+      if c == city
+        table.remove @Cities, i
+        break
+  
+  AnnexCity: (city) =>
+    city.Owner = @
+    table.insert @Cities, city
+
+class City
+  new: (name, owner, distance) =>
+    @Name = name
+    @Owner = owner
+    @Distance = distance
+
+  Print: =>
+    output= @Name .. " | Distance: " .. @Distance .. " km"
+    return output
+
+class Carcinoma extends Nation
+  Name: "Carcinoman Empire"
+  Description: "Like a malignant growth, the Carcinomans spread with ruthless efficiency and have proven an existential threat to all."
+  Troops: 50000
+  new: =>
+    @Cities = {
+      City("Carcinoma", @, 10)
+      City("Metastasis", @, 12)
+      City("Oncogenesis", @, 21)
+      City("Melanoma", @, 24)
+    }
+
+class Wasteland extends Nation
+  Name: "Central Wasteland"
+  Description: "A desolate region that has returned to natural order. Decay, rust, and ruin define the people of the harsh wasteland. They inhabited this city in the distant past."
+  Troops: 1000
+  new: =>
+    @Cities = {
+      City("Rotburg", @, 3)
+      City("Spleenville", @, 4)
+      City("Skullfuckistan", @, 7)
+    }
+
+class Lymphoma extends Nation
+  Name: "Lymphatic Coalition"
+  Description: "An alliance of subjects loyal to the Emperor. For centuries, our great city had been occupied by the people of the Wasteland until our righteous Monarch pushed them back at the Sixth Battle of Lymphoma."
+  Troops: 5000
+  new: =>
+    @Cities = {
+      City("Lymphoma", @, 0)
+    }
+
+class Myocardia extends Nation
+  Name: "Republik of Myocardia"
+  Description: "A foreign power with the ambition to conquer our continent. The Myocardians want to turn us into a buffer state."
+  Troops: 5000
+  new: =>
+    @Cities = {
+      City("Myopathy", @, 7)
+      City("Myocardia", @, 17)
+      City("Arteria", @, 25)
+      City("New Cholesterol", @, 32)
+      }
+
+GAMEMODE.War = {
+  nations:
+    "Carcinoma": Carcinoma!
+    "Lymphoma": Lymphoma!
+    "Myocardia": Myocardia!
+    "Wasteland": Wasteland!
+} unless GAMEMODE.War
+
+
+global OP_ONGOING = 0
+global OP_SUCC = 1
+global OP_FAIL = 2
+
+
+global class Operation
+  AttackerCasualties: 0
+  DefenderCasualties: 0
+  new: (target, attacker) =>
+    if attacker.Troops <= 500
+      return
+    if GAMEMODE.War.active_operation
+      return
+    @Name = GetOperationName!
+    @Target = target
+    @Attacker = attacker
+    @Defender = target.Owner
+    @Balance = 50
+
+    @AttackingTroops = 500
+    @Attacker.Troops -= 500
+
+    if @Defender.Troops <= 500
+      @DefendingTroops = @Defender.Troops
+      @Defender.Troops = 0
+    else
+      @DefendingTroops = 500
+      @Defender.Troops -= 500
+    GAMEMODE.War.active_operation = @
+  Reinforce: (who , amount) =>
+    if who == @Attacker
+      if @Attacker.Troops >= amount
+        @AttackingTroops += amount
+        @Attacker.Troops -= amount
+    elseif who == @Defender
+      if @Defender.Troops >= amount
+        @DefendingTroops += amount
+        @Defender.Troops -= amount
+
+  Status: =>
+    if @Balance >= 100
+      return OP_SUCC
+    elseif @Balance <= 0
+      return OP_FAIL
+    else
+      return OP_ONGOING
+
+  Tick: =>
+    local emperor = nil
+    for ply in *player.GetAll!
+      if ply\Team! == TEAM_EMPEROR
+        emperor = ply
+    
+    switch @Status!
+      when OP_ONGOING
+        adv_def = math.Clamp math.Round(-2*(@DefendingTroops / @AttackingTroops)), -7, 0
+        adv_atk = math.Clamp math.Round(2*(@AttackingTroops / @DefendingTroops)), 0, 7
+        adv_atk += 1 if emperor
+
+        print "Advantage Def: #{adv_def} | Advantage Atk: #{adv_atk}"
+        
+        push = math.random adv_def, adv_atk
+        @Balance = math.Clamp @Balance + push*3, 0, 100
+
+        local atk_min, atk_max, def_min, def_max
+        
+        if math.abs(push) <= 1
+          if emperor
+            emperor\SendChat "NOTICE", "[WAR] #{@Name} remains a stalemate."
+          atk_min, atk_max = 10, 5
+          def_min, def_max = 12, 7
+          
+        elseif push > 1
+          if emperor
+            emperor\SendChat "SUCCESS", "[WAR] The offensive at #{@Target.Name} experienced a successful push."
+            emperor\AddStemCells 1
+          atk_min, atk_max = 20, 10
+          def_min, def_max = 8, 4
+          
+        else
+          if emperor
+            emperor\SendChat "NOTICE", "[WAR] We have been driven back at #{@Target.Name}."
+            emperor\AddStemCells -1
+          atk_min, atk_max = 8, 4
+          def_min, def_max = 20, 10
+
+        atkloss = math.random math.floor(@AttackingTroops / atk_min), math.floor(@AttackingTroops / atk_max)
+        defloss = math.random math.floor(@DefendingTroops / def_min), math.floor(@DefendingTroops / def_max)
+
+        @AttackingTroops -= atkloss
+        @AttackerCasualties += atkloss
+        @DefendingTroops -= defloss
+        @DefenderCasualties += defloss
+
+      when OP_FAIL
+        if emperor
+          emperor\SendChat "NOTICE", "[WAR] We have failed to annex #{@Target.Name}."
+          emperor\AddStemCells -3
+        atkloss = math.random(200,500)
+        defloss = math.random(50,300)
+        @Defender.Troops -= atkloss
+        @Defender.Troops = math.max(@Defender.Troops, 0)
+        @DefenderCasualties += defloss
+        @Attacker.Troops -= defloss
+        @Attacker.Troops = math.max(@Attacker.Troops, 0)
+        @AttackerCasualties += atkloss
+        GAMEMODE.War.active_operation = nil
+      when OP_SUCC
+        if emperor
+          emperor\SendChat "SUCCESS", "[WAR] #{@Target.Name} has been brought in to the fold."
+          emperor\AddStemCells 3
+
+        @Attacker\AnnexCity @Target
+        @Defender\RemoveCity @Target
+
+        atkloss = math.random(100,300)
+        defloss = math.random(300,500)
+        @Defender.Troops -= atkloss
+        @Defender.Troops = math.max(@Defender.Troops, 0)
+        @DefenderCasualties += defloss
+        @Attacker.Troops -= defloss
+        @Attacker.Troops = math.max(@Attacker.Troops, 0)
+        @AttackerCasualties += atkloss
+        GAMEMODE.War.active_operation = nil
+
+global NEXT_PUSH
+NEXT_PUSH or= 0
+local INTERVAL_PUSH = 120
+local REINFORCE = 0
+local INTERVAL_REINFORCE = 4 -- every how many pushes should the enemy reinforce, NOT seconds
+
+hook.Add "Think", "evilrp_war", ->
+  if CurTime! >= NEXT_PUSH
+    NEXT_PUSH = CurTime! + INTERVAL_PUSH + math.random(INTERVAL_PUSH)
+    for _, n in pairs GAMEMODE.War.nations
+      n.Troops += 100
+    if GAMEMODE.War.active_operation
+      REINFORCE += 1
+      if REINFORCE >= INTERVAL_REINFORCE
+        REINFORCE = 0
+        INTERVAL_REINFORCE += 1 
+        op = GAMEMODE.War.active_operation
+        if op.Defender.Troops > 0
+          reinforce = math.floor math.random(0.02, 0.06)*op.Defender.Troops
+          op\Reinforce op.Defender, reinforce
+        local emperor = nil
+        for ply in *player.GetAll!
+          if ply\Team! == TEAM_EMPEROR
+            emperor = ply
+        if emperor
+          emperor\SendChat "NOTICE", "[WAR] #{op.Target.Name} has received enemy reinforcements."
+      op = GAMEMODE.War.active_operation
+      op\Tick!
+  return

@@ -4,6 +4,9 @@ create_computers = ->
       * pos: Vector( 486, 910, 261 )
         ang: Angle( 1, 112, -0 )
         cls: "terminal/xombokom"
+      * pos: Vector(-432, -304, 363)
+        ang: Angle( 0, -2, 0 )
+        cls: "terminal/polemarch"
       * pos: Vector( 242, 225, 68 )
         ang: Angle( 0, -0, 0 )
         cls: "terminal/public"

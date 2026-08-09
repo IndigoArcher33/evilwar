@@ -51,6 +51,12 @@ class TerminalPowered extends SOUND
   volume: 0.2
   level: SNDLVL_40DB
 
+class WarAlarm extends SOUND
+  sound: "dysphoria/ambient/waralarm.wav"
+  pitch: {80, 90}
+  volume: 1
+  level: SNDLVL_NONE
+
 class TerminalDead extends SOUND
   sound: "hl1/ambience/deadsignal2.wav"
   pitch: {150, 200}
@@ -299,7 +305,7 @@ class Tyrant extends OS
     "boot sequence now"
     "loading tyrant system 0.6.66"
     "tyrant system loaded. greetings emperor"
-    "LIVER FAILURE FOREVER"
+    "LONG LIVE LYMPHOMA"
   }
     
   commands: 
@@ -433,7 +439,7 @@ class Tyrant extends OS
         text = Chat.Autopretty ply, text\upper!
         with gterm
           \Broadcast term, text, GT_COL_ERR
-        EmitSound"XOMBOTAX"
+        EmitSound"WarAlarm"
         p\SendChat "Broadcast", text for p in *player.GetAll!
         for term in *ents.FindByClass("terminal*")
           continue unless IsValid(term)
@@ -632,6 +638,186 @@ class Tyrant extends OS
       help: "View and manipulate the laws of this land."
     }
 
+class Polemarch extends OS
+  name: "POLEMARCH OS 0.6.66"
+    
+  greeting: {
+    "boot sequence now"
+    "loading polemarch system 0.6.66"
+    "polemarch system loaded. greetings emperor"
+    "LONG LIVE LYMPHOMA"
+  }
+    
+  commands: 
+    [":help"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_EMPEROR
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        with gterm
+          -- this sucks
+          -- TODO: rewrite this to suck less
+          \Broadcast term, "  COMMANDS:"
+          \Broadcast term, ""
+          for k, v in SortedPairs(@GetCommands!)
+            \Broadcast term, "  * #{k}", GT_COL_INFO
+            \Broadcast term, "    #{v.help}"
+          \Broadcast term, "  end list"
+      help: "Basic usage instructions."
+    }      
+    [":cls"]: {
+      Callback: (ply, term) =>
+        if ply\Team! ~= TEAM_EMPEROR
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        for i=0,term.max_lines
+          time = math.Rand(0.01, 0.04)
+          timer.Simple i * time, ->
+            gterm\Broadcast(term, "", MSG_COL_NIL, i) if IsValid(term)
+        return
+      help: "Clear the screen."
+    }
+    [":die"]: {
+      Callback: (ply, term) =>
+        if ply\Team! ~= TEAM_EMPEROR
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        gterm\Broadcast term, "SHUTTING DOWN"
+        timer.Simple math.Rand(2,5), ->
+          if IsValid(term)
+            for i=0,term.max_lines
+              gterm\Broadcast term, "", nil, i if IsValid(term)
+            term\SetActive false
+            gterm.OS\Call term, "ShutDown"
+      help: "Turn the computer off."
+    }
+    [":operation"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_EMPEROR
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        taxes = GAMEMODE.taxes
+        targets = {}
+        for c in *GAMEMODE.War.nations["Wasteland"].Cities -- add war declarations later, currently only the wasteland can be attacked
+              targets[c.Name\lower!] = c
+        cmd = args[1]
+        switch cmd
+          when "begin"
+            t = args[2]\lower!
+            city = targets[t]
+            unless t and city
+              gterm\Broadcast term, "invalid target", GT_COL_ERR
+              return
+            if GAMEMODE.War.active_operation
+              gterm\Broadcast term, "there already is an active operation", GT_COL_ERR
+              return
+            op = Operation city, GAMEMODE.War.nations["Lymphoma"]
+            term\EmitSound"war/dethcon.wav"
+            gterm\Broadcast term, "'#{op.Name}' has begun with objective: #{city.Name}", GT_COL_SUCC
+            Chat.Announce("GENERIC","<c=190,165,25>#{ply\Nick!} has begun '#{op.Name}' against the #{city.Owner.Name}")
+            term\EmitSound"XOMBO"
+          when "targets"
+            for name, c in pairs(targets)
+              gterm\Broadcast term, c\Print!, GT_COL_SUCC
+          when "info"
+            op =GAMEMODE.War.active_operation
+            unless op
+              gterm\Broadcast term, "there is no active operation", GT_COL_ERR
+              return
+            
+            with gterm
+              \Broadcast term, "OPERATION INFO:", GT_COL_INFO
+              \Broadcast term, "  Name: #{op.Name}"
+              \Broadcast term, "  Objective: #{op.Target.Name}"
+              \Broadcast term, "  Balance of Power: #{op.Balance}"
+              \Broadcast term, "  Troops: #{op.AttackingTroops} (Us) | #{op.DefendingTroops} (Them)"
+              \Broadcast term, "  Casualties: #{op.AttackerCasualties} (Us) | #{op.DefenderCasualties} (Them)"
+              \Broadcast term, "end list", GT_COL_INTL
+            return
+          when "reinforce"
+            amount = tonumber args[2]
+            unless amount and amount > 0
+              gterm\Broadcast term, "invalid amount", GT_COL_ERR
+              return
+            op =GAMEMODE.War.active_operation
+            unless op
+              gterm\Broadcast term, "there is no active operation", GT_COL_ERR
+              return
+            unless op.Attacker.Troops >= amount
+              gterm\Broadcast term, "you do not have enough troops", GT_COL_ERR
+              gterm\Broadcast term, "your troops: #{op.Attacker.Troops}", GT_COL_ERR
+              return
+            cost = amount * 2
+            money = ply\getDarkRPVar("money")
+            unless money >= cost
+              gterm\Broadcast term, "you do not have enough bones", GT_COL_ERR
+              return
+            ply\AddMoney -cost, "The War" 
+            op\Reinforce op.Attacker, amount
+            gterm\Broadcast term, "sent #{amount} troops to die", GT_COL_INFO
+          else
+                  with gterm
+                    \Broadcast term, "OPERATIONS INTERFACE", GT_COL_INFO
+                    \Broadcast term, "  INFO:", GT_COL_INFO
+                    \Broadcast term, "    the reason for your existence, war is peace"
+                    \Broadcast term, "  HELP:", GT_COL_INFO
+                    \Broadcast term, "    :operation begin TARGET - send your men to die in exchange of land"
+                    \Broadcast term, "    :operation targets - see what you can currently attack"
+                    \Broadcast term, "    :operation info - check the status of an operation"
+                    \Broadcast term, "    :operation reinforce AMOUNT - perpetuate the meat grinder"
+      help: "View information about ongoing operations."
+    }
+    [":nation"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_EMPEROR
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        cmd = args[1]
+        switch cmd
+          when "info"
+            nation = args[2]\lower! unless args[2] == ""
+            found = false
+            for k, v in pairs GAMEMODE.War.nations
+              if v.Name\lower!\match nation
+                found = true
+                gterm\Broadcast term, "========== The #{v.Name} ==========", GT_COL_INFO
+                gterm\Broadcast term, "  #{v.Description}"
+                gterm\Broadcast term, "  Troops: #{v.Troops}", GT_COL_INFO
+                gterm\Broadcast term, "  Cities:", GT_COL_INFO
+                for c in *v.Cities
+                  gterm\Broadcast term, "    #{c\Print!}"
+                return
+            unless found
+              gterm\Broadcast term, "pick a correct nation", GT_COL_ERR
+              return
+          when "list"
+            argument = args[2]
+            verbose = false
+            if argument == "verbose"
+              verbose = true
+            
+            gterm\Broadcast term, "ENEMIES OF THE LAND:", GT_COL_INFO
+            for k, v in pairs GAMEMODE.War.nations
+              gterm\Broadcast term, "  #{v.Name} - Troops: #{v.Troops}" 
+              op = GAMEMODE.War.active_operation
+              if verbose and op and op.Defender == v
+                gterm\Broadcast term, "     > #{op.Name} - BoP: #{op.Balance}", GT_COL_INFO
+            gterm\Broadcast term, "end list", GT_COL_INTL
+            return
+          else
+            with gterm
+              \Broadcast term, "NATIONS INTERFACE", GT_COL_INFO
+              \Broadcast term, "  INFO:", GT_COL_INFO
+              \Broadcast term, "    lymphoma is the only thing that matters, it's better to stay informed about those who seek to destroy it"
+              \Broadcast term, "  HELP:", GT_COL_INFO
+              \Broadcast term, "    :nation info TARGET - stay informed about the status of a specific enemy"
+              \Broadcast term, "    :nation list - know your neighbors"
+              \Broadcast term, "    :nation list verbose - know your neighbors, and everything they possess"
+      help: "Know your enemies."
+    }
+
+
+
 class Public extends OS
   greeting: {
     "boot sequence now"
@@ -729,6 +915,60 @@ class Public extends OS
         gterm\Broadcast term, "  #{k}. #{v}", GT_COL_WRN for k, v in ipairs(laws)
         gterm\Broadcast term, "end list", GT_COL_INTL
       help: "View the laws of this land."
+    }
+    [":nation"]: {
+      Callback: (ply, term, args) =>
+        if ply\Team! ~= TEAM_EMPEROR
+          gterm\Broadcast term, "begone with you", GT_COL_ERR
+          return
+        cmd = args[1]
+        switch cmd
+          when "info"
+            nation = args[2]\lower! unless args[2] == ""
+            found = false
+            for k, v in pairs GAMEMODE.War.nations
+              if v.Name\lower!\match nation
+                found = true
+                troops = v.Troops / math.random(4, 8)
+                troops = v.Troops * math.random(4, 8)  if k == "Lymphoma"
+                troops = math.floor troops
+                gterm\Broadcast term, "========== The #{v.Name} ==========", GT_COL_INFO
+                gterm\Broadcast term, "  #{v.Description}"
+                gterm\Broadcast term, "  Troops: #{troops}", GT_COL_INFO
+                gterm\Broadcast term, "  Cities:", GT_COL_INFO
+                for c in *v.Cities
+                  gterm\Broadcast term, "    #{c\Print!}"
+                return
+            unless found
+              gterm\Broadcast term, "pick a correct nation", GT_COL_ERR
+              return
+          when "list"
+            argument = args[2]
+            verbose = false
+            if argument == "verbose"
+              verbose = true
+            
+            gterm\Broadcast term, "ENEMIES OF THE LAND:", GT_COL_INFO
+            for k, v in pairs GAMEMODE.War.nations
+              troops = v.Troops / math.random(4, 8)
+              troops = v.Troops * math.random(4, 8)  if k == "Lymphoma"
+              troops = math.floor troops
+              gterm\Broadcast term, "  #{v.Name} - Troops: #{troops}" 
+              op = GAMEMODE.War.active_operation
+              if verbose and op and op.Defender == v
+                gterm\Broadcast term, "     > #{op.Name} - BoP: #{op.Balance}", GT_COL_INFO
+            gterm\Broadcast term, "end list", GT_COL_INTL
+            return
+          else
+            with gterm
+              \Broadcast term, "NATIONS INTERFACE", GT_COL_INFO
+              \Broadcast term, "  INFO:", GT_COL_INFO
+              \Broadcast term, "    lymphoma is the only thing that matters, it's better to stay informed about those who seek to destroy it"
+              \Broadcast term, "  HELP:", GT_COL_INFO
+              \Broadcast term, "    :nation info TARGET - stay informed about the status of a specific enemy"
+              \Broadcast term, "    :nation list - know your neighbors"
+              \Broadcast term, "    :nation list verbose - know your neighbors, and everything they possess"
+      help: "Know your enemies."
     }
     [":whoami"]: {
       Callback: (ply, term, args) =>
