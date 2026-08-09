@@ -700,7 +700,7 @@ class Polemarch extends OS
         targets = {}
         for _ , n in pairs (GAMEMODE.War.nations)
           for c in *n.Cities
-            targets[c\Name!\lower!] = c
+            targets[c.Name\lower!] = c
         cmd = args[1]
         switch cmd
           when "begin"

@@ -1293,7 +1293,7 @@ do -- 641
 						local _list_1 = n.Cities -- 702
 						for _index_0 = 1, #_list_1 do -- 702
 							local c = _list_1[_index_0] -- 702
-							targets[c:Name():lower()] = c -- 703
+							targets[c.Name:lower()] = c -- 703
 						end -- 703
 					end -- 703
 					local cmd = args[1] -- 704
