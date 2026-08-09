@@ -325,4 +325,13 @@ hook.Add "Think", "evilrp_war", ->
           emperor\SendChat "NOTICE", "[WAR] #{op.Target.Name} has received enemy reinforcements."
       op = GAMEMODE.War.active_operation
       op\Tick!
+    else
+      local emperor = nil
+      for ply in *player.GetAll!
+        if ply\Team! == TEAM_EMPEROR
+          emperor = ply
+      if emperor
+        emperor\SendChat "NOTICE", "[WAR] The troops are mutinying, they have nothing to do."
+        emperor\AddStemCells -1
+        emperor\Notify"<c=200,0,0>Lymphoma must wage war."
   return

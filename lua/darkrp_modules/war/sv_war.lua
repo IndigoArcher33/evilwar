@@ -586,7 +586,22 @@ return hook.Add("Think", "evilrp_war", function() -- 306
 			end -- 313
 			local op = GAMEMODE.War.active_operation -- 326
 			op:Tick() -- 327
+		else -- 329
+			local emperor -- 329
+			emperor = nil -- 329
+			local _list_0 = player.GetAll() -- 330
+			for _index_0 = 1, #_list_0 do -- 330
+				local ply = _list_0[_index_0] -- 330
+				if ply:Team() == TEAM_EMPEROR then -- 331
+					emperor = ply -- 332
+				end -- 331
+			end -- 332
+			if emperor then -- 333
+				emperor:SendChat("NOTICE", "[WAR] The troops are mutinying, they have nothing to do.") -- 334
+				emperor:AddStemCells(-1) -- 335
+				emperor:Notify("<c=200,0,0>Lymphoma must wage war.") -- 336
+			end -- 333
 		end -- 311
 	end -- 307
-	return -- 328
-end) -- 328
+	return -- 337
+end) -- 337
