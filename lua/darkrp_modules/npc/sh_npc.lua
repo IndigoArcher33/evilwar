@@ -203,310 +203,311 @@ do -- 35
 			end -- 130
 			self:BecomeRagdoll(dmginfo) -- 134
 			self:Drop() -- 135
-			return -- 136
-		end, -- 138
-		Drop = function(self) -- 138
-			for i = 1, math.random(1, 2) do -- 139
-				local cls = self.LootTable[math.random(1, #self.LootTable)] -- 140
-				local loot = ents.Create(cls) -- 141
-				loot:Spawn() -- 143
-				loot:Activate() -- 144
-				loot:SetPos(self:GetPos() + Vector(math.random(-10, 10), math.random(-10, 10), 0)) -- 145
-			end -- 145
-			local roll = math.random(1, 10) -- 147
-			if roll <= 3 then -- 148
-				local cls = "item/loot/intel" -- 149
-				local loot = ents.Create(cls) -- 150
-				loot:Spawn() -- 152
-				loot:Activate() -- 153
-				loot:SetPos(self:GetPos() + Vector(math.random(-10, 10), math.random(-10, 10), 0)) -- 154
-			end -- 148
-			local etab = self:GetActiveLuaWeapon() -- 156
-			local weapon = etab:GetClass() -- 157
-			if weapon and etab then -- 158
-				local product = ents.Create("evilrp/spawned/weapon") -- 159
-				product:SetModel(etab.WorldModel) -- 161
-				product:SetWeaponClass(weapon) -- 162
-				product:SetPos(self:GetPos() + Vector(math.random(-10, 10), math.random(-10, 10), 0)) -- 163
-				product:Spawn() -- 164
-				return product -- 160
-			end -- 158
-		end, -- 167
-		GetActiveLuaWeapon = function(self) -- 167
-			return self.m_ActualWeapon or NULL -- 168
-		end, -- 170
-		WeaponPrimaryAttack = function(self) -- 170
-			if self.NextFire > CurTime() then -- 171
-				return -- 172
-			end -- 171
-			if not self:HaveEnemy() then -- 173
-				return -- 174
-			end -- 173
-			local wep = self:GetActiveLuaWeapon() -- 176
-			if not IsValid(wep) then -- 177
-				return -- 178
-			end -- 177
-			if wep.CurAmmo <= 0 then -- 180
-				self:Reload() -- 181
-				return -- 182
-			end -- 180
-			local myEyePos = self:GetPos() + Vector(0, 0, 50) -- 184
-			local enemyChestPos = self:GetEnemy():GetPos() + Vector(0, 0, 45) -- 185
-			local trace = { -- 188
-				start = myEyePos, -- 188
-				endpos = enemyChestPos, -- 189
-				filter = { -- 190
-					self, -- 190
-					wep -- 190
-				} -- 190
-			} -- 187
-			local tr = util.TraceLine(trace) -- 192
-			if IsValid(tr.Entity) and tr.Entity:GetClass() == self:GetClass() then -- 193
-				return -- 194
-			end -- 193
-			self:SetPoseParameter("aim_pitch", 0) -- 196
-			local delay = (wep.Primary and wep.Primary.Delay) or 0.1 -- 198
-			self.NextFire = CurTime() + delay + math.random(-delay / 10, delay / 10) -- 199
-			local snd = (wep.Primary and wep.Primary.Sound) or "Weapon_SMG1.Single" -- 201
-			if type(snd) == "table" then -- 202
-				snd = table.Random(snd) -- 202
-			end -- 202
-			self:EmitSound(snd, 75, 100, 5) -- 203
-			self:RestartGesture(ACT_HL2MP_GESTURE_RANGE_ATTACK_AR2) -- 205
-			local acc -- 207
-			if wep.GetSpread then -- 207
-				acc = wep:GetSpread() -- 207
-			else -- 207
-				acc = Vector(0.05, 0.05, 0) -- 207
-			end -- 207
-			local bullet = { -- 209
-				Num = (wep.Primary and wep.Primary.NumBullets) or 1, -- 209
-				Src = myEyePos, -- 210
-				Dir = (enemyChestPos - myEyePos):GetNormalized(), -- 211
-				Spread = acc * 5, -- 212
-				Tracer = 1, -- 213
-				Force = (wep.Primary and wep.Primary.Damage) or 10, -- 214
-				Damage = (wep.Primary and wep.Primary.Damage) or 10, -- 215
-				AmmoType = (wep.Primary and wep.Primary.Ammo) or "smg1", -- 216
-				Attacker = self, -- 217
-				Inflictor = wep -- 218
-			} -- 208
-			self:FireBullets(bullet) -- 220
-			wep.CurAmmo = wep.CurAmmo - 1 -- 221
-			return wep:MuzzleFlash() -- 222
-		end, -- 224
-		IsMelee = function(self) -- 224
-			local wep = self:GetActiveLuaWeapon() -- 225
-			if not IsValid(wep) then -- 226
-				return true -- 227
-			end -- 226
-			local holdType = (wep.GetHoldType and wep:GetHoldType()) or "smg" -- 229
-			return holdType == "melee" or holdType == "fist" or holdType == "knife" or holdType == "grenade" -- 230
-		end, -- 232
-		Reload = function(self) -- 232
-			local wep = self:GetActiveLuaWeapon() -- 233
-			if not IsValid(wep) or wep.Reloading then -- 234
-				return -- 235
-			end -- 234
-			self:RestartGesture(ACT_HL2MP_GESTURE_RELOAD_AR2) -- 237
-			wep.Reloading = true -- 238
-			self:EmitSound("weapons/smg1/smg1_reload.wav") -- 239
-			return timer.Simple(2.5, function() -- 241
-				if IsValid(self) and IsValid(wep) then -- 242
-					wep.CurAmmo = wep.MaxClip -- 243
-					wep.Reloading = false -- 244
-				end -- 242
-			end) -- 244
-		end, -- 246
-		GetAnim = function(self, state) -- 246
-			local wep = self:GetActiveLuaWeapon() -- 247
-			if not IsValid(wep) then -- 248
-				return _G["ACT_HL2MP_" .. state] -- 249
-			end -- 248
-			local holdType = (wep.GetHoldType and wep:GetHoldType()) or "smg" -- 251
-			local translations = { -- 254
-				pistol = "PISTOL", -- 254
-				revolver = "REVOLVER", -- 255
-				smg = "SMG1", -- 256
-				ar2 = "AR2", -- 257
-				shotgun = "SHOTGUN", -- 258
-				crossbow = "CROSSBOW", -- 259
-				rpg = "RPG", -- 260
-				grenade = "GRENADE", -- 261
-				melee = "MELEE" -- 262
-			} -- 253
-			local suffix = translations[holdType] or "SMG1" -- 264
-			return _G["ACT_HL2MP_" .. state .. "_" .. suffix] -- 265
-		end, -- 267
-		BodyUpdate = function(self) -- 267
-			local act = self:GetActivity() -- 268
-			if act == self:GetAnim("RUN") or act == self:GetAnim("WALK") then -- 269
-				return self:BodyMoveXY() -- 270
-			else -- 272
-				return self:FrameAdvance() -- 272
-			end -- 269
-		end, -- 274
-		SetEnemy = function(self, ent) -- 274
-			self.Enemy = ent -- 274
+			self:Remove() -- 136
+			return -- 137
+		end, -- 139
+		Drop = function(self) -- 139
+			for i = 1, math.random(1, 2) do -- 140
+				local cls = self.LootTable[math.random(1, #self.LootTable)] -- 141
+				local loot = ents.Create(cls) -- 142
+				loot:Spawn() -- 144
+				loot:Activate() -- 145
+				loot:SetPos(self:GetPos() + Vector(math.random(-10, 10), math.random(-10, 10), 0)) -- 146
+			end -- 146
+			local roll = math.random(1, 10) -- 148
+			if roll <= 3 then -- 149
+				local cls = "item/loot/intel" -- 150
+				local loot = ents.Create(cls) -- 151
+				loot:Spawn() -- 153
+				loot:Activate() -- 154
+				loot:SetPos(self:GetPos() + Vector(math.random(-10, 10), math.random(-10, 10), 0)) -- 155
+			end -- 149
+			local etab = self:GetActiveLuaWeapon() -- 157
+			local weapon = etab:GetClass() -- 158
+			if weapon and etab then -- 159
+				local product = ents.Create("evilrp/spawned/weapon") -- 160
+				product:SetModel(etab.WorldModel) -- 162
+				product:SetWeaponClass(weapon) -- 163
+				product:SetPos(self:GetPos() + Vector(math.random(-10, 10), math.random(-10, 10), 0)) -- 164
+				product:Spawn() -- 165
+				return product -- 161
+			end -- 159
+		end, -- 168
+		GetActiveLuaWeapon = function(self) -- 168
+			return self.m_ActualWeapon or NULL -- 169
+		end, -- 171
+		WeaponPrimaryAttack = function(self) -- 171
+			if self.NextFire > CurTime() then -- 172
+				return -- 173
+			end -- 172
+			if not self:HaveEnemy() then -- 174
+				return -- 175
+			end -- 174
+			local wep = self:GetActiveLuaWeapon() -- 177
+			if not IsValid(wep) then -- 178
+				return -- 179
+			end -- 178
+			if wep.CurAmmo <= 0 then -- 181
+				self:Reload() -- 182
+				return -- 183
+			end -- 181
+			local myEyePos = self:GetPos() + Vector(0, 0, 50) -- 185
+			local enemyChestPos = self:GetEnemy():GetPos() + Vector(0, 0, 45) -- 186
+			local trace = { -- 189
+				start = myEyePos, -- 189
+				endpos = enemyChestPos, -- 190
+				filter = { -- 191
+					self, -- 191
+					wep -- 191
+				} -- 191
+			} -- 188
+			local tr = util.TraceLine(trace) -- 193
+			if IsValid(tr.Entity) and tr.Entity:GetClass() == self:GetClass() then -- 194
+				return -- 195
+			end -- 194
+			self:SetPoseParameter("aim_pitch", 0) -- 197
+			local delay = (wep.Primary and wep.Primary.Delay) or 0.1 -- 199
+			self.NextFire = CurTime() + delay + math.random(-delay / 10, delay / 10) -- 200
+			local snd = (wep.Primary and wep.Primary.Sound) or "Weapon_SMG1.Single" -- 202
+			if type(snd) == "table" then -- 203
+				snd = table.Random(snd) -- 203
+			end -- 203
+			self:EmitSound(snd, 75, 100, 5) -- 204
+			self:RestartGesture(ACT_HL2MP_GESTURE_RANGE_ATTACK_AR2) -- 206
+			local acc -- 208
+			if wep.GetSpread then -- 208
+				acc = wep:GetSpread() -- 208
+			else -- 208
+				acc = Vector(0.05, 0.05, 0) -- 208
+			end -- 208
+			local bullet = { -- 210
+				Num = (wep.Primary and wep.Primary.NumBullets) or 1, -- 210
+				Src = myEyePos, -- 211
+				Dir = (enemyChestPos - myEyePos):GetNormalized(), -- 212
+				Spread = acc * 5, -- 213
+				Tracer = 1, -- 214
+				Force = (wep.Primary and wep.Primary.Damage) or 10, -- 215
+				Damage = (wep.Primary and wep.Primary.Damage) or 10, -- 216
+				AmmoType = (wep.Primary and wep.Primary.Ammo) or "smg1", -- 217
+				Attacker = self, -- 218
+				Inflictor = wep -- 219
+			} -- 209
+			self:FireBullets(bullet) -- 221
+			wep.CurAmmo = wep.CurAmmo - 1 -- 222
+			return wep:MuzzleFlash() -- 223
+		end, -- 225
+		IsMelee = function(self) -- 225
+			local wep = self:GetActiveLuaWeapon() -- 226
+			if not IsValid(wep) then -- 227
+				return true -- 228
+			end -- 227
+			local holdType = (wep.GetHoldType and wep:GetHoldType()) or "smg" -- 230
+			return holdType == "melee" or holdType == "fist" or holdType == "knife" or holdType == "grenade" -- 231
+		end, -- 233
+		Reload = function(self) -- 233
+			local wep = self:GetActiveLuaWeapon() -- 234
+			if not IsValid(wep) or wep.Reloading then -- 235
+				return -- 236
+			end -- 235
+			self:RestartGesture(ACT_HL2MP_GESTURE_RELOAD_AR2) -- 238
+			wep.Reloading = true -- 239
+			self:EmitSound("weapons/smg1/smg1_reload.wav") -- 240
+			return timer.Simple(2.5, function() -- 242
+				if IsValid(self) and IsValid(wep) then -- 243
+					wep.CurAmmo = wep.MaxClip -- 244
+					wep.Reloading = false -- 245
+				end -- 243
+			end) -- 245
+		end, -- 247
+		GetAnim = function(self, state) -- 247
+			local wep = self:GetActiveLuaWeapon() -- 248
+			if not IsValid(wep) then -- 249
+				return _G["ACT_HL2MP_" .. state] -- 250
+			end -- 249
+			local holdType = (wep.GetHoldType and wep:GetHoldType()) or "smg" -- 252
+			local translations = { -- 255
+				pistol = "PISTOL", -- 255
+				revolver = "REVOLVER", -- 256
+				smg = "SMG1", -- 257
+				ar2 = "AR2", -- 258
+				shotgun = "SHOTGUN", -- 259
+				crossbow = "CROSSBOW", -- 260
+				rpg = "RPG", -- 261
+				grenade = "GRENADE", -- 262
+				melee = "MELEE" -- 263
+			} -- 254
+			local suffix = translations[holdType] or "SMG1" -- 265
+			return _G["ACT_HL2MP_" .. state .. "_" .. suffix] -- 266
+		end, -- 268
+		BodyUpdate = function(self) -- 268
+			local act = self:GetActivity() -- 269
+			if act == self:GetAnim("RUN") or act == self:GetAnim("WALK") then -- 270
+				return self:BodyMoveXY() -- 271
+			else -- 273
+				return self:FrameAdvance() -- 273
+			end -- 270
 		end, -- 275
-		GetEnemy = function(self) -- 275
-			return self.Enemy -- 275
-		end, -- 277
-		HaveEnemy = function(self) -- 277
-			local enemy = self:GetEnemy() -- 278
-			if IsValid(enemy) then -- 279
-				if self:GetRangeTo(enemy:GetPos()) > self.LoseTargetDist then -- 280
-					return self:FindEnemy() -- 281
-				elseif enemy:IsPlayer() and not enemy:Alive() then -- 282
-					return self:FindEnemy() -- 283
-				elseif enemy:GetClass() == self:GetClass() then -- 284
-					return self:FindEnemy() -- 285
-				elseif enemy:Team() == TEAM_GHOST then -- 286
-					return self:FindEnemy() -- 287
-				end -- 280
-				return true -- 288
-			end -- 279
-			return self:FindEnemy() -- 289
-		end, -- 291
-		FindEnemy = function(self) -- 291
-			local entsInCone = ents.FindInCone(self:GetPos(), self:GetForward(), self.SearchRadius, 0.707) -- 292
-			for _index_0 = 1, #entsInCone do -- 293
-				local v = entsInCone[_index_0] -- 293
-				local _continue_0 = false -- 294
-				repeat -- 294
-					if v.Faction and v.Faction == self.Faction then -- 294
-						_continue_0 = true -- 295
-						break -- 295
-					end -- 294
-					if (v:IsNPC() or v:IsNextBot() or v:IsPlayer()) and self:Visible(v) then -- 298
-						if v:Health() > 0 then -- 299
-							self:SetEnemy(v) -- 300
-							return true -- 301
-						end -- 299
-					end -- 298
-					_continue_0 = true -- 294
-				until true -- 302
-				if not _continue_0 then -- 302
-					break -- 302
-				end -- 302
-			end -- 302
-			self:SetEnemy(nil) -- 303
-			return false -- 304
-		end, -- 306
-		RunBehaviour = function(self) -- 306
-			while true do -- 307
-				if self:HaveEnemy() then -- 308
-					if self:IsMelee() then -- 309
-						self:StartActivity(self:GetAnim("RUN")) -- 310
-						self.loco:SetDesiredSpeed(150) -- 311
-						self:ChaseEnemy() -- 312
-					else -- 314
-						self:StartActivity(self:GetAnim("IDLE")) -- 314
-						while self:HaveEnemy() and not self:IsMelee() do -- 316
-							local target = self:GetEnemy() -- 317
-							if not IsValid(target) then -- 318
-								break -- 318
-							end -- 318
-							if not self:Visible(target) then -- 320
-								self:StartActivity(self:GetAnim("RUN")) -- 321
-								self.loco:SetDesiredSpeed(150) -- 322
-								local path = Path("Follow") -- 324
-								path:SetMinLookAheadDistance(300) -- 325
-								path:SetGoalTolerance(20) -- 326
-								path:Compute(self, target:GetPos()) -- 327
-								if not path:IsValid() then -- 329
-									coroutine.wait(1) -- 330
-								else -- 332
-									local nextPath = CurTime() + 5 -- 332
-									while path:IsValid() and self:HaveEnemy() and CurTime() < nextPath do -- 333
-										target = self:GetEnemy() -- 334
-										if not IsValid(target) or self:Visible(target) then -- 335
-											break -- 335
-										end -- 335
-										if path:GetAge() > 0.1 then -- 337
-											path:Compute(self, target:GetPos()) -- 337
-										end -- 337
-										path:Update(self) -- 338
-										if self.loco:IsStuck() then -- 340
-											self:HandleStuck() -- 340
-										end -- 340
-										coroutine.yield() -- 341
-									end -- 342
-								end -- 329
-							elseif self:GetRangeTo(target:GetPos()) > 800 then -- 343
-								self:StartActivity(self:GetAnim("WALK")) -- 344
-								self.loco:SetDesiredSpeed(100) -- 345
-								local dir = (target:GetPos() - self:GetPos()):GetNormalized() -- 347
-								local pos = self:GetPos() + dir * 250 -- 348
-								self:MoveToPos(pos) -- 350
-								self:StartActivity(self:GetAnim("IDLE")) -- 352
-								local stop = CurTime() + math.Rand(1.0, 2.5) -- 354
-								while CurTime() < stop do -- 355
-									target = self:GetEnemy() -- 356
-									if not IsValid(target) or not self:Visible(target) then -- 357
-										break -- 357
-									end -- 357
-									self.loco:FaceTowards(target:GetPos()) -- 359
-									self:WeaponPrimaryAttack() -- 360
-									coroutine.yield() -- 361
-								end -- 362
-							else -- 364
-								self:StartActivity(self:GetAnim("IDLE")) -- 364
-								self.loco:FaceTowards(target:GetPos()) -- 365
-								self:WeaponPrimaryAttack() -- 366
-								coroutine.yield() -- 367
-							end -- 320
-						end -- 367
-					end -- 309
-				else -- 369
-					self:StartActivity(self:GetAnim("WALK")) -- 369
-					if self.IdleSound then -- 370
-						self:EmitSound(self.IdleSound[math.random(1, #self.IdleSound)]) -- 370
-					end -- 370
-					self.loco:SetDesiredSpeed(100) -- 371
-					local wander = self:GetPos() + Vector(math.Rand(-1, 1), math.Rand(-1, 1), 0) * 400 -- 373
-					if navmesh.IsLoaded() and navmesh.GetNearestNavArea(wander, false) then -- 374
-						self:MoveToPos(wander) -- 375
-					else -- 377
-						coroutine.wait(1) -- 377
-					end -- 374
-					self:StartActivity(self:GetAnim("IDLE")) -- 379
-				end -- 308
-				coroutine.wait(0.5) -- 381
-			end -- 381
-		end, -- 384
-		ChaseEnemy = function(self) -- 384
-			local path = Path("Follow") -- 385
-			path:SetMinLookAheadDistance(300) -- 386
-			path:SetGoalTolerance(20) -- 387
-			path:Compute(self, self:GetEnemy():GetPos()) -- 388
-			if not path:IsValid() then -- 390
-				return "failed" -- 390
-			end -- 390
-			while path:IsValid() and self:HaveEnemy() do -- 392
-				if path:GetAge() > 0.1 then -- 393
-					path:Compute(self, self:GetEnemy():GetPos()) -- 394
-				end -- 393
-				self.loco:FaceTowards(self:GetEnemy():GetPos()) -- 396
-				self:WeaponPrimaryAttack() -- 397
-				path:Update(self) -- 399
-				if self.loco:IsStuck() then -- 401
-					self:HandleStuck() -- 402
-					return "stuck" -- 403
-				end -- 401
-				coroutine.yield() -- 405
-			end -- 405
-			return "ok" -- 407
+		SetEnemy = function(self, ent) -- 275
+			self.Enemy = ent -- 275
+		end, -- 276
+		GetEnemy = function(self) -- 276
+			return self.Enemy -- 276
+		end, -- 278
+		HaveEnemy = function(self) -- 278
+			local enemy = self:GetEnemy() -- 279
+			if IsValid(enemy) then -- 280
+				if self:GetRangeTo(enemy:GetPos()) > self.LoseTargetDist then -- 281
+					return self:FindEnemy() -- 282
+				elseif enemy:IsPlayer() and not enemy:Alive() then -- 283
+					return self:FindEnemy() -- 284
+				elseif enemy:GetClass() == self:GetClass() then -- 285
+					return self:FindEnemy() -- 286
+				elseif enemy:Team() == TEAM_GHOST then -- 287
+					return self:FindEnemy() -- 288
+				end -- 281
+				return true -- 289
+			end -- 280
+			return self:FindEnemy() -- 290
+		end, -- 292
+		FindEnemy = function(self) -- 292
+			local entsInCone = ents.FindInCone(self:GetPos(), self:GetForward(), self.SearchRadius, 0.707) -- 293
+			for _index_0 = 1, #entsInCone do -- 294
+				local v = entsInCone[_index_0] -- 294
+				local _continue_0 = false -- 295
+				repeat -- 295
+					if v.Faction and v.Faction == self.Faction then -- 295
+						_continue_0 = true -- 296
+						break -- 296
+					end -- 295
+					if (v:IsNPC() or v:IsNextBot() or v:IsPlayer()) and self:Visible(v) then -- 299
+						if v:Health() > 0 then -- 300
+							self:SetEnemy(v) -- 301
+							return true -- 302
+						end -- 300
+					end -- 299
+					_continue_0 = true -- 295
+				until true -- 303
+				if not _continue_0 then -- 303
+					break -- 303
+				end -- 303
+			end -- 303
+			self:SetEnemy(nil) -- 304
+			return false -- 305
+		end, -- 307
+		RunBehaviour = function(self) -- 307
+			while true do -- 308
+				if self:HaveEnemy() then -- 309
+					if self:IsMelee() then -- 310
+						self:StartActivity(self:GetAnim("RUN")) -- 311
+						self.loco:SetDesiredSpeed(150) -- 312
+						self:ChaseEnemy() -- 313
+					else -- 315
+						self:StartActivity(self:GetAnim("IDLE")) -- 315
+						while self:HaveEnemy() and not self:IsMelee() do -- 317
+							local target = self:GetEnemy() -- 318
+							if not IsValid(target) then -- 319
+								break -- 319
+							end -- 319
+							if not self:Visible(target) then -- 321
+								self:StartActivity(self:GetAnim("RUN")) -- 322
+								self.loco:SetDesiredSpeed(150) -- 323
+								local path = Path("Follow") -- 325
+								path:SetMinLookAheadDistance(300) -- 326
+								path:SetGoalTolerance(20) -- 327
+								path:Compute(self, target:GetPos()) -- 328
+								if not path:IsValid() then -- 330
+									coroutine.wait(1) -- 331
+								else -- 333
+									local nextPath = CurTime() + 5 -- 333
+									while path:IsValid() and self:HaveEnemy() and CurTime() < nextPath do -- 334
+										target = self:GetEnemy() -- 335
+										if not IsValid(target) or self:Visible(target) then -- 336
+											break -- 336
+										end -- 336
+										if path:GetAge() > 0.1 then -- 338
+											path:Compute(self, target:GetPos()) -- 338
+										end -- 338
+										path:Update(self) -- 339
+										if self.loco:IsStuck() then -- 341
+											self:HandleStuck() -- 341
+										end -- 341
+										coroutine.yield() -- 342
+									end -- 343
+								end -- 330
+							elseif self:GetRangeTo(target:GetPos()) > 800 then -- 344
+								self:StartActivity(self:GetAnim("WALK")) -- 345
+								self.loco:SetDesiredSpeed(100) -- 346
+								local dir = (target:GetPos() - self:GetPos()):GetNormalized() -- 348
+								local pos = self:GetPos() + dir * 250 -- 349
+								self:MoveToPos(pos) -- 351
+								self:StartActivity(self:GetAnim("IDLE")) -- 353
+								local stop = CurTime() + math.Rand(1.0, 2.5) -- 355
+								while CurTime() < stop do -- 356
+									target = self:GetEnemy() -- 357
+									if not IsValid(target) or not self:Visible(target) then -- 358
+										break -- 358
+									end -- 358
+									self.loco:FaceTowards(target:GetPos()) -- 360
+									self:WeaponPrimaryAttack() -- 361
+									coroutine.yield() -- 362
+								end -- 363
+							else -- 365
+								self:StartActivity(self:GetAnim("IDLE")) -- 365
+								self.loco:FaceTowards(target:GetPos()) -- 366
+								self:WeaponPrimaryAttack() -- 367
+								coroutine.yield() -- 368
+							end -- 321
+						end -- 368
+					end -- 310
+				else -- 370
+					self:StartActivity(self:GetAnim("WALK")) -- 370
+					if self.IdleSound then -- 371
+						self:EmitSound(self.IdleSound[math.random(1, #self.IdleSound)]) -- 371
+					end -- 371
+					self.loco:SetDesiredSpeed(100) -- 372
+					local wander = self:GetPos() + Vector(math.Rand(-1, 1), math.Rand(-1, 1), 0) * 400 -- 374
+					if navmesh.IsLoaded() and navmesh.GetNearestNavArea(wander, false) then -- 375
+						self:MoveToPos(wander) -- 376
+					else -- 378
+						coroutine.wait(1) -- 378
+					end -- 375
+					self:StartActivity(self:GetAnim("IDLE")) -- 380
+				end -- 309
+				coroutine.wait(0.5) -- 382
+			end -- 382
+		end, -- 385
+		ChaseEnemy = function(self) -- 385
+			local path = Path("Follow") -- 386
+			path:SetMinLookAheadDistance(300) -- 387
+			path:SetGoalTolerance(20) -- 388
+			path:Compute(self, self:GetEnemy():GetPos()) -- 389
+			if not path:IsValid() then -- 391
+				return "failed" -- 391
+			end -- 391
+			while path:IsValid() and self:HaveEnemy() do -- 393
+				if path:GetAge() > 0.1 then -- 394
+					path:Compute(self, self:GetEnemy():GetPos()) -- 395
+				end -- 394
+				self.loco:FaceTowards(self:GetEnemy():GetPos()) -- 397
+				self:WeaponPrimaryAttack() -- 398
+				path:Update(self) -- 400
+				if self.loco:IsStuck() then -- 402
+					self:HandleStuck() -- 403
+					return "stuck" -- 404
+				end -- 402
+				coroutine.yield() -- 406
+			end -- 406
+			return "ok" -- 408
 		end -- 35
 	} -- 35
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 407
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 408
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 35
 			_base_0[_key_0] = _val_0 -- 35
 		end -- 35
-	end -- 407
+	end -- 408
 	if _base_0.__index == nil then -- 35
 		_base_0.__index = _base_0 -- 35
-	end -- 407
+	end -- 408
 	setmetatable(_base_0, _parent_0.__base) -- 35
 	_class_0 = setmetatable({ -- 35
 		__init = function(self, ...) -- 35
@@ -538,121 +539,121 @@ do -- 35
 		_parent_0.__inherited(_parent_0, _class_0) -- 35
 	end -- 35
 	EvilRP_NPC = _class_0 -- 35
-end -- 407
-DEFINE_BASECLASS("evil_npc") -- 410
-local RoyalConscript -- 411
-do -- 411
-	local _class_0 -- 411
-	local _parent_0 = EvilRP_NPC -- 411
-	local _base_0 = { -- 411
-		__nextbot = "royalconscript", -- 413
-		Base = "evil_npc", -- 414
-		Faction = "Royalists", -- 415
-		Category = "EvilRP", -- 416
-		PrintName = "Conscript", -- 417
-		Spawnable = true, -- 418
-		Reward = 100, -- 419
-		Weapon = { -- 419
-			"evilrp_weapon/obrez", -- 419
-			"evilrp_weapon/pacifier", -- 419
-			"evilrp_weapon/warrant", -- 419
-			"evilrp_weapon/viper" -- 419
-		}, -- 421
-		IdleSound = (function() -- 421
-			local _accum_0 = { } -- 421
-			local _len_0 = 1 -- 421
-			for i = 1, 3 do -- 421
-				_accum_0[_len_0] = "placenta/speech/prole" .. tostring(i) .. ".wav" -- 421
-				_len_0 = _len_0 + 1 -- 421
-			end -- 421
-			return _accum_0 -- 421
-		end)(), -- 422
-		DeathSound = (function() -- 422
+end -- 408
+DEFINE_BASECLASS("evil_npc") -- 411
+local RoyalConscript -- 412
+do -- 412
+	local _class_0 -- 412
+	local _parent_0 = EvilRP_NPC -- 412
+	local _base_0 = { -- 412
+		__nextbot = "royalconscript", -- 414
+		Base = "evil_npc", -- 415
+		Faction = "Royalists", -- 416
+		Category = "EvilRP", -- 417
+		PrintName = "Conscript", -- 418
+		Spawnable = true, -- 419
+		Reward = 100, -- 420
+		Weapon = { -- 420
+			"evilrp_weapon/obrez", -- 420
+			"evilrp_weapon/pacifier", -- 420
+			"evilrp_weapon/warrant", -- 420
+			"evilrp_weapon/viper" -- 420
+		}, -- 422
+		IdleSound = (function() -- 422
 			local _accum_0 = { } -- 422
 			local _len_0 = 1 -- 422
 			for i = 1, 3 do -- 422
-				_accum_0[_len_0] = "placenta/death/prole" .. tostring(i) .. ".wav" -- 422
+				_accum_0[_len_0] = "placenta/speech/prole" .. tostring(i) .. ".wav" -- 422
 				_len_0 = _len_0 + 1 -- 422
 			end -- 422
 			return _accum_0 -- 422
 		end)(), -- 423
-		HurtSound = (function() -- 423
+		DeathSound = (function() -- 423
 			local _accum_0 = { } -- 423
 			local _len_0 = 1 -- 423
-			for i = 1, 5 do -- 423
-				_accum_0[_len_0] = "placenta/pain/prole" .. tostring(i) .. ".wav" -- 423
+			for i = 1, 3 do -- 423
+				_accum_0[_len_0] = "placenta/death/prole" .. tostring(i) .. ".wav" -- 423
 				_len_0 = _len_0 + 1 -- 423
 			end -- 423
 			return _accum_0 -- 423
-		end)(), -- 426
-		Initialize = function(self) -- 426
-			self:SetModel("models/vel/evilwar/royalist.mdl") -- 427
-			self:SetHealth(100) -- 428
-			self.LoseTargetDist = 1200 -- 429
-			self.SearchRadius = 1800 -- 430
-			self.NextFire = CurTime() -- 432
-			return self:Give(self.Weapon[math.random(1, #self.Weapon)]) -- 434
-		end, -- 436
-		HaveEnemy = function(self) -- 436
-			local enemy = self:GetEnemy() -- 437
-			if IsValid(enemy) then -- 438
-				if self:GetRangeTo(enemy:GetPos()) > self.LoseTargetDist then -- 439
-					return self:FindEnemy() -- 440
-				elseif enemy:IsPlayer() then -- 441
-					if not enemy:Alive() or enemy:Team() == TEAM_GHOST then -- 442
-						return self:FindEnemy() -- 443
-					end -- 442
-					local job = RPExtraTeams[enemy:Team()] -- 444
-					if job and job.category == "Royalists" then -- 445
-						return self:FindEnemy() -- 446
-					end -- 445
-					return true -- 447
-				elseif enemy:GetClass() == self:GetClass() then -- 448
-					return self:FindEnemy() -- 449
-				end -- 439
-				return true -- 450
-			end -- 438
-			return self:FindEnemy() -- 451
-		end -- 411
-	} -- 411
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 451
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 411
-			_base_0[_key_0] = _val_0 -- 411
-		end -- 411
-	end -- 451
-	if _base_0.__index == nil then -- 411
-		_base_0.__index = _base_0 -- 411
-	end -- 451
-	setmetatable(_base_0, _parent_0.__base) -- 411
-	_class_0 = setmetatable({ -- 411
-		__init = function(self, ...) -- 411
-			return _class_0.__parent.__init(self, ...) -- 411
-		end, -- 411
-		__base = _base_0, -- 411
-		__name = "RoyalConscript", -- 411
-		__parent = _parent_0 -- 411
-	}, { -- 411
-		__index = function(cls, name) -- 411
-			local val = rawget(_base_0, name) -- 411
-			if val == nil then -- 411
-				local parent = rawget(cls, "__parent") -- 411
-				if parent then -- 411
-					return parent[name] -- 411
-				end -- 411
-			else -- 411
-				return val -- 411
-			end -- 411
-		end, -- 411
-		__call = function(cls, ...) -- 411
-			local _self_0 = setmetatable({ }, _base_0) -- 411
-			cls.__init(_self_0, ...) -- 411
-			return _self_0 -- 411
-		end -- 411
-	}) -- 411
-	_base_0.__class = _class_0 -- 411
-	if _parent_0.__inherited then -- 411
-		_parent_0.__inherited(_parent_0, _class_0) -- 411
-	end -- 411
-	RoyalConscript = _class_0 -- 411
-	return _class_0 -- 451
-end -- 451
+		end)(), -- 424
+		HurtSound = (function() -- 424
+			local _accum_0 = { } -- 424
+			local _len_0 = 1 -- 424
+			for i = 1, 5 do -- 424
+				_accum_0[_len_0] = "placenta/pain/prole" .. tostring(i) .. ".wav" -- 424
+				_len_0 = _len_0 + 1 -- 424
+			end -- 424
+			return _accum_0 -- 424
+		end)(), -- 427
+		Initialize = function(self) -- 427
+			self:SetModel("models/vel/evilwar/royalist.mdl") -- 428
+			self:SetHealth(100) -- 429
+			self.LoseTargetDist = 1200 -- 430
+			self.SearchRadius = 1800 -- 431
+			self.NextFire = CurTime() -- 433
+			return self:Give(self.Weapon[math.random(1, #self.Weapon)]) -- 435
+		end, -- 437
+		HaveEnemy = function(self) -- 437
+			local enemy = self:GetEnemy() -- 438
+			if IsValid(enemy) then -- 439
+				if self:GetRangeTo(enemy:GetPos()) > self.LoseTargetDist then -- 440
+					return self:FindEnemy() -- 441
+				elseif enemy:IsPlayer() then -- 442
+					if not enemy:Alive() or enemy:Team() == TEAM_GHOST then -- 443
+						return self:FindEnemy() -- 444
+					end -- 443
+					local job = RPExtraTeams[enemy:Team()] -- 445
+					if job and job.category == "Royalists" then -- 446
+						return self:FindEnemy() -- 447
+					end -- 446
+					return true -- 448
+				elseif enemy:GetClass() == self:GetClass() then -- 449
+					return self:FindEnemy() -- 450
+				end -- 440
+				return true -- 451
+			end -- 439
+			return self:FindEnemy() -- 452
+		end -- 412
+	} -- 412
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 452
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 412
+			_base_0[_key_0] = _val_0 -- 412
+		end -- 412
+	end -- 452
+	if _base_0.__index == nil then -- 412
+		_base_0.__index = _base_0 -- 412
+	end -- 452
+	setmetatable(_base_0, _parent_0.__base) -- 412
+	_class_0 = setmetatable({ -- 412
+		__init = function(self, ...) -- 412
+			return _class_0.__parent.__init(self, ...) -- 412
+		end, -- 412
+		__base = _base_0, -- 412
+		__name = "RoyalConscript", -- 412
+		__parent = _parent_0 -- 412
+	}, { -- 412
+		__index = function(cls, name) -- 412
+			local val = rawget(_base_0, name) -- 412
+			if val == nil then -- 412
+				local parent = rawget(cls, "__parent") -- 412
+				if parent then -- 412
+					return parent[name] -- 412
+				end -- 412
+			else -- 412
+				return val -- 412
+			end -- 412
+		end, -- 412
+		__call = function(cls, ...) -- 412
+			local _self_0 = setmetatable({ }, _base_0) -- 412
+			cls.__init(_self_0, ...) -- 412
+			return _self_0 -- 412
+		end -- 412
+	}) -- 412
+	_base_0.__class = _class_0 -- 412
+	if _parent_0.__inherited then -- 412
+		_parent_0.__inherited(_parent_0, _class_0) -- 412
+	end -- 412
+	RoyalConscript = _class_0 -- 412
+	return _class_0 -- 452
+end -- 452

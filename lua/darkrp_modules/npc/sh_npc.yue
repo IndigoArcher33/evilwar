@@ -133,6 +133,7 @@ class EvilRP_NPC extends NEXTBOT
       GAMEMODE.War.nations["Wasteland"].Troops -= 10
     @BecomeRagdoll dmginfo
     @Drop!
+    @Remove!
     return
 
   Drop: =>
