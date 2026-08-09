@@ -48,6 +48,15 @@ EVIL_LOOT_POSITIONS = {
       * pos: Vector( 622.469421, -3962.344727, -59.953209 )
         ang: Angle(-19.168, 52.573, 4.997)
         cls: "lootable/cache"
+      * pos: Vector( 4446.111328, -7647.172852, 288.464569)
+        ang: Angle(-0, 90, 0) 
+        cls: "lootable/cache"
+      * pos: Vector( 5280.500977, -8395.403320, -0.110292)
+        ang: Angle(3, 25, 0.3) 
+        cls: "lootable/cache"
+      * pos: Vector( 1596.841919, -7464.700684, 241.077469)
+        ang: Angle(-0, 90, 0) 
+        cls: "lootable/cache"
       * pos: Vector( -540.29, -2113.26, -995.44 )
         ang: Angle(-0, 0, 0)
         cls: "lootable/chest"    

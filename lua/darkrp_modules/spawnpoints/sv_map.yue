@@ -17,6 +17,8 @@ create_spawnpoints = ->
         job: TEAM_STALKER
       * pos: Vector(-461, 830, 80)
         job: TEAM_DEALER
+      * pos: Vector(5593, -8336, -40)
+        job: TEAM_BONEHEAD
     ["rp_slumtown"]:
       * pos: Vector( 251, 47, 137 )
         job: TEAM_PRIVATE
@@ -98,6 +100,7 @@ create_spawnpoints = ->
         job: TEAM_KORPSMAN
       * pos: Vector(5568, 1969, 264)
         job: TEAM_KORPSMAN
+      
   }
   for portal in *ents.FindByClass"portal/spawn"
     portal\Remove!

@@ -423,6 +423,7 @@ class Cache extends Lootable -- for the outsiders to loot to use against or sell
     * "evilrp_weapon/prettyboy"
     * "evilrp_weapon/prettyboy"
     * "evilrp_weapon/prettyboy"
+    * "item/loot/intel"
     * "evilrp_melee/shovel"
     * "evilrp_melee/shovel"
     * "evilrp_melee/shovel"

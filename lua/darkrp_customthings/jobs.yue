@@ -172,9 +172,10 @@ TEAM_BONEHEAD = DarkRP.createJob "Bonehead",
   description: "evil fucker."
   instant_respawn: true
   command: "bonehead"
+  category: "Scum of Liver Failure"
   salary: 1
-  max: 0
-  cost: 1
+  max: 2
+  cost: 2
   use_machines: false
   speech_sounds: "SpeechBonehead"
   hurt_sounds: ["placenta/bonehead_slice#{i}.wav" for i=1,2]

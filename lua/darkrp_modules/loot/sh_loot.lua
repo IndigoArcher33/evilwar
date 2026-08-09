@@ -334,5 +334,89 @@ do -- 87
 		_parent_0.__inherited(_parent_0, _class_0) -- 87
 	end -- 87
 	Rustkill = _class_0 -- 87
-	return _class_0 -- 100
 end -- 100
+local Intel -- 103
+do -- 103
+	local _class_0 -- 103
+	local _parent_0 = Loot -- 103
+	local _base_0 = { -- 103
+		PrintName = "Intelligence Folder", -- 105
+		Model = Model("models/props_lab/clipboard.mdl"), -- 106
+		Description = "A folder that contains classified information from foreign powers.\nIt will be of great value to my leader.", -- 107
+		Rust = -20, -- 109
+		Sound = "LootSound", -- 111
+		UseText = { -- 112
+			"reads the folder.", -- 112
+			"looks through the folder.", -- 113
+			"examines the folder." -- 114
+		}, -- 117
+		OnUseFinish = function(self, ply) -- 117
+			if self.Sound then -- 118
+				self:EmitSound(self.Sound) -- 118
+			end -- 118
+			ply:ConCommand("say /me " .. tostring(self.UseText[math.random(1, #self.UseText)])) -- 119
+			if CLIENT then -- 120
+				return -- 120
+			end -- 120
+			if not (ply:Team() == TEAM_EMPEROR) then -- 121
+				ply:Notify("<c=200,0,0>You don't know how to interpret this.") -- 122
+				return -- 123
+			end -- 121
+			local op = GAMEMODE.War.active_operation -- 124
+			if op then -- 126
+				ply:AddStemCells(2) -- 127
+				op:AddIntel(op.Attacker) -- 128
+				ply:Notify("<c=0,200,0>Our operation will benefit from this knowledge.") -- 129
+				if not self.PersistAfterEat then -- 130
+					self:Trash() -- 130
+				end -- 130
+				return -- 131
+			else -- 133
+				ply:Notify("<c=200,0,0>You must start an operation to exploit this knowledge.") -- 133
+				net.Start("evilrp_frighten") -- 134
+				net.Send(ply) -- 135
+				return -- 136
+			end -- 126
+		end -- 103
+	} -- 103
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 137
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 103
+			_base_0[_key_0] = _val_0 -- 103
+		end -- 103
+	end -- 137
+	if _base_0.__index == nil then -- 103
+		_base_0.__index = _base_0 -- 103
+	end -- 137
+	setmetatable(_base_0, _parent_0.__base) -- 103
+	_class_0 = setmetatable({ -- 103
+		__init = function(self, ...) -- 103
+			return _class_0.__parent.__init(self, ...) -- 103
+		end, -- 103
+		__base = _base_0, -- 103
+		__name = "Intel", -- 103
+		__parent = _parent_0 -- 103
+	}, { -- 103
+		__index = function(cls, name) -- 103
+			local val = rawget(_base_0, name) -- 103
+			if val == nil then -- 103
+				local parent = rawget(cls, "__parent") -- 103
+				if parent then -- 103
+					return parent[name] -- 103
+				end -- 103
+			else -- 103
+				return val -- 103
+			end -- 103
+		end, -- 103
+		__call = function(cls, ...) -- 103
+			local _self_0 = setmetatable({ }, _base_0) -- 103
+			cls.__init(_self_0, ...) -- 103
+			return _self_0 -- 103
+		end -- 103
+	}) -- 103
+	_base_0.__class = _class_0 -- 103
+	if _parent_0.__inherited then -- 103
+		_parent_0.__inherited(_parent_0, _class_0) -- 103
+	end -- 103
+	Intel = _class_0 -- 103
+	return _class_0 -- 137
+end -- 137

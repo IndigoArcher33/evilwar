@@ -4,9 +4,9 @@ EVIL_BOX_MAX = 3
 global EVIL_BOX = {}
 EVIL_BOX_POSITIONS = {
   ["rp_lymphoma"]: {
-    Vector( -1454, -2295, -600 )
-    Vector( -876, -2461, -600 )
-    Vector( -1165, -2813, -600 )
+    Vector( -1454, -2295, -770 )
+    Vector( -876, -2461, -770 )
+    Vector( -1165, -2813, -770 )
   }
 }
 
@@ -22,5 +22,4 @@ hook.Add "Think", "evilrp_box_spawner", ->
         \SetPos pos
         \Spawn!
         \Activate!      
-        \GetPhysicsObject!\EnableMotion false
   return

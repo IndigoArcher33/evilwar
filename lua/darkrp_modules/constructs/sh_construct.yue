@@ -28,6 +28,13 @@ entity_cost = {
       metal: 10
       wood: 5
   }
+  {
+    cls: "cooker"
+    precursors:
+      metal: 8
+      wood: 3
+      biomass: 5
+  }
 }
 
 getCostFromCls = (cls, precursor) ->

@@ -11,6 +11,13 @@ plan_names= {
   "Yellow"
 }
 
+intelligence_facts= {
+  "The intelligence contained information about the enemy's supply lines. A partisan operation has been launched."
+  "The folder contained our enemies' troop movements, a surprise counterattack is being planned."
+  "The intelligence contained information about the enemy commander's movements, a strike team has been deployed."
+  "The folder contained plans of an enemy stronghold, a saboteur team has been dispatched."
+}
+
 operation_names= {
   "Caesar"
   "Augustus"
@@ -173,6 +180,36 @@ global class Operation
       if @Defender.Troops >= amount
         @DefendingTroops += amount
         @Defender.Troops -= amount
+  AddIntel: (side) =>
+    fact = intelligence_facts[math.random 1, #intelligence_facts]
+    local emperor = nil
+    for ply in *player.GetAll!
+      if ply\Team! == TEAM_EMPEROR
+        emperor = ply
+    unless IsValid(emperor)
+      return
+    
+    emperor\SendChat "NOTICE", "[WAR] #{fact}."
+    timer.Simple math.random(20, 60), ->
+      points = math.random 3, 6
+      roll = math.random 1, 6
+      if side == @Attacker
+        if roll == 1
+          emperor\SendChat "NOTICE", "[WAR] The intelligence was outdated, our teams found nothing of value."
+        elseif roll == 2
+          emperor\SendChat "NOTICE", "[WAR] The intelligence was only partially useful, the balance shifts #{points} points in our favor"
+          @Balance += math.floor points/2
+        elseif roll == 3
+          lost = math.random 20, 60
+          emperor\SendChat "NOTICE", "[WAR] The folder was a trap, our teams were compromised. We have lost #{lost} troops."
+          @AttackingTroops -= lost
+          @AttackerCasualties += lost
+        else
+          emperor\SendChat "SUCCESS", "[WAR] We have successfuly acted on our intelligence, the balance shifts #{points} points in our favor."
+        @Balance += points
+      elseif side == @Defender
+        emperor\SendChat "NOTICE", "[WAR] Enemy intelligence shifts the balance #{points} points against us."
+        @Balance -= points
 
   Status: =>
     if @Balance >= 100
