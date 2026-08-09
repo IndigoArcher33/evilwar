@@ -1289,12 +1289,10 @@ do -- 641
 					end -- 696
 					local taxes = GAMEMODE.taxes -- 699
 					local targets = { } -- 700
-					local _list_1 = GAMEMODE.War.nations -- 701
-					for _index_0 = 1, #_list_1 do -- 701
-						local n = _list_1[_index_0] -- 701
-						local _list_2 = n.Cities -- 702
-						for _index_1 = 1, #_list_2 do -- 702
-							local c = _list_2[_index_1] -- 702
+					for _, n in pairs((GAMEMODE.War.nations)) do -- 701
+						local _list_1 = n.Cities -- 702
+						for _index_0 = 1, #_list_1 do -- 702
+							local c = _list_1[_index_0] -- 702
 							targets[c:Name():lower()] = c -- 703
 						end -- 703
 					end -- 703

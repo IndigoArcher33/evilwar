@@ -698,7 +698,7 @@ class Polemarch extends OS
           return
         taxes = GAMEMODE.taxes
         targets = {}
-        for n in *GAMEMODE.War.nations -- add war declarations later, currently only the wasteland can be attacked
+        for _ , n in pairs (GAMEMODE.War.nations)
           for c in *n.Cities
             targets[c\Name!\lower!] = c
         cmd = args[1]
