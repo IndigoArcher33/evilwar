@@ -725,36 +725,37 @@ do -- 399
 			"evilrp_weapon/prettyboy", -- 423
 			"evilrp_weapon/prettyboy", -- 424
 			"evilrp_weapon/prettyboy", -- 425
-			"evilrp_melee/shovel", -- 426
+			"item/loot/intel", -- 426
 			"evilrp_melee/shovel", -- 427
 			"evilrp_melee/shovel", -- 428
 			"evilrp_melee/shovel", -- 429
 			"evilrp_melee/shovel", -- 430
-			"evilrp_weapon/hope", -- 431
+			"evilrp_melee/shovel", -- 431
 			"evilrp_weapon/hope", -- 432
 			"evilrp_weapon/hope", -- 433
 			"evilrp_weapon/hope", -- 434
-			"evilrp_weapon/owler", -- 435
-			"item/food/eyeballnoodles", -- 436
+			"evilrp_weapon/hope", -- 435
+			"evilrp_weapon/owler", -- 436
 			"item/food/eyeballnoodles", -- 437
-			"item/loot/spareammo", -- 438
+			"item/food/eyeballnoodles", -- 438
 			"item/loot/spareammo", -- 439
 			"item/loot/spareammo", -- 440
 			"item/loot/spareammo", -- 441
 			"item/loot/spareammo", -- 442
 			"item/loot/spareammo", -- 443
 			"item/loot/spareammo", -- 444
-			"item/loot/spareammo" -- 445
+			"item/loot/spareammo", -- 445
+			"item/loot/spareammo" -- 446
 		} -- 399
 	} -- 399
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 445
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 446
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 399
 			_base_0[_key_0] = _val_0 -- 399
 		end -- 399
-	end -- 445
+	end -- 446
 	if _base_0.__index == nil then -- 399
 		_base_0.__index = _base_0 -- 399
-	end -- 445
+	end -- 446
 	setmetatable(_base_0, _parent_0.__base) -- 399
 	_class_0 = setmetatable({ -- 399
 		__init = function(self, ...) -- 399
@@ -786,11 +787,11 @@ do -- 399
 		_parent_0.__inherited(_parent_0, _class_0) -- 399
 	end -- 399
 	Cache = _class_0 -- 399
-end -- 445
-if ENT then -- 447
-	scripted_ents.Register(Dumpster, "evilrp_dumpster") -- 448
-	scripted_ents.Register(Crate, "evilrp_crate") -- 449
-	scripted_ents.Register(Locker, "evilrp_locker") -- 450
-	scripted_ents.Register(Chest, "evilrp_chest") -- 451
-	return scripted_ents.Register(Cache, "evilrp_cache") -- 452
-end -- 447
+end -- 446
+if ENT then -- 448
+	scripted_ents.Register(Dumpster, "evilrp_dumpster") -- 449
+	scripted_ents.Register(Crate, "evilrp_crate") -- 450
+	scripted_ents.Register(Locker, "evilrp_locker") -- 451
+	scripted_ents.Register(Chest, "evilrp_chest") -- 452
+	return scripted_ents.Register(Cache, "evilrp_cache") -- 453
+end -- 448

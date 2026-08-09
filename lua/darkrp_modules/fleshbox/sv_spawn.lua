@@ -5,9 +5,9 @@ local EVIL_BOX_MAX = 3 -- 3
 EVIL_BOX = { } -- 4
 local EVIL_BOX_POSITIONS = { -- 6
 	["rp_lymphoma"] = { -- 7
-		Vector(-1454, -2295, -600), -- 7
-		Vector(-876, -2461, -600), -- 8
-		Vector(-1165, -2813, -600) -- 9
+		Vector(-1454, -2295, -770), -- 7
+		Vector(-876, -2461, -770), -- 8
+		Vector(-1165, -2813, -770) -- 9
 	} -- 6
 } -- 5
 return hook.Add("Think", "evilrp_box_spawner", function() -- 13
@@ -21,8 +21,7 @@ return hook.Add("Think", "evilrp_box_spawner", function() -- 13
 			box:SetPos(pos) -- 22
 			box:Spawn() -- 23
 			box:Activate() -- 24
-			box:GetPhysicsObject():EnableMotion(false) -- 25
 		end -- 17
 	end -- 14
-	return -- 26
-end) -- 26
+	return -- 25
+end) -- 25

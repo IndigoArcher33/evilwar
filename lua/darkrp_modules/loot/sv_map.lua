@@ -81,76 +81,91 @@ EVIL_LOOT_POSITIONS = { -- 26
 			cls = "lootable/cache" -- 50
 		}, -- 48
 		{ -- 51
-			pos = Vector(-540.29, -2113.26, -995.44), -- 51
-			ang = Angle(-0, 0, 0), -- 52
-			cls = "lootable/chest" -- 53
+			pos = Vector(4446.111328, -7647.172852, 288.464569), -- 51
+			ang = Angle(-0, 90, 0), -- 52
+			cls = "lootable/cache" -- 53
 		}, -- 51
 		{ -- 54
-			pos = Vector(489.881622, -3148.358887, -803.429688), -- 54
-			ang = Angle(-0, -90, 0), -- 55
-			cls = "lootable/chest" -- 56
+			pos = Vector(5280.500977, -8395.403320, -0.110292), -- 54
+			ang = Angle(3, 25, 0.3), -- 55
+			cls = "lootable/cache" -- 56
 		}, -- 54
 		{ -- 57
-			pos = Vector(-981.443359, -5135.492188, 73.638565), -- 57
-			ang = Angle(-15.135, -136.930, 2.269), -- 58
-			cls = "lootable/chest" -- 59
+			pos = Vector(1596.841919, -7464.700684, 241.077469), -- 57
+			ang = Angle(-0, 90, 0), -- 58
+			cls = "lootable/cache" -- 59
 		}, -- 57
 		{ -- 60
-			pos = Vector(-1369.443237, 791.270508, 18.443558), -- 60
-			ang = Angle(-0, -45, 0), -- 61
-			cls = "lootable/crate" -- 62
+			pos = Vector(-540.29, -2113.26, -995.44), -- 60
+			ang = Angle(-0, 0, 0), -- 61
+			cls = "lootable/chest" -- 62
 		}, -- 60
 		{ -- 63
-			pos = Vector(-1379.369263, 908.375488, 18.443558), -- 63
-			ang = Angle(-0, 45, 0), -- 64
-			cls = "lootable/crate" -- 65
-		} -- 63
+			pos = Vector(489.881622, -3148.358887, -803.429688), -- 63
+			ang = Angle(-0, -90, 0), -- 64
+			cls = "lootable/chest" -- 65
+		}, -- 63
+		{ -- 66
+			pos = Vector(-981.443359, -5135.492188, 73.638565), -- 66
+			ang = Angle(-15.135, -136.930, 2.269), -- 67
+			cls = "lootable/chest" -- 68
+		}, -- 66
+		{ -- 69
+			pos = Vector(-1369.443237, 791.270508, 18.443558), -- 69
+			ang = Angle(-0, -45, 0), -- 70
+			cls = "lootable/crate" -- 71
+		}, -- 69
+		{ -- 72
+			pos = Vector(-1379.369263, 908.375488, 18.443558), -- 72
+			ang = Angle(-0, 45, 0), -- 73
+			cls = "lootable/crate" -- 74
+		} -- 72
 	} -- 26
 } -- 25
-local EVIL_LOOT_REPLACEMENTS = { -- 69
-	["rp_liverfailure_kidneydagger"] = { -- 70
-		["models/props_junk/trashdumpster01a.mdl"] = "lootable/dumpster" -- 70
-	} -- 69
-} -- 68
-local create_loot -- 73
-create_loot = function() -- 73
-	local map = game.GetMap() -- 74
-	local _list_0 = ents.FindByClass("lootable/*") -- 75
-	for _index_0 = 1, #_list_0 do -- 75
-		local lootable = _list_0[_index_0] -- 75
-		if not lootable.leave_alone then -- 76
-			lootable:Remove() -- 76
-		end -- 76
-	end -- 76
-	if EVIL_LOOT_POSITIONS[map] then -- 77
-		local _list_1 = EVIL_LOOT_POSITIONS[map] -- 78
-		for _index_0 = 1, #_list_1 do -- 78
-			local v = _list_1[_index_0] -- 78
-			local sp = ents.Create(v.cls) -- 79
-			sp:SetPos(v.pos) -- 81
-			sp:SetAngles(v.ang) -- 82
-			sp:Spawn() -- 83
-			sp:Activate() -- 84
-			sp:GetPhysicsObject():EnableMotion(false) -- 85
+local EVIL_LOOT_REPLACEMENTS = { -- 78
+	["rp_liverfailure_kidneydagger"] = { -- 79
+		["models/props_junk/trashdumpster01a.mdl"] = "lootable/dumpster" -- 79
+	} -- 78
+} -- 77
+local create_loot -- 82
+create_loot = function() -- 82
+	local map = game.GetMap() -- 83
+	local _list_0 = ents.FindByClass("lootable/*") -- 84
+	for _index_0 = 1, #_list_0 do -- 84
+		local lootable = _list_0[_index_0] -- 84
+		if not lootable.leave_alone then -- 85
+			lootable:Remove() -- 85
 		end -- 85
-	end -- 77
-	if EVIL_LOOT_REPLACEMENTS[map] then -- 86
-		local _list_1 = ents.FindByClass("prop_dynamic") -- 87
+	end -- 85
+	if EVIL_LOOT_POSITIONS[map] then -- 86
+		local _list_1 = EVIL_LOOT_POSITIONS[map] -- 87
 		for _index_0 = 1, #_list_1 do -- 87
-			local e = _list_1[_index_0] -- 87
-			local replacement = EVIL_LOOT_REPLACEMENTS[map][e:GetModel()] -- 88
-			if replacement then -- 89
-				local sp = ents.Create(replacement) -- 90
-				sp:SetPos(e:GetPos()) -- 92
-				sp:SetAngles(e:GetAngles()) -- 93
-				e:Remove() -- 94
-				sp:Spawn() -- 95
-				sp:Activate() -- 96
-				sp:GetPhysicsObject():EnableMotion(false) -- 97
-				sp.leave_alone = true -- 98
-			end -- 89
-		end -- 98
+			local v = _list_1[_index_0] -- 87
+			local sp = ents.Create(v.cls) -- 88
+			sp:SetPos(v.pos) -- 90
+			sp:SetAngles(v.ang) -- 91
+			sp:Spawn() -- 92
+			sp:Activate() -- 93
+			sp:GetPhysicsObject():EnableMotion(false) -- 94
+		end -- 94
 	end -- 86
-	return -- 99
-end -- 73
-return hook.Add("InitPostEntity", "evilrp_create_loot", create_loot) -- 101
+	if EVIL_LOOT_REPLACEMENTS[map] then -- 95
+		local _list_1 = ents.FindByClass("prop_dynamic") -- 96
+		for _index_0 = 1, #_list_1 do -- 96
+			local e = _list_1[_index_0] -- 96
+			local replacement = EVIL_LOOT_REPLACEMENTS[map][e:GetModel()] -- 97
+			if replacement then -- 98
+				local sp = ents.Create(replacement) -- 99
+				sp:SetPos(e:GetPos()) -- 101
+				sp:SetAngles(e:GetAngles()) -- 102
+				e:Remove() -- 103
+				sp:Spawn() -- 104
+				sp:Activate() -- 105
+				sp:GetPhysicsObject():EnableMotion(false) -- 106
+				sp.leave_alone = true -- 107
+			end -- 98
+		end -- 107
+	end -- 95
+	return -- 108
+end -- 82
+return hook.Add("InitPostEntity", "evilrp_create_loot", create_loot) -- 110

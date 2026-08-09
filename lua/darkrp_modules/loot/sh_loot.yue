@@ -100,6 +100,43 @@ class Rustkill extends Loot
   }
 
 
+class Intel extends Loot
+  PrintName: "Intelligence Folder"
+  Model: Model"models/props_lab/clipboard.mdl"
+  Description: "A folder that contains classified information from foreign powers.\nIt will be of great value to my leader."
+  Rust: -20
+
+  Sound: "LootSound"
+
+  UseText: {
+    "reads the folder."
+    "looks through the folder."
+    "examines the folder."
+  }
+
+  OnUseFinish: (ply) =>
+    @EmitSound @Sound if @Sound
+    ply\ConCommand"say /me #{@UseText[math.random 1, #@UseText]}"
+    return if CLIENT
+    unless ply\Team! == TEAM_EMPEROR
+      ply\Notify"<c=200,0,0>You don't know how to interpret this."
+      return
+    op = GAMEMODE.War.active_operation
+
+    if op
+      ply\AddStemCells 2
+      op\AddIntel op.Attacker -- make intel dynamic for the 2 sides in the future
+      ply\Notify"<c=0,200,0>Our operation will benefit from this knowledge."
+      @Trash! if not @PersistAfterEat
+      return
+    else
+      ply\Notify"<c=200,0,0>You must start an operation to exploit this knowledge."
+      net.Start"evilrp_frighten"
+      net.Send ply
+      return
+    
+
+
 
 
 
