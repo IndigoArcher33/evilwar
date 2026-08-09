@@ -1,5 +1,5 @@
 global EVIL_NEXT_NPC = 0
-EVIL_NPC_DELAY = 40
+EVIL_NPC_DELAY = 70
 EVIL_NPC_MAX = 7
 WASTELAND_SPAWNS = {
   ["rp_lymphoma"]: 

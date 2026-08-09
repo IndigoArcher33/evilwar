@@ -312,7 +312,8 @@ TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
   color: Color(19, 51, 45)
   model: "models/vel/evilwar/royalist.mdl"
   description: "The fate of those who don't make the cut."
-  weapons: {"evilrp_weapon/obrez", "evilrp_melee/pipe"}
+  weapons: {"evilrp_melee/pipe"}
+  randomweapon: {"evilrp_weapon/obrez", "evilrp_weapon/pacifier", "evilrp_weapon/warrant", "evilrp_weapon/viper"}
   command: "conscript"
   salary: 1
   max: 5
@@ -379,6 +380,7 @@ TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
       [7]: 1
     }
     ply\SetArmor( 25 )
+    ply\Give @randomweapon[math.random(1, #@randomweapon)]
     return false
 
 TEAM_SANITAR = DarkRP.createJob "Dragoon",

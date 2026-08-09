@@ -53,7 +53,7 @@ class EvilRP_NPC extends NEXTBOT
     @SetBodygroup 1, 1
     @SetBodygroup 2, 6
     @SetSkin 1
-    @SetHealth 100
+    @SetHealth 60
     @LoseTargetDist = 1200
     @SearchRadius = 1800
     
@@ -209,7 +209,7 @@ class EvilRP_NPC extends NEXTBOT
       Num: (wep.Primary and wep.Primary.NumBullets) or 1
       Src: myEyePos
       Dir: (enemyChestPos - myEyePos)\GetNormalized!
-      Spread: acc*3
+      Spread: acc*5
       Tracer: 1
       Force: (wep.Primary and wep.Primary.Damage) or 10
       Damage: (wep.Primary and wep.Primary.Damage) or 10

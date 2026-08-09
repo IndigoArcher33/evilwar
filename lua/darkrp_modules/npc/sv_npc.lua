@@ -1,6 +1,6 @@
 -- [yue]: darkrp_modules\npc\sv_npc.yue
 EVIL_NEXT_NPC = 0 -- 1
-local EVIL_NPC_DELAY = 40 -- 2
+local EVIL_NPC_DELAY = 70 -- 2
 local EVIL_NPC_MAX = 7 -- 3
 local WASTELAND_SPAWNS = { -- 5
 	["rp_lymphoma"] = { -- 6

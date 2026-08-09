@@ -116,7 +116,7 @@ do -- 35
 			self:SetBodygroup(1, 1) -- 53
 			self:SetBodygroup(2, 6) -- 54
 			self:SetSkin(1) -- 55
-			self:SetHealth(100) -- 56
+			self:SetHealth(60) -- 56
 			self.LoseTargetDist = 1200 -- 57
 			self.SearchRadius = 1800 -- 58
 			self.NextFire = CurTime() -- 60
@@ -283,7 +283,7 @@ do -- 35
 				Num = (wep.Primary and wep.Primary.NumBullets) or 1, -- 209
 				Src = myEyePos, -- 210
 				Dir = (enemyChestPos - myEyePos):GetNormalized(), -- 211
-				Spread = acc * 3, -- 212
+				Spread = acc * 5, -- 212
 				Tracer = 1, -- 213
 				Force = (wep.Primary and wep.Primary.Damage) or 10, -- 214
 				Damage = (wep.Primary and wep.Primary.Damage) or 10, -- 215
