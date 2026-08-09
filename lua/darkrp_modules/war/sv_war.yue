@@ -279,9 +279,11 @@ global class Operation
         @Attacker.Troops = math.max(@Attacker.Troops, 0)
         @AttackerCasualties += atkloss
         GAMEMODE.War.active_operation = nil
+        INTERVAL_REINFORCE = 3
       when OP_SUCC
         if emperor
           emperor\SendChat "SUCCESS", "[WAR] #{@Target.Name} has been brought in to the fold."
+          Chat.Announce "GENERIC", "<c=0,200,0>#{@Target.Name} has been annexed by the #{@Attacker.Name}."
           emperor\AddStemCells 3
 
         @Attacker\AnnexCity @Target
@@ -296,12 +298,13 @@ global class Operation
         @Attacker.Troops = math.max(@Attacker.Troops, 0)
         @AttackerCasualties += atkloss
         GAMEMODE.War.active_operation = nil
+        INTERVAL_REINFORCE = 3
 
 global NEXT_PUSH
 NEXT_PUSH or= 0
 local INTERVAL_PUSH = 120
 local REINFORCE = 0
-local INTERVAL_REINFORCE = 4 -- every how many pushes should the enemy reinforce, NOT seconds
+local INTERVAL_REINFORCE = 3 -- every how many pushes should the enemy reinforce, NOT seconds
 
 hook.Add "Think", "evilrp_war", ->
   if CurTime! >= NEXT_PUSH
