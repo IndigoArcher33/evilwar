@@ -1011,107 +1011,108 @@ TEAM_EMPEROR = DarkRP.createJob("Emperor", { -- 586
 	}, -- 591
 	max = 1, -- 592
 	cost = 5, -- 593
-	weapons = { }, -- 594
-	hasLicense = true, -- 595
-	mayor = true, -- 596
-	use_machines = false, -- 597
-	category = "Royalists", -- 598
-	speech_sounds = (function() -- 599
-		local _accum_0 = { } -- 599
-		local _len_0 = 1 -- 599
-		for i = 1, 15 do -- 599
-			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 599
-			_len_0 = _len_0 + 1 -- 599
-		end -- 599
-		return _accum_0 -- 599
-	end)(), -- 599
-	become_sounds = { -- 600
-		"kidneydagger/broadcast1.wav" -- 600
-	}, -- 600
-	crosstext = function(ply) -- 601
-		local text = "Don't panic." -- 602
-		do -- 603
-			local _exp_0 = lp:Team() -- 603
-			if TEAM_PRIVATE == _exp_0 then -- 604
-				text = "Listen carefully." -- 605
-			elseif TEAM_STALKER == _exp_0 then -- 606
-				text = "Oh, your majesty!" -- 607
-			elseif TEAM_SANITAR == _exp_0 then -- 608
-				text = "Hail, hail!" -- 609
-			elseif TEAM_KORPSMAN == _exp_0 then -- 610
-				text = "Is he feeling okay?" -- 611
-			elseif TEAM_DEALER == _exp_0 then -- 612
-				text = "Glorious leader.\nI'm nothing without him." -- 613
-			elseif TEAM_EMPEROR == _exp_0 then -- 614
-				text = "Our strength\nshall prevail." -- 615
-			elseif TEAM_GHOST == _exp_0 then -- 616
-				text = "So full of lies." -- 617
-			elseif TEAM_BONEHEAD == _exp_0 then -- 618
-				text = "THERE HE IS!!" -- 619
-			end -- 619
-		end -- 619
-		return { -- 620
-			text = text, -- 620
-			font = "Spleen_Label_Small" -- 620
-		}, true -- 620
-	end, -- 601
-	first_names = { -- 622
-		"Basileus", -- 622
-		"Agrippa", -- 622
-		"Gnaeus", -- 622
-		"Gaius" -- 622
-	}, -- 622
-	last_names = { -- 623
-		"Imperator Lymphoma", -- 623
-		"Kaiser Lymphoma", -- 623
-		"Rex Lymphoma", -- 623
-		"Lymphoma Magnus" -- 623
+	cooldown = 200, -- 594
+	weapons = { }, -- 595
+	hasLicense = true, -- 596
+	mayor = true, -- 597
+	use_machines = false, -- 598
+	category = "Royalists", -- 599
+	speech_sounds = (function() -- 600
+		local _accum_0 = { } -- 600
+		local _len_0 = 1 -- 600
+		for i = 1, 15 do -- 600
+			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 600
+			_len_0 = _len_0 + 1 -- 600
+		end -- 600
+		return _accum_0 -- 600
+	end)(), -- 600
+	become_sounds = { -- 601
+		"kidneydagger/broadcast1.wav" -- 601
+	}, -- 601
+	crosstext = function(ply) -- 602
+		local text = "Don't panic." -- 603
+		do -- 604
+			local _exp_0 = lp:Team() -- 604
+			if TEAM_PRIVATE == _exp_0 then -- 605
+				text = "Listen carefully." -- 606
+			elseif TEAM_STALKER == _exp_0 then -- 607
+				text = "Oh, your majesty!" -- 608
+			elseif TEAM_SANITAR == _exp_0 then -- 609
+				text = "Hail, hail!" -- 610
+			elseif TEAM_KORPSMAN == _exp_0 then -- 611
+				text = "Is he feeling okay?" -- 612
+			elseif TEAM_DEALER == _exp_0 then -- 613
+				text = "Glorious leader.\nI'm nothing without him." -- 614
+			elseif TEAM_EMPEROR == _exp_0 then -- 615
+				text = "Our strength\nshall prevail." -- 616
+			elseif TEAM_GHOST == _exp_0 then -- 617
+				text = "So full of lies." -- 618
+			elseif TEAM_BONEHEAD == _exp_0 then -- 619
+				text = "THERE HE IS!!" -- 620
+			end -- 620
+		end -- 620
+		return { -- 621
+			text = text, -- 621
+			font = "Spleen_Label_Small" -- 621
+		}, true -- 621
+	end, -- 602
+	first_names = { -- 623
+		"Basileus", -- 623
+		"Agrippa", -- 623
+		"Gnaeus", -- 623
+		"Gaius" -- 623
 	}, -- 623
-	special_name = "Which Kaiser", -- 624
-	special_name_chance = 1000, -- 625
-	ShowSpare1 = open_player_menu, -- 626
-	ShowSpare2 = open_action_menu, -- 627
-	bar_names = { -- 629
-		health = "PRIDE" -- 629
-	}, -- 628
-	Reflect = function(ply) -- 630
-		return ply:SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am the EMPEROR of Lymphoma. I am the supreme ruler of this city and its people. I decide who lives and who dies. <c=0,210,0>I can use my terminal to administrate our internal affairs.") -- 631
-	end, -- 630
-	PlayerLoadout = function(ply) -- 632
-		ply:ClearOddities() -- 633
-		local oddities -- 634
-		do -- 634
-			local _accum_0 = { } -- 634
-			local _len_0 = 1 -- 634
-			for k, v in pairs(ODDITY.list) do -- 634
-				if v ~= ODDITY_ILLITERACY then -- 634
-					_accum_0[_len_0] = v -- 634
-					_len_0 = _len_0 + 1 -- 634
-				end -- 634
-			end -- 634
-			oddities = _accum_0 -- 634
-		end -- 634
-		ply:AddOddity(oddities[math.random(#oddities)]) -- 635
-		for slot, val in pairs({ -- 638
-			[0] = 1, -- 638
-			[1] = 2, -- 640
-			[2] = 0, -- 642
-			[3] = 1, -- 644
-			[4] = 2, -- 646
-			[5] = 0 -- 648
-		}) do -- 649
-			set_bodygroup(ply, slot, val) -- 636
-		end -- 636
-		ply:SetNWInt("evilrp_gasmask", 4) -- 650
-		ply:Give("evilrp_weapon/novoluger") -- 651
-		ply:SetArmor(65) -- 652
-		return false -- 653
-	end -- 632
+	last_names = { -- 624
+		"Imperator Lymphoma", -- 624
+		"Kaiser Lymphoma", -- 624
+		"Rex Lymphoma", -- 624
+		"Lymphoma Magnus" -- 624
+	}, -- 624
+	special_name = "Which Kaiser", -- 625
+	special_name_chance = 1000, -- 626
+	ShowSpare1 = open_player_menu, -- 627
+	ShowSpare2 = open_action_menu, -- 628
+	bar_names = { -- 630
+		health = "PRIDE" -- 630
+	}, -- 629
+	Reflect = function(ply) -- 631
+		return ply:SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am the EMPEROR of Lymphoma. I am the supreme ruler of this city and its people. I decide who lives and who dies. <c=0,210,0>I can use my terminal to administrate our internal affairs.") -- 632
+	end, -- 631
+	PlayerLoadout = function(ply) -- 633
+		ply:ClearOddities() -- 634
+		local oddities -- 635
+		do -- 635
+			local _accum_0 = { } -- 635
+			local _len_0 = 1 -- 635
+			for k, v in pairs(ODDITY.list) do -- 635
+				if v ~= ODDITY_ILLITERACY then -- 635
+					_accum_0[_len_0] = v -- 635
+					_len_0 = _len_0 + 1 -- 635
+				end -- 635
+			end -- 635
+			oddities = _accum_0 -- 635
+		end -- 635
+		ply:AddOddity(oddities[math.random(#oddities)]) -- 636
+		for slot, val in pairs({ -- 639
+			[0] = 1, -- 639
+			[1] = 2, -- 641
+			[2] = 0, -- 643
+			[3] = 1, -- 645
+			[4] = 1, -- 647
+			[5] = 0 -- 649
+		}) do -- 650
+			set_bodygroup(ply, slot, val) -- 637
+		end -- 637
+		ply:SetNWInt("evilrp_gasmask", 4) -- 651
+		ply:Give("evilrp_weapon/novoluger") -- 652
+		ply:SetArmor(65) -- 653
+		return false -- 654
+	end -- 633
 }) -- 585
-GAMEMODE.CivilProtection = { -- 656
-	[TEAM_PRIVATE] = true, -- 656
-	[TEAM_CONSCRIPT] = true, -- 657
-	[TEAM_SANITAR] = true, -- 658
-	[TEAM_EMPEROR] = true -- 659
-} -- 655
-GAMEMODE.DefaultTeam = TEAM_GHOST -- 661
+GAMEMODE.CivilProtection = { -- 657
+	[TEAM_PRIVATE] = true, -- 657
+	[TEAM_CONSCRIPT] = true, -- 658
+	[TEAM_SANITAR] = true, -- 659
+	[TEAM_EMPEROR] = true -- 660
+} -- 656
+GAMEMODE.DefaultTeam = TEAM_GHOST -- 662

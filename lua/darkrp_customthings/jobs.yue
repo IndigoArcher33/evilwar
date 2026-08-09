@@ -591,6 +591,7 @@ TEAM_EMPEROR = DarkRP.createJob "Emperor",
   weapons: {"evilrp_weapon/novoluger"}
   max: 1
   cost: 5
+  cooldown: 200
   weapons: {}
   hasLicense: true
   mayor: true
@@ -643,7 +644,7 @@ TEAM_EMPEROR = DarkRP.createJob "Emperor",
       -- face
       [3]: 1
       -- pants
-      [4]: 2
+      [4]: 1
       -- hands
       [5]: 0
     }
