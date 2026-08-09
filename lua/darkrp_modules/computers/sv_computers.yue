@@ -919,9 +919,6 @@ class Public extends OS
     }
     [":nation"]: {
       Callback: (ply, term, args) =>
-        if ply\Team! ~= TEAM_EMPEROR
-          gterm\Broadcast term, "begone with you", GT_COL_ERR
-          return
         cmd = args[1]
         switch cmd
           when "info"
