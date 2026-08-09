@@ -50,6 +50,9 @@ class EvilRP_NPC extends NEXTBOT
 
   Initialize: =>
     @SetModel "models/vel/evilwar/royalist.mdl"
+    @SetBodygroup 1, 1
+    @SetBodygroup 2, 6
+    @SetSkin 1
     @SetHealth 100
     @LoseTargetDist = 1200
     @SearchRadius = 1800
