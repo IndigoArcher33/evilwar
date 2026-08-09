@@ -967,7 +967,7 @@ do -- 301
 						end -- 475
 						taxes[tax] = new_pct -- 485
 						SetGlobalInt("tax_" .. tostring(tax), new_pct) -- 487
-						EmitSound("XOMBOTAX") -- 488
+						term:EmitSound("XOMBOTAX") -- 488
 						local text = "the " .. tostring(tax) .. " tax is now " .. tostring(new_pct) .. "%" -- 489
 						gterm:Broadcast(term, text, GT_COL_SUCC) -- 490
 						local _list_1 = ents.FindByClass("terminal*") -- 491

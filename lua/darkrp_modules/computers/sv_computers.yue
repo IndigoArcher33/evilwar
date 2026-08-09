@@ -485,7 +485,7 @@ class Tyrant extends OS
             taxes[tax] = new_pct
 
             SetGlobalInt("tax_#{tax}", new_pct)
-            EmitSound"XOMBOTAX"
+            term\EmitSound"XOMBOTAX"
             text = "the #{tax} tax is now #{new_pct}%"
             gterm\Broadcast term, text, GT_COL_SUCC
             for term in *ents.FindByClass("terminal*")
