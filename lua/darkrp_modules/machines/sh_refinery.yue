@@ -123,10 +123,10 @@ class Refinery extends ENTITY
           when TEAM_KORPSMAN, TEAM_CONSCRIPT
             rust = @GetRust!
             @SetRust math.max(0, rust - (dmg\GetDamage! * .2))
-            reward = math.floor(math.abs(rust - @GetRust!) * 2.3)
+            reward = math.floor(math.abs(rust - @GetRust!) * 1)
             if reward > 0
               attacker\AddMoney reward, "The Cleansing"
-              attacker\SetHealth attacker\Health! + 2
+              attacker\SetHealth attacker\Health! + 6
               
   Draw: =>
     @DrawModel!

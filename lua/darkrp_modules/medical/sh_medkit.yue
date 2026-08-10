@@ -20,7 +20,7 @@ class Medkit extends WEAPON
     Automatic: true
 
   Secondary:
-    Delay: 0.2
+    Delay: 0.4
     Automatic: true
     ClipSize: -1
     DefaultClip: -1  
@@ -89,12 +89,12 @@ class Medkit extends WEAPON
     aim_vec = ply\GetAimVector!
     tr = util.TraceLine
       start: shoot_pos
-      endpos: shoot_pos + aim_vec * 100
+      endpos: shoot_pos + aim_vec * 50
       filter: ply
       mask: MASK_SHOT
     ent = tr.Entity
     -- only fire if the trace actually landed on an entity, not the world
     return unless tr.Hit and tr.HitNonWorld and IsValid(ent)
-    ply\SetHealth ply\Health! - 1
+    ply\SetHealth ply\Health! - 5
     @ShootBullet(10, 1, 0)
     ply\EmitSound "npc/dog/dog_idle4.wav", 150, (ply\Health! / ply\GetMaxHealth!) * 100
