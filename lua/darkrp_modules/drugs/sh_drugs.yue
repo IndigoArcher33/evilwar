@@ -10,6 +10,7 @@ class Drug extends ITEM
   Category: "EvilRP: Drugs"
   Spawnable: true
   Interesting: true
+  CanSell: true
 
   Sound: Sound"ghostbong/ghostbong_hit.mp3"
   SubmitSound: "Submit_Drug"

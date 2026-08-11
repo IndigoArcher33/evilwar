@@ -7,6 +7,7 @@ import lower, Left from string
 import TraceLine from util
 
 global class ENTITY
+  CanSell: false
   @registered: {}
   @__inherited: (child) =>
     with getmetatable child
@@ -19,6 +20,8 @@ global class ENTITY
     fields.Base or= @__barcode
     fields.Spawnable or= @Spawnable
     fields.Category or= @Category
+    fields.CanSell = child.__base.CanSell
+    fields.CanSell = false if fields.CanSell == nil
     cls_name = rawget(child, "__entity")
     if cls_name
       child.__barcode = lower cls_name
@@ -48,6 +51,7 @@ else
 
 global class ENTITY_LONGUSE extends ENTITY
   Base: "base_anim"
+  CanSell: false
   Type: "anim"
 
   TimeToUse: 1
@@ -121,7 +125,7 @@ global class ITEM extends ENTITY_LONGUSE
   @__entity: "item"
 
   Spawnable: true
-
+  CanSell: false
   Interesting: true
 
   PMRender: (item) ->
@@ -172,7 +176,7 @@ global class ITEM extends ENTITY_LONGUSE
   OnUseCancel: (ply, end_time) =>
     -- @EmitSound"buttons/button10.wav"
     time_left = end_time - CurTime!
-    if (@Pocketable ~= false) and time_left >= @TimeToUse * .9
+    if (@Pocketable ~= false) and time_left >= @TimeToUse * .5
       can_pickup, message = hook.Call "canPocket", GAMEMODE, ply, @
       unless can_pickup
         ply\Notify(message) if message and SERVER

@@ -15,6 +15,7 @@ class Loot extends ITEM -- this is for items that aren't food, drinks, or drugs,
   Category: "EvilRP: Loot"
   Spawnable: true
   Interesting: true
+  CanSell: true
 
   Sound: "LootSound"
   SubmitSound: "LootSound"

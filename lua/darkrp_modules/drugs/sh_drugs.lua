@@ -66,80 +66,81 @@ do -- 4
 		Model = Model("models/props_junk/garbage_plasticbottle002a.mdl"), -- 10
 		Category = "EvilRP: Drugs", -- 11
 		Spawnable = true, -- 12
-		Interesting = true, -- 14
-		Sound = Sound("ghostbong/ghostbong_hit.mp3"), -- 15
-		SubmitSound = "Submit_Drug", -- 17
-		Hunger = 0, -- 18
-		Thirst = 0, -- 19
-		Despair = 0, -- 20
-		HealthAdd = 0, -- 21
-		CookTime = 0, -- 22
-		DrugTime = 0, -- 24
-		Consume = function(self, ply) -- 24
-			if CLIENT then -- 25
-				return -- 25
-			end -- 25
-			ply.Drugs = ply.Drugs or { } -- 26
-			local drugName = self.PrintName or tostring(self) -- 27
-			local onEnd = self.End -- 28
-			local onThink = self.ConsumeThink -- 29
-			ply.Drugs[drugName] = { -- 32
-				["end"] = CurTime() + self.DrugTime, -- 32
-				onEnd = onEnd, -- 33
-				onThink = onThink -- 34
-			} -- 31
-			local amt -- 37
-			if self.Hunger then -- 38
-				amt = self.Hunger -- 39
-				if isfunction(amt) then -- 40
-					amt = amt() -- 40
-				end -- 40
-				ply:AddHunger(amt) -- 41
-			end -- 38
-			if self.Thirst then -- 42
-				amt = self.Thirst -- 43
-				if isfunction(amt) then -- 44
-					amt = amt() -- 44
-				end -- 44
-				ply:AddThirst(amt) -- 45
-			end -- 42
-			if self.Despair then -- 46
-				amt = self.Despair -- 47
-				if isfunction(amt) then -- 48
-					amt = amt() -- 48
-				end -- 48
-				ply:AddDespair(amt) -- 49
-			end -- 46
-			if self.HealthAdd then -- 50
-				amt = self.HealthAdd -- 51
-				if isfunction(amt) then -- 52
-					amt = amt() -- 52
-				end -- 52
-				if amt > 0 then -- 53
-					ply:SetHealth(math.min(ply:Health() + amt, ply:GetMaxHealth())) -- 54
-				elseif amt < 0 then -- 55
-					ply:TakeDamage(-amt) -- 56
+		Interesting = true, -- 13
+		CanSell = true, -- 15
+		Sound = Sound("ghostbong/ghostbong_hit.mp3"), -- 16
+		SubmitSound = "Submit_Drug", -- 18
+		Hunger = 0, -- 19
+		Thirst = 0, -- 20
+		Despair = 0, -- 21
+		HealthAdd = 0, -- 22
+		CookTime = 0, -- 23
+		DrugTime = 0, -- 25
+		Consume = function(self, ply) -- 25
+			if CLIENT then -- 26
+				return -- 26
+			end -- 26
+			ply.Drugs = ply.Drugs or { } -- 27
+			local drugName = self.PrintName or tostring(self) -- 28
+			local onEnd = self.End -- 29
+			local onThink = self.ConsumeThink -- 30
+			ply.Drugs[drugName] = { -- 33
+				["end"] = CurTime() + self.DrugTime, -- 33
+				onEnd = onEnd, -- 34
+				onThink = onThink -- 35
+			} -- 32
+			local amt -- 38
+			if self.Hunger then -- 39
+				amt = self.Hunger -- 40
+				if isfunction(amt) then -- 41
+					amt = amt() -- 41
+				end -- 41
+				ply:AddHunger(amt) -- 42
+			end -- 39
+			if self.Thirst then -- 43
+				amt = self.Thirst -- 44
+				if isfunction(amt) then -- 45
+					amt = amt() -- 45
+				end -- 45
+				ply:AddThirst(amt) -- 46
+			end -- 43
+			if self.Despair then -- 47
+				amt = self.Despair -- 48
+				if isfunction(amt) then -- 49
+					amt = amt() -- 49
+				end -- 49
+				ply:AddDespair(amt) -- 50
+			end -- 47
+			if self.HealthAdd then -- 51
+				amt = self.HealthAdd -- 52
+				if isfunction(amt) then -- 53
+					amt = amt() -- 53
 				end -- 53
-			end -- 50
-			if not self.PersistAfterEat then -- 59
-				return self:Trash() -- 59
-			end -- 59
-		end, -- 61
-		OnUseFinish = function(self, ply) -- 61
-			_class_0.__parent.__base.OnUseFinish(self, ply) -- 62
-			return self:Consume(ply) -- 63
-		end, -- 65
-		ConsumeThink = function(self, ply) end, -- 66
+				if amt > 0 then -- 54
+					ply:SetHealth(math.min(ply:Health() + amt, ply:GetMaxHealth())) -- 55
+				elseif amt < 0 then -- 56
+					ply:TakeDamage(-amt) -- 57
+				end -- 54
+			end -- 51
+			if not self.PersistAfterEat then -- 60
+				return self:Trash() -- 60
+			end -- 60
+		end, -- 62
+		OnUseFinish = function(self, ply) -- 62
+			_class_0.__parent.__base.OnUseFinish(self, ply) -- 63
+			return self:Consume(ply) -- 64
+		end, -- 66
+		ConsumeThink = function(self, ply) end, -- 67
 		End = function(self, ply) end -- 4
 	} -- 4
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 66
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 67
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 4
 			_base_0[_key_0] = _val_0 -- 4
 		end -- 4
-	end -- 66
+	end -- 67
 	if _base_0.__index == nil then -- 4
 		_base_0.__index = _base_0 -- 4
-	end -- 66
+	end -- 67
 	setmetatable(_base_0, _parent_0.__base) -- 4
 	_class_0 = setmetatable({ -- 4
 		__init = function(self, ...) -- 4
@@ -171,143 +172,143 @@ do -- 4
 		_parent_0.__inherited(_parent_0, _class_0) -- 4
 	end -- 4
 	Drug = _class_0 -- 4
-end -- 66
-local Rotmelange -- 69
-do -- 69
-	local _class_0 -- 69
-	local _parent_0 = Drug -- 69
-	local _base_0 = { -- 69
-		PrintName = "Rot Melange", -- 71
-		Model = Model("models/props_c17/TrapPropeller_Lever.mdl"), -- 72
-		Hunger = 20, -- 73
-		Thirst = 10, -- 74
-		HealthAdd = 20, -- 75
-		Despair = -30, -- 76
-		RotTime = 240, -- 77
-		Description = "A cigar packed with a mysterious substance from the wasteland.\nIt will reveal your deepest worries, if you're strong enough.", -- 78
-		Sound = Sound("ghostbong/ghostbong_hit.mp3"), -- 79
-		DrugTime = 180, -- 81
-		UseText = { -- 82
-			"takes a fat rip of melange.", -- 82
-			"smokes a mysterious cigar.", -- 83
-			"lights up a red cigar.", -- 84
-			"smokes enough melange to trigger a smoke alarm.", -- 85
-			"smokes it to the butt.", -- 86
-			"takes a strong hit of melange.", -- 87
-			"leaves a disgusting cloud of red smoke." -- 88
-		}, -- 91
-		NotifyText = { -- 92
-			"The future...", -- 92
-			"The past...", -- 93
-			"The present...", -- 94
-			"Everything...", -- 95
-			"Memories...", -- 96
-			"A sweet lie..." -- 97
-		}, -- 100
-		ConsumeThink = function(self, ply, drug) -- 100
-			drug.nextTime = drug.nextTime or 0 -- 101
-			if CurTime() >= drug.nextTime then -- 102
-				drug.nextTime = CurTime() + 30 + math.random(1, 30) -- 103
-				net.Start("evilrp_jumpscare") -- 104
-				net.Send(ply) -- 105
-				ply:AddStemCells(1) -- 106
-				return ply:Notify("<c=0,200,0> " .. tostring(table.Random(self.NotifyText))) -- 107
-			end -- 102
-		end, -- 109
-		Consume = function(self, ply) -- 109
-			_class_0.__parent.__base.Consume(self, ply) -- 110
-			if CLIENT then -- 111
-				return -- 111
-			end -- 111
-			if (ply:Team() ~= TEAM_EMPEROR) and (ply:Team() ~= TEAM_STALKER) then -- 112
-				ply:Notify("<c=200,0,0> WHAT THE FUCK IS THIS? HOLY SHI~") -- 113
-				ply:AddDespair(100) -- 114
-				net.Start("evilrp_jumpscare") -- 115
-				net.Send(ply) -- 116
-				return -- 117
+end -- 67
+local Rotmelange -- 70
+do -- 70
+	local _class_0 -- 70
+	local _parent_0 = Drug -- 70
+	local _base_0 = { -- 70
+		PrintName = "Rot Melange", -- 72
+		Model = Model("models/props_c17/TrapPropeller_Lever.mdl"), -- 73
+		Hunger = 20, -- 74
+		Thirst = 10, -- 75
+		HealthAdd = 20, -- 76
+		Despair = -30, -- 77
+		RotTime = 240, -- 78
+		Description = "A cigar packed with a mysterious substance from the wasteland.\nIt will reveal your deepest worries, if you're strong enough.", -- 79
+		Sound = Sound("ghostbong/ghostbong_hit.mp3"), -- 80
+		DrugTime = 180, -- 82
+		UseText = { -- 83
+			"takes a fat rip of melange.", -- 83
+			"smokes a mysterious cigar.", -- 84
+			"lights up a red cigar.", -- 85
+			"smokes enough melange to trigger a smoke alarm.", -- 86
+			"smokes it to the butt.", -- 87
+			"takes a strong hit of melange.", -- 88
+			"leaves a disgusting cloud of red smoke." -- 89
+		}, -- 92
+		NotifyText = { -- 93
+			"The future...", -- 93
+			"The past...", -- 94
+			"The present...", -- 95
+			"Everything...", -- 96
+			"Memories...", -- 97
+			"A sweet lie..." -- 98
+		}, -- 101
+		ConsumeThink = function(self, ply, drug) -- 101
+			drug.nextTime = drug.nextTime or 0 -- 102
+			if CurTime() >= drug.nextTime then -- 103
+				drug.nextTime = CurTime() + 30 + math.random(1, 30) -- 104
+				net.Start("evilrp_jumpscare") -- 105
+				net.Send(ply) -- 106
+				ply:AddStemCells(1) -- 107
+				return ply:Notify("<c=0,200,0> " .. tostring(table.Random(self.NotifyText))) -- 108
+			end -- 103
+		end, -- 110
+		Consume = function(self, ply) -- 110
+			_class_0.__parent.__base.Consume(self, ply) -- 111
+			if CLIENT then -- 112
+				return -- 112
 			end -- 112
-			ply:AddStemCells(2) -- 119
-			return ply:Notify("<c=0,200,0> Embrace the prescient path.") -- 120
-		end, -- 122
-		End = function(self, ply) -- 122
-			_class_0.__parent.__base.End(self, ply) -- 123
-			if CLIENT then -- 124
-				return -- 124
-			end -- 124
-			return ply:Notify("<c=200,0,0> Your addiction to melange slowly fades.") -- 125
-		end -- 69
-	} -- 69
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 125
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 69
-			_base_0[_key_0] = _val_0 -- 69
-		end -- 69
-	end -- 125
-	if _base_0.__index == nil then -- 69
-		_base_0.__index = _base_0 -- 69
-	end -- 125
-	setmetatable(_base_0, _parent_0.__base) -- 69
-	_class_0 = setmetatable({ -- 69
-		__init = function(self, ...) -- 69
-			return _class_0.__parent.__init(self, ...) -- 69
-		end, -- 69
-		__base = _base_0, -- 69
-		__name = "Rotmelange", -- 69
-		__parent = _parent_0 -- 69
-	}, { -- 69
-		__index = function(cls, name) -- 69
-			local val = rawget(_base_0, name) -- 69
-			if val == nil then -- 69
-				local parent = rawget(cls, "__parent") -- 69
-				if parent then -- 69
-					return parent[name] -- 69
-				end -- 69
-			else -- 69
-				return val -- 69
-			end -- 69
-		end, -- 69
-		__call = function(cls, ...) -- 69
-			local _self_0 = setmetatable({ }, _base_0) -- 69
-			cls.__init(_self_0, ...) -- 69
-			return _self_0 -- 69
-		end -- 69
-	}) -- 69
-	_base_0.__class = _class_0 -- 69
-	if _parent_0.__inherited then -- 69
-		_parent_0.__inherited(_parent_0, _class_0) -- 69
-	end -- 69
-	Rotmelange = _class_0 -- 69
-end -- 125
-local drug_think -- 128
-drug_think = function() -- 128
-	if CLIENT then -- 129
-		return -- 129
-	end -- 129
-	local _list_0 = player.GetAll() -- 130
-	for _index_0 = 1, #_list_0 do -- 130
-		local ply = _list_0[_index_0] -- 130
-		local _continue_0 = false -- 131
-		repeat -- 131
-			if not ply:Alive() then -- 131
-				ply.Drugs = { } -- 132
-				return -- 133
-			end -- 131
-			if not ply.Drugs then -- 134
-				_continue_0 = true -- 134
-				break -- 134
-			end -- 134
-			for key, drug in pairs(ply.Drugs) do -- 135
-				if CurTime() > drug["end"] then -- 136
-					drug.onEnd(nil, ply) -- 137
-					ply.Drugs[key] = nil -- 138
-				else -- 140
-					drug.onThink(nil, ply, drug) -- 140
-				end -- 136
-			end -- 140
-			_continue_0 = true -- 131
-		until true -- 140
-		if not _continue_0 then -- 140
-			break -- 140
-		end -- 140
-	end -- 140
-end -- 128
-return hook.Add("Think", "evilrp_drug_think", drug_think) -- 142
+			if (ply:Team() ~= TEAM_EMPEROR) and (ply:Team() ~= TEAM_STALKER) then -- 113
+				ply:Notify("<c=200,0,0> WHAT THE FUCK IS THIS? HOLY SHI~") -- 114
+				ply:AddDespair(100) -- 115
+				net.Start("evilrp_jumpscare") -- 116
+				net.Send(ply) -- 117
+				return -- 118
+			end -- 113
+			ply:AddStemCells(2) -- 120
+			return ply:Notify("<c=0,200,0> Embrace the prescient path.") -- 121
+		end, -- 123
+		End = function(self, ply) -- 123
+			_class_0.__parent.__base.End(self, ply) -- 124
+			if CLIENT then -- 125
+				return -- 125
+			end -- 125
+			return ply:Notify("<c=200,0,0> Your addiction to melange slowly fades.") -- 126
+		end -- 70
+	} -- 70
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 126
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 70
+			_base_0[_key_0] = _val_0 -- 70
+		end -- 70
+	end -- 126
+	if _base_0.__index == nil then -- 70
+		_base_0.__index = _base_0 -- 70
+	end -- 126
+	setmetatable(_base_0, _parent_0.__base) -- 70
+	_class_0 = setmetatable({ -- 70
+		__init = function(self, ...) -- 70
+			return _class_0.__parent.__init(self, ...) -- 70
+		end, -- 70
+		__base = _base_0, -- 70
+		__name = "Rotmelange", -- 70
+		__parent = _parent_0 -- 70
+	}, { -- 70
+		__index = function(cls, name) -- 70
+			local val = rawget(_base_0, name) -- 70
+			if val == nil then -- 70
+				local parent = rawget(cls, "__parent") -- 70
+				if parent then -- 70
+					return parent[name] -- 70
+				end -- 70
+			else -- 70
+				return val -- 70
+			end -- 70
+		end, -- 70
+		__call = function(cls, ...) -- 70
+			local _self_0 = setmetatable({ }, _base_0) -- 70
+			cls.__init(_self_0, ...) -- 70
+			return _self_0 -- 70
+		end -- 70
+	}) -- 70
+	_base_0.__class = _class_0 -- 70
+	if _parent_0.__inherited then -- 70
+		_parent_0.__inherited(_parent_0, _class_0) -- 70
+	end -- 70
+	Rotmelange = _class_0 -- 70
+end -- 126
+local drug_think -- 129
+drug_think = function() -- 129
+	if CLIENT then -- 130
+		return -- 130
+	end -- 130
+	local _list_0 = player.GetAll() -- 131
+	for _index_0 = 1, #_list_0 do -- 131
+		local ply = _list_0[_index_0] -- 131
+		local _continue_0 = false -- 132
+		repeat -- 132
+			if not ply:Alive() then -- 132
+				ply.Drugs = { } -- 133
+				return -- 134
+			end -- 132
+			if not ply.Drugs then -- 135
+				_continue_0 = true -- 135
+				break -- 135
+			end -- 135
+			for key, drug in pairs(ply.Drugs) do -- 136
+				if CurTime() > drug["end"] then -- 137
+					drug.onEnd(nil, ply) -- 138
+					ply.Drugs[key] = nil -- 139
+				else -- 141
+					drug.onThink(nil, ply, drug) -- 141
+				end -- 137
+			end -- 141
+			_continue_0 = true -- 132
+		until true -- 141
+		if not _continue_0 then -- 141
+			break -- 141
+		end -- 141
+	end -- 141
+end -- 129
+return hook.Add("Think", "evilrp_drug_think", drug_think) -- 143

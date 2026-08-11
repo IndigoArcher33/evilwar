@@ -15,6 +15,7 @@ class Food extends ITEM
   Category: "EvilRP: Food"
   Spawnable: true
   Interesting: true
+  CanSell: true
 
   Sound: Sound"npc/barnacle/barnacle_crunch2.wav"
   SubmitSound: "Submit_Food"

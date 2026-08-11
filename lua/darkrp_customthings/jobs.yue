@@ -95,7 +95,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   color: Color(71, 22, 0)
   model: "models/liver_failure/wastelander/wastelander.mdl"
   description: "A soul with no allegiance, destined to plunder the wasteland."
-  weapons: {"evilrp_weapon/whisper", "evilrp_melee/knife"}
+  weapons: {"evilrp_melee/pipe", "evilrp_melee/knife"}
   category: "Wasteland"
   command: "stalker"
   use_machines: true
@@ -103,6 +103,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   max: 3
   cost: 4
   can_build: true
+  can_sell: true
   hasLicense: false
   candemote: false
   use_machines: false
@@ -114,11 +115,11 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
     text = "Don't panic."
     switch lp\Team!
       when TEAM_PRIVATE
-        text = "He doesn't look like me."
+        text = "He could sell me some goodies."
       when TEAM_STALKER
         text = "A fellow plunderer."
       when TEAM_SANITAR
-        text = "Despicable."
+        text = "A necessary evil."
       when TEAM_KORPSMAN
         text = "Why is he here?"
       when TEAM_DEALER
@@ -467,6 +468,8 @@ TEAM_DEALER = DarkRP.createJob "Quartermaster",
   cost: 3
   hasLicense: false
   use_machines: false
+  can_sell: true
+  can_build: true
   category: "Royalists"
   speech_sounds: ["placenta/speech/dealer#{i}.wav" for i=1,3]
   hurt_sounds: ["placenta/pain/sanitar#{i}.wav" for i=1,4]

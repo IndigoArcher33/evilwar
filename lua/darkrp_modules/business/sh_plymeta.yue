@@ -1,0 +1,9 @@
+meta = FindMetaTable"Player"
+meta[k] = v for k, v in pairs {
+  CanSell: =>
+    job = RPExtraTeams[@Team!]
+    if job and job.can_sell
+      return true
+
+    return false
+}

@@ -1,0 +1,159 @@
+class Purchase extends SOUND
+  sound: ["dysphoria/weapons/wield_gun#{i}.ogg" for i=1,3]
+
+class Sellable extends ITEM
+  @__entity: "evilrp/spawned/sellable"
+  PrintName: "Sellable"
+  IsSellable: true
+  Spawnable: false
+  Interesting: true
+  Pocketable: false
+
+  ImpactSound:
+    soft: "weapon.ImpactSoft"
+    hard: "weapon.ImpactHard"
+
+  SetupDataTables: =>
+    super!
+    @NetworkVar "String", "ItemClass"
+    @NetworkVar "Int", "Price"
+    @NetworkVar "Entity", "Seller"
+  Draw: =>
+    ret = hook.Call "onDrawSpawnedWeapon", nil, @
+    return if ret ~= nil
+    @DrawModel!
+    -- rest of the code from original darkRP `spawned_weapon` beyond
+    -- this point concerned 'stacked' weapons, which evilRP lacks
+    -- therefore the code is also not present for it
+
+  PMRender: (item) ->
+    ct = {}
+    if item.itemcls
+      etab = scripted_ents.Get item.itemcls
+      ct[] = etab.PrintName
+      if etab.Description
+        ct[] = ""
+      ct[] = { text: etab.Description, font: "Spleen_Label_Small" }
+      return ct
+
+  HUDRender: =>
+    ct = {}
+    etab = scripted_ents.Get @GetItemClass!
+    ct[] = etab.PrintName
+    if etab.Description
+      ct[] = ""
+      ct[] = { text: etab.Description, font: "Spleen_Label_Small" }
+      ct[] = { text: "You can buy this from #{@GetSeller!\Name!} for " .. @GetPrice! .. " bones", font: "Spleen_Label_Small" }
+    return ct
+  
+  Sound: "Equip_Weapon"
+      
+  Initialize: =>
+    if SERVER
+      DarkRP.ValidatedPhysicsInit @, SOLID_VPHYSICS, "The issue lies with item \"#{@GetItemClass! or 'unknown'}\""
+      @SetMoveType MOVETYPE_VPHYSICS
+      @SetSolid SOLID_VPHYSICS
+      @PhysWake!
+
+  OnTakeDamage: (dmg) => @TakePhysicsDamage dmg
+
+  -- this one is written so weirdly. i don't understand why; almost
+  -- all of this is a straight, trimmed-down port of `spawned_weapon`
+  OnUseFinish: (ply) =>
+    super ply
+    cls = @GetItemClass!
+    item = scripted_ents.Get cls
+    unless item
+      return
+
+    seller = @GetSeller!
+    unless IsValid(seller) and seller\IsPlayer!
+      return
+
+    money = ply\getDarkRPVar "money"
+    price = @GetPrice!
+    if ply == seller
+      ply\Notify"<c=200,0,0>Did you just.. buy your own item?"
+    else
+      if money < price
+        ply\Notify"<c=200,0,0>Hah, you can't afford it!"
+        ply\ConCommand"say /me grimaces."
+        ply\AddDespair 10
+        return
+      seller\AddMoney price, "Commerce"
+      ply\AddMoney -price, "Commerce"
+
+    
+    item = ents.Create cls
+    with item
+      \SetPos @GetPos!
+      \SetAngles @GetAngles!
+      \Spawn!
+      \Activate!
+    if not item
+      return
+
+    
+    
+    
+    ply\DoAnimationEvent ACT_GMOD_GESTURE_ITEM_GIVE
+    if SERVER
+      ply\EmitSound"Pocket_Item"
+      ply\addPocketItem item
+    @Remove!
+ 
+if SERVER 
+  block_types = {"Physgun1", "Spawning1", "Toolgun1"}
+  FPP.AddDefaultBlocked(block_types, "evilrp/spawned/weapon")
+
+class GiveMoney extends SOUND
+  sound: "ambient/levels/labs/coinslot1.wav"
+
+if SERVER
+  netstream.Hook "BeginSelling", (ply) ->
+    paying = ply\GetNWBool"evilrp_selling"
+    unless (paying or ply.cant_pay)
+      ply\Notify"Scroll to the desired price."
+      ply\Notify"Left click an item to set its price."
+      ply\SetNWBool("evilrp_selling", true)
+  netstream.Hook "SpawnSellable", (ply, amount) ->
+    if not amount
+      ply\Notify"Nevermind."
+      return
+    return unless ply\GetNWBool"evilrp_selling"
+    return if ply\Team! == TEAM_GHOST
+    return unless ply\Alive!
+    return if amount < 1
+    wep = ply\GetActiveWeapon!
+    ply\SetNWBool("evilrp_selling", false)
+    tr = GAMEMODE\GetHandTrace(ply, 80)
+    if tr.Entity and IsValid(tr.Entity) and not tr.Entity.IsSellable and tr.Entity.CanSell
+      item = tr.Entity
+      ply\DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_GIVE)
+      ply\EmitSound"GiveMoney"
+      ply\SendChat "GENERIC", "<c=0,200,0>Put #{item.PrintName} for sale."
+      ent = ents.Create"evilrp/spawned/sellable"
+      with ent
+        \SetPos item\GetPos!
+        \SetAngles item\GetAngles!
+        \SetItemClass item\GetClass!
+        \SetModel item\GetModel!
+        \SetPrice amount
+        \SetSeller ply
+        \CPPISetOwner ply
+        \Spawn!
+      item\Remove!
+    else
+      ply\Notify"<c=200,0,0>Choose a valid item to sell."
+    ply.cant_pay = true
+    timer.Simple(1, ->
+      return unless IsValid(ply)
+      ply.cant_pay = false)
+else
+  sell_item = (ply, bind, pressed) ->
+    bind = bind\lower!
+    return if not pressed
+    return unless ply\GetNWBool"evilrp_selling"
+    return if not bind\find"+attack"
+    netstream.Send "SpawnSellable", ply.sellable_price
+  hook.Add "PlayerBindPress", "evilrp_selling", sell_item

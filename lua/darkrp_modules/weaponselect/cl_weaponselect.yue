@@ -29,11 +29,35 @@ hook.Add "HUDPaint", "evilrp_weapon_select", ->
     shift_x = ScrW! * .02
     delta_index = Lerp ft * 12, delta_index, index
     paying = lp\GetNWBool"evilrp_paying"
+    selling = lp\GetNWBool"evilrp_selling"
     if paying
       amount = lp.payment_amount or 0
       index_local = delta_index
       money = lp\getDarkRPVar"money"
       index = money unless amount < money
+      remaining = math.min(amount + 10, money - amount)
+      _, ty = surface.GetTextSize(tostring(amount))
+      desp = lp\GetDespair! * 0.01
+      font = "Spleen_Label"
+      -- create scribe object
+      txt = amount
+      txt = "<c=0,#{180 + math.sin(CurTime!) * 30},0>#{txt}" unless MUTATORS[MUTATOR_CHROMOPHOBIA].active
+      txt_obj = scribe.Parse "<stutter><wiggle=#{5 * desp},#{10 * desp}><f=#{font}><wave=#{6 * desp},#{0.38 * desp},2><ol=2>#{txt}", nil
+      txt_w = txt_obj\GetWide!
+      txt_h = txt_obj\GetTall!
+      last_y = (txt_h) * fraction
+      p = lp\GetEyeTrace!.HitPos\ToScreen!
+      ct = CurTime!
+      x = p.x
+      x += math.cos ct * 0.75
+      y = ScrH! * .7
+      y += math.sin ct * 0.95
+      txt_obj\Draw x, y, alpha_delta, TEXT_ALIGN_CENTER
+    else if selling
+      amount = lp.sellable_price or 0
+      index_local = delta_index
+      money = lp\getDarkRPVar"money"
+      index = money unless amount > 0
       remaining = math.min(amount + 10, money - amount)
       _, ty = surface.GetTextSize(tostring(amount))
       desp = lp\GetDespair! * 0.01
@@ -106,6 +130,7 @@ hook.Add "PlayerBindPress", "evilrp_weapon_select", (ply, bind, pressed) ->
   return if ply\InVehicle!
   return if valid and wep_cls == "weapon_physgun" and ply\KeyDown(IN_ATTACK)
   paying = ply\GetNWBool"evilrp_paying"
+  selling = ply\GetNWBool"evilrp_selling"
   if valid
     switch wep_cls
       when "gmod_tool"
@@ -121,6 +146,18 @@ hook.Add "PlayerBindPress", "evilrp_weapon_select", (ply, bind, pressed) ->
     ply.payment_amount = math.min(ply\getDarkRPVar"money", math.max(ply.payment_amount, 0))
     old_index = index
     index = ply.payment_amount
+    on_index_changed!
+    return
+  if selling
+    ply.sellable_price or= 0
+    shift = ply\KeyDown(IN_SPEED)
+    if bind\find"invprev" -- scrolling down
+      ply.sellable_price -= (shift and 5 or 1)
+    elseif bind\find"invnext" -- scrolling up
+      ply.sellable_price += (shift and 5 or 1)
+    ply.sellable_price = math.max(ply.sellable_price, 0)
+    old_index = index
+    index = ply.sellable_price
     on_index_changed!
     return
   weapons = ply\GetWeapons!

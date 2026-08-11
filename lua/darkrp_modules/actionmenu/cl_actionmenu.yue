@@ -23,6 +23,8 @@ get_intrinsic_actions = ->
   actions[] = { desc: "Payment", func: (-> netstream.Send"BeginPaying" ) }
   if lp\CanBuild!
     actions[] = { desc: "Build", func: (-> netstream.Send"BeginBuild" ) }
+  if lp\CanSell!
+    actions[] = { desc: "Sell", func: (-> netstream.Send"BeginSelling" ) }
   return actions
 
 render_action_menu = ->
