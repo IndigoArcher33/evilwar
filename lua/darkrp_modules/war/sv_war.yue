@@ -237,7 +237,7 @@ global class Operation
         print "Advantage Def: #{adv_def} | Advantage Atk: #{adv_atk}"
         
         push = math.random adv_def, adv_atk
-        @Balance = math.Clamp @Balance + push*3, 0, 100
+        @Balance = math.Clamp @Balance + push*2, 0, 100
 
         local atk_min, atk_max, def_min, def_max
         
@@ -286,7 +286,7 @@ global class Operation
       when OP_SUCC
         if emperor
           emperor\SendChat "SUCCESS", "[WAR] #{@Target.Name} has been brought in to the fold."
-          Chat.Announce "GENERIC", "<c=0,200,0>#{@Target.Name} has been annexed by the #{@Attacker.Name}."
+          Chat.Announce "GENERIC", "<c=0,200,0> [POLEMOKOM]#{@Target.Name} has been annexed by the #{@Attacker.Name}."
           emperor\AddStemCells 3
 
         @Attacker\AnnexCity @Target
@@ -318,7 +318,7 @@ hook.Add "Think", "evilrp_war", ->
       REINFORCE += 1
       if REINFORCE >= INTERVAL_REINFORCE
         REINFORCE = 0
-        INTERVAL_REINFORCE += 1 
+        INTERVAL_REINFORCE = INTERVAL_REINFORCE + math.random(-1, 1) 
         op = GAMEMODE.War.active_operation
         if op.Defender.Troops > 0
           reinforce = math.floor math.random(0.02, 0.06)*op.Defender.Troops
@@ -336,7 +336,8 @@ hook.Add "Think", "evilrp_war", ->
       for ply in *player.GetAll!
         if ply\Team! == TEAM_EMPEROR
           emperor = ply
-      if emperor
+      roll = math.random 1, 3
+      if emperor and roll == 1
         emperor\SendChat "NOTICE", "[WAR] The troops are mutinying, they have nothing to do."
         emperor\AddStemCells -1
         emperor\Notify"<c=200,0,0>Lymphoma must wage war."

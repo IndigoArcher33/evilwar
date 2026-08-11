@@ -123,24 +123,25 @@ do -- 8
 		Model = Model("models/props_junk/garbage_plasticbottle002a.mdl"), -- 15
 		Category = "EvilRP: Loot", -- 16
 		Spawnable = true, -- 17
-		Interesting = true, -- 19
-		Sound = "LootSound", -- 20
-		SubmitSound = "LootSound", -- 22
-		Despair = 0, -- 23
-		HealthAdd = 0, -- 24
-		CookTime = 0, -- 26
-		OnUseFinish = function(self, ply) -- 26
-			return _class_0.__parent.__base.OnUseFinish(self, ply) -- 27
+		Interesting = true, -- 18
+		CanSell = true, -- 20
+		Sound = "LootSound", -- 21
+		SubmitSound = "LootSound", -- 23
+		Despair = 0, -- 24
+		HealthAdd = 0, -- 25
+		CookTime = 0, -- 27
+		OnUseFinish = function(self, ply) -- 27
+			return _class_0.__parent.__base.OnUseFinish(self, ply) -- 28
 		end -- 8
 	} -- 8
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 27
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 28
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 8
 			_base_0[_key_0] = _val_0 -- 8
 		end -- 8
-	end -- 27
+	end -- 28
 	if _base_0.__index == nil then -- 8
 		_base_0.__index = _base_0 -- 8
-	end -- 27
+	end -- 28
 	setmetatable(_base_0, _parent_0.__base) -- 8
 	_class_0 = setmetatable({ -- 8
 		__init = function(self, ...) -- 8
@@ -172,250 +173,250 @@ do -- 8
 		_parent_0.__inherited(_parent_0, _class_0) -- 8
 	end -- 8
 	Loot = _class_0 -- 8
-end -- 27
-local SpareAmmo -- 29
-do -- 29
-	local _class_0 -- 29
-	local _parent_0 = Loot -- 29
-	local _base_0 = { -- 29
-		PrintName = "Spare Ammo", -- 31
-		Model = Model("models/Items/BoxSRounds.mdl"), -- 32
-		Description = "A half-empty box of unbranded ammunition, should be enough for a mag.", -- 34
-		Sound = "AmmoSound", -- 36
-		SuccessText = { -- 37
-			"loads some ammo.", -- 37
-			"puts some bullets into a magazine, dropping a couple.", -- 38
-			"puts some lead in their weapon." -- 39
-		}, -- 42
-		FailText = { -- 43
-			"spills the ammo on the ground.", -- 43
-			"forgets that bullets go inside the weapon.", -- 44
-			"doesn't know how to load a weapon.", -- 45
-			"looks stupid, spilling bullets everywhere." -- 46
-		}, -- 49
-		FailSay = { -- 50
-			"Whoops", -- 50
-			"MY BULLETS!", -- 51
-			"FUCK!", -- 52
-			"DUDE!" -- 53
-		}, -- 56
-		OnUseFinish = function(self, ply) -- 56
-			_class_0.__parent.__base.OnUseFinish(self, ply) -- 57
-			local wep = ply:GetActiveWeapon() -- 58
-			ply:EmitSound("items/ammopickup.wav") -- 59
-			if not IsValid(wep) or not wep.Primary or wep.Primary.Ammo == "" or wep.Primary.ClipSize <= 0 then -- 60
-				ply:ConCommand("say /me " .. tostring(self.FailText[math.random(1, #self.FailText)])) -- 61
-				local fail = self.FailSay[math.random(1, #self.FailSay)] -- 62
-				timer.Simple(0.7, function() -- 64
-					if IsValid(ply) then -- 65
-						return ply:ConCommand("say " .. tostring(fail)) -- 66
-					end -- 65
-				end) -- 64
-				if not self.PersistAfterEat then -- 68
-					self:Trash() -- 68
-				end -- 68
-				return -- 69
-			end -- 60
-			local ammo = wep:Ammo1() -- 70
-			local mag_max = wep.Primary.ClipSize * 4 -- 71
-			if ammo >= mag_max then -- 72
-				ply:Notify("<c=200,0,0>You're full.") -- 73
-				net.Start("evilrp_jumpscare") -- 74
-				net.Send(ply) -- 75
-				ply:AddDespair(5) -- 76
-				return -- 77
-			end -- 72
-			ply:ConCommand("say /me " .. tostring(self.SuccessText[math.random(1, #self.SuccessText)])) -- 78
-			local amt = wep.Primary.ClipSize -- 79
-			if ((ammo + amt) > mag_max) then -- 80
-				local rem = ammo + amt -- 81
-				rem = rem - mag_max -- 82
-				amt = amt - rem -- 83
-			end -- 80
-			ply:GiveAmmo(amt, wep.Primary.Ammo) -- 84
-			if not self.PersistAfterEat then -- 85
-				return self:Trash() -- 85
-			end -- 85
-		end -- 29
-	} -- 29
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 85
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 29
-			_base_0[_key_0] = _val_0 -- 29
-		end -- 29
-	end -- 85
-	if _base_0.__index == nil then -- 29
-		_base_0.__index = _base_0 -- 29
-	end -- 85
-	setmetatable(_base_0, _parent_0.__base) -- 29
-	_class_0 = setmetatable({ -- 29
-		__init = function(self, ...) -- 29
-			return _class_0.__parent.__init(self, ...) -- 29
-		end, -- 29
-		__base = _base_0, -- 29
-		__name = "SpareAmmo", -- 29
-		__parent = _parent_0 -- 29
-	}, { -- 29
-		__index = function(cls, name) -- 29
-			local val = rawget(_base_0, name) -- 29
-			if val == nil then -- 29
-				local parent = rawget(cls, "__parent") -- 29
-				if parent then -- 29
-					return parent[name] -- 29
-				end -- 29
-			else -- 29
-				return val -- 29
-			end -- 29
-		end, -- 29
-		__call = function(cls, ...) -- 29
-			local _self_0 = setmetatable({ }, _base_0) -- 29
-			cls.__init(_self_0, ...) -- 29
-			return _self_0 -- 29
-		end -- 29
-	}) -- 29
-	_base_0.__class = _class_0 -- 29
-	if _parent_0.__inherited then -- 29
-		_parent_0.__inherited(_parent_0, _class_0) -- 29
-	end -- 29
-	SpareAmmo = _class_0 -- 29
-end -- 85
-local Rustkill -- 87
-do -- 87
-	local _class_0 -- 87
-	local _parent_0 = Loot -- 87
-	local _base_0 = { -- 87
-		PrintName = "Rustkill", -- 89
-		Model = Model("models/props_junk/metalgascan.mdl"), -- 90
-		Description = "A metal can filled with a derusting solution.\nIt is still sealed.", -- 91
-		Rust = -20, -- 93
-		Sound = "LootSound", -- 95
-		SuccessText = { -- 96
-			"spreads some Rustkill on a machine.", -- 96
-			"grabs a can of Rustkill and sprays it over something.", -- 97
-			"uses Rustkill to clean some rust off a machine.", -- 98
-			"sprays some Rustkill, resisting the urge to drink it." -- 99
-		} -- 87
-	} -- 87
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 100
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 87
-			_base_0[_key_0] = _val_0 -- 87
-		end -- 87
-	end -- 100
-	if _base_0.__index == nil then -- 87
-		_base_0.__index = _base_0 -- 87
-	end -- 100
-	setmetatable(_base_0, _parent_0.__base) -- 87
-	_class_0 = setmetatable({ -- 87
-		__init = function(self, ...) -- 87
-			return _class_0.__parent.__init(self, ...) -- 87
-		end, -- 87
-		__base = _base_0, -- 87
-		__name = "Rustkill", -- 87
-		__parent = _parent_0 -- 87
-	}, { -- 87
-		__index = function(cls, name) -- 87
-			local val = rawget(_base_0, name) -- 87
-			if val == nil then -- 87
-				local parent = rawget(cls, "__parent") -- 87
-				if parent then -- 87
-					return parent[name] -- 87
-				end -- 87
-			else -- 87
-				return val -- 87
-			end -- 87
-		end, -- 87
-		__call = function(cls, ...) -- 87
-			local _self_0 = setmetatable({ }, _base_0) -- 87
-			cls.__init(_self_0, ...) -- 87
-			return _self_0 -- 87
-		end -- 87
-	}) -- 87
-	_base_0.__class = _class_0 -- 87
-	if _parent_0.__inherited then -- 87
-		_parent_0.__inherited(_parent_0, _class_0) -- 87
-	end -- 87
-	Rustkill = _class_0 -- 87
-end -- 100
-local Intel -- 103
-do -- 103
-	local _class_0 -- 103
-	local _parent_0 = Loot -- 103
-	local _base_0 = { -- 103
-		PrintName = "Intelligence Folder", -- 105
-		Model = Model("models/props_lab/clipboard.mdl"), -- 106
-		Description = "A folder that contains classified information from foreign powers.\nIt will be of great value to my leader.", -- 107
-		Rust = -20, -- 109
-		Sound = "LootSound", -- 111
-		UseText = { -- 112
-			"reads the folder.", -- 112
-			"looks through the folder.", -- 113
-			"examines the folder." -- 114
-		}, -- 117
-		OnUseFinish = function(self, ply) -- 117
-			if self.Sound then -- 118
-				self:EmitSound(self.Sound) -- 118
-			end -- 118
-			ply:ConCommand("say /me " .. tostring(self.UseText[math.random(1, #self.UseText)])) -- 119
-			if CLIENT then -- 120
-				return -- 120
-			end -- 120
-			if not (ply:Team() == TEAM_EMPEROR) then -- 121
-				ply:Notify("<c=200,0,0>You don't know how to interpret this.") -- 122
-				return -- 123
+end -- 28
+local SpareAmmo -- 30
+do -- 30
+	local _class_0 -- 30
+	local _parent_0 = Loot -- 30
+	local _base_0 = { -- 30
+		PrintName = "Spare Ammo", -- 32
+		Model = Model("models/Items/BoxSRounds.mdl"), -- 33
+		Description = "A half-empty box of unbranded ammunition, should be enough for a mag.", -- 35
+		Sound = "AmmoSound", -- 37
+		SuccessText = { -- 38
+			"loads some ammo.", -- 38
+			"puts some bullets into a magazine, dropping a couple.", -- 39
+			"puts some lead in their weapon." -- 40
+		}, -- 43
+		FailText = { -- 44
+			"spills the ammo on the ground.", -- 44
+			"forgets that bullets go inside the weapon.", -- 45
+			"doesn't know how to load a weapon.", -- 46
+			"looks stupid, spilling bullets everywhere." -- 47
+		}, -- 50
+		FailSay = { -- 51
+			"Whoops", -- 51
+			"MY BULLETS!", -- 52
+			"FUCK!", -- 53
+			"DUDE!" -- 54
+		}, -- 57
+		OnUseFinish = function(self, ply) -- 57
+			_class_0.__parent.__base.OnUseFinish(self, ply) -- 58
+			local wep = ply:GetActiveWeapon() -- 59
+			ply:EmitSound("items/ammopickup.wav") -- 60
+			if not IsValid(wep) or not wep.Primary or wep.Primary.Ammo == "" or wep.Primary.ClipSize <= 0 then -- 61
+				ply:ConCommand("say /me " .. tostring(self.FailText[math.random(1, #self.FailText)])) -- 62
+				local fail = self.FailSay[math.random(1, #self.FailSay)] -- 63
+				timer.Simple(0.7, function() -- 65
+					if IsValid(ply) then -- 66
+						return ply:ConCommand("say " .. tostring(fail)) -- 67
+					end -- 66
+				end) -- 65
+				if not self.PersistAfterEat then -- 69
+					self:Trash() -- 69
+				end -- 69
+				return -- 70
+			end -- 61
+			local ammo = wep:Ammo1() -- 71
+			local mag_max = wep.Primary.ClipSize * 4 -- 72
+			if ammo >= mag_max then -- 73
+				ply:Notify("<c=200,0,0>You're full.") -- 74
+				net.Start("evilrp_jumpscare") -- 75
+				net.Send(ply) -- 76
+				ply:AddDespair(5) -- 77
+				return -- 78
+			end -- 73
+			ply:ConCommand("say /me " .. tostring(self.SuccessText[math.random(1, #self.SuccessText)])) -- 79
+			local amt = wep.Primary.ClipSize -- 80
+			if ((ammo + amt) > mag_max) then -- 81
+				local rem = ammo + amt -- 82
+				rem = rem - mag_max -- 83
+				amt = amt - rem -- 84
+			end -- 81
+			ply:GiveAmmo(amt, wep.Primary.Ammo) -- 85
+			if not self.PersistAfterEat then -- 86
+				return self:Trash() -- 86
+			end -- 86
+		end -- 30
+	} -- 30
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 86
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 30
+			_base_0[_key_0] = _val_0 -- 30
+		end -- 30
+	end -- 86
+	if _base_0.__index == nil then -- 30
+		_base_0.__index = _base_0 -- 30
+	end -- 86
+	setmetatable(_base_0, _parent_0.__base) -- 30
+	_class_0 = setmetatable({ -- 30
+		__init = function(self, ...) -- 30
+			return _class_0.__parent.__init(self, ...) -- 30
+		end, -- 30
+		__base = _base_0, -- 30
+		__name = "SpareAmmo", -- 30
+		__parent = _parent_0 -- 30
+	}, { -- 30
+		__index = function(cls, name) -- 30
+			local val = rawget(_base_0, name) -- 30
+			if val == nil then -- 30
+				local parent = rawget(cls, "__parent") -- 30
+				if parent then -- 30
+					return parent[name] -- 30
+				end -- 30
+			else -- 30
+				return val -- 30
+			end -- 30
+		end, -- 30
+		__call = function(cls, ...) -- 30
+			local _self_0 = setmetatable({ }, _base_0) -- 30
+			cls.__init(_self_0, ...) -- 30
+			return _self_0 -- 30
+		end -- 30
+	}) -- 30
+	_base_0.__class = _class_0 -- 30
+	if _parent_0.__inherited then -- 30
+		_parent_0.__inherited(_parent_0, _class_0) -- 30
+	end -- 30
+	SpareAmmo = _class_0 -- 30
+end -- 86
+local Rustkill -- 88
+do -- 88
+	local _class_0 -- 88
+	local _parent_0 = Loot -- 88
+	local _base_0 = { -- 88
+		PrintName = "Rustkill", -- 90
+		Model = Model("models/props_junk/metalgascan.mdl"), -- 91
+		Description = "A metal can filled with a derusting solution.\nIt is still sealed.", -- 92
+		Rust = -20, -- 94
+		Sound = "LootSound", -- 96
+		SuccessText = { -- 97
+			"spreads some Rustkill on a machine.", -- 97
+			"grabs a can of Rustkill and sprays it over something.", -- 98
+			"uses Rustkill to clean some rust off a machine.", -- 99
+			"sprays some Rustkill, resisting the urge to drink it." -- 100
+		} -- 88
+	} -- 88
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 101
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 88
+			_base_0[_key_0] = _val_0 -- 88
+		end -- 88
+	end -- 101
+	if _base_0.__index == nil then -- 88
+		_base_0.__index = _base_0 -- 88
+	end -- 101
+	setmetatable(_base_0, _parent_0.__base) -- 88
+	_class_0 = setmetatable({ -- 88
+		__init = function(self, ...) -- 88
+			return _class_0.__parent.__init(self, ...) -- 88
+		end, -- 88
+		__base = _base_0, -- 88
+		__name = "Rustkill", -- 88
+		__parent = _parent_0 -- 88
+	}, { -- 88
+		__index = function(cls, name) -- 88
+			local val = rawget(_base_0, name) -- 88
+			if val == nil then -- 88
+				local parent = rawget(cls, "__parent") -- 88
+				if parent then -- 88
+					return parent[name] -- 88
+				end -- 88
+			else -- 88
+				return val -- 88
+			end -- 88
+		end, -- 88
+		__call = function(cls, ...) -- 88
+			local _self_0 = setmetatable({ }, _base_0) -- 88
+			cls.__init(_self_0, ...) -- 88
+			return _self_0 -- 88
+		end -- 88
+	}) -- 88
+	_base_0.__class = _class_0 -- 88
+	if _parent_0.__inherited then -- 88
+		_parent_0.__inherited(_parent_0, _class_0) -- 88
+	end -- 88
+	Rustkill = _class_0 -- 88
+end -- 101
+local Intel -- 104
+do -- 104
+	local _class_0 -- 104
+	local _parent_0 = Loot -- 104
+	local _base_0 = { -- 104
+		PrintName = "Intelligence Folder", -- 106
+		Model = Model("models/props_lab/clipboard.mdl"), -- 107
+		Description = "A folder that contains classified information from foreign powers.\nIt will be of great value to my leader.", -- 108
+		Rust = -20, -- 110
+		Sound = "LootSound", -- 112
+		UseText = { -- 113
+			"reads the folder.", -- 113
+			"looks through the folder.", -- 114
+			"examines the folder." -- 115
+		}, -- 118
+		OnUseFinish = function(self, ply) -- 118
+			if self.Sound then -- 119
+				self:EmitSound(self.Sound) -- 119
+			end -- 119
+			ply:ConCommand("say /me " .. tostring(self.UseText[math.random(1, #self.UseText)])) -- 120
+			if CLIENT then -- 121
+				return -- 121
 			end -- 121
-			local op = GAMEMODE.War.active_operation -- 124
-			if op then -- 126
-				op:AddIntel(op.Attacker) -- 127
-				ply:Notify("<c=0,200,0>Our operation might benefit from this knowledge.") -- 128
-				if not self.PersistAfterEat then -- 129
-					self:Trash() -- 129
-				end -- 129
-				return -- 130
-			else -- 132
-				ply:Notify("<c=200,0,0>You must start an operation to exploit this knowledge.") -- 132
-				net.Start("evilrp_frighten") -- 133
-				net.Send(ply) -- 134
-				return -- 135
-			end -- 126
-		end -- 103
-	} -- 103
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 136
-		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 103
-			_base_0[_key_0] = _val_0 -- 103
-		end -- 103
-	end -- 136
-	if _base_0.__index == nil then -- 103
-		_base_0.__index = _base_0 -- 103
-	end -- 136
-	setmetatable(_base_0, _parent_0.__base) -- 103
-	_class_0 = setmetatable({ -- 103
-		__init = function(self, ...) -- 103
-			return _class_0.__parent.__init(self, ...) -- 103
-		end, -- 103
-		__base = _base_0, -- 103
-		__name = "Intel", -- 103
-		__parent = _parent_0 -- 103
-	}, { -- 103
-		__index = function(cls, name) -- 103
-			local val = rawget(_base_0, name) -- 103
-			if val == nil then -- 103
-				local parent = rawget(cls, "__parent") -- 103
-				if parent then -- 103
-					return parent[name] -- 103
-				end -- 103
-			else -- 103
-				return val -- 103
-			end -- 103
-		end, -- 103
-		__call = function(cls, ...) -- 103
-			local _self_0 = setmetatable({ }, _base_0) -- 103
-			cls.__init(_self_0, ...) -- 103
-			return _self_0 -- 103
-		end -- 103
-	}) -- 103
-	_base_0.__class = _class_0 -- 103
-	if _parent_0.__inherited then -- 103
-		_parent_0.__inherited(_parent_0, _class_0) -- 103
-	end -- 103
-	Intel = _class_0 -- 103
-	return _class_0 -- 136
-end -- 136
+			if not (ply:Team() == TEAM_EMPEROR) then -- 122
+				ply:Notify("<c=200,0,0>You don't know how to interpret this.") -- 123
+				return -- 124
+			end -- 122
+			local op = GAMEMODE.War.active_operation -- 125
+			if op then -- 127
+				op:AddIntel(op.Attacker) -- 128
+				ply:Notify("<c=0,200,0>Our operation might benefit from this knowledge.") -- 129
+				if not self.PersistAfterEat then -- 130
+					self:Trash() -- 130
+				end -- 130
+				return -- 131
+			else -- 133
+				ply:Notify("<c=200,0,0>You must start an operation to exploit this knowledge.") -- 133
+				net.Start("evilrp_frighten") -- 134
+				net.Send(ply) -- 135
+				return -- 136
+			end -- 127
+		end -- 104
+	} -- 104
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 137
+		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 104
+			_base_0[_key_0] = _val_0 -- 104
+		end -- 104
+	end -- 137
+	if _base_0.__index == nil then -- 104
+		_base_0.__index = _base_0 -- 104
+	end -- 137
+	setmetatable(_base_0, _parent_0.__base) -- 104
+	_class_0 = setmetatable({ -- 104
+		__init = function(self, ...) -- 104
+			return _class_0.__parent.__init(self, ...) -- 104
+		end, -- 104
+		__base = _base_0, -- 104
+		__name = "Intel", -- 104
+		__parent = _parent_0 -- 104
+	}, { -- 104
+		__index = function(cls, name) -- 104
+			local val = rawget(_base_0, name) -- 104
+			if val == nil then -- 104
+				local parent = rawget(cls, "__parent") -- 104
+				if parent then -- 104
+					return parent[name] -- 104
+				end -- 104
+			else -- 104
+				return val -- 104
+			end -- 104
+		end, -- 104
+		__call = function(cls, ...) -- 104
+			local _self_0 = setmetatable({ }, _base_0) -- 104
+			cls.__init(_self_0, ...) -- 104
+			return _self_0 -- 104
+		end -- 104
+	}) -- 104
+	_base_0.__class = _class_0 -- 104
+	if _parent_0.__inherited then -- 104
+		_parent_0.__inherited(_parent_0, _class_0) -- 104
+	end -- 104
+	Intel = _class_0 -- 104
+	return _class_0 -- 137
+end -- 137

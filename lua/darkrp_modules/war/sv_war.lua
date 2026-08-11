@@ -443,7 +443,7 @@ do -- 150
 				end -- 235
 				print("Advantage Def: " .. tostring(adv_def) .. " | Advantage Atk: " .. tostring(adv_atk)) -- 237
 				local push = math.random(adv_def, adv_atk) -- 239
-				self.Balance = math.Clamp(self.Balance + push * 3, 0, 100) -- 240
+				self.Balance = math.Clamp(self.Balance + push * 2, 0, 100) -- 240
 				local atk_min, atk_max, def_min, def_max -- 242
 				if math.abs(push) <= 1 then -- 244
 					if emperor then -- 245
@@ -492,7 +492,7 @@ do -- 150
 			elseif OP_SUCC == _exp_0 then -- 286
 				if emperor then -- 287
 					emperor:SendChat("SUCCESS", "[WAR] " .. tostring(self.Target.Name) .. " has been brought in to the fold.") -- 288
-					Chat.Announce("GENERIC", "<c=0,200,0>" .. tostring(self.Target.Name) .. " has been annexed by the " .. tostring(self.Attacker.Name) .. ".") -- 289
+					Chat.Announce("GENERIC", "<c=0,200,0> [POLEMOKOM]" .. tostring(self.Target.Name) .. " has been annexed by the " .. tostring(self.Attacker.Name) .. ".") -- 289
 					emperor:AddStemCells(3) -- 290
 				end -- 287
 				self.Attacker:AnnexCity(self.Target) -- 292
@@ -571,7 +571,7 @@ return hook.Add("Think", "evilrp_war", function() -- 312
 			REINFORCE = REINFORCE + 1 -- 318
 			if REINFORCE >= INTERVAL_REINFORCE then -- 319
 				REINFORCE = 0 -- 320
-				INTERVAL_REINFORCE = INTERVAL_REINFORCE + 1 -- 321
+				INTERVAL_REINFORCE = INTERVAL_REINFORCE + math.random(-1, 1) -- 321
 				local op = GAMEMODE.War.active_operation -- 322
 				if op.Defender.Troops > 0 then -- 323
 					local reinforce = math.floor(math.random(0.02, 0.06) * op.Defender.Troops) -- 324
@@ -602,12 +602,13 @@ return hook.Add("Think", "evilrp_war", function() -- 312
 					emperor = ply -- 338
 				end -- 337
 			end -- 338
-			if emperor then -- 339
-				emperor:SendChat("NOTICE", "[WAR] The troops are mutinying, they have nothing to do.") -- 340
-				emperor:AddStemCells(-1) -- 341
-				emperor:Notify("<c=200,0,0>Lymphoma must wage war.") -- 342
-			end -- 339
+			local roll = math.random(1, 3) -- 339
+			if emperor and roll == 1 then -- 340
+				emperor:SendChat("NOTICE", "[WAR] The troops are mutinying, they have nothing to do.") -- 341
+				emperor:AddStemCells(-1) -- 342
+				emperor:Notify("<c=200,0,0>Lymphoma must wage war.") -- 343
+			end -- 340
 		end -- 317
 	end -- 313
-	return -- 343
-end) -- 343
+	return -- 344
+end) -- 344
