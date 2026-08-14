@@ -12,6 +12,7 @@ conscript_weapons = {
   "evilrp_weapon/pacifier"
   "evilrp_weapon/warrant"
   "evilrp_weapon/viper"
+  "evilrp_weapon/coach"
 }
 
 set_bodygroup = (ply, slot, val) ->
