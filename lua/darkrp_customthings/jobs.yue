@@ -305,6 +305,8 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
       [0]: 0
       -- vest
       [1]: 0
+      -- torso
+      [2]: 0
       -- headwear
       [3]: {0, 6, 7, 8}
       -- face
@@ -313,6 +315,7 @@ TEAM_PRIVATE = DarkRP.createJob "Private",
       [5]: 0
       -- hands
       [6]: 0
+      
     }
     return false
 
@@ -374,6 +377,8 @@ TEAM_CONSCRIPT = DarkRP.createJob "Conscript",
     set_bodygroup(ply, slot, val) for slot, val in pairs {
       -- torse
       [0]: 0
+      -- legs
+      [1]: 0
       -- vest
       [2]: 0
       -- headwear
@@ -453,6 +458,8 @@ TEAM_SANITAR = DarkRP.createJob "Dragoon",
       [4]: 3
       -- hands
       [5]: 0
+      -- gear
+      [6]: 0
     }
     ply\SetArmor( 40 )
     return false
@@ -519,6 +526,8 @@ TEAM_DEALER = DarkRP.createJob "Quartermaster",
       [4]: 3
       -- hands
       [5]: 0
+      -- gear
+      [6]: 0
     }
     return false
 
@@ -583,6 +592,8 @@ TEAM_KORPSMAN = DarkRP.createJob "Sanitater",
       [4]: 1
       -- hands
       [5]: 0
+      -- gear
+      [6]: 0
     }
     return false
 
@@ -651,6 +662,8 @@ TEAM_EMPEROR = DarkRP.createJob "Emperor",
       [4]: 1
       -- hands
       [5]: 0
+      -- gear
+      [6]: 0
     }
     ply\SetNWInt("evilrp_gasmask", 4)
     ply\Give"evilrp_weapon/novoluger"
