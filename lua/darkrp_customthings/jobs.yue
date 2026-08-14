@@ -461,6 +461,7 @@ TEAM_DEALER = DarkRP.createJob "Quartermaster",
   color: Color(255, 140, 0)
   model: "models/vel/evilwar/royalist.mdl"
   description: "The left hand of the Emperor.\nManage the goods and keep your men armed."
+  
   weapons: {}
   command: "dealer"
   salary: 1
@@ -525,7 +526,7 @@ TEAM_KORPSMAN = DarkRP.createJob "Sanitater",
   color: Color(79, 150, 150)
   model: "models/vel/evilwar/royalist.mdl"
   description: "You keep people alive in this terrible place.\nFill the blood and empty the rust."
-  weapons: {"evilrp/medkit"}
+  weapons: {"evilrp/medkit", "evilrp_melee/knife"}
   command: "medic"
   salary: 1
   max: 2

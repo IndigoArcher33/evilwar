@@ -787,335 +787,336 @@ TEAM_DEALER = DarkRP.createJob("Quartermaster", { -- 461
 	color = Color(255, 140, 0), -- 461
 	model = "models/vel/evilwar/royalist.mdl", -- 462
 	description = "The left hand of the Emperor.\nManage the goods and keep your men armed.", -- 463
-	weapons = { }, -- 464
-	command = "dealer", -- 465
-	salary = 1, -- 466
-	max = 1, -- 467
-	cost = 3, -- 468
-	hasLicense = false, -- 469
-	use_machines = false, -- 470
-	can_sell = true, -- 471
-	can_build = true, -- 472
-	category = "Royalists", -- 473
-	speech_sounds = (function() -- 474
-		local _accum_0 = { } -- 474
-		local _len_0 = 1 -- 474
-		for i = 1, 3 do -- 474
-			_accum_0[_len_0] = "placenta/speech/dealer" .. tostring(i) .. ".wav" -- 474
-			_len_0 = _len_0 + 1 -- 474
-		end -- 474
-		return _accum_0 -- 474
-	end)(), -- 474
-	hurt_sounds = (function() -- 475
+	weapons = { }, -- 465
+	command = "dealer", -- 466
+	salary = 1, -- 467
+	max = 1, -- 468
+	cost = 3, -- 469
+	hasLicense = false, -- 470
+	use_machines = false, -- 471
+	can_sell = true, -- 472
+	can_build = true, -- 473
+	category = "Royalists", -- 474
+	speech_sounds = (function() -- 475
 		local _accum_0 = { } -- 475
 		local _len_0 = 1 -- 475
-		for i = 1, 4 do -- 475
-			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav" -- 475
+		for i = 1, 3 do -- 475
+			_accum_0[_len_0] = "placenta/speech/dealer" .. tostring(i) .. ".wav" -- 475
 			_len_0 = _len_0 + 1 -- 475
 		end -- 475
 		return _accum_0 -- 475
 	end)(), -- 475
-	become_sounds = (function() -- 476
+	hurt_sounds = (function() -- 476
 		local _accum_0 = { } -- 476
 		local _len_0 = 1 -- 476
-		for i = 1, 15 do -- 476
-			_accum_0[_len_0] = "ambient/levels/prison/radio_random" .. tostring(i) .. ".wav" -- 476
+		for i = 1, 4 do -- 476
+			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav" -- 476
 			_len_0 = _len_0 + 1 -- 476
 		end -- 476
 		return _accum_0 -- 476
 	end)(), -- 476
-	crosstext = function(ply) -- 477
-		local text = "Don't panic." -- 478
-		do -- 479
-			local _exp_0 = lp:Team() -- 479
-			if TEAM_PRIVATE == _exp_0 then -- 480
-				text = "This guy handles the guns." -- 481
-			elseif TEAM_STALKER == _exp_0 then -- 482
-				text = "Captain of the goods." -- 483
-			elseif TEAM_SANITAR == _exp_0 then -- 484
-				text = "The oldest living Dragoon.\nRespect. Honor." -- 485
-			elseif TEAM_KORPSMAN == _exp_0 then -- 486
-				text = "A reminder of the power of Kapitalism." -- 487
-			elseif TEAM_DEALER == _exp_0 then -- 488
-				text = "I'm seeing double!" -- 489
-			elseif TEAM_EMPEROR == _exp_0 then -- 490
-				text = "My brother in arms.\nIf he fails, I'll cut his off." -- 491
-			elseif TEAM_GHOST == _exp_0 then -- 492
-				text = "Glorified accountant." -- 493
-			elseif TEAM_BONEHEAD == _exp_0 then -- 494
-				text = "BONES ARE HIS DOLLARS." -- 495
-			end -- 495
-		end -- 495
-		return { -- 496
-			text = text, -- 496
-			font = "Spleen_Label_Small" -- 496
-		}, true -- 496
-	end, -- 477
-	first_names = { -- 497
-		"Quartermaster", -- 497
-		"Quartiermeister" -- 497
-	}, -- 497
-	last_names = { -- 498
-		"Kommissariatsdienst" -- 498
+	become_sounds = (function() -- 477
+		local _accum_0 = { } -- 477
+		local _len_0 = 1 -- 477
+		for i = 1, 15 do -- 477
+			_accum_0[_len_0] = "ambient/levels/prison/radio_random" .. tostring(i) .. ".wav" -- 477
+			_len_0 = _len_0 + 1 -- 477
+		end -- 477
+		return _accum_0 -- 477
+	end)(), -- 477
+	crosstext = function(ply) -- 478
+		local text = "Don't panic." -- 479
+		do -- 480
+			local _exp_0 = lp:Team() -- 480
+			if TEAM_PRIVATE == _exp_0 then -- 481
+				text = "This guy handles the guns." -- 482
+			elseif TEAM_STALKER == _exp_0 then -- 483
+				text = "Captain of the goods." -- 484
+			elseif TEAM_SANITAR == _exp_0 then -- 485
+				text = "The oldest living Dragoon.\nRespect. Honor." -- 486
+			elseif TEAM_KORPSMAN == _exp_0 then -- 487
+				text = "A reminder of the power of Kapitalism." -- 488
+			elseif TEAM_DEALER == _exp_0 then -- 489
+				text = "I'm seeing double!" -- 490
+			elseif TEAM_EMPEROR == _exp_0 then -- 491
+				text = "My brother in arms.\nIf he fails, I'll cut his off." -- 492
+			elseif TEAM_GHOST == _exp_0 then -- 493
+				text = "Glorified accountant." -- 494
+			elseif TEAM_BONEHEAD == _exp_0 then -- 495
+				text = "BONES ARE HIS DOLLARS." -- 496
+			end -- 496
+		end -- 496
+		return { -- 497
+			text = text, -- 497
+			font = "Spleen_Label_Small" -- 497
+		}, true -- 497
+	end, -- 478
+	first_names = { -- 498
+		"Quartermaster", -- 498
+		"Quartiermeister" -- 498
 	}, -- 498
-	special_name = "Trusty", -- 499
-	special_name_chance = 1000, -- 500
-	ShowSpare1 = open_player_menu, -- 501
-	ShowSpare2 = open_action_menu, -- 502
-	bar_names = { -- 504
-		health = "insurance" -- 504
-	}, -- 503
-	PlayerLoadout = function(ply) -- 505
-		ply:ClearOddities() -- 506
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 507
-		for slot, val in pairs({ -- 510
-			[0] = 1, -- 510
-			[1] = 1, -- 512
-			[2] = 1, -- 514
-			[3] = 1, -- 516
-			[4] = 3, -- 518
-			[5] = 0 -- 520
-		}) do -- 521
-			set_bodygroup(ply, slot, val) -- 508
-		end -- 508
-		return false -- 522
-	end -- 505
+	last_names = { -- 499
+		"Kommissariatsdienst" -- 499
+	}, -- 499
+	special_name = "Trusty", -- 500
+	special_name_chance = 1000, -- 501
+	ShowSpare1 = open_player_menu, -- 502
+	ShowSpare2 = open_action_menu, -- 503
+	bar_names = { -- 505
+		health = "insurance" -- 505
+	}, -- 504
+	PlayerLoadout = function(ply) -- 506
+		ply:ClearOddities() -- 507
+		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 508
+		for slot, val in pairs({ -- 511
+			[0] = 1, -- 511
+			[1] = 1, -- 513
+			[2] = 1, -- 515
+			[3] = 1, -- 517
+			[4] = 3, -- 519
+			[5] = 0 -- 521
+		}) do -- 522
+			set_bodygroup(ply, slot, val) -- 509
+		end -- 509
+		return false -- 523
+	end -- 506
 }) -- 460
-TEAM_KORPSMAN = DarkRP.createJob("Sanitater", { -- 525
-	color = Color(79, 150, 150), -- 525
-	model = "models/vel/evilwar/royalist.mdl", -- 526
-	description = "You keep people alive in this terrible place.\nFill the blood and empty the rust.", -- 527
-	weapons = { -- 528
-		"evilrp/medkit" -- 528
-	}, -- 528
-	command = "medic", -- 529
-	salary = 1, -- 530
-	max = 2, -- 531
-	cost = 2, -- 532
-	hasLicense = false, -- 533
-	medic = true, -- 534
-	use_machines = false, -- 535
-	category = "Royalists", -- 536
-	speech_sounds = (function() -- 537
-		local _accum_0 = { } -- 537
-		local _len_0 = 1 -- 537
-		for i = 1, 4 do -- 537
-			_accum_0[_len_0] = "placenta/speech/korps" .. tostring(i) .. ".wav" -- 537
-			_len_0 = _len_0 + 1 -- 537
-		end -- 537
-		return _accum_0 -- 537
-	end)(), -- 537
-	hurt_sounds = (function() -- 538
+TEAM_KORPSMAN = DarkRP.createJob("Sanitater", { -- 526
+	color = Color(79, 150, 150), -- 526
+	model = "models/vel/evilwar/royalist.mdl", -- 527
+	description = "You keep people alive in this terrible place.\nFill the blood and empty the rust.", -- 528
+	weapons = { -- 529
+		"evilrp/medkit", -- 529
+		"evilrp_melee/knife" -- 529
+	}, -- 529
+	command = "medic", -- 530
+	salary = 1, -- 531
+	max = 2, -- 532
+	cost = 2, -- 533
+	hasLicense = false, -- 534
+	medic = true, -- 535
+	use_machines = false, -- 536
+	category = "Royalists", -- 537
+	speech_sounds = (function() -- 538
 		local _accum_0 = { } -- 538
 		local _len_0 = 1 -- 538
 		for i = 1, 4 do -- 538
-			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav" -- 538
+			_accum_0[_len_0] = "placenta/speech/korps" .. tostring(i) .. ".wav" -- 538
 			_len_0 = _len_0 + 1 -- 538
 		end -- 538
 		return _accum_0 -- 538
 	end)(), -- 538
-	become_sounds = { -- 539
-		"items/suitchargeok1.wav" -- 539
-	}, -- 539
-	crosstext = function(ply) -- 540
-		local text = "Don't panic." -- 541
-		do -- 542
-			local _exp_0 = lp:Team() -- 542
-			if TEAM_PRIVATE == _exp_0 then -- 543
-				text = "I forgot what\nto call these guys." -- 544
-			elseif TEAM_STALKER == _exp_0 then -- 545
-				text = "A walking blood bag." -- 546
-			elseif TEAM_SANITAR == _exp_0 then -- 547
-				text = "Better remember\nwho lets them live." -- 548
-			elseif TEAM_KORPSMAN == _exp_0 then -- 549
-				text = "Something to\nbe happy about." -- 550
-			elseif TEAM_DEALER == _exp_0 then -- 551
-				text = "Keep them busy.\nWe need their blood and sweat." -- 552
-			elseif TEAM_EMPEROR == _exp_0 then -- 553
-				text = "What a strange,\nselfless thing." -- 554
-			elseif TEAM_GHOST == _exp_0 then -- 555
-				text = "A respectable mortal." -- 556
-			elseif TEAM_BONEHEAD == _exp_0 then -- 557
-				text = "CONFUSING." -- 558
-			end -- 558
-		end -- 558
-		return { -- 559
-			text = text, -- 559
-			font = "Spleen_Label_Small" -- 559
-		}, true -- 559
-	end, -- 540
-	first_names = { -- 560
-		"Dissector", -- 560
-		"Retractor", -- 560
-		"Suture", -- 560
-		"Femur", -- 560
-		"Cystic", -- 560
-		"Rasp", -- 560
-		"Ferrum", -- 560
-		"Fascia", -- 560
-		"Marrow", -- 560
-		"Lienis", -- 560
-		"Aorta", -- 560
-		"Tunica", -- 560
-		"Maxilla", -- 560
-		"Sacrum", -- 560
-		"Leach" -- 560
-	}, -- 560
-	last_names = { -- 561
-		"Forceps", -- 561
-		"Scalpel", -- 561
-		"Curette", -- 561
-		"Rongeur", -- 561
-		"Trocar", -- 561
-		"Babcock", -- 561
-		"Duval", -- 561
-		"Hemostat", -- 561
-		"Ossis", -- 561
-		"Caro", -- 561
-		"Cadaver", -- 561
-		"Sanguis", -- 561
-		"Bilis", -- 561
-		"Viscera", -- 561
-		"Jugular", -- 561
-		"Clavius" -- 561
+	hurt_sounds = (function() -- 539
+		local _accum_0 = { } -- 539
+		local _len_0 = 1 -- 539
+		for i = 1, 4 do -- 539
+			_accum_0[_len_0] = "placenta/pain/sanitar" .. tostring(i) .. ".wav" -- 539
+			_len_0 = _len_0 + 1 -- 539
+		end -- 539
+		return _accum_0 -- 539
+	end)(), -- 539
+	become_sounds = { -- 540
+		"items/suitchargeok1.wav" -- 540
+	}, -- 540
+	crosstext = function(ply) -- 541
+		local text = "Don't panic." -- 542
+		do -- 543
+			local _exp_0 = lp:Team() -- 543
+			if TEAM_PRIVATE == _exp_0 then -- 544
+				text = "I forgot what\nto call these guys." -- 545
+			elseif TEAM_STALKER == _exp_0 then -- 546
+				text = "A walking blood bag." -- 547
+			elseif TEAM_SANITAR == _exp_0 then -- 548
+				text = "Better remember\nwho lets them live." -- 549
+			elseif TEAM_KORPSMAN == _exp_0 then -- 550
+				text = "Something to\nbe happy about." -- 551
+			elseif TEAM_DEALER == _exp_0 then -- 552
+				text = "Keep them busy.\nWe need their blood and sweat." -- 553
+			elseif TEAM_EMPEROR == _exp_0 then -- 554
+				text = "What a strange,\nselfless thing." -- 555
+			elseif TEAM_GHOST == _exp_0 then -- 556
+				text = "A respectable mortal." -- 557
+			elseif TEAM_BONEHEAD == _exp_0 then -- 558
+				text = "CONFUSING." -- 559
+			end -- 559
+		end -- 559
+		return { -- 560
+			text = text, -- 560
+			font = "Spleen_Label_Small" -- 560
+		}, true -- 560
+	end, -- 541
+	first_names = { -- 561
+		"Dissector", -- 561
+		"Retractor", -- 561
+		"Suture", -- 561
+		"Femur", -- 561
+		"Cystic", -- 561
+		"Rasp", -- 561
+		"Ferrum", -- 561
+		"Fascia", -- 561
+		"Marrow", -- 561
+		"Lienis", -- 561
+		"Aorta", -- 561
+		"Tunica", -- 561
+		"Maxilla", -- 561
+		"Sacrum", -- 561
+		"Leach" -- 561
 	}, -- 561
-	special_name = "Corpseman", -- 562
-	special_name_chance = 1000, -- 563
-	ShowSpare1 = open_player_menu, -- 564
-	ShowSpare2 = open_action_menu, -- 565
-	bar_names = { -- 567
-		health = "Bio-reserves" -- 567
-	}, -- 566
-	PlayerLoadout = function(ply) -- 568
-		ply:ClearOddities() -- 569
-		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 570
-		ply:SetSkin(4) -- 571
-		for slot, val in pairs({ -- 574
-			[0] = 0, -- 574
-			[1] = 0, -- 576
-			[2] = 2, -- 578
-			[3] = 3, -- 580
-			[4] = 1, -- 582
-			[5] = 0 -- 584
-		}) do -- 585
-			set_bodygroup(ply, slot, val) -- 572
-		end -- 572
-		return false -- 586
-	end -- 568
-}) -- 524
-TEAM_EMPEROR = DarkRP.createJob("Emperor", { -- 589
-	color = Color(150, 20, 20), -- 589
-	model = "models/vel/evilwar/royalist.mdl", -- 590
-	description = "Rule with an iron fist.", -- 591
-	command = "emperor", -- 592
-	salary = 1, -- 593
-	weapons = { -- 594
-		"evilrp_weapon/novoluger" -- 594
-	}, -- 594
-	max = 1, -- 595
-	cost = 5, -- 596
-	cooldown = 200, -- 597
-	weapons = { }, -- 598
-	hasLicense = true, -- 599
-	mayor = true, -- 600
-	use_machines = false, -- 601
-	category = "Royalists", -- 602
-	speech_sounds = (function() -- 603
-		local _accum_0 = { } -- 603
-		local _len_0 = 1 -- 603
-		for i = 1, 15 do -- 603
-			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 603
-			_len_0 = _len_0 + 1 -- 603
-		end -- 603
-		return _accum_0 -- 603
-	end)(), -- 603
-	become_sounds = { -- 604
-		"kidneydagger/broadcast1.wav" -- 604
-	}, -- 604
-	crosstext = function(ply) -- 605
-		local text = "Don't panic." -- 606
-		do -- 607
-			local _exp_0 = lp:Team() -- 607
-			if TEAM_PRIVATE == _exp_0 then -- 608
-				text = "Listen carefully." -- 609
-			elseif TEAM_STALKER == _exp_0 then -- 610
-				text = "Oh, your majesty!" -- 611
-			elseif TEAM_SANITAR == _exp_0 then -- 612
-				text = "Hail, hail!" -- 613
-			elseif TEAM_KORPSMAN == _exp_0 then -- 614
-				text = "Is he feeling okay?" -- 615
-			elseif TEAM_DEALER == _exp_0 then -- 616
-				text = "Glorious leader.\nI'm nothing without him." -- 617
-			elseif TEAM_EMPEROR == _exp_0 then -- 618
-				text = "Our strength\nshall prevail." -- 619
-			elseif TEAM_GHOST == _exp_0 then -- 620
-				text = "So full of lies." -- 621
-			elseif TEAM_BONEHEAD == _exp_0 then -- 622
-				text = "THERE HE IS!!" -- 623
-			end -- 623
-		end -- 623
-		return { -- 624
-			text = text, -- 624
-			font = "Spleen_Label_Small" -- 624
-		}, true -- 624
-	end, -- 605
-	first_names = { -- 626
-		"Basileus", -- 626
-		"Agrippa", -- 626
-		"Gnaeus", -- 626
-		"Gaius" -- 626
-	}, -- 626
-	last_names = { -- 627
-		"Imperator Lymphoma", -- 627
-		"Kaiser Lymphoma", -- 627
-		"Rex Lymphoma", -- 627
-		"Lymphoma Magnus" -- 627
+	last_names = { -- 562
+		"Forceps", -- 562
+		"Scalpel", -- 562
+		"Curette", -- 562
+		"Rongeur", -- 562
+		"Trocar", -- 562
+		"Babcock", -- 562
+		"Duval", -- 562
+		"Hemostat", -- 562
+		"Ossis", -- 562
+		"Caro", -- 562
+		"Cadaver", -- 562
+		"Sanguis", -- 562
+		"Bilis", -- 562
+		"Viscera", -- 562
+		"Jugular", -- 562
+		"Clavius" -- 562
+	}, -- 562
+	special_name = "Corpseman", -- 563
+	special_name_chance = 1000, -- 564
+	ShowSpare1 = open_player_menu, -- 565
+	ShowSpare2 = open_action_menu, -- 566
+	bar_names = { -- 568
+		health = "Bio-reserves" -- 568
+	}, -- 567
+	PlayerLoadout = function(ply) -- 569
+		ply:ClearOddities() -- 570
+		ply:AddOddity(ODDITY.list[math.random(#ODDITY.list)]) -- 571
+		ply:SetSkin(4) -- 572
+		for slot, val in pairs({ -- 575
+			[0] = 0, -- 575
+			[1] = 0, -- 577
+			[2] = 2, -- 579
+			[3] = 3, -- 581
+			[4] = 1, -- 583
+			[5] = 0 -- 585
+		}) do -- 586
+			set_bodygroup(ply, slot, val) -- 573
+		end -- 573
+		return false -- 587
+	end -- 569
+}) -- 525
+TEAM_EMPEROR = DarkRP.createJob("Emperor", { -- 590
+	color = Color(150, 20, 20), -- 590
+	model = "models/vel/evilwar/royalist.mdl", -- 591
+	description = "Rule with an iron fist.", -- 592
+	command = "emperor", -- 593
+	salary = 1, -- 594
+	weapons = { -- 595
+		"evilrp_weapon/novoluger" -- 595
+	}, -- 595
+	max = 1, -- 596
+	cost = 5, -- 597
+	cooldown = 200, -- 598
+	weapons = { }, -- 599
+	hasLicense = true, -- 600
+	mayor = true, -- 601
+	use_machines = false, -- 602
+	category = "Royalists", -- 603
+	speech_sounds = (function() -- 604
+		local _accum_0 = { } -- 604
+		local _len_0 = 1 -- 604
+		for i = 1, 15 do -- 604
+			_accum_0[_len_0] = "placenta/speech/chatter" .. tostring(i) .. ".ogg" -- 604
+			_len_0 = _len_0 + 1 -- 604
+		end -- 604
+		return _accum_0 -- 604
+	end)(), -- 604
+	become_sounds = { -- 605
+		"kidneydagger/broadcast1.wav" -- 605
+	}, -- 605
+	crosstext = function(ply) -- 606
+		local text = "Don't panic." -- 607
+		do -- 608
+			local _exp_0 = lp:Team() -- 608
+			if TEAM_PRIVATE == _exp_0 then -- 609
+				text = "Listen carefully." -- 610
+			elseif TEAM_STALKER == _exp_0 then -- 611
+				text = "Oh, your majesty!" -- 612
+			elseif TEAM_SANITAR == _exp_0 then -- 613
+				text = "Hail, hail!" -- 614
+			elseif TEAM_KORPSMAN == _exp_0 then -- 615
+				text = "Is he feeling okay?" -- 616
+			elseif TEAM_DEALER == _exp_0 then -- 617
+				text = "Glorious leader.\nI'm nothing without him." -- 618
+			elseif TEAM_EMPEROR == _exp_0 then -- 619
+				text = "Our strength\nshall prevail." -- 620
+			elseif TEAM_GHOST == _exp_0 then -- 621
+				text = "So full of lies." -- 622
+			elseif TEAM_BONEHEAD == _exp_0 then -- 623
+				text = "THERE HE IS!!" -- 624
+			end -- 624
+		end -- 624
+		return { -- 625
+			text = text, -- 625
+			font = "Spleen_Label_Small" -- 625
+		}, true -- 625
+	end, -- 606
+	first_names = { -- 627
+		"Basileus", -- 627
+		"Agrippa", -- 627
+		"Gnaeus", -- 627
+		"Gaius" -- 627
 	}, -- 627
-	special_name = "Which Kaiser", -- 628
-	special_name_chance = 1000, -- 629
-	ShowSpare1 = open_player_menu, -- 630
-	ShowSpare2 = open_action_menu, -- 631
-	bar_names = { -- 633
-		health = "PRIDE" -- 633
-	}, -- 632
-	Reflect = function(ply) -- 634
-		return ply:SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am the EMPEROR of Lymphoma. I am the supreme ruler of this city and its people. I decide who lives and who dies. <c=0,210,0>I can use my terminal to administrate our internal affairs.") -- 635
-	end, -- 634
-	PlayerLoadout = function(ply) -- 636
-		ply:ClearOddities() -- 637
-		local oddities -- 638
-		do -- 638
-			local _accum_0 = { } -- 638
-			local _len_0 = 1 -- 638
-			for k, v in pairs(ODDITY.list) do -- 638
-				if v ~= ODDITY_ILLITERACY then -- 638
-					_accum_0[_len_0] = v -- 638
-					_len_0 = _len_0 + 1 -- 638
-				end -- 638
-			end -- 638
-			oddities = _accum_0 -- 638
-		end -- 638
-		ply:AddOddity(oddities[math.random(#oddities)]) -- 639
-		for slot, val in pairs({ -- 642
-			[0] = 1, -- 642
-			[1] = 2, -- 644
-			[2] = 0, -- 646
-			[3] = 1, -- 648
-			[4] = 1, -- 650
-			[5] = 0 -- 652
-		}) do -- 653
-			set_bodygroup(ply, slot, val) -- 640
-		end -- 640
-		ply:SetNWInt("evilrp_gasmask", 4) -- 654
-		ply:Give("evilrp_weapon/novoluger") -- 655
-		ply:SetArmor(65) -- 656
-		return false -- 657
-	end -- 636
-}) -- 588
-GAMEMODE.CivilProtection = { -- 660
-	[TEAM_PRIVATE] = true, -- 660
-	[TEAM_CONSCRIPT] = true, -- 661
-	[TEAM_SANITAR] = true, -- 662
-	[TEAM_EMPEROR] = true -- 663
-} -- 659
-GAMEMODE.DefaultTeam = TEAM_GHOST -- 665
+	last_names = { -- 628
+		"Imperator Lymphoma", -- 628
+		"Kaiser Lymphoma", -- 628
+		"Rex Lymphoma", -- 628
+		"Lymphoma Magnus" -- 628
+	}, -- 628
+	special_name = "Which Kaiser", -- 629
+	special_name_chance = 1000, -- 630
+	ShowSpare1 = open_player_menu, -- 631
+	ShowSpare2 = open_action_menu, -- 632
+	bar_names = { -- 634
+		health = "PRIDE" -- 634
+	}, -- 633
+	Reflect = function(ply) -- 635
+		return ply:SendChat("GENERIC", "<f=Spleen_Chat_Small><c=0,200,200>I am the EMPEROR of Lymphoma. I am the supreme ruler of this city and its people. I decide who lives and who dies. <c=0,210,0>I can use my terminal to administrate our internal affairs.") -- 636
+	end, -- 635
+	PlayerLoadout = function(ply) -- 637
+		ply:ClearOddities() -- 638
+		local oddities -- 639
+		do -- 639
+			local _accum_0 = { } -- 639
+			local _len_0 = 1 -- 639
+			for k, v in pairs(ODDITY.list) do -- 639
+				if v ~= ODDITY_ILLITERACY then -- 639
+					_accum_0[_len_0] = v -- 639
+					_len_0 = _len_0 + 1 -- 639
+				end -- 639
+			end -- 639
+			oddities = _accum_0 -- 639
+		end -- 639
+		ply:AddOddity(oddities[math.random(#oddities)]) -- 640
+		for slot, val in pairs({ -- 643
+			[0] = 1, -- 643
+			[1] = 2, -- 645
+			[2] = 0, -- 647
+			[3] = 1, -- 649
+			[4] = 1, -- 651
+			[5] = 0 -- 653
+		}) do -- 654
+			set_bodygroup(ply, slot, val) -- 641
+		end -- 641
+		ply:SetNWInt("evilrp_gasmask", 4) -- 655
+		ply:Give("evilrp_weapon/novoluger") -- 656
+		ply:SetArmor(65) -- 657
+		return false -- 658
+	end -- 637
+}) -- 589
+GAMEMODE.CivilProtection = { -- 661
+	[TEAM_PRIVATE] = true, -- 661
+	[TEAM_CONSCRIPT] = true, -- 662
+	[TEAM_SANITAR] = true, -- 663
+	[TEAM_EMPEROR] = true -- 664
+} -- 660
+GAMEMODE.DefaultTeam = TEAM_GHOST -- 666
