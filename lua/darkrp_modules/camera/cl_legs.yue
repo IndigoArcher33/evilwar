@@ -119,6 +119,10 @@ meta.SpawnLegs = =>
   @legs = ClientsideModel(@GetModel!, RENDERGROUP_VIEWMODEL)
   legs = @legs
   if IsValid(legs)
+    for i = 0, @GetNumBodyGroups! - 1
+      legs\SetBodygroup(i, @GetBodygroup(i))
+    legs\SetSkin(@GetSkin!)
+    
     for b in *hidden_bones
       bone = legs\LookupBone(b)
       if bone

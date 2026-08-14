@@ -96,25 +96,29 @@ meta.SpawnLegs = function(self) -- 117
 	self.legs = ClientsideModel(self:GetModel(), RENDERGROUP_VIEWMODEL) -- 119
 	local legs = self.legs -- 120
 	if IsValid(legs) then -- 121
-		for _index_0 = 1, #hidden_bones do -- 122
-			local b = hidden_bones[_index_0] -- 122
-			local bone = legs:LookupBone(b) -- 123
-			if bone then -- 124
-				legs:ManipulateBonePosition(bone, offset) -- 125
-				legs:ManipulateBoneScale(bone, scale) -- 126
-			end -- 124
-		end -- 126
+		for i = 0, self:GetNumBodyGroups() - 1 do -- 122
+			legs:SetBodygroup(i, self:GetBodygroup(i)) -- 123
+		end -- 123
+		legs:SetSkin(self:GetSkin()) -- 124
+		for _index_0 = 1, #hidden_bones do -- 126
+			local b = hidden_bones[_index_0] -- 126
+			local bone = legs:LookupBone(b) -- 127
+			if bone then -- 128
+				legs:ManipulateBonePosition(bone, offset) -- 129
+				legs:ManipulateBoneScale(bone, scale) -- 130
+			end -- 128
+		end -- 130
 	end -- 121
-	legs:SetNoDraw(true) -- 127
-	legs:SetIK(true) -- 128
-	if self.last_appearance then -- 129
-		return part.Add(self.legs, "appearance", self.last_appearance) -- 130
-	end -- 129
-end -- 117
-local remove_legs -- 132
-remove_legs = function() -- 132
-	if lp.legs and IsValid(lp.legs) then -- 133
-		return lp.legs:Remove() -- 133
+	legs:SetNoDraw(true) -- 131
+	legs:SetIK(true) -- 132
+	if self.last_appearance then -- 133
+		return part.Add(self.legs, "appearance", self.last_appearance) -- 134
 	end -- 133
-end -- 132
-return hook.Add("OnPlayerChangedTeam", "evilrp_remove_legs", remove_legs) -- 134
+end -- 117
+local remove_legs -- 136
+remove_legs = function() -- 136
+	if lp.legs and IsValid(lp.legs) then -- 137
+		return lp.legs:Remove() -- 137
+	end -- 137
+end -- 136
+return hook.Add("OnPlayerChangedTeam", "evilrp_remove_legs", remove_legs) -- 138
