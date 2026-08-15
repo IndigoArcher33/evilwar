@@ -658,11 +658,11 @@ TEAM_EMPEROR = DarkRP.createJob "Emperor",
       -- headwear
       [2]: 0
       -- face
-      [3]: 2
+      [3]: 1
       -- pants
-      [4]: 1
+      [4]: 2
       -- hands
-      [5]: 0
+      [5]: 1
       -- gear
       [6]: 0
     }
