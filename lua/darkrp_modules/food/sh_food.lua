@@ -2183,9 +2183,9 @@ do -- 716
 	local _base_0 = { -- 716
 		PrintName = "Sloppy Ribs", -- 718
 		Model = Model("models/vel/evilwar/sloppyribs.mdl"), -- 719
-		Hunger = -28, -- 720
-		Thirst = -4, -- 721
-		Despair = -15, -- 722
+		Hunger = -20, -- 720
+		Thirst = 5, -- 721
+		Despair = 10, -- 722
 		Description = "Fresh ribs from an unknown source, now glazed in slop! \n They look delicious.", -- 724
 		CookTime = 10, -- 726
 		Price = 115, -- 727

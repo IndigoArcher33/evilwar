@@ -716,9 +716,9 @@ class Chow extends Food
 class SloppyRibs extends Food
   PrintName: "Sloppy Ribs"
   Model: Model"models/vel/evilwar/sloppyribs.mdl"
-  Hunger: -28
-  Thirst: -4
-  Despair: -15
+  Hunger: -20
+  Thirst: 5
+  Despair: 10
   Description: "Fresh ribs from an unknown source, now glazed in slop! \n They look delicious."
 
   CookTime: 10
