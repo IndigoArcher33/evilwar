@@ -10,6 +10,9 @@ EVIL_CAPSULE_POSITIONS = {
     Vector( -487, 1303, 354 )
     Vector( -372, 1268, 478 )
     Vector( -31, 1330, 528 )
+    Vector( -8, 3302, 114 )
+    Vector( -834, 3188, 189 )
+
   }
   ["rp_sorelane"]: {
     Vector(3585, 4741, 487)

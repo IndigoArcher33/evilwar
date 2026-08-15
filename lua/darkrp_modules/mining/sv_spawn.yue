@@ -1,6 +1,13 @@
 global EVIL_NEXT_BOULDER = 0
 EVIL_BOULDER_DELAY = 15
 EVIL_BOULDER_MAX = 64
+EVIL_SCRAP_MAX = 3
+EVIL_SCRAP_POSITIONS = {
+  ["rp_lymphoma"]: {
+    Vector( -1584, 2217, 265 )
+
+  }
+}
 EVIL_BOULDER_POSITIONS = {
   ["rp_lymphoma"]: {
     Vector( -1207, -1976, -643 )
@@ -100,5 +107,19 @@ hook.Add "Think", "evilrp_boulder_spawner", ->
         \Activate!
         -- \EmitSound "ambient/machines/teleport3.wav", 100, 60 + math.random(20)
       SafeRemoveEntityDelayed boulder, 900
+    
+    scraps = ents.FindByClass"scrap"
+    if #scraps < EVIL_SCRAP_MAX
+      positions = EVIL_SCRAP_POSITIONS[game.GetMap!]
+      pos = positions[math.random(#positions)]
+      scrap = ents.Create"scrap"
+      with scrap
+        \SetPos pos
+        \SetAngles Angle(math.random(360), math.random(360), math.random(360))
+        \Spawn!
+        \Activate!
+        \EmitSound "ambient/machines/teleport3.wav", 100, 60 + math.random(20)
+      SafeRemoveEntityDelayed scrap, 900
+
       
   return

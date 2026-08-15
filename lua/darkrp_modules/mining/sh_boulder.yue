@@ -80,3 +80,108 @@ class Boulder extends ENTITY
         \SetScale 1000
       util.Effect "ThumperDust", ed, true, true
       @EmitSound"physics/concrete/boulder_impact_hard#{math.random 1,4}.wav"
+
+class Scrap extends ENTITY
+  Base: "base_anim"
+  Type: "anim"
+  Spawnable: true
+  AdminSpawnable: true
+
+  PrintName: "Scrap"
+  Pocketable: false
+  LootTable:
+    * "metal/scrap"
+
+  SetupDataTables: =>
+    @NetworkVar "Int", 0, "Integrity"
+      
+  Initialize: =>
+    @MaxIntegrity = 500
+    return if CLIENT
+    mdls = {"models/gibs/helicopter_brokenpiece_01.mdl"
+      "models/gibs/helicopter_brokenpiece_03.mdl"
+      "models/container_chunk03.mdl"
+      "models/props_combine/combine_explosivepanel_cover02a.mdl"}
+    mdl = mdls[math.random(#mdls)]
+    @SetModel mdl
+    @PhysicsInit SOLID_VPHYSICS
+    @SetIntegrity @MaxIntegrity
+    with phys = @GetPhysicsObject!
+      \Wake! if phys and IsValid(phys)
+
+  Jump: =>
+    rollx = math.random(-50, 50)
+    rolly = math.random(-50, 50)
+    with phys = @GetPhysicsObject!
+      \ApplyForceCenter Vector(rollx* \GetMass!, rolly* \GetMass!, 400 * \GetMass!) if phys and IsValid(phys)
+
+  OnTakeDamage: (dmg) =>
+    @TakePhysicsDamage dmg
+    dtype = dmg\GetDamageType!
+    return unless (dtype == DMG_CLUB) or (dtype == DMG_BLAST)
+    dmg_int = dmg\GetDamage!
+    inflictor = dmg\GetInflictor!
+    dmg_int *= inflictor.MineBonus if inflictor.MineBonus
+    pos = dmg\GetDamagePosition!
+    with edata = EffectData!
+      \SetOrigin pos
+      \SetScale 1
+      \SetMagnitude 0.5
+      \SetRadius 2
+      util.Effect "Sparks", edata
+    
+    roll = math.random(1, 3)
+    if roll <= 2
+      @Jump!
+        
+    @SetIntegrity @GetIntegrity! - dmg_int
+    @NextSound or= CurTime!
+    if CurTime! >= @NextSound
+      @NextSound = CurTime! + 0.1
+      @EmitSound "physics/concrete/boulder_impact_hard#{math.random 1,4}.wav"
+      @EmitSound "weapons/crowbar/crowbar_impact#{math.random 1,2}.wav",
+        90,
+        math.random(80, 110)
+    if (@GetIntegrity! <= 0) and not @Breaking
+      @Breaking = true
+      with edata = EffectData!
+        \SetOrigin pos
+        \SetScale 1
+        \SetMagnitude 0.5
+        \SetRadius 2
+        util.Effect "Sparks", edata
+      who = dmg\GetAttacker!
+      if (who and IsValid(who) and who\IsPlayer! and who\Alive!)
+        reward = 24 + math.random(19)
+        who\AddMoney reward, "The Toil"
+      for i=1,math.random(2,5)
+        cls = @LootTable[random 1, #@LootTable]
+        loot = ents.Create cls
+        with loot
+          \Spawn!
+          \Activate!
+          \SetPos pos
+      @Remove!
+
+  PhysicsCollide: (data, physobj) =>
+    if data.Speed >= 512
+      ed = EffectData!
+      with ed
+        \SetOrigin @GetPos!
+        \SetScale 1000
+      util.Effect "ThumperDust", ed, true, true
+      @EmitSound"physics/concrete/boulder_impact_hard#{math.random 1,4}.wav"
+    
+    if data.HitEntity and data.HitEntity\IsPlayer! and data.HitEntity\Alive!
+      ply = data.HitEntity
+      dmg = DamageInfo!
+      with dmg
+        \SetDamage 30
+        \SetDamageType DMG_CRUSH
+        \SetAttacker @
+        \SetInflictor @
+      @EmitSound "npc/barnacle/barnacle_bark#{math.random 1,2}.wav"
+      @EmitSound "phx/eggcrack.wav"
+      @EmitSound "physics/flesh/flesh_squishy_impact_hard#{math.random 2,4}.wav"
+      ply\TakeDamageInfo dmg
+        
