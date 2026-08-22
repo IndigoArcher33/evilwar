@@ -286,7 +286,7 @@ global class Operation
       when OP_SUCC
         if emperor
           emperor\SendChat "SUCCESS", "[WAR] #{@Target.Name} has been brought in to the fold."
-          Chat.Announce "GENERIC", "<c=0,200,0> [POLEMOKOM]#{@Target.Name} has been annexed by the #{@Attacker.Name}."
+          Chat.Announce "GENERIC", "<c=0,200,0>[POLEMOKOM] #{@Target.Name} has been annexed by the #{@Attacker.Name}."
           emperor\AddStemCells 3
 
         @Attacker\AnnexCity @Target
