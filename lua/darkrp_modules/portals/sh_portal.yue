@@ -234,12 +234,19 @@ class Spawn extends Portal
     fate = @GetFate!
     cost = RPExtraTeams[fate].cost or 0
     cooldown = RPExtraTeams[fate].cooldown or 0
-    if cooldown > 0 and ply.cooldowns[fate]
+    if cooldown > 0 and ply.cooldowns and ply.cooldowns[fate]
       if ply.cooldowns[fate] > CurTime!
-        ply\Notify"<c=200,0,0>TOO QUICK."
+        ply\Notify"<c=200,0,0>TOO QUICK, LET IT REST."
         net.Start"evilrp_jumpscare"
         net.Send ply
         return
+    plypop = player.GetCount!
+    threshold = RPExtraTeams[fate].pop_threshold or 0
+    if plypop <= threshold
+      ply\Notify"<c=200,0,0>THERE ARE NOT ENOUGH SOULS TO TORTURE"
+      net.Start"evilrp_jumpscare"
+      net.Send ply
+      return
     if ply\GetStemCells! >= cost
       @TeleportEffect!
       ply\Notify"<c=200,0,0>DEATHS TODAY: #{GAMEMODE\Deaths!}"

@@ -101,6 +101,8 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   command: "stalker"
   use_machines: true
   salary: 1
+  cooldown: 200
+  pop_threshold: 10
   max: 3
   cost: 4
   can_build: true
@@ -185,6 +187,7 @@ TEAM_BONEHEAD = DarkRP.createJob "Bonehead",
   salary: 1
   max: 2
   cost: 2
+  cooldown: 120
   use_machines: false
   speech_sounds: "SpeechBonehead"
   hurt_sounds: ["placenta/bonehead_slice#{i}.wav" for i=1,2]

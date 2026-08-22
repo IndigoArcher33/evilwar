@@ -22,7 +22,8 @@ death = (ply) ->
   if job.cooldown and job.cooldown > 0
     ply.cooldowns or= ply.cooldowns or {}
     ply.cooldowns[ply\Team!] = CurTime! + job.cooldown
-
+  
+  
 
   RunConsoleCommand "hostname", "#{string.english_number(deaths)\upper!} DEAD #{bodies} TODAY"
 

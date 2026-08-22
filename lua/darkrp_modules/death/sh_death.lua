@@ -74,6 +74,6 @@ death = function(ply) -- 13
 		ply.cooldowns = ply.cooldowns or (ply.cooldowns or { }) -- 23
 		ply.cooldowns[ply:Team()] = CurTime() + job.cooldown -- 24
 	end -- 22
-	return RunConsoleCommand("hostname", tostring(string.english_number(deaths):upper()) .. " DEAD " .. tostring(bodies) .. " TODAY") -- 27
+	return RunConsoleCommand("hostname", tostring(string.english_number(deaths):upper()) .. " DEAD " .. tostring(bodies) .. " TODAY") -- 28
 end -- 13
-return hook.Add("DoPlayerDeath", "evilrp_death", death) -- 30
+return hook.Add("DoPlayerDeath", "evilrp_death", death) -- 31
