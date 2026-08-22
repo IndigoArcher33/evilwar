@@ -106,6 +106,7 @@ class Autostitcher extends ENTITY
         @SetCharges @GetCharges! + 1
         reward = math.random(15,30)       
         ply\AddMoney reward, compassion
+        ply.heal_stem_progress += 30
         return
     -- if we got here, we're gonna try healing
     if @GetCharges! <= 0

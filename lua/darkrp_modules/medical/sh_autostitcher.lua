@@ -114,90 +114,91 @@ do -- 14
 					self:SetCharges(self:GetCharges() + 1) -- 106
 					local reward = math.random(15, 30) -- 107
 					ply:AddMoney(reward, compassion) -- 108
-					return -- 109
+					ply.heal_stem_progress = ply.heal_stem_progress + 30 -- 109
+					return -- 110
 				end -- 76
 			end -- 75
-			if self:GetCharges() <= 0 then -- 111
-				ply:Notify("<c=200,0,0>No healing charges remain.") -- 113
-				net.Start("evilrp_frighten") -- 114
-				net.Send(ply) -- 115
-				self:EmitSound("items/medshotno1.wav") -- 116
-				return -- 117
-			end -- 111
-			local patient = self:GetPatient() -- 118
-			local cost = self:CostFor(ply) -- 119
-			if ply:getDarkRPVar("money") < cost and not IsValid(self:GetPatient()) then -- 120
-				ply:Notify("<c=200,0,0>It sucks to be poor. A healing trip costs $" .. tostring(cost) .. ".") -- 122
-				net.Start("evilrp_frighten") -- 123
-				net.Send(ply) -- 124
-				self:EmitSound("items/medshotno1.wav") -- 125
-				return -- 126
-			end -- 120
-			if IsValid(patient) and patient ~= ply then -- 127
-				ply:Notify("<c=200,0,0>Wait your turn.") -- 129
-				net.Start("evilrp_frighten") -- 130
-				net.Send(ply) -- 131
-				self:EmitSound("items/medshotno1.wav") -- 132
-				return -- 133
-			end -- 127
-			self:SetCharges(self:GetCharges() - 1) -- 136
-			self:SetPatient(ply) -- 137
-			ply:SetNWEntity("evilrp_autostitcher", self) -- 138
-			ply:AddMoney(-cost, "Masshiroi mezame") -- 139
-			self:EmitSound("items/medshot4.wav") -- 140
-			net.Start("evilrp_autostitcher") -- 141
-			net.Send(ply) -- 142
-			net.Start("evilrp_music_start") -- 143
-			return net.Send(ply) -- 144
-		end, -- 146
-		Draw = function(self) -- 146
-			self:DrawModel() -- 147
-			local patient = self:GetPatient() -- 148
-			if patient and IsValid(patient) then -- 149
-				render.SetMaterial(cable) -- 150
-				local pos_start = patient:EyePos() + (patient:GetForward() * 2) + (patient:GetUp() * -16) + (self:GetUp() * 1) -- 151
-				local pos_end = self:GetPos() + (self:GetForward() * 6) + (self:GetRight() * 2.4) -- 152
-				local ct = CurTime() -- 153
-				return render.DrawBeam(pos_start, pos_end, 2 + (1 * math.cos(ct)), math.abs(12 * math.sin(ct * .3)), math.abs(10 * math.cos(ct * .2)), Color(255, 255, 255, 255)) -- 159
-			end -- 149
-		end, -- 161
-		HUDRender = function(self) -- 161
-			local ct = { } -- 162
-			local patient = self:GetPatient() -- 163
-			if lp == patient then -- 164
-				ct[#ct + 1] = "Ohh YES!..." -- 165
-			else -- 167
-				ct[#ct + 1] = "Autostitcher" -- 167
-				ct[#ct + 1] = "Charges: " .. tostring(self:GetCharges()) .. "/" .. tostring(self.MaxCharges) -- 168
-				if lp:Team() == TEAM_KORPSMAN then -- 169
-					ct[#ct + 1] = { -- 170
-						text = "Use it with your L.R.D. equipped to recharge it.", -- 170
-						font = "Spleen_Label_Small" -- 171
-					} -- 170
-				else -- 173
-					ct[#ct + 1] = { -- 173
-						text = "This will heal you for the low price of $" .. tostring(self:CostFor(lp)) .. ".", -- 173
-						font = "Spleen_Label_Small" -- 174
-					} -- 173
-					if self:GetCharges() >= 0 then -- 175
-						ct[#ct + 1] = { -- 176
-							text = "...or rather, it would heal you if it weren't EMPTY.", -- 176
-							font = "Spleen_Label_Small" -- 177
-						} -- 176
-					end -- 175
-				end -- 169
-			end -- 164
-			return ct -- 178
+			if self:GetCharges() <= 0 then -- 112
+				ply:Notify("<c=200,0,0>No healing charges remain.") -- 114
+				net.Start("evilrp_frighten") -- 115
+				net.Send(ply) -- 116
+				self:EmitSound("items/medshotno1.wav") -- 117
+				return -- 118
+			end -- 112
+			local patient = self:GetPatient() -- 119
+			local cost = self:CostFor(ply) -- 120
+			if ply:getDarkRPVar("money") < cost and not IsValid(self:GetPatient()) then -- 121
+				ply:Notify("<c=200,0,0>It sucks to be poor. A healing trip costs $" .. tostring(cost) .. ".") -- 123
+				net.Start("evilrp_frighten") -- 124
+				net.Send(ply) -- 125
+				self:EmitSound("items/medshotno1.wav") -- 126
+				return -- 127
+			end -- 121
+			if IsValid(patient) and patient ~= ply then -- 128
+				ply:Notify("<c=200,0,0>Wait your turn.") -- 130
+				net.Start("evilrp_frighten") -- 131
+				net.Send(ply) -- 132
+				self:EmitSound("items/medshotno1.wav") -- 133
+				return -- 134
+			end -- 128
+			self:SetCharges(self:GetCharges() - 1) -- 137
+			self:SetPatient(ply) -- 138
+			ply:SetNWEntity("evilrp_autostitcher", self) -- 139
+			ply:AddMoney(-cost, "Masshiroi mezame") -- 140
+			self:EmitSound("items/medshot4.wav") -- 141
+			net.Start("evilrp_autostitcher") -- 142
+			net.Send(ply) -- 143
+			net.Start("evilrp_music_start") -- 144
+			return net.Send(ply) -- 145
+		end, -- 147
+		Draw = function(self) -- 147
+			self:DrawModel() -- 148
+			local patient = self:GetPatient() -- 149
+			if patient and IsValid(patient) then -- 150
+				render.SetMaterial(cable) -- 151
+				local pos_start = patient:EyePos() + (patient:GetForward() * 2) + (patient:GetUp() * -16) + (self:GetUp() * 1) -- 152
+				local pos_end = self:GetPos() + (self:GetForward() * 6) + (self:GetRight() * 2.4) -- 153
+				local ct = CurTime() -- 154
+				return render.DrawBeam(pos_start, pos_end, 2 + (1 * math.cos(ct)), math.abs(12 * math.sin(ct * .3)), math.abs(10 * math.cos(ct * .2)), Color(255, 255, 255, 255)) -- 160
+			end -- 150
+		end, -- 162
+		HUDRender = function(self) -- 162
+			local ct = { } -- 163
+			local patient = self:GetPatient() -- 164
+			if lp == patient then -- 165
+				ct[#ct + 1] = "Ohh YES!..." -- 166
+			else -- 168
+				ct[#ct + 1] = "Autostitcher" -- 168
+				ct[#ct + 1] = "Charges: " .. tostring(self:GetCharges()) .. "/" .. tostring(self.MaxCharges) -- 169
+				if lp:Team() == TEAM_KORPSMAN then -- 170
+					ct[#ct + 1] = { -- 171
+						text = "Use it with your L.R.D. equipped to recharge it.", -- 171
+						font = "Spleen_Label_Small" -- 172
+					} -- 171
+				else -- 174
+					ct[#ct + 1] = { -- 174
+						text = "This will heal you for the low price of $" .. tostring(self:CostFor(lp)) .. ".", -- 174
+						font = "Spleen_Label_Small" -- 175
+					} -- 174
+					if self:GetCharges() >= 0 then -- 176
+						ct[#ct + 1] = { -- 177
+							text = "...or rather, it would heal you if it weren't EMPTY.", -- 177
+							font = "Spleen_Label_Small" -- 178
+						} -- 177
+					end -- 176
+				end -- 170
+			end -- 165
+			return ct -- 179
 		end -- 14
 	} -- 14
-	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 178
+	for _key_0, _val_0 in pairs(_parent_0.__base) do -- 179
 		if _base_0[_key_0] == nil and _key_0:match("^__") and not (_key_0 == "__index" and _val_0 == _parent_0.__base) then -- 14
 			_base_0[_key_0] = _val_0 -- 14
 		end -- 14
-	end -- 178
+	end -- 179
 	if _base_0.__index == nil then -- 14
 		_base_0.__index = _base_0 -- 14
-	end -- 178
+	end -- 179
 	setmetatable(_base_0, _parent_0.__base) -- 14
 	_class_0 = setmetatable({ -- 14
 		__init = function(self, ...) -- 14
@@ -229,5 +230,5 @@ do -- 14
 		_parent_0.__inherited(_parent_0, _class_0) -- 14
 	end -- 14
 	Autostitcher = _class_0 -- 14
-	return _class_0 -- 178
-end -- 178
+	return _class_0 -- 179
+end -- 179
