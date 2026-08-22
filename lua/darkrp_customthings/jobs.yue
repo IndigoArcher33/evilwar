@@ -102,7 +102,7 @@ TEAM_STALKER = DarkRP.createJob "Stalker",
   use_machines: true
   salary: 1
   cooldown: 200
-  pop_threshold: 10
+  pop_threshold: 8
   max: 3
   cost: 4
   can_build: true
