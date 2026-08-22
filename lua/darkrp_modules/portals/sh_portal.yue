@@ -233,6 +233,13 @@ class Spawn extends Portal
     return unless ply\IsPlayer!
     fate = @GetFate!
     cost = RPExtraTeams[fate].cost or 0
+    cooldown = RPExtraTeams[fate].cooldown or 0
+    if cooldown > 0 and ply.cooldowns[fate]
+      if ply.cooldowns[fate] > CurTime!
+        ply\Notify"<c=200,0,0>TOO QUICK."
+        net.Start"evilrp_jumpscare"
+        net.Send ply
+        return
     if ply\GetStemCells! >= cost
       @TeleportEffect!
       ply\Notify"<c=200,0,0>DEATHS TODAY: #{GAMEMODE\Deaths!}"

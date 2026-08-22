@@ -69,6 +69,11 @@ death = function(ply) -- 13
 	if ply:Team() == TEAM_EMPEROR then -- 19
 		emperor_death(ply) -- 20
 	end -- 19
-	return RunConsoleCommand("hostname", tostring(string.english_number(deaths):upper()) .. " DEAD " .. tostring(bodies) .. " TODAY") -- 24
+	local job = RPExtraTeams[ply:Team()] -- 21
+	if job.cooldown and job.cooldown > 0 then -- 22
+		ply.cooldowns = ply.cooldowns or (ply.cooldowns or { }) -- 23
+		ply.cooldowns[ply:Team()] = CurTime() + job.cooldown -- 24
+	end -- 22
+	return RunConsoleCommand("hostname", tostring(string.english_number(deaths):upper()) .. " DEAD " .. tostring(bodies) .. " TODAY") -- 27
 end -- 13
-return hook.Add("DoPlayerDeath", "evilrp_death", death) -- 27
+return hook.Add("DoPlayerDeath", "evilrp_death", death) -- 30

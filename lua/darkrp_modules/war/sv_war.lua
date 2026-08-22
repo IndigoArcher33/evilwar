@@ -492,7 +492,7 @@ do -- 150
 			elseif OP_SUCC == _exp_0 then -- 286
 				if emperor then -- 287
 					emperor:SendChat("SUCCESS", "[WAR] " .. tostring(self.Target.Name) .. " has been brought in to the fold.") -- 288
-					Chat.Announce("GENERIC", "<c=0,200,0> [POLEMOKOM]" .. tostring(self.Target.Name) .. " has been annexed by the " .. tostring(self.Attacker.Name) .. ".") -- 289
+					Chat.Announce("GENERIC", "<c=0,200,0>[POLEMOKOM] " .. tostring(self.Target.Name) .. " has been annexed by the " .. tostring(self.Attacker.Name) .. ".") -- 289
 					emperor:AddStemCells(3) -- 290
 				end -- 287
 				self.Attacker:AnnexCity(self.Target) -- 292
